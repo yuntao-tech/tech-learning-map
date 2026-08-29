@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.1 持续测试 · DevOps Foundation 学习站</title>
+<meta name="description" content="持续测试（Continuous Testing）不是一个阶段，而是贯穿部署流水线的持续活动。本节讲清持续测试与自动化测试的区别、Shift left 的官方含义与三类干扰项，以及单元 / 集成 / 验收三类测试与测试金字塔。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.1-continuous-testing"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.1 持续测试</h1>
+      <div class="page-head__en">Continuous Testing</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        大多数人对「测试」的默认想象是<strong>一个阶段</strong>：编码完了交给测试，测完了交给运维。
+        持续测试推翻的正是这个想象 —— 测试是<strong>贯穿整条部署流水线的持续活动</strong>，
+        每一次提交、每一次合并、每一次部署都在被验证。
+        本节还包含全章最值得先记住的一条官方结论：<strong>Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>持续测试到底「持续」在哪 —— 它和「把测试都自动化了」差在什么地方</li>
+        <li>Shift left 的官方含义是什么，三类最常见的干扰项怎么一眼划掉</li>
+        <li>单元 / 集成 / 验收三类测试各自回答什么问题，金字塔倒过来会发生什么</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 940 520" role="img" aria-label="测试左移前后，缺陷被发现的位置分布与修复成本曲线的对比">
+          <defs>
+            <marker id="ah-31-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="24" y="34" class="s-ink" font-size="16" font-weight="700">缺陷被发现的位置越靠右，修复成本越高</text>
+
+          <!-- 修复成本曲线 -->
+          <text x="24" y="98" class="s-ink" font-size="14" font-weight="650">修复成本</text>
+          <text x="24" y="118" class="s-muted" font-size="12">低 → 高</text>
+          <path d="M190 158 Q 280 152 350 140 Q 440 126 510 106 Q 600 82 670 60 Q 760 40 830 26"
+                class="s-2" stroke-width="2.5" fill="none"/>
+          <g class="f-2">
+            <circle cx="190" cy="158" r="4"/>
+            <circle cx="350" cy="140" r="4"/>
+            <circle cx="510" cy="106" r="4"/>
+            <circle cx="670" cy="60" r="4"/>
+            <circle cx="830" cy="26" r="4"/>
+          </g>
+          <text x="856" y="30" class="f-2" font-size="12" font-weight="650">最贵</text>
+
+          <!-- 阶段带 -->
+          <g text-anchor="middle">
+            <rect x="125" y="185" width="130" height="42" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="190" y="205" class="s-ink" font-size="15" font-weight="650">需求 / 设计</text>
+            <text x="190" y="221" class="s-muted" font-size="12">Requirements</text>
+
+            <rect x="285" y="185" width="130" height="42" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="350" y="205" class="s-ink" font-size="15" font-weight="650">编码</text>
+            <text x="350" y="221" class="s-muted" font-size="12">Code</text>
+
+            <rect x="445" y="185" width="130" height="42" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="510" y="205" class="s-ink" font-size="15" font-weight="650">集成与测试</text>
+            <text x="510" y="221" class="s-muted" font-size="12">Integration</text>
+
+            <rect x="605" y="185" width="130" height="42" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="670" y="205" class="s-ink" font-size="15" font-weight="650">预发布 / UAT</text>
+            <text x="670" y="221" class="s-muted" font-size="12">Acceptance</text>
+
+            <rect x="765" y="185" width="130" height="42" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="830" y="205" class="s-ink" font-size="15" font-weight="650">生产</text>
+            <text x="830" y="221" class="s-muted" font-size="12">Production</text>
+          </g>
+
+          <!-- 竖向对齐辅助线 -->
+          <g class="s-stroke" stroke-width="1" stroke-dasharray="3 6">
+            <line x1="190" y1="232" x2="190" y2="466"/>
+            <line x1="350" y1="232" x2="350" y2="466"/>
+            <line x1="510" y1="232" x2="510" y2="466"/>
+            <line x1="670" y1="232" x2="670" y2="466"/>
+            <line x1="830" y1="232" x2="830" y2="466"/>
+          </g>
+
+          <!-- 左移前 -->
+          <text x="24" y="296" class="f-2" font-size="15" font-weight="700">左移前</text>
+          <text x="24" y="318" class="s-muted" font-size="12">多数在最贵处发现</text>
+          <line x1="140" y1="340" x2="890" y2="340" class="s-stroke" stroke-width="1.5"/>
+          <g class="f-2">
+            <rect x="155" y="330" width="70" height="10" rx="3"/>
+            <rect x="315" y="316" width="70" height="24" rx="3"/>
+            <rect x="475" y="282" width="70" height="58" rx="3"/>
+            <rect x="635" y="268" width="70" height="72" rx="3"/>
+            <rect x="795" y="296" width="70" height="44" rx="3"/>
+          </g>
+
+          <!-- 左移后 -->
+          <text x="24" y="416" class="f-1" font-size="15" font-weight="700">左移后</text>
+          <text x="24" y="438" class="s-muted" font-size="12">多数在最便宜处</text>
+          <line x1="140" y1="460" x2="890" y2="460" class="s-stroke" stroke-width="1.5"/>
+          <g class="f-1">
+            <rect x="155" y="398" width="70" height="62" rx="3"/>
+            <rect x="315" y="376" width="70" height="84" rx="3"/>
+            <rect x="475" y="422" width="70" height="38" rx="3"/>
+            <rect x="635" y="444" width="70" height="16" rx="3"/>
+            <rect x="795" y="452" width="70" height="8" rx="3"/>
+          </g>
+
+          <!-- 迁移箭头 -->
+          <path d="M640 360 Q 420 368 250 368" class="s-1" stroke-width="2" fill="none" stroke-dasharray="7 6" marker-end="url(#ah-31-1)"/>
+          <text x="452" y="356" class="f-1" font-size="13" font-weight="650" text-anchor="middle">左移 Shift left：把发现缺陷的位置整体前移</text>
+
+          <text x="24" y="502" class="s-muted" font-size="12">曲线形状与柱高均为示意，用于说明趋势与分布方向，非实测数据。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-1-1　左移改变的是「缺陷在哪里被发现」。</strong>
+        这张图只有一个要点：<strong>上面那条成本曲线的形状不会因为团队更努力而改变</strong>，
+        能改变的只有下面两排柱子的重心落在哪。左移不是让缺陷变少，而是让同样的缺陷在更左、更便宜的位置暴露出来。
+        注意虚线箭头指向左而不是指向上 —— 它移动的是<strong>位置</strong>，不是<strong>数量</strong>。
+        两排柱子的总高度（即总量）相同，变的只有重心。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-1-1</div>
+        <h3 class="kp__title">持续测试<span class="en">Continuous Testing</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">持续测试 <span class="en">Continuous testing</span></span>是指
+            <strong>在部署流水线的每一个阶段自动执行测试，把「这个版本现在能不能发布」这个问题随时保持有答案</strong>。
+            它的反面不是「测试做得少」，而是「测试被安排成流程中的某一段」。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">三个限定词</th><th>缺了它就不成立</th></tr></thead>
+              <tbody>
+                <tr><td><strong>贯穿全程</strong></td><td>从需求的验收标准，到提交、合并、部署、上线后的冒烟，<strong>每一格流水线都有对应的测试</strong>，不集中在某一段</td></tr>
+                <tr><td><strong>自动触发</strong></td><td>由事件驱动（提交、合并、部署），不是由人排期、不是由人决定这次跑不跑</td></tr>
+                <tr><td><strong>即时反馈风险</strong></td><td>结果要快到能影响下一个动作。跑三小时才出结果的测试，等于没有反馈</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Continuous testing</strong> 列于 DOFD v3.4 官方考纲术语表；
+            v3.4 课程大纲 M3 模块的子项名为 <em>Continuous Testing, Integration, Delivery, Deployment</em>，四者并列。
+            上表对三个限定词的拆解为本站教学整理，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它要解决的是「测试阶段」这个安排本身带来的结构性问题：</p>
+          <ul>
+            <li>设想一个保险核保系统团队，12 周一个版本：前 10 周开发，最后 2 周留给测试。
+              第 11 周测出一个需求理解偏差 —— 「等待期内的既往症理赔」被写反了。这行逻辑是<strong>9 周前</strong>写下的，
+              当时的上下文早已丢失，改动牵连 6 个模块，还得重跑全部回归。</li>
+            <li>更常见的是<strong>测试窗口被吃掉</strong>：开发延期一周，上线日期不动，2 周测试变 1 周。
+              于是「先上线、缺陷转下个版本修」成为惯例，缺陷余额逐版本累积。</li>
+            <li>机制在于：<strong>缺陷的存活时间越长，牵连的代码越多、上下文丢得越干净、返工的波及面越大</strong>。
+              集中测试保证了每个缺陷都活得足够久。</li>
+          </ul>
+          <p>
+            持续测试改变的是这个结构：把验证拆散、贴到每一次改动上，让缺陷在被写下的几分钟内就暴露。
+            它同时也是三步工作法第一步「不把缺陷传给下游」的具体落地手段。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，周数与模块数用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">持续测试</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>自动化测试 <span class="en">Test automation</span></strong></td>
+                  <td>是<strong>节奏与位置</strong>：什么时候测、在流水线的哪一格测</td>
+                  <td>是<strong>手段</strong>：测试用机器执行而不是人点。它回答「怎么测」，不回答「什么时候测」</td>
+                </tr>
+                <tr>
+                  <td><strong>测试阶段 <span class="en">Test phase</span></strong></td>
+                  <td>验证与开发<strong>同时发生</strong>，没有一个叫「测试」的时间段</td>
+                  <td>验证发生在开发<strong>之后</strong>的一段独立时间里，由独立团队承担</td>
+                </tr>
+                <tr>
+                  <td><strong>持续集成 <span class="en">Continuous integration</span></strong><br><small class="muted">展开见 <a href="3.2-continuous-integration.html">3.2 持续集成</a></small></td>
+                  <td>是<strong>被调用的能力</strong>：提供「这次改动是否破坏了什么」的判断</td>
+                  <td>是<strong>调用它的机制</strong>：频繁合并并自动构建、自动触发这些测试</td>
+                </tr>
+                <tr>
+                  <td><strong>质量门禁 <span class="en">Quality gate</span></strong></td>
+                  <td>连续的、每一步都有的验证</td>
+                  <td>离散的、卡在某个节点上的准入检查。门禁可以由持续测试的结果驱动，但门禁本身不是持续测试</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>自动化 ≠ 持续</strong>。
+            一套写得很好的 3000 条自动化回归，如果只在发布前一晚跑一次，它是<strong>自动化测试</strong>，
+            但<strong>不是持续测试</strong> —— 反馈依然晚了两周。反过来，即使某些验证仍需人工（例如探索性测试），
+            只要它被安排成每次改动都发生的常态活动，方向也是对的。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件只把 <em>Continuous testing</em> 列为术语，未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>按<strong>触发事件</strong>而不是按团队分工来编排测试：</p>
+          <ul>
+            <li><strong>每次提交（秒到分钟级）</strong>：单元测试 + 静态检查。开发者在本地和流水线上都能跑，
+              失败必须能在几分钟内定位到某个函数。</li>
+            <li><strong>每次合并（分钟级）</strong>：集成测试、接口 / 契约测试、构建产物的冒烟。
+              这一层验证的是「模块之间还接得上」。</li>
+            <li><strong>每次部署到类生产环境</strong>：验收测试与非功能测试（性能、容量）。
+              这一层验证的是「这是不是用户要的、扛不扛得住」。</li>
+            <li><strong>上线之后</strong>：生产冒烟与合成监控持续跑。注意这是<strong>持续测试的最右端</strong>，
+              不是左移的替代品。</li>
+            <li><strong>红灯停</strong>：流水线一红，先修红灯再提交新功能。允许带红灯继续开发，
+              等于宣布测试结果不重要，几周之内就会退化成无人看的噪音。</li>
+            <li><strong>测试环境不能成为约束</strong>：如果一套环境要排队几天，上面这套编排全部落空。
+              环境作为约束的分析见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的分层编排与「红灯停」为本站教学整理，官方文件未规定持续测试的具体实施步骤；
+            工具选型不在考纲范围内。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：直接问持续测试是什么。
+              本站判断的正确方向是（官方样题答案键未涉及持续测试的定义题）
+              「<strong>测试贯穿整个交付流程 / 部署流水线，持续进行</strong>」。</li>
+            <li><strong>干扰项的三种长相</strong>：
+              ① 把测试限定成一个阶段（「编码完成后的测试阶段」）；
+              ② 把它等同于工具（「把所有测试自动化」）；
+              ③ 把它限定在一个环境（「在生产环境持续测试」）。
+              <strong>排除技巧：凡是把测试锁定在某一个时间点或某一个环境的选项，一律划掉</strong> ——
+              持续测试的关键词是「贯穿」，不是「自动」也不是「哪里」。</li>
+            <li><strong>归属题</strong>：问持续测试属于三步工作法的哪一步。方向是<strong>第二步 · 反馈</strong>
+              （信息从右向左快速回流），它同时服务于第一步「不把缺陷传给下游」。
+              消歧：若题干强调「快速回流的反馈信息」选第二步；若强调「不把缺陷传给下游」选第一步 ——
+              两种问法都出现过，先看题干的关键词。
+              <small class="muted">这一归属为本站教学推断，官方样题答案键未涉及此条。</small></li>
+            <li><strong>四兄弟同框</strong>：Continuous testing / integration / delivery / deployment 常放进同一组选项。
+              先看题干问的是<strong>验证</strong>、<strong>合并</strong>、<strong>可随时发布</strong>还是<strong>自动上生产</strong>，
+              四个动词各归一家（后三者见 <a href="3.2-continuous-integration.html">3.2 持续集成</a>、<a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的答案方向、题型与 Bloom 层级归属均为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">测试不是流水线末尾的那道闸门，而是每一格流水线都踩着的那层地板。</p>
+          <p class="mb-0 muted"><small>一句话区分：<strong>自动化回答「怎么测」，持续回答「什么时候测」</strong>。考题问的多半是后者。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-1-2</div>
+        <h3 class="kp__title">左移<span class="en">Shift Left</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">左移 <span class="en">Shift left</span></span>是指
+            <strong>通过早期与持续的测试，把质量内建到开发过程中</strong>。
+            画一条从左到右的交付时间轴，质量活动原本堆在右端（集成之后、上线之前），左移就是把它们整体搬到左端，
+            与需求和编码同时发生。
+          </p>
+          <div class="callout callout--exam">
+            <div class="callout__title">⭐ 本节最高价值的一条</div>
+            <p class="mb-0">
+              <strong>Shift left 的含义 = 通过早期与持续的测试把质量内建到开发过程中。</strong>
+              这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              记住这句话的两个成分：<strong>早期 + 持续</strong>（时间）与<strong>内建质量</strong>（方式）。
+              凡是缺了其中任何一个成分的选项，都不是它。
+            </p>
+          </div>
+          <p class="mb-0 muted"><small><strong>Shift left</strong> 列于 DOFD v3.4 官方考纲术语表。
+            本站只陈述官方样题答案键确认的结论，不复制题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            左移存在的理由，是<strong>同一个缺陷在不同位置的修复代价差着数量级</strong>，而这个差距与团队努力程度无关。
+          </p>
+          <ul>
+            <li>设想一个支付团队：需求里写的是「退款金额包含手续费」，实际业务规则是不含。
+              <strong>如果在需求评审时被问出来</strong>：改一句话，15 分钟。
+              <strong>如果在单元测试里被断言拦住</strong>：改一个分支，半小时。
+              <strong>如果在集成测试暴露</strong>：要协调对账服务一起改，一天。</li>
+            <li><strong>如果上线两周后由对账差异发现</strong>：3 万笔订单已经错算，需要数据修复脚本、客户公告、
+              资金差额补偿、监管口径说明，牵动三个团队两周 —— 而代码改动仍然只是那一行。
+              <strong>贵的从来不是改代码，是善后。</strong></li>
+            <li>三条放大机制：<strong>上下文遗忘</strong>（写的人已经忘了为什么这么写）、
+              <strong>波及面扩大</strong>（后续代码建立在错误假设之上）、
+              <strong>外部化</strong>（缺陷一旦离开团队，成本从工时变成客户与合规代价）。</li>
+          </ul>
+          <p>
+            在左移这个说法出现之前，质量被当成「测试团队的事」，于是它必然发生在开发之后 ——
+            <strong>组织结构决定了缺陷只能在最贵的位置被发现</strong>。左移首先是一次责任的重新安排，其次才是技术动作。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，笔数与工期用于说明成本量级差异，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">左移 Shift left</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>把测试阶段提前</strong></td>
+                  <td>质量活动与开发<strong>同时发生</strong>，没有独立的时间段</td>
+                  <td>仍然是一个独立阶段，只是排到了前面 —— 前面没东西可测，本质上什么也没改变</td>
+                </tr>
+                <tr>
+                  <td><strong>多测一点 / 测得更严</strong></td>
+                  <td>改变的是<strong>发现的位置</strong></td>
+                  <td>改变的是<strong>数量或标准</strong>。用例翻倍但仍集中在末期，成本曲线一动不动</td>
+                </tr>
+                <tr>
+                  <td><strong>右移 <span class="en">Shift right</span></strong> <span class="badge badge--ext">🧭 延伸 · 非考纲</span><br><small class="muted">Shift right 不在 DOFD 考纲术语表与模块子项内，此处仅为方向对照；指生产验证与可观测性（v3.6 增量学习目标，见 <a href="3.8-observability.html">3.8 监控与可观测性</a>）</small></td>
+                  <td>在缺陷<strong>影响用户之前</strong>拦住它</td>
+                  <td>在真实流量下<strong>观测已经发生的行为</strong>。两者互补，但右移不是左移，方向相反</td>
+                </tr>
+                <tr>
+                  <td><strong>DevSecOps</strong><br><small class="muted">展开见 <a href="3.5-devsecops.html">3.5 DevSecOps</a></small></td>
+                  <td>把<strong>质量</strong>活动左移的总原则</td>
+                  <td>把<strong>安全</strong>活动纳入左移测试的具体实践 —— 其中「安全测试并入左移测试所需的实践是 DevSecOps」一条由 DOFD v3.4 官方样题答案键确认，本行「总原则 / 具体实践」的框架化对照为本站教学整理。</td>
+                </tr>
+                <tr>
+                  <td><strong>持续测试</strong></td>
+                  <td>强调<strong>方向</strong>：往前搬</td>
+                  <td>强调<strong>节奏</strong>：一直在跑。左移了却不持续，等于只在需求阶段认真了一次</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>左移不是「把测试工作甩给开发」</strong>。
+            甩锅的版本是「测试岗撤掉，开发自己测」，结果是没人具备测试设计能力，用例质量断崖下跌。
+            左移改变的是<strong>活动发生的位置</strong>，不是取消专业分工 —— 测试人员的位置从末端评审挪到了需求澄清与用例设计的最前端。</small></p>
+          <p class="mb-0 muted"><small>除已注明的官方样题结论外，本对照表为本站教学整理，官方未以此形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>左移落地的顺序是<strong>从需求开始</strong>，而不是从工具开始：</p>
+          <ul>
+            <li><strong>需求即用例</strong>：每条需求带可执行的验收标准，写不出验收标准的需求不进迭代。
+              这一步拦掉的是最贵的一类缺陷 —— 做对了但做错了东西。</li>
+            <li><strong>写代码时就写测试</strong>：新增逻辑用 TDD 起步（见 kp-3-1-3），
+              至少保证每个分支有一条断言。</li>
+            <li><strong>把检查搬到 PR 上</strong>：单元测试、静态检查、依赖扫描在合并请求上跑完再评审，
+              让同行评审去看设计而不是找拼写错误。</li>
+            <li><strong>用契约测试替代晚期端到端</strong>：服务之间约定接口契约，各自独立验证，
+              把「必须所有服务都部署好才能测」这个晚期依赖拆掉。</li>
+            <li><strong>用数据判断左移做没做到</strong>：统计缺陷的<strong>发现阶段分布</strong>。
+              如果多数缺陷仍在 UAT 与生产被发现，那么无论买了多少工具，左移都没发生 —— 参见图 3-1-1 的两排柱子。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地顺序与判断指标为本站教学整理，官方文件未规定左移的实施步骤。
+            安全活动的左移属于 DevSecOps，展开在 <a href="3.5-devsecops.html">3.5 DevSecOps</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题，答案方向已被官方确认</strong>：问 Shift left 的含义是什么。
+              正确方向是「<strong>通过早期与持续的测试把质量内建到开发过程中</strong>」——
+              <strong>由 DOFD v3.4 官方样题答案键确认</strong>。这是本节最该背下来的一句。</li>
+            <li><strong>干扰项方向一 · 交接类</strong>：以<strong>交接动词</strong>（「完成后」「移交给下游」这类）构成，
+              把动作放在流程<strong>右端</strong>。它描述的是传统的阶段交接，方向与左移正相反。
+              <strong>排除技巧：出现交接动词，直接划掉。</strong></li>
+            <li><strong>干扰项方向二 · 否定持续类</strong>：以<strong>削弱持续性的限定词</strong>（「随机」「不定期」「抽样」这类）构成，
+              位置看似靠左，但节奏不成立 —— 左移要求成体系、每次改动都发生的验证，不是碰运气抽查。
+              <strong>排除技巧：看到削弱持续性的限定词，划掉。</strong></li>
+            <li><strong>干扰项方向三 · 右移类</strong>：把动作放在<strong>部署或上线之后</strong>。
+              生产验证有它自己的价值（属于反馈与可观测性），但方向是往右挪，不是 shift left 的定义。
+              <strong>排除技巧：动作发生在部署之后，划掉。</strong></li>
+            <li><strong>两步排除法</strong>：先看<strong>时间词</strong>（早 / 晚），把所有落在开发之后的选项去掉；
+              再看剩下的选项里有没有<strong>「持续」与「内建质量」</strong>这两个成分，两个都在的那个就是答案。</li>
+            <li><strong>相邻考点</strong>：题干若强调「把<strong>安全</strong>测试并入左移测试、消除 Sprint 之后的安全评审延迟」，
+              答案是 <strong>DevSecOps</strong> —— 同样由 DOFD v3.4 官方样题答案键确认，展开见 <a href="3.5-devsecops.html">3.5 DevSecOps</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项的构造方向，不复制任何官方样题的题干与选项原文；
+            「两步排除法」为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">左移 = 早 + 持续 + 把质量内建进开发，缺一个成分就不是它。</p>
+          <p class="mb-0 muted"><small>反向助记：三个错误方向 —— <strong>交接动词</strong>错在时间，<strong>随机抽样</strong>错在节奏，<strong>部署之后</strong>错在方向。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-1-3</div>
+        <h3 class="kp__title">三类测试与 TDD<span class="en">Testing (unit, acceptance, integration) · Test driven development</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>官方术语 <em>Testing (unit, acceptance, integration)</em> 把测试分成三类，区别在于<strong>验证范围</strong>与<strong>提问角度</strong>：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">类型</th><th style="width:30%">它在问什么</th><th>范围与代价</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>单元测试<br><span class="en">Unit</span></strong></td>
+                  <td>「<strong>这段代码本身对不对</strong>」</td>
+                  <td>单个函数 / 类，不依赖数据库与网络。毫秒级，失败时直接指向某一行</td>
+                </tr>
+                <tr>
+                  <td><strong>集成测试<br><span class="en">Integration</span></strong></td>
+                  <td>「<strong>它们接得上吗</strong>」</td>
+                  <td>模块之间、与数据库 / 外部服务之间的协作。秒到分钟级，失败时指向某个接口或契约</td>
+                </tr>
+                <tr>
+                  <td><strong>验收测试<br><span class="en">Acceptance</span></strong></td>
+                  <td>「<strong>这是不是用户要的</strong>」</td>
+                  <td>端到端的业务场景，从用户视角走完一条路径。分钟级以上，失败时只知道「这条路走不通」</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <span class="term">测试驱动开发 <span class="en">Test driven development / TDD</span></span>
+            是另一个官方术语，指<strong>先写一个会失败的测试，再写让它通过的最小实现，然后重构</strong>（红 → 绿 → 重构）。
+            它是一种<strong>写代码的节奏</strong>，副产品是一套贴着行为长出来的单元测试。
+          </p>
+          <p class="mb-0 muted"><small><em>Testing (unit, acceptance, integration)</em> 与 <em>Test driven development</em>
+            均列于 DOFD v3.4 官方考纲术语表。上表中「它在问什么」这一列是本站为便于区分所做的教学整理，官方未以此形式表述。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            分层存在的理由，是<strong>不同层级的测试在「覆盖同一段逻辑」时代价相差极大</strong>。
+            忽略这一点的团队会走向同一个终点：只写端到端测试。
+          </p>
+          <ul>
+            <li>设想一个电商团队，把回归全部押在 UI 自动化上：900 条用例，一轮跑 4 小时，
+              其中约五分之一会随机失败 —— 页面加载时序、测试数据被别人改脏、环境抖动。</li>
+            <li>于是团队学会了一个动作：<strong>红了就重跑</strong>。重跑三次总能绿一次。
+              这个习惯一旦形成，<strong>真缺陷也会被重跑掩盖</strong>，测试从证据退化成仪式。</li>
+            <li>定位成本同样失控：一条端到端用例失败，只知道「下单流程走不通」，
+              要看录屏、翻日志、逐个服务排查，半小时起步。同样的空指针如果被单元测试抓住，一眼就能看到是哪一行。</li>
+            <li>最终结果是<strong>流水线又慢又不可信</strong>：慢到没人愿意等，脆到没人愿意信，
+              然后被绕过 —— 「这次赶时间，跳过流水线直接发」。</li>
+          </ul>
+          <p>
+            <span class="term">测试金字塔 <span class="en">Test Pyramid</span></span><span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            要解决的就是这个问题：<strong>把验证尽量下沉到最便宜、最稳定、定位最精确的那一层</strong>，
+            高层测试只保留少量真正需要端到端验证的关键路径。
+          </p>
+          <p class="mb-0 muted"><small>测试金字塔既不在 DOFD v3.4 官方考纲的 66 条术语表内，也不在 v3.4 课程大纲的模块子项内，
+            本站仅作为教学补充讲解。本案例为本站构造的教学示例，用例数与耗时用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 3-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 920 480" role="img" aria-label="测试金字塔与倒金字塔的对比示意图">
+              <defs>
+                <marker id="ah-31-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 左：健康金字塔 -->
+              <text x="230" y="44" class="f-1" font-size="17" font-weight="700" text-anchor="middle">测试金字塔</text>
+              <text x="230" y="66" class="s-muted" font-size="13" text-anchor="middle">流水线快、结果可信</text>
+
+              <polygon points="176,158 284,158 254,110 206,110" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <polygon points="144,232 316,232 284,158 176,158" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <polygon points="112,306 348,306 316,232 144,232" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <polygon points="80,380 380,380 348,306 112,306" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <text x="230" y="140" class="s-ink" font-size="13" font-weight="650" text-anchor="middle">端到端</text>
+              <text x="230" y="192" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">验收测试</text>
+              <text x="230" y="212" class="s-muted" font-size="12" text-anchor="middle">少量关键路径</text>
+              <text x="230" y="264" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">集成测试</text>
+              <text x="230" y="286" class="s-muted" font-size="12" text-anchor="middle">接口与契约 · 分钟级</text>
+              <text x="230" y="338" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">单元测试</text>
+              <text x="230" y="360" class="s-muted" font-size="12" text-anchor="middle">数量最多 · 秒级 · 定位到行</text>
+
+              <!-- 左侧成本坐标 -->
+              <line x1="42" y1="384" x2="42" y2="126" class="s-3" stroke-width="2" marker-end="url(#ah-31-3)"/>
+              <text x="42" y="116" class="f-3" font-size="12" font-weight="650" text-anchor="middle">慢 · 贵</text>
+              <text x="42" y="402" class="f-3" font-size="12" font-weight="650" text-anchor="middle">快 · 省</text>
+
+              <!-- 右：倒金字塔 -->
+              <text x="690" y="44" class="f-2" font-size="17" font-weight="700" text-anchor="middle">倒金字塔（反模式）</text>
+              <text x="690" y="66" class="s-muted" font-size="13" text-anchor="middle">流水线又慢又脆，最终被绕过</text>
+
+              <polygon points="540,158 840,158 808,232 572,232" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <polygon points="572,232 808,232 776,306 604,306" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <polygon points="604,306 776,306 746,380 634,380" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <text x="690" y="190" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">端到端 / UI 测试最多</text>
+              <text x="690" y="212" class="s-muted" font-size="12" text-anchor="middle">一轮数小时 · 随机失败频繁</text>
+              <text x="690" y="266" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">集成测试很少</text>
+              <text x="690" y="340" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">单元测试最少</text>
+
+              <text x="690" y="410" class="f-2" font-size="13" font-weight="650" text-anchor="middle">红了就重跑 → 真缺陷被掩盖 → 没人再信流水线</text>
+
+              <text x="230" y="410" class="f-1" font-size="13" font-weight="650" text-anchor="middle">失败即证据 → 分钟级定位 → 敢按合并</text>
+
+              <text x="460" y="452" class="s-muted" font-size="12" text-anchor="middle">测试金字塔为教学补充，不在 DOFD v3.4 官方考纲的 66 条术语表内；官方术语只到「单元 / 集成 / 验收」三类。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-1-2　金字塔倒过来会发生什么。</strong>
+            两边的用例总数可以完全一样，差别只在<strong>分布</strong>。
+            左边把验证压在最便宜、最稳定的一层，所以失败是证据；右边把验证压在最贵、最不稳定的一层，
+            所以失败是噪音 —— 而<strong>噪音会训练团队忽略红灯</strong>，这才是倒金字塔真正的代价：
+            不是慢，是<strong>让流水线失去可信度</strong>，最后被人绕过。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">判据</th><th style="width:39%">集成测试 Integration</th><th>验收测试 Acceptance</th></tr></thead>
+              <tbody>
+                <tr><td><strong>提问角度</strong></td><td><strong>技术正确</strong>：模块之间接得上吗</td><td><strong>业务正确</strong>：这是不是用户要的</td></tr>
+                <tr><td><strong>谁判定通过</strong></td><td>开发者与接口契约</td><td>产品负责人 / 业务方给出的验收标准</td></tr>
+                <tr><td><strong>失败时你知道什么</strong></td><td>哪个接口、哪条契约不匹配</td><td>哪条业务路径走不通，但不知道是谁的问题</td></tr>
+                <tr><td><strong>典型误判</strong></td><td colspan="2">两者都「跨模块」，于是被当成同一件事。<strong>分界线是提问角度，不是覆盖范围</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">另一组易混</th><th style="width:39%">TDD</th><th>单元测试</th></tr></thead>
+              <tbody>
+                <tr><td><strong>是什么</strong></td><td>一种<strong>写代码的节奏</strong>：测试先于实现</td><td>一类<strong>测试产物</strong>：验证单个单元的行为</td></tr>
+                <tr><td><strong>顺序</strong></td><td>测试<strong>先</strong>写，用来驱动设计</td><td>不规定顺序，事后补写也仍然是单元测试</td></tr>
+                <tr><td><strong>关系</strong></td><td colspan="2">TDD 会产出单元测试；但有单元测试<strong>不等于</strong>做了 TDD</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>集成测试和验收测试都跨模块，区别在于「问什么」而不是「测多大范围」</strong>。
+            同一条下单链路，问「订单服务和库存服务的接口对不对」是集成测试，问「用户能不能成功下单并收到确认」是验收测试。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方术语表只列出三类测试的名称，未给出彼此的判别标准。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>新代码从最低层起步</strong>：能用单元测试覆盖的逻辑，不要用端到端去覆盖。
+              判断动作：写用例前先问「这条用例失败时，我能直接知道是哪一行吗」。</li>
+            <li><strong>把不稳定的端到端往下推</strong>：一条 UI 用例如果一个月内随机失败超过几次，
+              就把它拆成「一条契约测试 + 一条组件测试」，保留少量端到端只覆盖收入关键路径。</li>
+            <li><strong>每个线上缺陷补一条尽可能低层的回归</strong>：先问「这个缺陷能不能用单元测试复现」，
+              不能再往上抬一层。这条规则会自动把金字塔养正。</li>
+            <li><strong>TDD 用在规则密集的地方</strong>：计费、风控、状态机这类分支多的逻辑收益最大；
+              纯粹的界面拼装用 TDD 收益有限。</li>
+            <li><strong>测试要能单独跑</strong>：任何一层的测试都应当能在开发者机器上单独执行，
+              否则「左移」在物理上就不成立。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上判断动作与分层建议为本站教学整理，官方文件未规定各层测试的比例或选择标准；
+            不存在官方认可的「黄金比例」。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>类型识别题（本站判断偏 Bloom 2）</strong>：给一段描述判断属于哪一类测试。
+              判据两条：<strong>依赖范围</strong>（有没有跨进程 / 跨服务）与<strong>提问角度</strong>（技术对不对 vs 业务要不要）。</li>
+            <li><strong>与持续集成的绑定考点</strong>：持续集成的必要前提是
+              <strong>自动化的单元、集成与验收测试</strong> —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              干扰项通常做两件事：<strong>只给其中一类</strong>（「只需要自动化单元测试」），
+              或把「自动化」换成<strong>人工</strong>（「完善的手工回归」）。
+              <strong>排除技巧：三类齐全 + 自动化，缺一不选。</strong>持续集成本身展开见 <a href="3.2-continuous-integration.html">3.2 持续集成</a>。</li>
+            <li><strong>TDD 题</strong>：正确方向是<strong>先写测试、再写实现</strong>。
+              干扰项常写成「先写代码再补测试」「由独立测试团队在迭代末尾编写测试」——
+              前者顺序反了，后者连人和时间都反了。</li>
+            <li><strong>金字塔本身（本站判断）</strong>：测试金字塔不在 66 条术语表内，
+              按名称设问或考具体比例的可能性很低。它的价值在于帮你判断上面几类题，不必背比例数字。</li>
+          </ul>
+          <p class="mb-0 muted"><small>Bloom 层级归属与「金字塔不会按名称设问」为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">单元问「这行对不对」，集成问「它们接得上吗」，验收问「这是不是用户要的」。</p>
+          <p class="mb-0 muted"><small>金字塔一句话（教学补充）：<strong>底下多、上面少</strong>；倒过来的代价不是慢，是<strong>红灯没人信</strong>。
+            TDD 一句话：<strong>红 → 绿 → 重构</strong>，测试先写。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>Shift left = 通过早期与持续的测试把质量内建到开发过程中</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，本节第一必背</li>
+        <li>Shift left 的三类干扰方向：<strong>交接动词</strong>（方向反）、<strong>随机抽样</strong>（否定了持续）、<strong>部署后</strong>（位置右移）</li>
+        <li><strong>持续测试 = 测试贯穿整条部署流水线</strong>，不是一个阶段、不是一个环境、也不等于「把测试自动化」</li>
+        <li>自动化回答<strong>怎么测</strong>，持续回答<strong>什么时候测</strong>；发布前一晚跑一次的自动化回归，不是持续测试</li>
+        <li>官方三类测试：<strong>单元「这行对不对」· 集成「它们接得上吗」· 验收「这是不是用户要的」</strong></li>
+        <li><strong>持续集成的必要前提是自动化的单元、集成与验收测试</strong>（官方样题答案键确认，展开见 <a href="3.2-continuous-integration.html">3.2 持续集成</a>）；<strong>TDD = 先写测试再写实现</strong></li>
+        <li>测试金字塔（教学补充）：底层多、顶层少；<strong>倒过来的真正代价是红灯失去可信度</strong>，最后流水线被绕过</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Continuous testing</em>、<em>Shift left</em>、
+      <em>Testing (unit, acceptance, integration)</em>、<em>Test driven development</em>、
+      <em>Continuous integration</em>、<em>Deployment pipeline</em> 均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      v3.4 课程大纲 M3 模块子项为 <em>Continuous Testing, Integration, Delivery, Deployment</em>。
+      <strong>「Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中」</strong>、
+      <strong>「持续集成的必要前提是自动化的单元、集成与验收测试」</strong>、
+      <strong>「把安全测试并入左移测试所需的实践是 DevSecOps」</strong>
+      三条结论均由 <strong>DOFD v3.4 官方样题答案键</strong>确认；本站只陈述结论，不复制官方样题的题干与选项原文。
+      <strong>测试金字塔</strong>不在官方 66 条术语表内，本站作为教学补充讲解，已在 kp-3-1-3 与图 3-1-2 内就地标注。
+      各面中的分层编排、判断动作、对照表、干扰项排除法与 Bloom 层级推断均为本站教学整理，已分别在对应位置标注。
+      图 3-1-1 的成本曲线与柱高为示意，非实测数据。本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

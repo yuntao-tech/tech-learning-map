@@ -46,11 +46,11 @@ window.SYLLABUS = {
       questions: 5,
       desc: "DevOps 是什么、为什么会出现、它对业务和 IT 各自意味着什么。整套知识体系的地基。",
       sections: [
-        { n: "1.1", slug: "1.1-defining-devops", title: "定义 DevOps", status: "todo" },
-        { n: "1.2", slug: "1.2-why-it-matters", title: "DevOps 为什么重要", status: "todo" },
-        { n: "1.3", slug: "1.3-business-it-perspective", title: "商业视角与 IT 视角", status: "todo" },
-        { n: "1.4", slug: "1.4-values-goals-stakeholders", title: "价值、目标与干系人", status: "todo" },
-        { n: "1.5", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "1.1", slug: "1.1-defining-devops", title: "定义 DevOps", status: "done" },
+        { n: "1.2", slug: "1.2-why-it-matters", title: "DevOps 为什么重要", status: "done" },
+        { n: "1.3", slug: "1.3-business-it-perspective", title: "商业视角与 IT 视角", status: "done" },
+        { n: "1.4", slug: "1.4-values-goals-stakeholders", title: "价值、目标与干系人", status: "done" },
+        { n: "1.5", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {
@@ -75,17 +75,17 @@ window.SYLLABUS = {
       questions: 7,
       desc: "考纲权重并列最高。CI/CD 家族最容易混淆，可观测性、VSM、平台工程是 v3.6 新增。",
       sections: [
-        { n: "3.1", slug: "3.1-continuous-testing", title: "持续测试", status: "todo" },
-        { n: "3.2", slug: "3.2-continuous-integration", title: "持续集成", status: "todo" },
-        { n: "3.3", slug: "3.3-delivery-vs-deployment", title: "持续交付 vs 持续部署", status: "todo" },
-        { n: "3.4", slug: "3.4-sre-resilience", title: "SRE 与韧性工程", status: "todo" },
-        { n: "3.5", slug: "3.5-devsecops", title: "DevSecOps", status: "todo" },
-        { n: "3.6", slug: "3.6-chatops", title: "ChatOps", status: "todo" },
-        { n: "3.7", slug: "3.7-kanban", title: "看板方法", status: "todo" },
-        { n: "3.8", slug: "3.8-observability", title: "监控与可观测性", status: "todo", tag: "new" },
-        { n: "3.9", slug: "3.9-vsm", title: "价值流管理", status: "todo", tag: "new" },
-        { n: "3.10", slug: "3.10-platform-engineering", title: "平台工程", status: "todo", tag: "new" },
-        { n: "3.11", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "3.1", slug: "3.1-continuous-testing", title: "持续测试", status: "done" },
+        { n: "3.2", slug: "3.2-continuous-integration", title: "持续集成", status: "done" },
+        { n: "3.3", slug: "3.3-delivery-vs-deployment", title: "持续交付 vs 持续部署", status: "done" },
+        { n: "3.4", slug: "3.4-sre-resilience", title: "SRE 与韧性工程", status: "done" },
+        { n: "3.5", slug: "3.5-devsecops", title: "DevSecOps", status: "done" },
+        { n: "3.6", slug: "3.6-chatops", title: "ChatOps", status: "done" },
+        { n: "3.7", slug: "3.7-kanban", title: "看板方法", status: "done" },
+        { n: "3.8", slug: "3.8-observability", title: "监控与可观测性", status: "done", tag: "new" },
+        { n: "3.9", slug: "3.9-vsm", title: "价值流管理", status: "done", tag: "new" },
+        { n: "3.10", slug: "3.10-platform-engineering", title: "平台工程", status: "done", tag: "new" },
+        { n: "3.11", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {

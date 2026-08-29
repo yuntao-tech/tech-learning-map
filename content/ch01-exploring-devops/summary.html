@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.5 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 1 章认识 DevOps 的收口：一张把 1.1 到 1.4 串起来的知识地图、一页纸复习表、六对易混淆概念、本章官方术语速查，以及本章在 40 题中的位置。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch01", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 1 章 · 认识 DevOps</div>
+      <h1 class="page-head__title">1.5 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章四节没有教任何一条具体做法，它们合起来只做了一件事：<strong>把坐标系建起来</strong> ——
+        DevOps 是什么、为什么值得做、谁在看它、它的好处落到谁身上。
+        这一页不重讲各节正文，只做跨节的归位与对照。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>1.1 到 1.4 各自留下的<strong>一条核心结论</strong>是什么，四节之间是怎么串起来的</li>
+        <li>本章六对最容易混的概念，各自的<strong>分界线</strong>落在哪一句话上</li>
+        <li>本章在 40 道题里占多少，出题会从哪几个角度切入</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1-5-1：本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 500" role="img" aria-label="第 1 章知识地图：官方 M1 只列出 Defining DevOps 与 Why Does DevOps Matter? 两个子项，本站据此展开为 1.1 到 1.4 四节，四节共同产出一套坐标系，通向第 2 章核心原则。图中方框为可点击的小节入口，同样的入口在下方「一页纸复习表」的小节列里也有一份。">
+          <defs>
+            <marker id="ah-15-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)"/>
+            </marker>
+          </defs>
+
+          <!-- 顶部：官方来源说明 -->
+          <text x="20" y="22" class="s-muted" font-size="12">DOFD v3.4 课程大纲 M1 Exploring DevOps —— 官方只列出两个子项</text>
+
+          <!-- 官方子项 1 -->
+          <rect x="20" y="32" width="200" height="66" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="120" y="60" class="f-4" font-size="14" font-weight="700" text-anchor="middle">Defining DevOps</text>
+          <text x="120" y="82" class="s-muted" font-size="12" text-anchor="middle">官方子项 · 定义 DevOps</text>
+
+          <!-- 官方子项 2 -->
+          <rect x="260" y="32" width="200" height="66" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="360" y="60" class="f-4" font-size="13" font-weight="700" text-anchor="middle">Why Does DevOps Matter?</text>
+          <text x="360" y="82" class="s-muted" font-size="12" text-anchor="middle">官方子项 · 为什么重要</text>
+
+          <!-- 本站拆分说明 -->
+          <rect x="500" y="32" width="440" height="66" rx="12" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="6 5" fill="var(--dia-fill-2)"/>
+          <text x="520" y="58" class="s-ink" font-size="13" font-weight="650">1.3 与 1.4 不是官方子项</text>
+          <text x="520" y="80" class="s-muted" font-size="12">是本站从上面两个子项里展开出来的教学切面</text>
+
+          <!-- 官方子项到本站小节 -->
+          <path d="M120 98 L120 148" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-15-n)"/>
+          <path d="M360 98 L360 148" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-15-n)"/>
+          <path d="M660 98 C 660 128 600 136 600 148" stroke="var(--border-strong)" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-15-n)"/>
+          <path d="M790 98 C 790 128 840 136 840 148" stroke="var(--border-strong)" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-15-n)"/>
+
+          <!-- 四节各自回答的问题 -->
+          <g class="s-muted" font-size="13" text-anchor="middle">
+            <text x="120" y="168">① 它是什么</text>
+            <text x="360" y="168">② 为什么值得做</text>
+            <text x="600" y="168">③ 谁在看 · 谁来定</text>
+            <text x="840" y="168">④ 落到谁身上</text>
+          </g>
+
+          <!-- 1.1 -->
+          <a href="1.1-defining-devops.html" tabindex="-1" aria-hidden="true">
+            <rect x="10" y="180" width="220" height="124" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="26" y="209" class="f-1" font-size="15" font-weight="700">1.1　定义 DevOps</text>
+            <text x="26" y="233" class="s-ink" font-size="13">人协同 · 流到生产</text>
+            <text x="26" y="253" class="s-ink" font-size="13">CALMS 五个字母</text>
+            <text x="26" y="273" class="s-muted" font-size="12">协作与沟通 Collaboration</text>
+            <text x="26" y="293" class="s-muted" font-size="12">不是工具集 · 不是新部门</text>
+          </a>
+
+          <!-- 1.2 -->
+          <a href="1.2-why-it-matters.html" tabindex="-1" aria-hidden="true">
+            <rect x="250" y="180" width="220" height="124" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="266" y="209" class="f-2" font-size="15" font-weight="700">1.2　DevOps 为什么重要</text>
+            <text x="266" y="233" class="s-ink" font-size="13">Golden Circle 从 why 出发</text>
+            <text x="266" y="253" class="s-ink" font-size="13">why = 目的 · 事业 · 信念</text>
+            <text x="266" y="273" class="s-muted" font-size="12">高绩效组织 High-performing</text>
+            <text x="266" y="293" class="s-muted" font-size="12">why 的含义由 v3.4 答案键确认</text>
+          </a>
+
+          <!-- 1.3 -->
+          <a href="1.3-business-it-perspective.html" tabindex="-1" aria-hidden="true">
+            <rect x="490" y="180" width="220" height="124" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="506" y="209" class="f-3" font-size="14" font-weight="700">1.3　商业视角与 IT 视角</text>
+            <text x="506" y="233" class="s-ink" font-size="13">同一条价值流的两种读法</text>
+            <text x="506" y="253" class="s-ink" font-size="13">业务问变现，IT 问上线</text>
+            <text x="506" y="273" class="s-muted" font-size="12">决定选哪些原则与实践的</text>
+            <text x="506" y="293" class="s-muted" font-size="12">是业务战略与目标</text>
+          </a>
+
+          <!-- 1.4 -->
+          <a href="1.4-values-goals-stakeholders.html" tabindex="-1" aria-hidden="true">
+            <rect x="730" y="180" width="220" height="124" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="746" y="209" class="f-5" font-size="14" font-weight="700">1.4　价值、目标与干系人</text>
+            <text x="746" y="233" class="s-ink" font-size="13">DevOps stakeholders</text>
+            <text x="746" y="253" class="s-ink" font-size="13">DevOps teams / roles</text>
+            <text x="746" y="273" class="s-muted" font-size="12">团队是结构，角色是职责</text>
+            <text x="746" y="293" class="s-muted" font-size="12">价值要落到具体的人身上</text>
+          </a>
+
+          <!-- 汇流总线 -->
+          <path d="M120 304 L120 352" stroke="var(--border-strong)" stroke-width="2" fill="none"/>
+          <path d="M360 304 L360 352" stroke="var(--border-strong)" stroke-width="2" fill="none"/>
+          <path d="M600 304 L600 352" stroke="var(--border-strong)" stroke-width="2" fill="none"/>
+          <path d="M840 304 L840 352" stroke="var(--border-strong)" stroke-width="2" fill="none"/>
+          <path d="M120 352 L840 352" stroke="var(--border-strong)" stroke-width="2" fill="none"/>
+
+          <text x="240" y="334" class="s-muted" font-size="13" text-anchor="middle">四节共同产出一套坐标系</text>
+          <text x="720" y="334" class="s-muted" font-size="13" text-anchor="middle">不是一套可以照抄的做法</text>
+
+          <path d="M480 352 L480 396" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-15-n)"/>
+
+          <!-- 通向第 2 章 -->
+          <a href="../ch02-core-principles/2.1-three-ways.html" tabindex="-1" aria-hidden="true">
+            <rect x="180" y="402" width="600" height="76" rx="12" stroke="var(--border-strong)" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="480" y="432" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">第 2 章　核心原则 · 三步工作法</text>
+            <text x="480" y="456" class="s-muted" font-size="13" text-anchor="middle">本章建立坐标系，从第 2 章开始才给出原则与做法</text>
+          </a>
+
+          <text x="20" y="492" class="s-muted" font-size="12">方框可点击，直达对应小节；同样的一组入口在下方「一页纸复习表」首列也有一份。</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--dia-4)"></i>官方 M1 子项</span>
+        <span><i style="background:var(--dia-1)"></i>1.1 定义</span>
+        <span><i style="background:var(--dia-2)"></i>1.2 动因</span>
+        <span><i style="background:var(--dia-3)"></i>1.3 视角</span>
+        <span><i style="background:var(--dia-5)"></i>1.4 价值与人</span>
+        <span><i style="background:var(--border-strong)"></i>灰实线＝官方子项直接对应；灰虚线＝本站拆分（非官方子项）</span>
+      </div>
+      <figcaption>
+        <strong>图 1-5-1　第 1 章知识地图。</strong>
+        这张图要让你看懂两件事。
+        第一，<strong>本章四节不是四个并列知识块，而是一条问题链</strong>：是什么 → 为什么 → 谁在看 → 落到谁身上；
+        任何一个本章名词，先问它回答的是链上哪一问，位置就定了。
+        第二，<strong>本章不产出做法</strong> —— 四条线汇成的是一套判断用的坐标系，
+        具体的原则与实践从<a href="../ch02-core-principles/index.html">第 2 章 核心原则</a>才开始。这也是本章题目很少考「怎么做」的原因。
+        <br>
+        <em>图中<strong>「四节 → 一条问题链」的串法，以及把 1.3、1.4 标为本站展开出的教学切面</strong>，均为本站教学整理：
+        DOFD v3.4 课程大纲 M1 之下只列出 <span class="en">Defining DevOps</span> 与
+        <span class="en">Why Does DevOps Matter?</span> 两个子项，官方既未给出四节划分，也未给出这条问题链或任何层级图。
+        图中虚线正是用来区分这两层的：<strong>实线来自官方子项，虚线是本站的拆分</strong>。</em>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节只保留一条结论、一句锚点、一个最易错点。某一行想不起来了，点节号回去补。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:14%">小节</th>
+            <th style="width:38%">核心结论</th>
+            <th style="width:23%">记忆锚点</th>
+            <th>最易错点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="1.1-defining-devops.html"><strong>1.1</strong><br>定义 DevOps</a></td>
+            <td>DevOps 是 <strong>IT 组织中的人协同工作</strong>，让计划中的工作快速<strong>流动</strong>、获得<strong>反馈</strong>、<strong>持续改进</strong>，<strong>直至进入生产</strong>，同时达成质量、稳定性、可靠性、可用性、安全与团队满意度。它是工作方式，不是工具集、不是岗位、也不是某条流水线。<br><small class="muted">此句沿用 <a href="1.1-defining-devops.html">1.1</a> 的<strong>本站教学表述</strong>，非官方原文 —— PeopleCert《DevOps Foundation® Blueprint》是一页概览海报，<strong>不含定义句</strong>，官方文件未以此措辞给出定义。「文化、实践与自动化」是行业通行的记忆化说法，不在官方事实包内，本站不用它作定义句。</small></td>
+            <td>先回答「谁和谁一起对什么负责」，再谈用什么工具。</td>
+            <td>把 DevOps 等同于 CI/CD 工具链；把它理解成新设的一个部门。</td>
+          </tr>
+          <tr>
+            <td><a href="1.2-why-it-matters.html"><strong>1.2</strong><br>DevOps 为什么重要</a></td>
+            <td>动因在<strong>业务侧</strong>：<strong>新进入者不断出现，产品必须频繁发布，而不是一年一两次</strong>；发布间隔越长，单次携带的未验证变更越多。速度与稳定性同时上升，才是高绩效组织 <span class="en">High-performing organizations</span> 的表现。用 <span class="en">Golden Circle</span> 表达时从 <strong>why</strong> 出发，而 why 指的是组织的<strong>目的、事业与信念</strong>。<br><small class="muted">「三层动因」与「市场压力为首要动因」为本站教学整理，官方只公布了 <em>Why Does DevOps Matter?</em> 这个子项标题，未公布其答案内容，也未给出任何收益数值。</small></td>
+            <td>先说清「为了什么」，工具和流程才有落点。</td>
+            <td>把 Golden Circle 的 why 答成产品或交付物（那是 what）；把本节的「为什么做」答成第 8 章的「做成需要什么条件」；去背来路不明的收益百分比。</td>
+          </tr>
+          <tr>
+            <td><a href="1.3-business-it-perspective.html"><strong>1.3</strong><br>商业视角与 IT 视角</a></td>
+            <td>同一条价值流的两个读数：业务看<strong>上市时间 · 收入与市场份额 · 客户体验 · 竞争响应</strong>，IT 看<strong>稳定性 · 可用性 · 安全 · 可维护性</strong>。对立是<strong>结构问题</strong>（两张记分卡）而不是性格问题。两边唯一天然共享的名词是 <span class="en">Service</span> —— IT 只能用组件语言汇报时，它在组织里就只能被当成成本中心。决定一个组织该采用哪些 DevOps 原则与实践的，是<strong>业务战略与目标</strong>。</td>
+            <td>业务量的是错过的机会，IT 量的是出事的半径；业务买的是 Service，不是服务器。</td>
+            <td>把选型依据答成工具成熟度、团队规模或行业惯例；把 <span class="en">Service</span> 答成服务器或 <span class="en">Microservices</span>。</td>
+          </tr>
+          <tr>
+            <td><a href="1.4-values-goals-stakeholders.html"><strong>1.4</strong><br>价值、目标与干系人</a></td>
+            <td>结果目标六项<strong>必须同时成立</strong>：质量 · 稳定性 · 可靠性 · 可用性 · 安全 · <strong>团队满意度</strong> —— 最后一项是反馈质量的前置条件，不是福利；<strong>发布节奏 / 速度 / 吞吐 / 效率只出现在 Benefits 里，不属于 Goals</strong>。价值必须落到<strong>具体的人</strong>身上：干系人 <span class="en">DevOps stakeholders</span> ＝<strong>谁被影响</strong>（范围最宽），团队 <span class="en">DevOps teams</span> ＝<strong>谁和谁编在一起</strong>（结构），角色 <span class="en">DevOps roles</span> ＝<strong>谁对哪件事负责</strong>（职责）。<br><small class="muted">六项结果目标与 Goals / Benefits 两层拆分沿用 <a href="1.1-defining-devops.html">1.1</a> 的本站教学表述，官方未以此形式给出；三者回答的不是同一维度的宽窄问题，此归纳同为本站教学整理，官方并列列出三条术语，未说明彼此的包含关系。</small></td>
+            <td>干系人＝谁被影响，团队＝谁来交付，角色＝谁负责哪件事。</td>
+            <td>把 teams 与 roles 当同义词；把干系人窄化成开发与运维两方；把「发布节奏 / 速度 / 吞吐 / 效率」当成 Goals；把团队满意度当软性干扰项划掉。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中的<strong>术语英文原名</strong>出自 DOFD v3.4 官方考纲术语表；「Golden Circle 的 why 代表目的、事业与信念」
+      与「决定采用哪些 DevOps 原则与实践的是业务战略与目标」两条判断，由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认（本站只陈述结论，不复制题干与选项原文）。
+      本表<strong>「核心结论 / 记忆锚点 / 最易错点」三栏的切分方式，以及每格的具体表述，均为本站教学整理</strong> ——
+      官方未以此形式给出复习表，「记忆锚点」一栏是本站编写的助记语，不是官方表述，不要当作定义去背。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总</div>
+
+    <p>
+      本章丢分几乎都发生在下面这六对上。看这张表的方法是：<strong>先只读「分界线」一列</strong>，
+      能自己补出左右两边的，才算过关。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th style="width:22%">容易混的一对</th>
+            <th style="width:44%">分界线（最容易混的那一点）</th>
+            <th>一句话判据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DevOps</strong><br>vs<br><strong>Agile</strong></td>
+            <td>两者都强调小批量、快反馈、跨职能协作，所以最容易被当成同一件事的两个名字。分界线在<strong>覆盖范围的右端</strong>：Agile 的原始范围止于「开发完成」，DevOps 把范围延伸到<strong>部署、运行与客户实际使用</strong>，运维在其中是第一等公民而不是下游收件人。</td>
+            <td>问「运维算不算里面的人」：算 → DevOps；原始定义里不算 → Agile。</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps</strong><br>vs<br><strong>自动化</strong></td>
+            <td>自动化是 <span class="en">CALMS</span> 五个字母里的<strong>一个</strong>（A），另外四个是文化、精益、度量、分享。把自动化做满、其余四项不动，得到的是「一条很快的流水线加一个照旧互相甩锅的组织」。分界线：<strong>自动化改的是机器怎么干活，DevOps 改的是人怎么一起对结果负责。</strong></td>
+            <td>问「买齐工具就完事了吗」：是 → 只是自动化；不是 → DevOps。</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps 团队</strong> DevOps teams<br>vs<br><strong>DevOps 角色</strong> DevOps roles</td>
+            <td>两个都是官方术语表条目，且中文都能说成「做 DevOps 的人」，所以极易互换。分界线在<strong>回答的问题不同</strong>：团队回答「<strong>谁和谁编在一起、按什么边界组织</strong>」，是结构问题；角色回答「<strong>谁对哪件事负责、要具备什么能力</strong>」，是职责问题。同一个角色可以出现在不同团队里，一个团队里也会同时存在多个角色。</td>
+            <td>看题干问的是<strong>怎么编队</strong>还是<strong>谁负责</strong>：编队 → teams；负责 → roles。</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps 干系人</strong> DevOps stakeholders<br>vs<br><strong>DevOps 团队</strong></td>
+            <td>换一个维度再看一层：干系人是<strong>会被这条价值流影响、或能影响它的所有人</strong> —— 包含业务、产品、安全、合规、审计、客服，直到最终客户；团队只是其中<strong>直接动手交付的那一小圈</strong>。把干系人窄化成「开发＋运维」，是本章最常见的口径错误。</td>
+            <td>问「他不动手，但结果变了他会受影响吗」：会 → 干系人。</td>
+          </tr>
+          <tr>
+            <td><strong>业务视角</strong><br>vs<br><strong>IT 视角</strong></td>
+            <td>难点不在于分辨这两个词，而在于很多人默认它们<strong>互相对立、必须取舍</strong>。实际上两者看的是<strong>同一条价值流</strong>，只是读数不同：业务读的是「多久能变现、风险多大、能不能对客户兑现承诺」，IT 读的是「多久能上线、会不会出事、出事多久能恢复」。冲突通常来自两边各自优化自己的读数，而不是来自目标真的相反。</td>
+            <td>看句子度量的是<strong>收益与风险</strong>还是<strong>交付与稳定</strong>：前者业务，后者 IT。</td>
+          </tr>
+          <tr>
+            <td><strong>Golden Circle 的 why</strong><br>vs<br><strong>Golden Circle 的 what</strong></td>
+            <td>三层里 why 最抽象，最容易被答成看得见的那一层。分界线：<strong>why 是组织的目的、事业与信念</strong>（为什么存在），<strong>what 是产品、服务、交付物</strong>（做出来的东西），中间的 how 是做法与流程。一个组织换掉全部产品，why 可以不变 —— 这就是判据。</td>
+            <td>问「换掉产品它还成立吗」：成立 → why；不成立 → what。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中「Golden Circle 的 why 代表组织的<strong>目的、事业与信念</strong>」这一条，由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认。<span class="en">Golden Circle</span>、
+      <span class="en">DevOps teams</span>、<span class="en">DevOps roles</span>、
+      <span class="en">DevOps stakeholders</span>、<span class="en">CALMS</span>、
+      <span class="en">Agile software development</span> 均为 DOFD v3.4 官方考纲术语表条目。
+      <strong>各对概念之间的分界线表述与判据口诀，以及「业务视角 vs IT 视角」这一对的切分方式，均为本站教学整理</strong>，
+      官方未以此形式给出对照。<span class="en">Agile</span> 的完整展开在第 4 章
+      （<a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a>），本章只作对照使用。
+    </div>
+
+    <!-- ============ 官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      下表收录的条目<strong>都出现在 DOFD v3.4 官方考纲术语表（66 条）里</strong>。
+      本章会提到、但不在这张术语表内的说法（例如「DevOps 不是什么」的六个误解、「业务视角与 IT 视角的两个读数」这类描述性表述），不进此表。
+    </p>
+    <p>
+      <strong>取舍口径</strong>：本表只收<strong>本章正文真正展开过</strong>的术语表条目。
+      本章只作对照、正文未展开的条目（<span class="en">Agile software development</span> 与
+      <span class="en">Agile Manifesto</span> 留到第 4 章，<span class="en">The Three Ways</span> 留到第 2 章，
+      <span class="en">DevOps metrics</span> 留到第 7 章）在对应小节收录，
+      因此<strong>本表不是「本章相关官方术语」的完整清单</strong>，
+      不能反过来当成「不在表里就不是官方术语」的排除线。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%">中文（统一译法）</th>
+            <th style="width:26%">术语表英文原名</th>
+            <th>一句话定义</th>
+            <th style="width:9%">出处</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>DevOps</td><td><span class="en">DevOps</span></td><td>IT 组织中的人协同工作，让计划中的工作快速流动、获得反馈、持续改进，直至进入生产，同时达成质量、稳定性、可靠性、可用性、安全与团队满意度。<br><small class="muted">（本句为 1.1 的本站教学表述，非官方原文；Blueprint 不含定义句，术语表只确认 <em>DevOps</em> 这一词条收录）</small></td><td><a href="1.1-defining-devops.html">1.1</a></td></tr>
+          <tr><td>CALMS</td><td><span class="en">CALMS</span></td><td>DevOps 价值观的五个字母：文化 Culture、自动化 Automation、精益 Lean、度量 Measurement、分享 Sharing。</td><td><a href="1.1-defining-devops.html">1.1</a></td></tr>
+          <tr><td>协作与沟通</td><td><span class="en">Collaboration and communication</span></td><td>让原本按职能分割的各方在同一目标下共享信息与决策，是 DevOps 落地的前提能力。</td><td><a href="1.1-defining-devops.html">1.1</a></td></tr>
+          <tr><td>组织文化</td><td><span class="en">Organizational culture</span></td><td>一个组织里被默认接受的价值观、行为方式与做事习惯，是 CALMS 里 Culture 一项落地的对象。</td><td><a href="1.1-defining-devops.html">1.1</a></td></tr>
+          <tr><td>Golden Circle</td><td><span class="en">Golden Circle</span></td><td>从 why 到 how 再到 what 的表达顺序；其中 <strong>why 代表组织的目的、事业与信念</strong>。</td><td><a href="1.2-why-it-matters.html">1.2</a></td></tr>
+          <tr><td>高绩效组织</td><td><span class="en">High-performing organizations</span></td><td>在交付速度与稳定性上同时领先、并能持续保持的组织。</td><td><a href="1.2-why-it-matters.html">1.2</a></td></tr>
+          <tr><td>服务</td><td><span class="en">Service</span></td><td>业务与 IT 共同面对的那个交付对象：客户实际得到并使用的东西，而不是它背后的某台机器或某套系统。</td><td><a href="1.3-business-it-perspective.html">1.3</a></td></tr>
+          <tr><td>IT 服务管理 ITSM</td><td><span class="en">IT service management</span></td><td>设计、交付、运行、支持并改进 IT 服务的实践集合；完整展开见 <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架（4.4 ITSM）</a>。</td><td><a href="1.3-business-it-perspective.html">1.3</a></td></tr>
+          <tr><td>DevOps 干系人</td><td><span class="en">DevOps stakeholders</span></td><td>会被这条价值流影响、或能影响它的所有各方，范围远大于开发与运维两方。</td><td><a href="1.4-values-goals-stakeholders.html">1.4</a></td></tr>
+          <tr><td>DevOps 团队</td><td><span class="en">DevOps teams</span></td><td>按交付结果而非职能边界组织起来的团队形态，回答的是「谁和谁编在一起」。</td><td><a href="1.4-values-goals-stakeholders.html">1.4</a></td></tr>
+          <tr><td>DevOps 角色</td><td><span class="en">DevOps roles</span></td><td>价值流中各项职责与能力的分工，回答的是「谁对哪件事负责」，可跨团队重复出现。</td><td><a href="1.4-values-goals-stakeholders.html">1.4</a></td></tr>
+          <tr><td>变革疲劳</td><td><span class="en">Change fatigue</span></td><td>变革叠加得太多太密之后，人对再一次变革失去投入能力的状态；它消耗的是团队满意度这个目标。</td><td><a href="1.4-values-goals-stakeholders.html">1.4</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      英文条目名<strong>逐字取自 DOFD v3.4 官方考纲术语表（共 66 条）</strong>；
+      中文写法依本站统一译法表，<span class="en">Golden Circle</span> 与 <span class="en">CALMS</span> 官方未给中译，本站保留英文原词不另造译名。
+      <strong>「一句话定义」是本站用自己的话写的压缩说明，不是官方定义原文</strong>，考试以官方表述为准；
+      其中 <span class="en">Golden Circle</span> 一行「why 代表目的、事业与信念」的部分，由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认。
+      <span class="en">Defining DevOps</span> 与 <span class="en">Why Does DevOps Matter?</span>
+      是 v3.4 课程大纲 M1 的<strong>模块子项</strong>（属于官方内容），但不在 66 条术语表内，因此未收入本表 ——
+      <strong>「不在本表内」不等于「不是官方内容」</strong>，术语表与课程大纲是两份清单。
+      本表<strong>「收哪些、不收哪些」的取舍是本站的教学安排</strong>，官方并未按章节划分术语表。
+    </div>
+
+    <!-- ============ 考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">5</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">40</div><div class="stat__k">全卷题数</div></div>
+      <div class="stat"><div class="stat__v">12.5%</div><div class="stat__k">本章占比（本站按 v3.4 的 5/40 换算）</div></div>
+      <div class="stat"><div class="stat__v">26</div><div class="stat__k">及格线（65%）</div></div>
+    </div>
+
+    <div class="src-note">
+      本章 <strong>5 题</strong>出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      <strong>12.5% 为本站按 5 / 40 换算，非官方原文数字</strong>。
+      该表列的是各模块的<strong>最多题数</strong>，而八个模块的最多题数合计恰为 <strong>40</strong>，
+      因此在 v3.4 卷面上各模块实际就按此题数出题<small class="muted">（这一步加总与推论为本站教学整理，官方未如此说明）</small>；
+      但 <strong>v3.6 未公开重新发布权重表</strong>，不要把这两个数字当作 v3.6 的承诺值。
+      <strong>40 题</strong>与 <strong>26 分及格线（65%）</strong>出自 PeopleCert 现行 DevOps Foundation 产品页公布的考试形式。
+      这四个数字<strong>不来自同一个版本</strong>，不要整块当成 v3.6 的现行数据。
+    </div>
+
+    <!-- ============ 图 1-5-2：模块权重 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 330" role="img" aria-label="DOFD 八大模块最多题数分布条形图，本章（M1 Exploring DevOps）为 5 题，与 M6 自动化与工具链并列第四，前面是 M3 与 M4 各 7 题、M5 6 题">
+          <text x="12" y="20" class="s-muted" font-size="13">八大模块最多题数（合计 40 题）</text>
+
+          <text x="200" y="49" class="f-4" font-size="13" font-weight="700" text-anchor="end">M1 认识 DevOps（本章）</text>
+          <rect x="210" y="34" width="220" height="20" rx="4" class="s-4 f-4" stroke-width="1.5"/>
+          <text x="440" y="49" class="f-4" font-size="12" font-weight="700">5</text>
+          <text x="560" y="49" class="f-4" font-size="13" font-weight="700">← 本章：5 / 40，本站换算约 12.5%</text>
+
+          <text x="200" y="81" class="s-ink" font-size="13" text-anchor="end">M2 核心原则</text>
+          <rect x="210" y="66" width="176" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="396" y="81" class="s-muted" font-size="12">4</text>
+
+          <text x="200" y="113" class="s-ink" font-size="13" text-anchor="end">M3 关键实践</text>
+          <rect x="210" y="98" width="308" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="113" class="s-muted" font-size="12">7</text>
+
+          <text x="200" y="145" class="s-ink" font-size="13" text-anchor="end">M4 业务与技术框架</text>
+          <rect x="210" y="130" width="308" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="145" class="s-muted" font-size="12">7</text>
+
+          <text x="200" y="177" class="s-ink" font-size="13" text-anchor="end">M5 文化、行为与运营模型</text>
+          <rect x="210" y="162" width="264" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="484" y="177" class="s-muted" font-size="12">6</text>
+
+          <text x="200" y="209" class="s-ink" font-size="13" text-anchor="end">M6 自动化与工具链</text>
+          <rect x="210" y="194" width="220" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="440" y="209" class="s-muted" font-size="12">5</text>
+
+          <text x="200" y="241" class="s-ink" font-size="13" text-anchor="end">M7 度量与报告</text>
+          <rect x="210" y="226" width="88" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="308" y="241" class="s-muted" font-size="12">2</text>
+
+          <text x="200" y="273" class="s-ink" font-size="13" text-anchor="end">M8 分享、跟随与演进</text>
+          <rect x="210" y="258" width="176" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="396" y="273" class="s-muted" font-size="12">4</text>
+
+          <text x="12" y="312" class="s-muted" font-size="12">来源：DOFD v3.4 Examination Requirements（2022-05）。v3.6 未公开重新发布权重表。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 1-5-2　本章在全卷中的分量。</strong>
+        这张图想让你看懂的是<strong>本章的位置</strong>：5 题在八个模块里<strong>并列第四</strong>
+        （M3、M4 各 7 题，M5 6 题，M1、M6 各 5 题），
+        对一个「只讲概念、不讲做法」的模块来说分量并不小 ——
+        因为它考的正是<strong>口径</strong>（DevOps 是什么、谁是干系人、什么决定选型），
+        而口径题在 Bloom 1–2 的卷面上最容易稳拿。
+        图中所有数字都是 v3.4 的<strong>最多题数</strong>，且 v3.6 未公开重新发布权重表，
+        不要当作 v3.6 的承诺值；上面的名次由本站按这八个数字排出。
+      </figcaption>
+    </figure>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 本章的出题角度</div>
+      <ul class="mb-0">
+        <li><strong>定义题</strong>：直接问 DevOps 是什么。干扰项的做法是<strong>把 DevOps 窄化</strong> ——
+          写成「一套工具」「一个新岗位」「一条 CI/CD 流水线」。
+          这类选项单看不算错话，但它描述的是 DevOps 的一部分，不是 DevOps。</li>
+        <li><strong>why 题</strong>：问 <span class="en">Golden Circle</span> 的 why 代表什么。
+          正确方向是<strong>目的、事业与信念</strong>，这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+          <strong>以下干扰项形态为本站构造的示例，非官方选项</strong>：把 why 答成 what 层看得见的东西。</li>
+        <li><strong>决策依据题</strong>：问什么决定一个组织该采用哪些 DevOps 原则与实践。
+          正确方向是<strong>业务战略与目标</strong>，同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+          <strong>以下干扰项形态为本站构造的示例，非官方选项</strong>：把依据答成从 IT 侧出发的理由。</li>
+        <li><strong>范围辨析题</strong>：teams / roles / stakeholders 三个词放进同一组选项。
+          先判断题干问的是<strong>职责（roles）、编队结构（teams）还是影响面（stakeholders）</strong>，
+          再选 —— 三个词回答的是三个不同问题，不是同一维度上的宽窄。这三个词都在官方术语表里，谁都不是错误选项，只有「答非所问」。</li>
+        <li><strong>排除技巧</strong>：本章题几乎都在考<strong>口径的宽窄</strong>。
+          遇到选项时先问一句「它说的范围是比题干宽了还是窄了」，
+          比逐条判断对错更快，也更不容易被「本身正确但答的是隔壁概念」的选项带走。</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      以上<strong>命题角度与干扰项形态的归纳，是本站基于考纲结构与 Bloom 1–2 层级要求所做的教学整理</strong>，
+      不是官方公布的命题说明。其中标注「官方样题答案键确认」的两条，是关于官方文件结论的事实陈述；
+      本站不复制任何官方样题的题干或选项原文。
+    </div>
+
+    <!-- ============ 练习占位 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章配套练习题（覆盖 1.1–1.4，含定义辨析、why / what 归位、决策依据、
+        干系人与角色范围四类题型）将在 <strong>P2 阶段</strong>统一命制并接入本页，
+        届时此处会替换为可作答的题目组。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文；
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>全章一句话：<strong>本章只建坐标系，不给做法</strong> —— 是什么（1.1）→ 为什么（1.2）→ 谁在看、谁来定（1.3）→ 落到谁身上（1.4）</li>
+        <li><strong>DevOps ≠ 自动化</strong>：自动化只是 CALMS 五个字母里的一个，另外四个是文化、精益、度量、分享</li>
+        <li><strong>DevOps ≠ Agile</strong>：分界在覆盖范围的右端 —— 运维与客户实际使用是否算在里面</li>
+        <li><span class="en">Golden Circle</span> 的 <strong>why = 目的、事业与信念</strong>；产品与交付物是 what（由 DOFD v3.4 官方样题答案键确认）</li>
+        <li>决定采用哪些 DevOps 原则与实践的是<strong>业务战略与目标</strong>，不是工具成熟度（由 DOFD v3.4 官方样题答案键确认）</li>
+        <li>三词三问：<strong>stakeholders ＝谁被影响，teams ＝谁来交付，roles ＝谁负责哪件事</strong>；三者回答的是不同问题，不是同一维度的宽窄（本站教学整理；官方并列列出三条，未说明包含关系）</li>
+        <li>结果目标六项：<strong>质量 · 稳定性 · 可靠性 · 可用性 · 安全 · 团队满意度</strong>；
+          <strong>发布节奏 / 速度 / 吞吐 / 效率只在 Benefits 里，不是 Goals</strong>（本站教学整理，沿用 <a href="1.1-defining-devops.html">1.1</a> 的教学表述）</li>
+        <li>业务与 IT 唯一天然共享的名词是 <span class="en">Service</span> ——
+          业务可感知、可直接使用的成果单位，不是服务器，也不是 <span class="en">Microservices</span></li>
+        <li>权重：本章<strong>5 / 40</strong>，本站换算约 <strong>12.5%</strong>（v3.4 数据，v3.6 未重新发布权重表）；全卷及格 <strong>26 / 40</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章的模块归属与两个官方子项（<span class="en">Defining DevOps</span> /
+      <span class="en">Why Does DevOps Matter?</span>）出自 <strong>DOFD v3.4 课程大纲 M1 Exploring DevOps</strong>；
+      「本章官方术语速查」中的英文条目名逐字出自 <strong>DOFD v3.4 官方考纲术语表（66 条）</strong>；
+      题数分布（M1 最多 5 题）出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>；
+      考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题 / 开卷 / Bloom 1–2）出自
+      PeopleCert 现行 DevOps Foundation 产品页公布的考试信息。
+      「Golden Circle 的 why 代表组织的目的、事业与信念」与「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」
+      两条判断，由 <strong>DOFD v3.4 官方样题答案键</strong>确认 —— 本站只陈述结论，不复制题干与选项原文。
+      <br>
+      本页的<strong>知识地图串法（四节 → 一条问题链）、1.3 与 1.4 属本站展开的教学切面、一页纸复习表、
+      易混淆分界线与判据口诀、术语一句话定义、命题角度归纳</strong>均为本站教学整理，
+      已在各自图表下方单独标注；练习题为仿真题，非官方真题。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

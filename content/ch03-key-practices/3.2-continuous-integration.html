@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.2 持续集成 · DevOps Foundation 学习站</title>
+<meta name="description" content="持续集成（Continuous Integration）由两件事同时构成：每人每天多次把工作合入共享主线，且每次合入都被自动化的单元、集成与验收测试验证。本节讲清它的必要前提、集成地狱的成因，以及与持续交付、部署流水线的边界。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.2-continuous-integration"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.2 持续集成</h1>
+      <div class="page-head__en">Continuous Integration</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        持续集成不是「装了一台构建服务器」。它由两件必须同时成立的事构成：
+        <strong>每人每天多次把工作合入共享主线</strong>，且<strong>每次合入都由自动化的单元、集成与验收测试判定好坏</strong>。
+        只做前一半，得到的不是持续集成，而是<strong>更快地把损坏堆进主干</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>持续集成到底约束了哪些行为，为什么「每天多次合入主线」是它的下限而不是理想值</li>
+        <li>为什么它的必要前提是<strong>自动化的单元、集成与验收测试</strong>，而不是任何一种发布侧的自动化能力</li>
+        <li>分支活得越久，合并代价为什么不是线性增加，而是越来越陡</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="持续集成最小闭环示意图：提交、自动构建、自动化单元集成验收测试、反馈；以及缺少自动化测试时闭环断裂的后果">
+          <defs>
+            <marker id="ah-32-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-32-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <!-- 上半：完整闭环 -->
+          <text x="20" y="32" class="f-1" font-size="16" font-weight="700">完整闭环：提交 → 自动构建 → 自动化测试 → 反馈</text>
+
+          <rect x="20"  y="60" width="200" height="80" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="260" y="60" width="200" height="80" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="500" y="60" width="220" height="80" rx="10" class="s-1" stroke-width="2.6" fill="var(--dia-fill)"/>
+          <rect x="760" y="60" width="180" height="80" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="120" y="90"  class="s-ink" font-size="16" font-weight="700">① 代码提交</text>
+            <text x="120" y="114" class="s-muted" font-size="13">Code commit · 每天多次</text>
+            <text x="360" y="90"  class="s-ink" font-size="16" font-weight="700">② 自动构建</text>
+            <text x="360" y="114" class="s-muted" font-size="13">合入主线后立即触发</text>
+            <text x="610" y="88"  class="s-ink" font-size="16" font-weight="700">③ 自动化测试</text>
+            <text x="610" y="110" class="s-muted" font-size="13">单元 · 集成 · 验收</text>
+            <text x="610" y="130" class="f-1" font-size="12" font-weight="650">官方样题确认的必要前提</text>
+            <text x="850" y="90"  class="s-ink" font-size="16" font-weight="700">④ 主干可工作</text>
+            <text x="850" y="114" class="s-muted" font-size="13">随时是已知良好状态</text>
+          </g>
+
+          <path d="M224 100 L254 100" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-32-1)"/>
+          <path d="M464 100 L494 100" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-32-1)"/>
+          <path d="M724 100 L754 100" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-32-1)"/>
+
+          <path d="M850 143 L850 186 L120 186 L120 145" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-32-1)"/>
+          <text x="485" y="208" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">反馈回路：红了就停下来先修，几分钟内闭合</text>
+
+          <path d="M20 238 L940 238" class="s-stroke" stroke-width="1.5" stroke-dasharray="7 6" fill="none"/>
+
+          <!-- 下半：缺少自动化测试 -->
+          <text x="20" y="268" class="f-2" font-size="16" font-weight="700">缺少自动化测试这一环：闭环断掉，频率反而变成放大器</text>
+
+          <rect x="20"  y="292" width="200" height="76" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="260" y="292" width="200" height="76" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="500" y="292" width="220" height="76" rx="10" class="s-2" stroke-width="2.6" stroke-dasharray="8 6" fill="none"/>
+          <rect x="760" y="292" width="180" height="76" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="120" y="322" class="s-ink" font-size="16" font-weight="700">代码提交</text>
+            <text x="120" y="346" class="s-muted" font-size="13">频率照旧，每天多次</text>
+            <text x="360" y="322" class="s-ink" font-size="16" font-weight="700">自动构建</text>
+            <text x="360" y="346" class="s-muted" font-size="13">只证明「能编译」</text>
+            <text x="610" y="322" class="f-2" font-size="16" font-weight="700">自动化测试　缺失</text>
+            <text x="610" y="346" class="s-muted" font-size="13">没有任何东西判定好坏</text>
+            <text x="850" y="322" class="f-2" font-size="16" font-weight="700">主干持续损坏</text>
+            <text x="850" y="346" class="s-muted" font-size="13">不再是已知良好状态</text>
+          </g>
+
+          <path d="M224 330 L254 330" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-32-2)"/>
+          <path d="M464 330 L494 330" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-32-2)"/>
+          <path d="M724 330 L754 330" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-32-2)"/>
+
+          <text x="20" y="402" class="f-2" font-size="15" font-weight="700">合得更快 = 把未经验证的变更更快地堆进主干。</text>
+          <text x="20" y="426" class="s-muted" font-size="13">缺陷要等到几周后的集中测试才暴露，那时候选提交已有上千次，谁都说不清是哪一次引入的。</text>
+          <text x="20" y="450" class="s-muted" font-size="13">所以 CI 的前提不是「更好的发布管理」，而是能判定这次合入好坏的自动化单元、集成与验收测试。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-2-1　持续集成的最小闭环，以及少了哪一环就不成立。</strong>
+        这张图要看懂的是<strong>第三格的不可替代性</strong>：①②④ 都只搬运代码，只有 ③ 会判定「这次合入是好是坏」。
+        把 ③ 抽掉，剩下的三格仍然跑得飞快，但整条链条不再产生任何关于质量的信息 ——
+        提交频率越高，损坏累积得越快。这就是「必要前提」四个字的实际含义。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-2-1</div>
+        <h3 class="kp__title">持续集成<span class="en">Continuous Integration</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">持续集成 <span class="en">Continuous Integration / CI</span></span>是一条工程纪律：
+            <strong>团队每个成员每天多次把自己的工作合入共享主线，每一次合入都立即触发自动构建与自动化测试，
+            以保证主线始终处于已知良好状态。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">构成</th><th>不成立会怎样</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>频率：每天多次合入共享主线</strong></td>
+                  <td>合入间隔一拉长，每次要合并的差异量、要排查的候选提交数同步膨胀。<strong>「每天多次」是下限，不是理想值</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>验证：每次合入都被自动化测试判定</strong></td>
+                  <td>没有它，「集成成功」只等于「编译通过」。主线看着绿，实际行为对不对没人知道</td>
+                </tr>
+                <tr>
+                  <td><strong>响应：红了立即修，优先级高于新功能</strong></td>
+                  <td>允许主线长时间红着，等于宣布主线状态不可信；后面所有人的构建结果都失去意义</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Continuous integration</strong> 逐字列于 DOFD v3.4 官方考纲术语表；
+            上表把定义拆成三条构成要件，是本站为便于判定所做的教学整理，官方未以此形式分解。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它要消灭的是一个有名字的东西：<strong>发布前的「集成周」</strong>。</p>
+          <ul>
+            <li>设想一个 40 人的支付团队，按功能拆成 6 条特性分支，约定「发布前两周统一集成」。
+              集成第 1 天合并，冲突 300 余处 —— 三个小组各自重构了同一个金额计算工具类。</li>
+            <li>第 3 天冲突解完，编译通过，端到端一跑就错。没人知道是哪次改动引入的：
+              <strong>上一次已知良好状态距今有 1400 次提交，全是候选。</strong></li>
+            <li>第 8 天主干勉强能跑，代价是砍掉两个功能、留下三处「临时绕过」。
+              下个周期重来一次，而且集成周会随代码量继续变长，<strong>长到无法排期</strong>。</li>
+          </ul>
+          <p>
+            机制很直接：<strong>定位一个缺陷的代价，与「上一次已知良好状态到现在之间的提交数」成正比。</strong>
+            攒两周，每次排查要在 1400 个候选里找；每天多次集成，每次只在几十行里找。
+            持续集成不是让集成这件苦差事做得更好，而是<strong>把它拆碎到不再是一件事</strong>。
+          </p>
+          <p>
+            这也是持续集成与<strong>三步工作法第一步 · 流动</strong>的关系：它在代码层面同时做到了缩小批量、
+            限制在制品、不把缺陷传给下游 —— 第一步的原则落到代码库上，就长成持续集成的样子。
+            第一步本体见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            「CI 是第一步在代码层面的落地」这一对应关系为本站教学整理，官方未以此形式表述。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">持续集成</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>持续测试 <span class="en">Continuous testing</span></strong><br><small class="muted">见 <a href="3.1-continuous-testing.html">3.1 持续测试</a></small></td>
+                  <td>管的是<strong>合入的节奏与主线状态</strong>：多久合一次、合完主线还好不好</td>
+                  <td>管的是<strong>质量验证的覆盖范围</strong>：从需求开始就持续验证，贯穿整条流程，不只发生在合入这一刻</td>
+                </tr>
+                <tr>
+                  <td><strong>持续交付 <span class="en">Continuous delivery</span></strong><br><small class="muted">见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></small></td>
+                  <td>保证<strong>主干随时是好的</strong>，终点是「可工作的构建产物」</td>
+                  <td>保证<strong>随时能把它发出去</strong>，终点是「按需一键发布到生产」。以 CI 为输入</td>
+                </tr>
+                <tr>
+                  <td><strong>部署流水线 <span class="en">Deployment pipeline</span></strong><br><small class="muted">结构见 <a href="../ch06-automation/index.html">第 6 章（6.2）</a></small></td>
+                  <td>是一条<strong>纪律</strong>：约束人的行为频率与验证强度</td>
+                  <td>是一条<strong>自动化通道</strong>：承载构建、测试、部署各阶段。它是载体，不是纪律</td>
+                </tr>
+                <tr>
+                  <td><strong>三步工作法第一步 · 流动</strong><br><small class="muted">见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章（2.2）</a></small></td>
+                  <td>是<strong>其中一条具体做法</strong>：把代码层面的批量缩到一天以内</td>
+                  <td>是<strong>更大的原则</strong>：还涵盖环境、审批、部署等整条价值流上的批量与在制品</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把「公司装了构建服务器」当成「在做持续集成」</strong>。
+            工具只满足了「能自动跑」，而 CI 的判据是两个行为指标 —— <strong>合入频率</strong>与<strong>每次合入是否被测试判定</strong>。
+            一台每晚跑一次、跑红了没人管的构建机，是 CI 的反例而不是实例。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件把这些条目并列为术语，未以对照表形式给出彼此的边界。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一个团队是不是真的在做 CI，看四个可观测的量：</p>
+          <ul>
+            <li><strong>主线最后一次绿色构建距现在多久</strong>：以小时计正常，以天计说明 CI 已经名存实亡。</li>
+            <li><strong>人均每天合入主线的次数</strong>：低于 1 次就不配叫 continuous。统计口径是<strong>合入主线</strong>，
+              不是「在自己分支上提交」。</li>
+            <li><strong>构建加测试的反馈时长</strong>：超过 10 分钟，人就会攒着不提交，频率自动下滑。
+              反馈时间是频率的隐藏上限，优化它比要求成员多提交更有效。</li>
+            <li><strong>红了之后先做什么</strong>：正确动作是全员停下先修，修不好就<strong>回滚那次提交</strong>；
+              错误动作是「先绕过去，回头再说」。</li>
+          </ul>
+          <p>
+            配套的一条做法：<strong>不要求功能完成才能进主干</strong>。未完成的代码用功能开关对用户关闭，
+            照样每天合入 —— 把「藏在分支里」换成「藏在开关后面」。
+          </p>
+          <p class="mb-0 muted"><small>以上四个判据与功能开关做法为本站教学整理，官方文件只把 <em>Continuous integration</em> 列为术语，未规定具体的度量口径或阈值。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题</strong>：问持续集成的核心行为。正确方向是
+              「<strong>每天多次把工作合入共享主线，并自动验证</strong>」。
+              干扰项会把频率换掉：「每晚构建一次」「每个 Sprint 末集成一次」「发布前统一集成」。
+              <strong>排除技巧：见到「周期性 / 阶段性 / 发布前」这类频率词一律划掉</strong>，
+              CI 的频率词只能是「每天多次」「每次提交」。</li>
+            <li><strong>场景题</strong>：题干描述团队攒到发布前才合并、冲突大量、缺陷难以定位，问缺的是哪项实践。
+              答案方向是持续集成。</li>
+            <li><strong>近邻混淆</strong>：<span class="en">Code commit</span> 会和
+              <span class="en">Continuous integration</span> 放进同一组选项。
+              前者是<strong>一次动作</strong>，后者是<strong>围绕这个动作的纪律加自动验证</strong>；
+              只把代码推到版本库、不合入主线也不验证，不构成 CI。</li>
+            <li><strong>边界陷阱（都归 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>，不要答成 CI）</strong>：
+              考「按需一键部署」时答案是<strong>持续交付</strong>，考「自动部署每个通过测试的版本」时答案是<strong>持续部署</strong> ——
+              两条归属均由 <strong>DOFD v3.4 官方样题答案键</strong>确认，CI 只管到「主干可工作」为止。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型分类与排除技巧为本站教学推断；「按需一键部署 → 持续交付」「自动部署每个通过测试的版本 → 持续部署」
+            两条结论出自 DOFD v3.4 官方样题答案键。以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">主线每天被合入很多次，每一次都被自动测试判过一遍 —— 两个条件同时成立，才叫持续集成。</p>
+          <p class="mb-0 muted"><small>反例助记：<strong>只合不测 = 更快地弄坏主干；只测不合 = 测的根本不是集成后的东西。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-2-2</div>
+        <h3 class="kp__title">CI 的必要前提：自动化的单元、集成与验收测试<span class="en">Testing (unit, acceptance, integration)</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            持续集成的<strong>必要前提</strong>是<strong>自动化的单元测试、集成测试与验收测试</strong>
+            <span class="en">automated unit, integration and acceptance testing</span>。
+            这不是本站的偏好排序：<strong>DOFD v3.4 官方样题答案键确认，持续集成的必要前提是自动化的单元、集成与验收测试。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">层次</th><th style="width:40%">验证什么</th><th>缺了它，集成后会漏掉哪类问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>单元测试 <span class="en">unit</span></strong></td><td>单个函数或类的行为是否符合预期</td><td>逻辑改错但仍能编译的改动</td></tr>
+                <tr><td><strong>集成测试 <span class="en">integration</span></strong></td><td>多个模块、服务、外部依赖组合起来是否还对</td><td>各自都对、合起来错的接口与契约问题 —— 正是「集成」二字要抓的那类</td></tr>
+                <tr><td><strong>验收测试 <span class="en">acceptance</span></strong></td><td>从使用者视角看，业务行为是否达成</td><td>技术上全绿、业务上做错了事</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Testing (unit, acceptance, integration)</strong> 逐字列于 DOFD v3.4 官方考纲术语表。
+            上表「缺了它会漏掉哪类问题」一列为本站教学整理，官方只列出三类测试的名称，未给出这样的对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一个非常具体、而且今天仍然常见的失败：
+            <strong>团队认真提高了合并频率，主干却越来越不能用。</strong>
+          </p>
+          <ul>
+            <li>设想一个订单团队砍掉了所有长分支，全员改为每天合入主线三到五次，
+              构建服务器每次合入都跑 —— 但流水线里只有编译和静态检查，回归测试仍然由 5 人测试组在发布前手工点。</li>
+            <li>头两周一切正常。第三周开始，测试组反馈「昨天还能下单的路径今天不行了」，
+              而当天主线上有 60 余次合入，<strong>逐个回退成本高到没人愿意做，于是选择在测试环境上打补丁</strong>。</li>
+            <li>第六周，主干已经连续 11 天无法完整走通下单流程。
+              团队的结论是「持续集成不适合我们」，实际发生的是：<strong>提交频率被提高了 20 倍，
+              而判定好坏的能力一点没变</strong>，于是频率变成了损坏的放大器。</li>
+          </ul>
+          <p>
+            机制一句话说清：<strong>集成的价值来自「立刻知道这次合入是好是坏」，而不是来自合入本身。</strong>
+            自动化测试是这条链上唯一产生该信息的环节。抽掉它，剩下的全是搬运动作 ——
+            搬得越快，坏东西到位越快。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <p>
+            先把结论摆在表外：<strong>DOFD v3.4 官方样题答案键确认，持续集成的必要前提是自动化的单元、集成与验收测试。</strong>
+            这三层验证是整条链上唯一会输出「这次合入好 / 坏」的环节。下表整理的是<strong>本站归纳的几类常见错误方向</strong>，
+            它们听起来都比「测试」更完整，所以最容易被当成前提：
+          </p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见的错误方向</th><th style="width:32%">它其实是什么</th><th>为什么它不是 CI 的前提</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>集成完成之后的发布类实践</strong></td>
+                  <td>把已经验证过的构建产物按流程推进到各个环境</td>
+                  <td>发生在集成<strong>之后</strong>。集成本身还没被判定过好坏，推进得再顺，也只是更快地送出未验证的东西</td>
+                </tr>
+                <tr>
+                  <td><strong>以 CI 为输入的下游交付能力</strong></td>
+                  <td>让任意通过验证的版本随时可按需发布出去</td>
+                  <td>它以 CI 为<strong>输入</strong>，是 CI 的下游与结果，不是它的前提。顺序反了</td>
+                </tr>
+                <tr>
+                  <td><strong>承载各阶段的自动化通道</strong></td>
+                  <td>从提交阶段起就承载构建与自动化测试，再往后承载各环境的推进</td>
+                  <td>它是<strong>运行集成与测试的通道本身</strong>，不产生「这次合入是好是坏」这条信息，所以它是<strong>载体</strong>而不是前提。一条不含测试阶段的通道，跑得再快也不验证任何行为</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「更完整、更先进」不等于「更靠前」</strong>。
+            发布类实践与下游交付能力确实<strong>位于集成之后</strong>；而承载各阶段的自动化通道则是另一回事 ——
+            它是测试<strong>运行的地方</strong>，替代不了测试本身。
+            前提必须是能回答「这次合入是好是坏」的东西，只有测试能回答这个问题。</small></p>
+          <p class="mb-0 muted"><small>「持续集成的必要前提是自动化的单元、集成与验收测试」这一结论由
+            <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+            上表的三类「错误方向」是本站按类型归纳的教学整理，用于说明干扰项的构造思路，
+            <strong>不对应也不复原任何官方样题的选项</strong>；本站只陈述结论，不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把「必要前提」落成可检查的门槛，而不是口号：</p>
+          <ul>
+            <li><strong>先补集成层，不是先补覆盖率</strong>：三层里最贵也最值钱的是集成测试 ——
+              它抓的正是「各自都对、合起来错」这类只有合入后才暴露的问题。只堆单元测试覆盖率，
+              合入风险几乎不下降。</li>
+            <li><strong>把测试放进合入的必经路径</strong>：测试必须在<strong>合入主线时</strong>自动触发并阻断，
+              而不是「每晚跑一遍，第二天看报告」。夜间跑的测试不是 CI 的前提，只是一份日报。</li>
+            <li><strong>控制反馈时长</strong>：合入即跑的那一组保持在 10 分钟内（单元为主 + 关键路径的集成与验收），
+              耗时长的放到后续阶段。前提是「快到不影响合入频率」，否则团队会绕过它。</li>
+            <li><strong>失败必须可信</strong>：不稳定的测试比没有测试更危险 —— 一旦团队习惯「红了就重跑一次」，
+              判定能力就已经归零，这时的 CI 只剩下搬运。</li>
+            <li><strong>用测试驱动开发 <span class="en">Test driven development / TDD</span></strong>
+              可以让这层验证随功能一起长出来，而不是事后补。TDD 亦为官方术语表条目。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地动作与 10 分钟阈值为本站教学整理，官方只列出三类测试与 <em>Test driven development</em> 的名称，未规定实施步骤或时长门槛。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>这是本节最高价值的一条</strong>：直接问持续集成的必要前提 / prerequisite。
+              正确方向是<strong>自动化的单元、集成与验收测试</strong> ——
+              <strong>由 DOFD v3.4 官方样题答案键确认</strong>，不是推断。</li>
+            <li><strong>干扰项的构造方向</strong>：<strong>把位于集成下游的自动化实践包装得比「测试」更完整</strong> ——
+              名字越大、覆盖面听起来越广，直觉上越像「前提」。
+              正因为听起来比「测试」更高级，很多人会凭直觉选它们，这正是命题者要抓的。</li>
+            <li><strong>排除技巧一（问一句话）</strong>：这个选项<strong>能不能判定「这次合入是好是坏」</strong>？
+              不能判定的，一律不是前提。</li>
+            <li><strong>排除技巧二（看时间轴）</strong>：前提必须发生在集成<strong>的同时或之前</strong>。
+              凡是描述「集成之后如何发布、如何部署、如何推进到各环境」的选项，全部排除。</li>
+            <li><strong>反向陷阱</strong>：问的若不是「前提」而是「按需一键部署对应哪项实践」，
+              答案是<strong>持续交付</strong>（同由官方样题答案键确认，属 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>）。
+              先看清问的是前提还是结果，再选。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「持续集成的必要前提是自动化的单元、集成与验收测试」与「按需一键部署对应持续交付」
+            两条结论均由 DOFD v3.4 官方样题答案键确认；<strong>干扰项的构造方向与两条排除技巧为本站教学推断</strong>，
+            官方未说明干扰项如何设置。以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">CI 的前提不是「发得更顺」，而是「判得出好坏」—— 自动化的单元、集成、验收测试是唯一能判的那一环。</p>
+          <p class="mb-0 muted"><small>一句话打掉干扰方向：<strong>下游的发布类实践答不了「这次合入好不好」，承载各阶段的自动化通道也只是通道 —— 能给出这条信息的只有测试本身。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-2-3</div>
+        <h3 class="kp__title">代码提交<span class="en">Code commit</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">代码提交 <span class="en">Code commit</span></span>是把一次变更写入版本库的动作，
+            也是持续集成的<strong>计量单位</strong> —— CI 谈的所有频率，都是以它为单位数出来的。
+            本知识点连带讲清它背后的<strong>分支寿命</strong>问题：一次提交多久才合进主线，决定了合并要付多大代价。
+            「分支寿命」是本站为讲解方便使用的说法，不是官方术语。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">名词</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>主干开发 <span class="en">trunk-based development</span></strong></td><td>所有人在同一条主线上工作，分支即便存在，寿命也以小时计</td></tr>
+                <tr><td><strong>长生命周期分支 / 特性分支</strong></td><td>一条分支承载一个完整功能，存活数天到数周，做完才合回主线</td></tr>
+                <tr><td><strong>集成地狱 <span class="en">integration hell</span></strong></td><td>分支存活太久后，合并本身变成一件需要单独排期、无法估时的工程</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>Code commit</strong> 逐字列于 DOFD v3.4 官方考纲术语表，属于必须掌握的名词。
+            <strong>主干开发</strong>与<strong>集成地狱</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            是理解持续集成必备的工程背景，但<strong>两者都不在 66 条术语表内，也不在 v3.4 课程大纲子项内</strong>，
+            本站作为教学补充讲解，考试不会按这两个名称设问。
+            <strong>本知识点中除 <em>Code commit</em> 外的分支策略内容（主干开发、长生命周期分支、分支寿命、集成地狱）均为非考纲的教学补充</strong>，
+            页头徽章的「⭐ 考纲核心」只针对主题词 <em>Code commit</em>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            「每天多次合入主线」听起来只是个勤快程度的问题。它不是 ——
+            <strong>合并代价随分支寿命增长的速度不是线性的。</strong>
+          </p>
+          <ul>
+            <li><strong>文本冲突按乘积走，不按和走</strong>：分支改了 A 片区域，主干同期改了 B 片区域，
+              冲突量取决于 A 与 B 的<strong>交集</strong>。两边各多改一倍，交集期望大致按四倍走，而不是两倍。</li>
+            <li><strong>语义冲突工具解不了</strong>：两边各自编译通过、各自测试通过，合起来行为错 ——
+              版本控制工具对此完全无感，只能靠自动化测试发现。分支活得越久，一次性引入的语义冲突越多。</li>
+            <li><strong>合并期间主干还在动</strong>：设想一条活了 6 周的重构分支，最终合并耗时 11 个工作日，
+              其中 9 天在处理「两边都对、合起来错」的问题；这 11 天里主干又前进了 400 余次提交，
+              <strong>合完还要再合一次</strong>。这就是集成地狱的自我延长机制。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例与冲突量的增长描述为本站构造的教学示例，用于说明机制方向，非实测数据或数学证明。</small></p>
+        </div>
+
+        <!-- ============ 图 3-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 440" role="img" aria-label="合并代价随分支寿命变化的示意曲线：长生命周期分支代价急剧上升，主干开发保持在低位">
+              <defs>
+                <marker id="ah-32-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+                <marker id="ah-32-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <!-- 坐标轴 -->
+              <path d="M90 360 L866 360" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-32-4)"/>
+              <path d="M90 360 L90 44" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-32-4)"/>
+
+              <text x="90" y="30" class="s-ink" font-size="14" font-weight="650">合并与集成的代价（冲突量 · 定位难度 · 返工量）</text>
+              <text x="866" y="414" class="s-ink" font-size="14" font-weight="650" text-anchor="end">分支从主干分出后存活的时间</text>
+
+              <!-- x 轴刻度 -->
+              <g class="s-stroke" stroke-width="1.5">
+                <path d="M190 360 L190 368"/><path d="M330 360 L330 368"/>
+                <path d="M470 360 L470 368"/><path d="M620 360 L620 368"/>
+                <path d="M800 360 L800 368"/>
+              </g>
+              <g text-anchor="middle" class="s-muted" font-size="13">
+                <text x="190" y="386">1 天</text>
+                <text x="330" y="386">3 天</text>
+                <text x="470" y="386">1 周</text>
+                <text x="620" y="386">2 周</text>
+                <text x="800" y="386">1 个月</text>
+              </g>
+
+              <!-- 曲线 A：长生命周期分支 -->
+              <path d="M90 352 C 380 348, 570 322, 690 224 C 758 166, 812 104, 848 62"
+                    class="s-2" stroke-width="3.5" fill="none"/>
+              <text x="846" y="48" class="f-2" font-size="13" font-weight="700" text-anchor="end">长生命周期分支</text>
+
+              <!-- 曲线 B：主干开发 -->
+              <path d="M90 352 L848 338" class="s-1" stroke-width="3.5" fill="none"/>
+              <text x="800" y="326" class="f-1" font-size="13" font-weight="700" text-anchor="end">主干开发保持在低位</text>
+
+              <!-- 图例 -->
+              <path d="M124 84 L164 84" class="s-2" stroke-width="3.5" fill="none"/>
+              <text x="174" y="89" class="s-ink" font-size="14">长生命周期分支：代价随寿命急剧上升</text>
+              <path d="M124 112 L164 112" class="s-1" stroke-width="3.5" fill="none"/>
+              <text x="174" y="117" class="s-ink" font-size="14">主干开发 · 每天多次合入：代价压在最低点</text>
+
+              <!-- 集成地狱标注 -->
+              <text x="498" y="158" class="f-2" font-size="16" font-weight="700">集成地狱</text>
+              <text x="498" y="182" class="s-muted" font-size="13">冲突叠着冲突，语义冲突</text>
+              <text x="498" y="200" class="s-muted" font-size="13">工具解不了；合并本身</text>
+              <text x="498" y="218" class="s-muted" font-size="13">变成要单独排期的项目</text>
+              <path d="M700 168 L796 106" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-32-3)"/>
+
+              <!-- 主干开发标注 -->
+              <text x="150" y="286" class="f-1" font-size="14" font-weight="700">主干开发：每天多次把工作合入主线</text>
+              <text x="150" y="308" class="s-muted" font-size="13">单次差异只有几十行，冲突罕见，出问题能立刻定位到那一次提交</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-2-2　合并代价与分支寿命。</strong>
+            两条曲线<strong>起点完全相同</strong>，差别只有一个变量：多久合一次。
+            要看懂的是右侧那段陡峭 —— 它说明「等做完再合」不是把同样的工作推迟，
+            而是<strong>把工作量本身放大</strong>；到了那个区间，合并已经不能靠更努力解决。
+            所以持续集成给出的解法是把分支寿命压回一天以内，让曲线永远走不到右边。
+            <br><small class="muted">曲线为趋势示意，用于表达增长方向，不是实测数据。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:37%">主干开发（分支寿命 &lt; 1 天）</th><th>长生命周期分支（数天至数周）</th></tr></thead>
+              <tbody>
+                <tr><td><strong>合入频率</strong></td><td>每人每天多次合入主线</td><td>功能整体做完才合回</td></tr>
+                <tr><td><strong>单次差异量</strong></td><td>几十行</td><td>几千行，跨多个模块</td></tr>
+                <tr><td><strong>冲突性质</strong></td><td>少，且多为文本冲突，工具能解</td><td>多，且大量是<strong>语义冲突</strong>，工具无感，只能靠测试暴露</td></tr>
+                <tr><td><strong>缺陷定位</strong></td><td>候选提交只有几次，几分钟锁定</td><td>候选提交上千次，只能人肉二分</td></tr>
+                <tr><td><strong>未完成的功能怎么办</strong></td><td>合进主干，用功能开关对用户关闭</td><td>留在分支里，直到合并那天才第一次见光</td></tr>
+                <tr><td><strong>与 CI 的关系</strong></td><td>让「每天多次合入主线」在工程上成为可能的分支策略（非考纲）</td><td>与 CI 直接冲突：分支上的构建验证的是分支自己</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>在特性分支上跑自动构建，常被称作「我们做了 CI」</strong>。
+            分支上的构建只验证了这条分支自己，<strong>没有验证它与主线上其他人工作的组合</strong> ——
+            而 CI 里的 integration 指的正是后者。分支绿了不等于集成过了。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出分支策略的比较；
+            表中「主干开发」为非考纲的工程实践名词，已在本知识点 ① 面就地标注。
+            <strong>官方样题答案键确认的 CI 必要前提只有自动化的单元、集成与验收测试，主干开发不是考点，不要混为一谈</strong> ——
+            表中对分支策略一律不使用「前提 / 前置条件」的措辞。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把分支寿命当指标量</strong>：统计分支从创建到合入主线的中位时长。
+              中位数超过 2 天，就该问「为什么这个任务不能拆到一天内合入」。</li>
+            <li><strong>拆任务，不是拆分支</strong>：把大需求切成一系列<strong>每一步都能独立合入且不破坏主干</strong>的小改动。
+              切不动，通常是架构耦合的问题，不是纪律问题。</li>
+            <li><strong>大重构走「扩张—收缩」</strong>：先加新路径与旧路径并存，双写或双读一段时间验证，最后删旧路径。
+              每一步都是一次可独立合入的小提交，避免出现一条活六周的重构分支。</li>
+            <li><strong>确实必须留长分支时，方向要反过来</strong>：每天把<strong>主干合进分支</strong>，
+              把合并代价摊到每天，而不是攒到最后一次性支付。</li>
+            <li><strong>提交信息要能支撑定位</strong>：一次提交对应一件事。
+              当自动化测试报红时，能不能在几分钟内锁定那一次提交，取决于提交本身够不够小、够不够单一。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上做法与「中位 2 天」阈值为本站教学整理，官方文件只把 <em>Code commit</em> 列为术语，未规定分支策略或阈值。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>场景题</strong>：题干描述分支长期不合并、合并时冲突大量、缺陷无法定位，
+              问这属于什么问题或该采用什么实践。答案方向是<strong>持续集成 / 每天多次把工作合入共享主线</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：「更换更强的版本控制工具」「制定更严格的分支命名规范」
+              「增加一轮代码评审」「设一名专职集成工程师」。
+              它们的共同特征是<strong>让合并这件苦差事做得更规范</strong>，而不是让它不再是苦差事。
+              <strong>排除技巧：凡是让合并流程变重、变长的选项，方向都反了。</strong></li>
+            <li><strong>术语辨析</strong>：<span class="en">Code commit</span> 是官方术语，会与
+              <span class="en">Continuous integration</span> 同组出现。
+              问「一次变更写入版本库的动作」选前者，问「围绕它的纪律与自动验证」选后者。</li>
+            <li><strong>不会考的</strong>：「集成地狱」「主干开发」都不是官方术语表条目，
+              本站判断不会以这两个名称直接设问；它们只会以<strong>现象描述</strong>的形式出现在题干里。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的场景题命题角度、四条干扰项归纳与排除技巧均为<strong>本站教学推断</strong>；
+            「不会以集成地狱、主干开发这两个名称设问」亦为本站基于 66 条术语表与 Bloom 1–2 范围所作推断，非官方声明。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">分支每多活一天，都在替未来的自己攒一笔利滚利的债 —— 最好的分支是活不过一天的分支。</p>
+          <p class="mb-0 muted"><small>助记：<strong>差异量翻倍，冲突量涨得比翻倍更快（示意，非定量结论）</strong>；而且语义冲突工具解不了，只能靠自动化测试暴露 —— 这就把 kp-3-2-3 又接回了 kp-3-2-2。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>持续集成 = <strong>每人每天多次把工作合入共享主线</strong> + <strong>每次合入都被自动化测试判定</strong>。少一半都不成立</li>
+        <li><strong>DOFD v3.4 官方样题答案键确认：持续集成的必要前提是自动化的单元、集成与验收测试</strong>。
+          任何一种发布侧的自动化能力都答不了「这次合入是好是坏」，所以都不是前提</li>
+        <li>两条排除技巧：前提必须<strong>能判定「这次合入是好是坏」</strong>；前提必须发生在集成<strong>的同时或之前</strong>，下游的东西一律排除</li>
+        <li>没有自动化测试的高频合并 = <strong>更快地制造损坏的主干</strong>，频率变成放大器</li>
+        <li>分支寿命越长，合并代价越陡：<strong>冲突量按双方改动量的乘积走，语义冲突工具还解不了</strong> → 集成地狱</li>
+        <li><strong>Continuous integration</strong>、<strong>Code commit</strong>、<strong>Testing (unit, acceptance, integration)</strong> 都是官方术语；
+          <strong>主干开发、集成地狱不是</strong></li>
+        <li>边界：CI 只管到「主干可工作」；<strong>按需一键部署 → 持续交付</strong>，<strong>自动上生产 → 持续部署</strong>（均归 <a href="3.3-delivery-vs-deployment.html">3.3</a>，且由官方样题答案键确认）。
+          CI 是三步工作法<strong>第一步 · 流动</strong>在代码层面的落地，见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章（2.2 第一步 · 流动）</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Continuous integration</em>、<em>Code commit</em>、
+      <em>Testing (unit, acceptance, integration)</em>、<em>Continuous delivery</em>、
+      <em>Continuous deployment</em>、<em>Continuous testing</em>、<em>Deployment pipeline</em>、
+      <em>Test driven development</em> 均列于 DOFD v3.4 官方考纲术语表（66 条）；
+      <em>Continuous Testing, Integration, Delivery, Deployment</em> 是 v3.4 课程大纲 M3「Key DevOps Practices」的模块子项。
+      <strong>「持续集成的必要前提是自动化的单元、集成与验收测试」这一结论由 DOFD v3.4 官方样题答案键确认</strong>，不是本站推断；
+      本节引用的另两条官方样题答案键结论是「依赖部署流水线实现按需一键部署的实践是持续交付」，
+      以及「自动部署每个通过单元、集成、用户验收与非功能测试的版本属于持续部署」，仅用于划清 3.2 与 3.3 的边界。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>主干开发（trunk-based development）与「集成地狱」不在官方术语表内</strong>，本站作为教学补充讲解，已在 kp-3-2-3 就地标注。
+      各面中的度量口径、阈值、落地动作、对照表与两张图表均为本站教学整理与自制，官方未以此形式给出，已分别在对应位置标注。
+      持续交付与持续部署的完整讲解见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>，
+      持续测试见 <a href="3.1-continuous-testing.html">3.1 持续测试</a>，部署流水线的结构见<a href="../ch06-automation/index.html">第 6 章（6.2）</a>，具体工具见延伸章。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.8 监控与可观测性 · DevOps Foundation 学习站</title>
+<meta name="description" content="监控回答「我预先想到要看的那些指标现在怎么样」，可观测性回答「系统现在到底发生了什么，包括我没预料到的情况」。本节讲清两者的分界、微服务为什么让预先枚举失效，以及 metrics / logs / traces 三大支柱的教学定位。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.8-observability"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.8 监控与可观测性</h1>
+      <div class="page-head__en">Monitoring and Observability</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        两者的分界只有一句话：<strong>监控回答「我预先想到要看的那些指标现在怎么样」，
+        可观测性回答「系统现在到底发生了什么，包括我根本没预料到的情况」</strong>。
+        监控处理<strong>已知的未知</strong>，可观测性处理<strong>未知的未知</strong>。
+        这不是同一件事的新旧叫法，而是两种不同的提问方式。
+        <small class="muted">「已知的未知 / 未知的未知」不是 DOFD 考纲术语，为本站教学表述。</small>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>监控与可观测性到底差在哪一步 —— 差在「问题是谁提出的、什么时候提出的」</li>
+        <li>为什么微服务与分布式架构让传统监控失效：故障模式的组合爆炸，无法预先枚举</li>
+        <li>可观测性怎么服务<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈</a>，
+          又与<a href="../ch02-core-principles/2.6-chaos-engineering.html">混沌工程</a>是什么关系（本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>Monitoring and Observability</strong> 是 <strong>v3.6 新增</strong>的学习目标，
+      来源为 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。
+      <strong>Observability 本身不出现在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，
+      也不在 v3.4 课程大纲 M3 的子项列表里，因此本节页头与各知识点<strong>不使用「⭐ 考纲核心」</strong>。
+      v3.6 未公开重新发布权重表，本节的题量占比无法从官方文件推得。
+    </div>
+
+    <!-- ============ 图 3-8-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 920 610" role="img" aria-label="四象限：已知的已知—监控仪表盘、已知的未知—监控告警、未知的未知且数据已在手—可观测性、未知的未知的极端情形—混沌工程主动激发">
+          <defs>
+            <marker id="ah-38-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-38-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <!-- 横轴标题 -->
+          <text x="545" y="26" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">横轴：这个问题，事先有没有人想到要问</text>
+          <text x="350" y="76" class="f-1" font-size="15" font-weight="700" text-anchor="middle">问题已知 · 预先想到了</text>
+          <text x="712" y="76" class="f-2" font-size="15" font-weight="700" text-anchor="middle">问题未知 · 根本没想到</text>
+
+          <!-- 纵轴标题 -->
+          <text x="16" y="120" class="s-ink" font-size="15" font-weight="700">纵轴</text>
+          <text x="16" y="142" class="s-muted" font-size="13">答案能不能</text>
+          <text x="16" y="160" class="s-muted" font-size="13">当场拿到</text>
+
+          <text x="16" y="205" class="f-1" font-size="14" font-weight="700">答案已知</text>
+          <text x="16" y="226" class="s-muted" font-size="12">数据在手</text>
+
+          <text x="16" y="415" class="f-2" font-size="14" font-weight="700">答案未知</text>
+          <text x="16" y="436" class="s-muted" font-size="12">要等 / 要造</text>
+
+          <!-- 四格 -->
+          <rect x="170" y="90" width="360" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="530" y="90" width="360" height="200" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="170" y="290" width="360" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <rect x="530" y="290" width="360" height="200" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill)"/>
+
+          <!-- A 左上 -->
+          <text x="190" y="122" class="s-muted" font-size="13">已知的已知</text>
+          <text x="190" y="152" class="s-ink" font-size="17" font-weight="700">监控 · 仪表盘</text>
+          <text x="190" y="176" class="s-muted" font-size="13">Monitoring dashboard</text>
+          <text x="190" y="212" class="s-ink" font-size="13">「订单服务的 P95 延迟现在是多少」</text>
+          <text x="190" y="238" class="s-muted" font-size="13">指标预先选好，图表预先画好，随时能看</text>
+          <text x="190" y="266" class="s-muted" font-size="12">代价：只能看到当初想到要画的那几张图</text>
+
+          <!-- B 右上 -->
+          <text x="550" y="122" class="s-muted" font-size="13">未知的未知 · 数据已在手</text>
+          <text x="550" y="152" class="s-ink" font-size="17" font-weight="700">可观测性</text>
+          <text x="550" y="176" class="s-muted" font-size="13">Observability</text>
+          <text x="550" y="212" class="s-ink" font-size="13">「只有 A 租户的 v2 版本在东区变慢了？」</text>
+          <text x="550" y="238" class="s-muted" font-size="13">数据早就在遥测里，事后才想到去问它</text>
+          <text x="550" y="266" class="s-muted" font-size="12">要求：高基数、带上下文、可任意组合查询</text>
+
+          <!-- C 左下 -->
+          <text x="190" y="322" class="s-muted" font-size="13">已知的未知</text>
+          <text x="190" y="352" class="s-ink" font-size="17" font-weight="700">监控 · 告警</text>
+          <text x="190" y="376" class="s-muted" font-size="13">Alerting</text>
+          <text x="190" y="412" class="s-ink" font-size="13">「磁盘迟早会满，但不知道是哪天」</text>
+          <text x="190" y="438" class="s-muted" font-size="13">阈值预先设好，等它被触发</text>
+          <text x="190" y="466" class="s-muted" font-size="12">代价：没设阈值的故障，永远不会触发告警</text>
+
+          <!-- D 右下 -->
+          <text x="550" y="322" class="s-muted" font-size="13">未知的未知 · 极端情形，需主动激发</text>
+          <text x="550" y="352" class="s-ink" font-size="17" font-weight="700">混沌工程</text>
+          <text x="550" y="376" class="s-muted" font-size="13">Chaos Engineering</text>
+          <text x="550" y="412" class="s-ink" font-size="13">「平时根本不会自己出现的那一类」</text>
+          <text x="550" y="438" class="s-muted" font-size="13">主动注入故障，把未知的未知逼出来</text>
+          <text x="550" y="466" class="s-muted" font-size="12">观察不到就不要注入（本站教学整理，非官方判定）</text>
+
+          <!-- 底部覆盖范围 -->
+          <path d="M176 512 L524 512" class="s-1" stroke-width="2.5" fill="none" marker-start="url(#ah-38-1)" marker-end="url(#ah-38-1)"/>
+          <text x="350" y="540" class="f-1" font-size="15" font-weight="700" text-anchor="middle">监控 Monitoring 的覆盖范围</text>
+          <text x="350" y="562" class="s-muted" font-size="12" text-anchor="middle">全部依赖「事先想到」</text>
+
+          <path d="M536 512 L884 512" class="s-2" stroke-width="2.5" fill="none" marker-start="url(#ah-38-2)" marker-end="url(#ah-38-2)"/>
+          <text x="712" y="540" class="f-2" font-size="15" font-weight="700" text-anchor="middle">可观测性 Observability 的覆盖范围</text>
+          <text x="712" y="562" class="s-muted" font-size="12" text-anchor="middle">不要求事先想到，要求事后能问</text>
+
+          <text x="460" y="596" class="s-muted" font-size="12" text-anchor="middle">四象限归类为本站教学整理 · 官方未以此形式给出</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-8-1　已知的未知与未知的未知。</strong>
+        这张图要看懂的是<strong>竖着的那条分界线，而不是四个格子里的工具名</strong>：
+        左半边的两格（仪表盘与告警）都依赖同一个前提 —— <strong>有人在故障发生之前就想到了要看这个东西</strong>，
+        这一整边就是<strong>监控处理的「已知的未知」</strong>；
+        右半边的两格都不依赖这个前提，<strong>整个右半边就是「未知的未知」，也就是可观测性的领地</strong>。
+        混沌工程<strong>不是与可观测性并列的第四类</strong>，而是右半边里
+        「平时不会自己出现、要主动激发才看得到」的那个极端子集。
+        所以监控做得再好，也不会自己长出右半边的能力，因为它的上限不是采集量，而是<strong>提问的想象力</strong>。
+        <br><small class="muted">本四象限归类为本站教学整理，用于区分两类问题；官方文件未以象限形式表述，
+        「已知的未知 / 未知的未知」也不是 DOFD 考纲术语。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-8-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-8-1</div>
+        <h3 class="kp__title">监控 vs 可观测性<span class="en">Monitoring vs Observability</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">监控 <span class="en">Monitoring</span></span>是
+            <strong>对预先选定的一组指标持续采集、展示并在越界时告警</strong>。
+            它的输入是一张「要看什么」的清单，这张清单由人在故障发生之前写好。
+          </p>
+          <p>
+            <span class="term">可观测性 <span class="en">Observability</span></span>是
+            <strong>系统对外输出的数据足够丰富，使人能在事后提出当初没想到的问题，并直接从数据里得到答案</strong>，
+            不需要改代码、加埋点、再等一次故障复现。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">一句话形式</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>监控 = 预设问题</strong></td><td>问题在故障前就写死在仪表盘和告警规则里。系统只回答被问过的问题</td></tr>
+                <tr><td><strong>可观测性 = 事后提问</strong></td><td>问题在故障中才产生。系统要能回答一个<strong>从没被问过的</strong>问题</td></tr>
+                <tr><td><strong>可观测性是系统的属性</strong></td><td>它描述的是<strong>系统本身好不好问</strong>，不是「买了哪个平台」。买了工具而遥测里没有租户维度，照样问不出来</td></tr>
+                <tr><td><strong>两者不是替代关系</strong></td><td>告警仍然必须存在 —— 可观测性不会主动叫醒你。<strong>监控负责「叫醒」，可观测性负责「解释」</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>「预设问题 / 事后提问」这组表述与上表为本站教学整理，用于把两个词的边界固定下来；
+            官方学习目标只列出 <em>Monitoring and Observability</em> 这一主题名，未给出对照定义。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            可观测性出现之前的痛点非常具体：<strong>所有仪表盘都是绿的，客户却在投诉。</strong>
+          </p>
+          <ul>
+            <li>某支付网关团队的监控很完整：主机 CPU、内存、磁盘、JVM 堆、接口 QPS 与 P95 延迟、
+              数据库连接池，共 46 张图、120 条告警规则。某个周二，商户开始报「偶发下单失败」。
+              <strong>值班工程师翻完 46 张图，没有一张是红的</strong> —— P95 延迟 180 ms，错误率 0.3%，
+              全部在阈值内。</li>
+            <li>真实原因是：某个第三方风控服务对<strong>使用了旧版 SDK 的、跨境商户的、金额大于 5 万的</strong>请求
+              返回超时。这类请求占全部流量的 0.4%，但对这批商户而言失败率是 <strong>70%</strong>。
+              整体 P95 与整体错误率把它<strong>平均掉了</strong>。</li>
+            <li>更致命的是接下来这一步：工程师想按「SDK 版本 × 商户类型 × 金额区间」拆一下错误率，
+              发现<strong>做不到</strong> —— 指标在采集时就已经按主机和接口聚合完了，
+              维度不存在，再怎么查也查不出来。<strong>要拿到答案，只能改代码加埋点、发版、等下一次复现，
+              前后花了 9 天。</strong></li>
+          </ul>
+          <p>
+            这 9 天就是可观测性要消灭的东西。它把问题从「你有没有监控」换成
+            <strong>「你的系统能不能回答一个你今天早上才想到的问题」</strong>。
+            监控之所以不够，不是因为采得太少，而是因为它<strong>在采集的那一刻就丢掉了提问所需的维度</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">监控 Monitoring</th><th>可观测性 Observability</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>问题谁提、何时提</strong></td>
+                  <td><strong>人预先提</strong>，写进仪表盘与告警规则</td>
+                  <td><strong>人事后提</strong>，故障进行中临时产生的问题也要能答</td>
+                </tr>
+                <tr>
+                  <td><strong>覆盖的未知类型</strong></td>
+                  <td><strong>已知的未知</strong>：知道它会出事，不知道何时</td>
+                  <td><strong>未知的未知</strong>：连它会以这种方式出事都想不到</td>
+                </tr>
+                <tr>
+                  <td><strong>数据形态</strong></td>
+                  <td>预先聚合的低基数指标（按主机、按接口）</td>
+                  <td>保留上下文的<strong>高基数</strong>事件（带租户、版本、区域、请求 ID）</td>
+                </tr>
+                <tr>
+                  <td><strong>失败时的表现</strong></td>
+                  <td>「仪表盘全绿，但客户在投诉」</td>
+                  <td>「问不出来 = 系统可观测性不足」，是可以被度量和改进的缺陷</td>
+                </tr>
+                <tr>
+                  <td><strong>本质</strong></td>
+                  <td>一种<strong>活动</strong>：持续地看</td>
+                  <td>一种<strong>属性</strong>：系统好不好被问</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">另一组易混</th><th style="width:40%">可观测性</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>遥测 <span class="en">Telemetry</span></strong></td>
+                  <td>是<strong>结果</strong>：能不能问出答案</td>
+                  <td>是<strong>原料</strong>：系统吐出来的数据本身。遥测很多但维度错了，可观测性依然为零</td>
+                </tr>
+                <tr>
+                  <td><strong>平均恢复时间 <span class="en">MTTR</span></strong></td>
+                  <td>是<strong>手段</strong>：缩短「定位原因」那一段</td>
+                  <td>是<strong>指标</strong>：整体恢复用了多久，还包含修复与发布的时间<br><small class="muted">MTTR 是官方 66 条术语表内的术语；指标体系见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>左移 <span class="en">Shift left</span></strong></td>
+                  <td>作用在<strong>生产侧</strong>：系统已经跑起来之后才发挥作用</td>
+                  <td>作用在<strong>开发侧</strong>：通过早期与持续的测试把质量内建到开发过程中。两者互补，不是替代<br><small class="muted">见 <a href="3.1-continuous-testing.html">3.1 持续测试</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>混沌工程 <span class="en">Chaos Engineering</span></strong></td>
+                  <td>是<strong>前提</strong>：提供「看得见」的能力</td>
+                  <td>是<strong>用法</strong>：主动制造故障来暴露未知<br><small class="muted">见 <a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="muted"><small>最容易混的那一点：<strong>不要把两者当成新旧叫法</strong>。
+            「可观测性就是升级版的监控」是最常见的错误理解，也是最好用的干扰项。
+            正确的分界是<strong>问题在故障之前提出，还是在故障之中提出</strong> ——
+            前者无论做得多完善，都停在图 3-8-1 的左半边。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以对照表形式给出这些区分。
+            表中「Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中」这一条
+            <strong>由 DOFD v3.4 官方样题答案键确认</strong>，属官方结论；
+            把它与可观测性并列对照则是本站的教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一个系统有没有可观测性，不看买了什么，看能不能当场回答下面这类问题：</p>
+          <ul>
+            <li><strong>做「新问题测试」</strong>：随口编一个从没进过仪表盘的问题 ——
+              「过去两小时里，用 v2.3 客户端、来自华东、且带优惠券的下单请求，失败率是多少」。
+              <strong>能在几分钟内查出来，就是有；要改代码加埋点才能答，就是没有。</strong></li>
+            <li><strong>检查维度有没有在采集时被丢掉</strong>：指标如果只按主机和接口聚合，
+              租户、版本、区域这些维度事后无法还原。<strong>可观测性的成败在采集口径，不在查询工具。</strong></li>
+            <li><strong>它是第二步 · 反馈的技术底座</strong>：没有生产遥测，
+              <a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈</a>就只剩下人工渠道
+              —— 靠客服工单和客户投诉把信息回流，反馈回路以「天」计。
+              可观测性把这条回路缩到分钟级，让「快速发现、快速回流」变得可行。</li>
+            <li><strong>它是混沌工程的准入条件</strong>：
+              <a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a>的做法是主动注入故障并观察系统反应。
+              <strong>如果观察不到反应，注入故障就不是实验，只是制造事故。</strong>
+              所以正确的顺序是先建可观测性，再谈混沌实验。</li>
+            <li><strong>持续部署要靠它兜底</strong>：自动化把每个通过测试的版本直接送进生产之后，
+              「上线后到底怎么样」只能由生产遥测回答。看不见就不敢自动发，
+              于是人工闸门被永久保留（见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「新问题测试」这一判据、以上五条落地动作，以及「可观测性是混沌工程的前提」这一表述，
+            均为本站教学整理，官方文件未规定可观测性的评估方法或实施顺序。
+            文中的 OpenTelemetry、Prometheus、分布式追踪后端等具体技术栈
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            均不在 DOFD 考纲内，本站只点名不展开，工具链整体形态见
+            <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>，
+            AIOps 见<a href="../ch07-metrics/index.html">第 7 章（7.6）</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义辨析题（本站判断偏 Bloom 1–2）</strong>：给出两段描述，问哪一段是可观测性。
+              正确方向是「<strong>能回答事先没有预设的问题</strong>」；
+              干扰项常写成「<strong>采集更多的指标</strong>」「<strong>更实时的仪表盘</strong>」
+              「<strong>更完善的告警覆盖</strong>」—— 这三种全部停在「预先想到」这一侧，
+              <strong>排除技巧：凡是把可观测性说成「监控的加强版 / 更多 / 更快」的选项，一律先划掉。</strong></li>
+            <li><strong>场景题</strong>：题干描述「所有告警都正常、指标都在阈值内，但部分客户持续报障，
+              且团队无法按客户维度拆分数据」，问缺的是什么。答案方向是<strong>可观测性</strong>，
+              不是「增加告警规则」——增加规则解决不了「维度在采集时就丢了」这个问题。</li>
+            <li><strong>关系题（本站构造，非官方设问）</strong>：若题干问可观测性与混沌工程的关系，
+              按本站教学整理，可观测性是混沌实验的前置能力；
+              <strong>官方样题答案键未涉及这一关系，此处仅作理解用</strong>。</li>
+            <li><strong>归属题的边界要小心</strong>：本节主题服务于<strong>第二步 · 反馈</strong>。
+              官方样题答案键确认的是「<strong>对生产变更进行同行评审属于第二步</strong>」，
+              即生产侧的反馈机制归第二步；<strong>把生产遥测与可观测性一并归入第二步是本站的教学推断</strong>，
+              官方样题未就可观测性本身作出归属判定。见到把可观测性判给
+              <a href="../ch02-core-principles/2.2-first-way-flow.html">第一步 · 流动</a>的选项要警惕 ——
+              第一步处理的是「慢、排队、等待」，不是「看不见」。</li>
+            <li><strong>与持续部署的关系不要说过头</strong>：官方样题答案键确认，
+              「自动部署每个通过单元、集成、用户验收与非功能测试的版本」属于<strong>持续部署</strong> ——
+              这个定义里<strong>并不包含可观测性</strong>。
+              所以「可观测性是持续部署的前提」是工程共识与本站教学推断，不是官方定义，考试不会这样设问。</li>
+            <li><strong>版本提示</strong>：本主题是 v3.6 才加入的学习目标，
+              基于 v3.4 材料编写的旧题库里可能完全没有它；<strong>v3.6 未公开重新发布权重表</strong>，
+              本站无法给出它的题量估计。</li>
+          </ul>
+          <p class="mb-0 muted"><small>其中「Shift left 的含义」「对生产变更进行同行评审属于第二步」
+            「自动部署每个通过全部测试的版本属于持续部署」三条
+            <strong>由 DOFD v3.4 官方样题答案键确认</strong>；
+            题型、Bloom 层级与干扰项长相为本站教学推断，官方仅公布整体范围为 Bloom 1–2。
+            <strong>「可观测性是混沌工程的前提」同属本站教学推断，非官方结论</strong>，
+            官方未就可观测性与混沌工程的先后关系作出判定。
+            以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">监控回答你昨天想到的问题，可观测性回答你此刻才想到的问题。</p>
+          <p class="mb-0 muted"><small>配套一句：<strong>监控负责叫醒你，可观测性负责解释给你听</strong> ——
+            所以两者并存，不是谁替代谁。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-8-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-8-2</div>
+        <h3 class="kp__title">分布式架构为什么让传统监控失效<span class="en">Why pre-enumeration breaks in distributed systems</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            传统监控成立有一个隐含前提：<strong>该看的东西数量有限，且可以被一个人预先列完</strong>。
+            单体架构满足这个前提，<span class="term">微服务 <span class="en">Microservices</span></span>与分布式架构不满足。
+          </p>
+          <p>
+            失效的机制是<strong>组合爆炸</strong>：故障不再发生在「某个组件里」，而发生在
+            <strong>「组件之间的某种组合状态下」</strong>。
+            组件数量线性增长，组合数量按平方甚至更高的速度增长，
+            很快超过任何团队能预先枚举的规模。
+          </p>
+          <p class="mb-0 muted"><small><strong>Microservices</strong> 与 <strong>Single Point of Failure (SPOF)</strong>
+            是 DOFD v3.4 官方术语表内的条目；但<strong>「组合爆炸导致传统监控失效」这一论证是本站的教学整理</strong>，
+            官方文件未以此形式表述，本知识点因此标「📝 教学整理」而非「⭐ 考纲核心」。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个知识点解决的是一个很实际的困惑：<strong>为什么拆成微服务之后，监控投入翻了三倍，
+            排障反而更久了。</strong>
+          </p>
+          <ul>
+            <li>设想一个零售平台，从单体拆成 18 个服务。原来的监控清单是 4 项：
+              CPU、内存、磁盘、HTTP 响应时间，出问题就登上唯一那台机器 grep 日志，
+              平均定位时间 25 分钟。</li>
+            <li>拆分后团队照搬老办法，为 18 个服务各配一套同样的 4 项监控，
+              仪表盘从 1 套变成 18 套、告警规则从 30 条涨到 540 条。
+              <strong>结果平均定位时间涨到 3 小时</strong>，因为一次故障会让 6 个服务同时告警，
+              而没有任何一条告警能说明<strong>谁是源头、谁是被拖累的</strong>。</li>
+            <li>真正拖垮它的是这类故障：<strong>库存服务响应慢 800 ms → 订单服务线程池排队 →
+              重试放大三倍流量 → 打垮下游优惠券服务 → 优惠券超时触发订单服务降级 → 用户看到下单失败。</strong>
+              这条链上<strong>每一个服务的每一项指标都在阈值内</strong>，
+              失效的是链条本身，而链条不在任何一张仪表盘上。</li>
+            <li>更根本的问题是数量：18 个服务之间最多有 153 条调用边，
+              每条边至少 5 种典型失败模式（超时、重试风暴、部分降级、序列化不兼容、依赖抖动），
+              就是 765 种边级故障模式 —— 再乘上版本、区域、租户三个维度。
+              <strong>没有任何团队能把它们预先做成仪表盘。</strong></li>
+          </ul>
+          <p>
+            所以失效的不是某个具体工具，而是<strong>「预先枚举」这个方法本身</strong>。
+            可观测性的思路是放弃枚举：<strong>把上下文完整地带在数据里，
+            允许在故障发生之后再决定要按什么维度切。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例与其中的服务数、时长、失败模式数量为本站构造的教学示例，
+            用于说明组合增长的机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 3-8-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 540" role="img" aria-label="单体架构下四个指标就够，微服务架构下故障模式组合爆炸的对比图">
+              <defs>
+                <marker id="ah-38-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 分隔线 -->
+              <path d="M470 30 L470 505" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 6" fill="none"/>
+
+              <!-- 左：单体 -->
+              <text x="230" y="34" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">单体架构</text>
+              <text x="230" y="56" class="f-1" font-size="13" font-weight="650" text-anchor="middle">预先枚举　可行</text>
+
+              <rect x="90" y="76" width="280" height="170" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="230" y="112" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">单体应用　Monolith</text>
+              <text x="230" y="138" class="s-muted" font-size="13" text-anchor="middle">1 个进程 · 1 份日志 · 1 个数据库</text>
+
+              <rect x="102" y="158" width="60" height="34" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+              <rect x="170" y="158" width="60" height="34" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+              <rect x="238" y="158" width="60" height="34" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+              <rect x="306" y="158" width="56" height="34" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+              <g text-anchor="middle" class="s-ink" font-size="13">
+                <text x="132" y="180">CPU</text>
+                <text x="200" y="180">内存</text>
+                <text x="268" y="180">磁盘</text>
+                <text x="334" y="180">延迟</text>
+              </g>
+              <text x="230" y="222" class="s-muted" font-size="13" text-anchor="middle">四项指标 + grep 一份日志</text>
+
+              <text x="230" y="290" class="f-1" font-size="15" font-weight="700" text-anchor="middle">故障模式约几十种</text>
+              <text x="230" y="316" class="s-muted" font-size="13" text-anchor="middle">一个人能在白板上列完</text>
+              <text x="230" y="342" class="s-muted" font-size="13" text-anchor="middle">列完就能做成仪表盘与告警</text>
+              <text x="230" y="382" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">排障动作：看图 → grep 日志</text>
+              <text x="230" y="408" class="s-muted" font-size="13" text-anchor="middle">监控足够，可观测性不是刚需</text>
+
+              <!-- 右：微服务 -->
+              <text x="716" y="34" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">微服务 / 分布式架构</text>
+              <text x="716" y="56" class="f-2" font-size="13" font-weight="650" text-anchor="middle">预先枚举　不可行</text>
+
+              <!-- 调用边（全连接，示意组合爆炸） -->
+              <g class="s-muted" stroke-width="1" fill="none">
+                <path d="M830 200 L798 122"/><path d="M830 200 L720 90"/><path d="M830 200 L642 122"/>
+                <path d="M830 200 L610 200"/><path d="M830 200 L642 278"/><path d="M830 200 L720 310"/>
+                <path d="M830 200 L798 278"/>
+                <path d="M798 122 L720 90"/><path d="M798 122 L642 122"/><path d="M798 122 L610 200"/>
+                <path d="M798 122 L642 278"/><path d="M798 122 L720 310"/><path d="M798 122 L798 278"/>
+                <path d="M720 90 L642 122"/><path d="M720 90 L610 200"/><path d="M720 90 L642 278"/>
+                <path d="M720 90 L720 310"/><path d="M720 90 L798 278"/>
+                <path d="M642 122 L610 200"/><path d="M642 122 L642 278"/><path d="M642 122 L720 310"/>
+                <path d="M642 122 L798 278"/>
+                <path d="M610 200 L642 278"/><path d="M610 200 L720 310"/><path d="M610 200 L798 278"/>
+                <path d="M642 278 L720 310"/><path d="M642 278 L798 278"/>
+                <path d="M720 310 L798 278"/>
+              </g>
+
+              <!-- 高亮一条故障链 -->
+              <path d="M642 122 L720 310" class="s-2" stroke-width="2.5" fill="none" marker-end="url(#ah-38-3)"/>
+              <path d="M720 310 L830 200" class="s-2" stroke-width="2.5" fill="none" marker-end="url(#ah-38-3)"/>
+
+              <!-- 节点 -->
+              <g class="s-1" stroke-width="2">
+                <circle cx="830" cy="200" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="798" cy="122" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="720" cy="90"  r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="642" cy="122" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="610" cy="200" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="642" cy="278" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="720" cy="310" r="21" fill="var(--dia-fill-2)"/>
+                <circle cx="798" cy="278" r="21" fill="var(--dia-fill-2)"/>
+              </g>
+              <g text-anchor="middle" class="s-ink" font-size="13" font-weight="650">
+                <text x="830" y="205">S1</text>
+                <text x="798" y="127">S2</text>
+                <text x="720" y="95">S3</text>
+                <text x="642" y="127">S4</text>
+                <text x="610" y="205">S5</text>
+                <text x="642" y="283">S6</text>
+                <text x="720" y="315">S7</text>
+                <text x="798" y="283">S8</text>
+              </g>
+              <rect x="654" y="182" width="124" height="50" rx="8" fill="var(--dia-fill)" class="s-stroke" stroke-width="1.2"/>
+              <text x="716" y="205" class="f-2" font-size="13" font-weight="650" text-anchor="middle">故障在边上</text>
+              <text x="716" y="224" class="s-muted" font-size="12" text-anchor="middle">不在节点里</text>
+
+              <text x="716" y="368" class="f-2" font-size="15" font-weight="700" text-anchor="middle">8 个服务 → 最多 28 条调用边</text>
+              <text x="716" y="394" class="s-muted" font-size="13" text-anchor="middle">每条边至少 5 种失败模式：</text>
+              <text x="716" y="416" class="s-muted" font-size="12" text-anchor="middle">超时 · 重试风暴 · 部分降级 · 序列化不兼容 · 依赖抖动</text>
+              <text x="716" y="442" class="f-2" font-size="14" font-weight="700" text-anchor="middle">= 140 种边级故障模式，再乘 版本 × 区域 × 租户</text>
+              <text x="716" y="470" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">枚举不完 → 建不出覆盖全部情况的仪表盘</text>
+              <text x="716" y="496" class="s-muted" font-size="13" text-anchor="middle">只能改成：带全上下文，事后再决定按什么维度切</text>
+
+              <text x="480" y="528" class="s-muted" font-size="12" text-anchor="middle">数量为本站构造的教学示例，用于说明增长机制</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-8-2　从「四个指标就够」到「枚举不完」。</strong>
+            要看懂的是两边<strong>故障发生的位置变了</strong>：左边故障在<strong>那个盒子里面</strong>，
+            所以盯住盒子的四项指标就够；右边故障发生在<strong>连线上</strong>，
+            而连线的数量随服务数按平方增长 —— 8 个服务 28 条边，18 个服务 153 条边。
+            结论不是「微服务需要更多监控」，而是<strong>「预先枚举」这个方法在右边不再成立</strong>，
+            必须换成事后提问。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">组合爆炸导致的「看不见」</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>单点故障 <span class="en">SPOF</span></strong></td>
+                  <td>问题是<strong>位置不明</strong>：故障已经发生，但不知道源头在哪条链上</td>
+                  <td>问题是<strong>位置太明确</strong>：就是那一个组件，它挂了全停。SPOF 是可以预先列出来的</td>
+                </tr>
+                <tr>
+                  <td><strong>约束 / 瓶颈 <span class="en">Constraint</span></strong></td>
+                  <td>关注<strong>看不见</strong>：系统是错的，但不知道错在哪</td>
+                  <td>关注<strong>慢</strong>：知道慢在哪一环，只是产能不够<br><small class="muted">见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>告警太多（告警疲劳）</strong></td>
+                  <td>是<strong>结构问题</strong>：一次故障 6 个服务同时告警，因为没人能区分源头与被拖累者</td>
+                  <td>常被误当成<strong>阈值调参问题</strong>。调阈值只能减少条数，不能让链条显形</td>
+                </tr>
+                <tr>
+                  <td><strong>韧性工程 <span class="en">Resilience engineering</span></strong></td>
+                  <td>解决<strong>能不能看见</strong></td>
+                  <td>解决<strong>看见之后能不能扛住</strong>：降级、隔离、限流<br><small class="muted">见 <a href="3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的那一点：<strong>把「微服务下看不见」当成监控没做够，于是继续加监控</strong>。
+            上表第三行就是这个错误的典型表现 —— 18 套仪表盘、540 条告警规则，
+            投入涨了但定位时间反而更长。<strong>数量不是解法，因为问题出在方法上，不在覆盖率上。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以对照表形式给出这些区分；
+            <em>Microservices</em>、<em>SPOF</em>、<em>Constraint</em>、<em>Resilience engineering</em>
+            四个词本身均为 DOFD v3.4 官方术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>拆分成微服务之前或之后，用下面几条判断监控方式该不该换：</p>
+          <ul>
+            <li><strong>数边，不数服务</strong>：真正的复杂度是调用边数，不是服务数。
+              服务数从 4 涨到 18，边数从最多 6 涨到最多 153。<strong>边数一旦过百，预先枚举就该放弃了。</strong></li>
+            <li><strong>看一次故障触发多少条告警</strong>：如果一次故障普遍触发 5 条以上告警且无法自动区分源头，
+              说明已经落进组合爆炸区间。此时该做的是<strong>补上下文（请求 ID、调用链、租户维度）</strong>，
+              而不是再加告警规则。</li>
+            <li><strong>把「跨服务的链」当成一等公民</strong>：给每个进入系统的请求分配一个贯穿全链的标识，
+              让「这一次失败的请求经过了哪些服务、各花了多久」变成可查询的事实，
+              而不是靠人对时间戳去拼日志。</li>
+            <li><strong>先建可观测性，再做混沌实验</strong>：
+              <a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a>专门用来暴露这种组合故障，
+              但它的价值完全取决于能不能观察到注入之后发生了什么。
+              <strong>观察不到就不要注入。</strong></li>
+            <li><strong>不要把架构复杂度当成必须承受的代价</strong>：如果一条业务链路必须跨 7 个服务才能完成，
+              这本身就是一个可以被简化的设计问题，不是只能靠工具兜底的既成事实。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上判断动作与「边数过百」这一经验阈值为本站教学整理，
+            官方文件未给出任何与架构规模相关的判据。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>因果题（本站判断偏 Bloom 2）</strong>：问为什么微服务架构需要可观测性。
+              正确方向是「<strong>故障模式无法被预先枚举</strong>」；
+              干扰项常写成「<strong>因为微服务的日志量更大</strong>」「<strong>因为服务器更多</strong>」
+              —— 这两个说的是<strong>规模</strong>，而真正的原因是<strong>组合方式</strong>。
+              <strong>排除技巧：凡是把原因归结为「更多 / 更大 / 更快」的选项，一律先划掉。</strong></li>
+            <li><strong>处方题</strong>：题干描述一次故障让多个服务同时告警、团队无法判断源头，问该怎么办。
+              答案方向是<strong>建立跨服务的可观测性（补上下文与调用链）</strong>；
+              干扰项是「为每个服务增加更多告警规则」「提高告警阈值以减少噪声」——
+              前者加剧问题，后者只是把眼睛闭上。</li>
+            <li><strong>概念归属题</strong>：<em>Microservices</em> 与 <em>Single Point of Failure (SPOF)</em>
+              是官方 66 条术语表内的词，可能与本节内容放在同一组选项里。
+              注意区分：<strong>SPOF 说的是「它挂了全停」，本节说的是「它没挂但看不见」。</strong></li>
+            <li><strong>不要越界</strong>：具体的指标体系（部署频率、变更前置时间、变更失败率、MTTR）
+              属于<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>的考点，
+              本节的考点是<strong>方法失效的原因</strong>，不是指标清单本身。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型、Bloom 层级与干扰项长相为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            本知识点的论证本身为教学整理，<strong>不属于官方样题答案键确认的 15 条事实</strong>。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">单体的故障在盒子里，微服务的故障在连线上 —— 连线数按平方涨，所以列不完。</p>
+          <p class="mb-0 muted"><small>推论一句：<strong>列不完就不能预先建图，只能事后提问</strong>。
+            这就是可观测性取代「加更多监控」的全部理由。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-8-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-8-3</div>
+        <h3 class="kp__title">三大支柱：metrics · logs · traces<span class="en">The Three Pillars of Observability</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            业界通常把可观测性的数据来源归成三类，合称三大支柱：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">支柱</th><th style="width:30%">它是什么</th><th>回答什么问题</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>指标 <span class="en">Metrics</span></strong></td>
+                  <td>按时间聚合的数值序列，体积小、可长期保留</td>
+                  <td><strong>「有没有出事」</strong>：错误率、延迟、吞吐现在处于什么水平</td>
+                </tr>
+                <tr>
+                  <td><strong>日志 <span class="en">Logs</span></strong></td>
+                  <td>带时间戳的离散事件记录，信息最全、体积最大</td>
+                  <td><strong>「当时到底发生了什么」</strong>：某一次具体请求的细节与异常</td>
+                </tr>
+                <tr>
+                  <td><strong>追踪 <span class="en">Traces</span></strong></td>
+                  <td>一次请求穿过所有服务的完整路径与各段耗时</td>
+                  <td><strong>「是在哪一环出的事」</strong>：跨服务定位源头，这一支柱在单体里几乎用不上</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>「三大支柱」是本站的教学补充，不是官方内容。</strong>
+            <em>Metrics</em>、<em>Logs</em>、<em>Traces</em> 三个词<strong>都不出现在
+            DOFD v3.4 官方考纲的 66 条术语表内</strong>，也不出现在 v3.4 课程大纲 M3 的子项列表里。
+            v3.6 的学习目标只列出 <em>Monitoring and Observability</em> 这一主题名，未拆解出三大支柱。
+            本站引入它，是因为它是理解「可观测性到底需要什么数据」的最短路径，
+            <strong>但考试不会要求按名称背诵这三个词</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            三大支柱要解决的痛点是：<strong>团队以为自己「数据很多」，实际上三类数据互相对不上，
+            排障时每一步都要靠人脑做关联。</strong>
+          </p>
+          <ul>
+            <li>设想一个团队：指标存在监控平台，日志存在日志平台，两边<strong>没有任何公共字段</strong>。
+              发现「10:14 错误率跳到 6%」之后，工程师要手工去日志平台按时间窗口捞，
+              捞出 40 万行，再靠肉眼找异常 —— 这一步平均花 40 分钟。</li>
+            <li>缺了追踪这一支柱的后果更严重：日志里能看到订单服务超时，
+              但<strong>看不出是它自己慢，还是它在等下游</strong>。
+              于是排障变成挨个服务问「是不是你」，一次故障要拉 5 个团队进会议室。</li>
+            <li>三类数据齐备且<strong>共享同一个请求标识</strong>之后，动作变成：
+              指标发现异常 → 点进对应时间段的追踪 → 看到耗时集中在某一段 →
+              直接跳到那一段的日志。<strong>三步定位，不需要人做关联。</strong></li>
+          </ul>
+          <p>
+            所以三大支柱真正的价值<strong>不在于「三种数据都要有」，而在于「三种数据要能互相跳转」</strong>。
+            采齐了却对不上，等于没有。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">对比</th><th style="width:26%">指标 Metrics</th><th style="width:27%">日志 Logs</th><th>追踪 Traces</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>回答的问题</strong></td>
+                  <td>有没有出事</td>
+                  <td>当时发生了什么</td>
+                  <td>是在哪一环出的事</td>
+                </tr>
+                <tr>
+                  <td><strong>数据粒度</strong></td>
+                  <td>聚合后的数值</td>
+                  <td>单条事件</td>
+                  <td>单次请求的完整路径</td>
+                </tr>
+                <tr>
+                  <td><strong>成本</strong></td>
+                  <td>最低，可存数月</td>
+                  <td>最高，通常只存数天</td>
+                  <td>中等，一般按比例采样</td>
+                </tr>
+                <tr>
+                  <td><strong>最擅长</strong></td>
+                  <td>告警与趋势</td>
+                  <td>还原单次故障细节</td>
+                  <td><strong>跨服务定位源头</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>最不擅长</strong></td>
+                  <td>回答没预设过的维度问题</td>
+                  <td>看趋势（太贵、太散）</td>
+                  <td>看整体健康水位</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">另一组易混</th><th style="width:39%">三大支柱</th><th>常见误解</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>与可观测性的关系</strong></td>
+                  <td>是<strong>数据来源的分类</strong>，是原料</td>
+                  <td>误以为「三种都采了 = 有可观测性」。三类数据若不共享请求标识与上下文维度，
+                    依然回答不了没预设过的问题</td>
+                </tr>
+                <tr>
+                  <td><strong>与监控的关系</strong></td>
+                  <td>指标这一支柱<strong>本来就是监控的数据基础</strong>，三大支柱不排斥监控</td>
+                  <td>误以为「上了三大支柱就可以撤掉告警」。指标与告警必须保留，
+                    否则没有任何东西会主动叫醒值班的人</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="muted"><small>最容易混的那一点：<strong>三大支柱是原料，可观测性是结果</strong>。
+            「三种数据都采了」不等于「问得出答案」——
+            判据仍然是 kp-3-8-1 里的那条：<strong>能不能回答一个今天早上才想到的问题</strong>。</small></p>
+          <p class="mb-0 muted"><small>以上两张对照表均为本站教学整理，官方未以此形式给出；
+            三大支柱本身也是行业惯用分类，不是 DOFD 考纲内容。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>先解决「跳转」，再解决「覆盖」</strong>：三类数据共享同一个请求标识与同一套业务维度
+              （租户、版本、区域），比把某一类采得更全更有价值。</li>
+            <li><strong>按成本分层保留</strong>：指标长留、追踪采样、日志短留。
+              三者成本差一个数量级，一律长留只会让可观测性变成预算问题然后被砍掉。</li>
+            <li><strong>拆微服务时优先补追踪</strong>：追踪是三者里唯一在单体时代<strong>可以不要、
+              在分布式时代不可替代</strong>的一类。它直接对应 kp-3-8-2 里「故障发生在连线上」这件事。</li>
+            <li><strong>把上下文当成必填项</strong>：埋点时带上租户、版本、区域、客户端类型。
+              kp-3-8-1 那个支付网关案例里花掉的 9 天，代价全在这一步没做。</li>
+            <li><strong>它直接服务第二步 · 反馈</strong>：三类数据构成了从生产回流到开发的信息通道，
+              让「变更上线后到底怎么样」有客观答案，而不是等客户投诉
+              （见 <a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步 · 反馈</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条落地建议与「按成本分层保留」的做法为本站教学整理，
+            官方文件未涉及可观测性数据的采集与保留策略。常见技术栈 OpenTelemetry、Prometheus
+            及各类日志与追踪后端 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            均不在 DOFD 考纲内，工具链见
+            <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>本站判断：不会按名称直接考</strong>。<em>Metrics</em>、<em>Logs</em>、<em>Traces</em>
+              都不在 DOFD v3.4 的 66 条术语表内，v3.6 学习目标也未拆出三大支柱，
+              因此「以下哪三项是可观测性的三大支柱」这种问法出现的可能性很低。</li>
+            <li><strong>可能以理解形式间接出现</strong>：题干描述「团队采集了大量日志和指标，
+              但仍然无法定位跨服务故障」，问缺什么。答案方向是
+              <strong>跨服务的关联能力（追踪 / 统一上下文）</strong>，
+              干扰项是「增加日志采集量」「延长日志保留时间」——
+              <strong>排除技巧：凡是把答案落在「更多同类数据」上的选项，都不解决关联问题。</strong></li>
+            <li><strong>陷阱：把原料当成结果</strong>。干扰项会写成
+              「采集 metrics、logs、traces 三类数据即实现了可观测性」。
+              这是错的 —— 三类数据缺少共享上下文时，依然答不出新问题。</li>
+            <li><strong>不要把它和指标体系混起来</strong>：考纲把 <em>DevOps metrics</em>
+              涵盖为 <strong>Speed、Quality、Stability、Culture</strong> 四个维度
+              （v3.4 课程大纲 M7 子项，同一模块还列出 Change lead/cycle time 与 Value Driven Metrics）；
+              常见的部署频率、变更前置时间、变更失败率、MTTR 是其中速度与稳定性维度下的具体条目，
+              均为 66 条术语表内的独立术语，属于<a href="../ch07-metrics/index.html">第 7 章</a>；
+              本节的 metrics 指的是<strong>技术遥测数据</strong>。<strong>两者同名不同物，
+              这是本节最值得注意的一处同名冲突。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>「不会按名称直接考」为本站基于 66 条术语表、v3.4 课程大纲子项
+            与 v3.6 学习目标所作的推断，非官方声明；本知识点内容<strong>不属于官方样题答案键确认的 15 条事实</strong>。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">指标说「出事了」，追踪说「在哪一环」，日志说「当时发生了什么」。</p>
+          <p class="mb-0 muted"><small>再加一句防陷阱的：<strong>三者是原料，不是结果</strong> ——
+            采齐了但对不上，可观测性依然为零。这三个词是教学补充，不需要背英文名。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>核心分界：<strong>监控回答预先想到的问题（已知的未知），可观测性回答没预料到的情况（未知的未知）</strong></li>
+        <li>两者不是替代关系：<strong>监控负责叫醒，可观测性负责解释</strong>；告警必须保留</li>
+        <li>微服务让监控失效的原因是<strong>故障模式组合爆炸、无法预先枚举</strong>，不是「日志更多、机器更多」</li>
+        <li>故障位置变了：<strong>单体在盒子里，分布式在连线上</strong>；边数随服务数按平方增长</li>
+        <li><strong>可观测性是混沌工程的前提</strong>（<a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6</a>），
+          观察不到就不要注入；它也是<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈</a>的技术底座
+          <br><small class="muted">这两条归属为本站教学整理，官方文件未就可观测性作出三步工作法归属或混沌工程前置条件的判定。</small></li>
+        <li><strong>Observability 不在官方 66 条术语表内</strong>，是 <strong>v3.6 新增</strong>的学习目标；
+          <strong>metrics / logs / traces 三大支柱是教学补充</strong>，不必背名称</li>
+        <li>同名陷阱：本节的 metrics 是<strong>技术遥测</strong>；考纲术语 <em>DevOps metrics</em>
+          按 v3.4 课程大纲 M7 分为 <strong>Speed、Quality、Stability、Culture</strong> 四个维度，
+          部署频率、变更前置时间、变更失败率、MTTR 是其下的具体条目，属
+          <a href="../ch07-metrics/index.html">第 7 章</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <p><strong>官方来源</strong>：<em>Monitoring and Observability</em> 是 <strong>v3.6 新增</strong>的学习目标，
+      出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>；
+      <strong>v3.6 未公开重新发布权重表</strong>，本节题量占比无法从官方文件推得。
+      <strong>Observability 及 metrics / logs / traces 均不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，
+      也不在 v3.4 课程大纲 M3 的子项列表内，因此本节页头与各知识点均未使用「⭐ 考纲核心」。
+      本节引用的官方术语表条目为 <em>Microservices</em>、<em>Single Point of Failure (SPOF)</em>、
+      <em>Constraint</em>、<em>Resilience engineering</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
+      <em>DevOps metrics</em>、<em>Shift left</em>、<em>Continuous deployment</em>。</p>
+
+      <p><strong>由 DOFD v3.4 官方样题答案键确认</strong>的三条结论：
+      「Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中」、
+      「对生产变更进行同行评审属于第二步」、
+      「自动部署每个通过单元、集成、用户验收与非功能测试的版本属于持续部署」。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>，本节不含任何官方样题原文。</p>
+
+      <p><strong>教学整理与教学推断部分</strong>：图 3-8-1 的四象限归类、「预设问题 / 事后提问」这组分界表述、
+      图 3-8-2 的组合爆炸论证与其中全部数字、三大支柱的引入与两张对照表、
+      「可观测性是混沌工程的前提」「可观测性服务于第二步 · 反馈」这两条归属、
+      「新问题测试」判据，以及各面中的干扰项分析与排除技巧，官方均未以此形式给出，已分别就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      OpenTelemetry、Prometheus 等具体技术栈不在考纲内，本节仅点名，展开见
+      <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>；
+      绩效指标体系与 AIOps 见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</p>
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

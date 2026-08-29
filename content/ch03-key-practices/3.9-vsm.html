@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.9 价值流管理 · DevOps Foundation 学习站</title>
+<meta name="description" content="价值流管理（Value Stream Management）是对端到端价值流进行持续度量、可视化与优化的管理实践。本节讲清它与价值流映射（Value stream mapping）的根本区别、它采集哪三类数据，以及它与第一步 · 流动、DORA 指标的关系。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.9-vsm"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.9 价值流管理</h1>
+      <div class="page-head__en">Value Stream Management</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        本节最重要的一件事是把两个名字分开：<strong>价值流映射 Value stream mapping</strong> 是一次性的分析活动，
+        <strong>价值流管理 Value Stream Management</strong> 是持续的管理实践。
+        中文只差一个字，英文缩写都可能被写成 <strong>VSM</strong>，
+        但一个的产出是<strong>一张图</strong>，另一个的产出是<strong>一条不断更新的数据流</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>价值流管理到底管什么，它凭什么算一种「管理实践」而不是一次分析</li>
+        <li>它和价值流映射的分界线在哪 —— 这是本节唯一必须记牢的辨析</li>
+        <li>它采集哪三类数据，以及这些数据怎么接回第一步 · 流动与 DORA 四指标</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 430" role="img" aria-label="价值流映射作为一次性快照与价值流管理作为持续循环的对比图">
+          <defs>
+            <marker id="ah-39-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-39-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 左半：价值流映射 -->
+          <text x="235" y="32" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">价值流映射</text>
+          <text x="235" y="54" class="s-muted" font-size="13" text-anchor="middle">Value stream mapping</text>
+          <text x="235" y="78" class="f-2" font-size="13" font-weight="650" text-anchor="middle">一次性的分析活动 · 产出是一张图</text>
+
+          <rect x="62" y="92" width="346" height="130" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="235" y="116" class="s-muted" font-size="12" text-anchor="middle">当前状态图（绘于 T0）</text>
+
+          <rect x="78"  y="132" width="68" height="44" rx="7" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <rect x="164" y="132" width="68" height="44" rx="7" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <rect x="250" y="132" width="68" height="44" rx="7" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <rect x="336" y="132" width="68" height="44" rx="7" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <g class="s-ink" font-size="12" text-anchor="middle">
+            <text x="112" y="159">需求</text>
+            <text x="198" y="159">开发</text>
+            <text x="284" y="159">测试</text>
+            <text x="370" y="159">发布</text>
+          </g>
+          <g class="s-stroke" stroke-width="1.5" fill="none">
+            <line x1="148" y1="154" x2="160" y2="154"/>
+            <line x1="234" y1="154" x2="246" y2="154"/>
+            <line x1="320" y1="154" x2="332" y2="154"/>
+          </g>
+          <text x="235" y="200" class="s-muted" font-size="12" text-anchor="middle">量出各段处理时间与等待时间</text>
+          <text x="235" y="244" class="s-muted" font-size="12" text-anchor="middle">工作坊结束 → 图贴上墙 → 没有人再更新它</text>
+
+          <line x1="62" y1="292" x2="408" y2="292" class="s-stroke" stroke-width="2"/>
+          <circle cx="80"  cy="292" r="5" class="f-1"/>
+          <circle cx="235" cy="292" r="5" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <circle cx="390" cy="292" r="5" class="f-2"/>
+          <text x="80"  y="276" class="f-1" font-size="12" font-weight="650" text-anchor="middle">图完成</text>
+          <text x="390" y="276" class="f-2" font-size="12" font-weight="650" text-anchor="middle">已过期</text>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="80"  y="314">T0</text>
+            <text x="235" y="314">+1 月</text>
+            <text x="390" y="314">+3 月</text>
+          </g>
+          <text x="235" y="348" class="f-2" font-size="13" font-weight="650" text-anchor="middle">现场流程已经变了，墙上的图还停在 T0</text>
+          <text x="235" y="374" class="s-muted" font-size="12" text-anchor="middle">没有连续数据，改进有没有效无法验证</text>
+
+          <!-- 分隔 -->
+          <line x1="470" y1="20" x2="470" y2="410" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+          <!-- 右半：价值流管理 -->
+          <text x="715" y="32" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">价值流管理</text>
+          <text x="715" y="54" class="s-muted" font-size="13" text-anchor="middle">Value Stream Management</text>
+          <text x="715" y="78" class="f-1" font-size="13" font-weight="650" text-anchor="middle">持续的管理实践 · 产出是不断更新的数据</text>
+
+          <rect x="640" y="108" width="150" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="715" y="132" class="s-ink" font-size="14" font-weight="700" text-anchor="middle">① 度量</text>
+          <text x="715" y="152" class="s-muted" font-size="12" text-anchor="middle">自动采集时间戳</text>
+
+          <rect x="800" y="222" width="150" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="875" y="246" class="s-ink" font-size="14" font-weight="700" text-anchor="middle">② 可视化</text>
+          <text x="875" y="266" class="s-muted" font-size="12" text-anchor="middle">端到端一张视图</text>
+
+          <rect x="640" y="336" width="150" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="715" y="360" class="s-ink" font-size="14" font-weight="700" text-anchor="middle">③ 优化</text>
+          <text x="715" y="380" class="s-muted" font-size="12" text-anchor="middle">定位约束并改进</text>
+
+          <rect x="480" y="222" width="150" height="56" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="555" y="246" class="s-ink" font-size="14" font-weight="700" text-anchor="middle">④ 验证（回到 ①）</text>
+          <text x="555" y="266" class="s-muted" font-size="12" text-anchor="middle">回到同一组数字</text>
+
+          <path d="M793 152 Q 850 165 866 216" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-39-1)"/>
+          <path d="M866 284 Q 850 335 793 348" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-39-1)"/>
+          <path d="M637 348 Q 580 335 564 284" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-39-1)"/>
+          <path d="M564 216 Q 580 165 637 152" class="s-3" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-end="url(#ah-39-3)"/>
+
+          <text x="715" y="244" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">持续循环</text>
+          <text x="715" y="266" class="s-muted" font-size="12" text-anchor="middle">有节奏地重复</text>
+
+          <text x="715" y="412" class="s-muted" font-size="12" text-anchor="middle">数据来自需求系统 · 代码仓库 · 流水线 · 工单系统 · 本站教学模型</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-9-1　映射是拍照片，管理是装监控。</strong>
+        左边的形状是一条<strong>时间轴上的一个点</strong>：画完那一刻最准，此后每过一天都更失真。
+        右边的形状是一个<strong>不停转的环</strong>：数据由工具链自动流入，所以改进做完之后还能回到同一组数字上验证。
+        要看懂的是形状差异 —— 点 vs 环，而不是两边写了哪些字。
+        两者不是替代关系：<strong>映射通常是这个环启动时的第一圈</strong>。<br>
+        <small class="muted">本图右半的「度量 → 可视化 → 优化 → 验证」四节点持续循环<strong>为本站教学整理</strong>，
+        官方学习目标只给出「价值流管理」这一主题名，未规定它由哪些环节构成；
+        「映射是这个环的第一圈」亦为本站表述，官方未以此措辞表述两者关系。
+        图中第四个节点「验证」画的是「优化后回到同一组数字」这一步，动作本身仍是三个。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-9-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-9-1</div>
+        <h3 class="kp__title">价值流管理是什么<span class="en">Value Stream Management / VSM</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">价值流管理 <span class="en">Value Stream Management / VSM</span></span>
+            是对<strong>端到端价值流</strong>进行<strong>持续的度量、可视化与优化</strong>的管理实践 ——
+            从需求提出到价值交付给客户的这一整条链路，被当作一个持续被观测和调整的对象来管理。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">三个动作</th><th>做什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>度量</strong></td><td>把各阶段的<strong>处理时间</strong>与<strong>等待时间</strong>持续采集下来，数据来自工具链本身，不靠开会回忆</td></tr>
+                <tr><td><strong>可视化</strong></td><td>把跨团队、跨系统的流动<strong>摊在同一张端到端视图上</strong>，让「工作卡在哪」成为公开事实</td></tr>
+                <tr><td><strong>优化</strong></td><td>依据这些数据选择改进点，改完之后<strong>回到同一组数字上验证</strong>是否真的变快了</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>图 3-9-1 把「优化后回到数据验证」单独画成第四个框，是为了让这个环闭合，
+            <strong>动作本身仍是三个</strong>：度量 → 可视化 → 优化。</small></p>
+          <p class="mb-0">
+            关键词是<strong>持续</strong>。做一次叫分析，反复做并据此调整才叫管理。
+          </p>
+          <div class="src-note">
+            <em>Value Stream Management</em> 出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，
+            属于 <strong>v3.6 新增</strong>内容；它<strong>不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>
+            （表内收录的是 <em>Value stream mapping</em>），因此本站不给它标「考纲核心」。
+            上面「度量 / 可视化 / 优化」这三个动作的拆分方式为本站教学整理，官方未以此形式列出。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点非常具体：<strong>价值流映射做完了，图贴在墙上，三个月后就没人信了。</strong>
+          </p>
+          <ul>
+            <li>某保险公司 IT 部门开了两天工作坊，画出当前状态图：一个需求从提出到上线端到端 34 天，
+              其中「等 UAT 环境」占 9 天。结论很清楚，团队投入两个月做环境自助化，把这 9 天的等待压掉，<strong>前置时间降到 25 天</strong>。</li>
+            <li>然后没有人再量了。<strong>半年后同一条流程重新测，回到 31 天</strong> ——
+              约束已经转移到「变更审批每周只开一次会」，但没有任何数据把这件事显示出来。
+              管理层看到的仍是那张 34 天的旧图，讨论的仍是环境问题。</li>
+            <li>更常见的失败：改进项做完，没人能说清它到底带来多少改善，
+              于是下一轮预算评审时改进被砍掉 —— <strong>无法验证的改进，在组织里活不过一个财年。</strong></li>
+          </ul>
+          <p>
+            机制是这样的：<strong>一次性快照只有一个数据点，一个数据点画不出趋势，也证明不了因果。</strong>
+            价值流管理把「量一次」换成「一直量」，改进才有可比的基线，约束转移才会被及时看见。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">价值流管理 VSM</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong></td>
+                  <td><strong>持续的管理实践</strong>：反复度量、持续可视化、据数据优化并验证</td>
+                  <td><strong>一次性的分析活动</strong>：在某个时间点画出当前状态与未来状态图<br><small class="muted">操作步骤见<a href="../ch04-frameworks/index.html">第 4 章 价值流映射（4.6）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>看板 <span class="en">Kanban</span></strong></td>
+                  <td>范围是<strong>端到端、跨团队、跨系统</strong>；关心一个需求走完全程的总时间构成</td>
+                  <td>范围通常是<strong>单个团队的工作流</strong>；可视化在制品并限制它<br><small class="muted">看板方法见 <a href="3.7-kanban.html">3.7 看板方法</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>VSM 平台 <span class="en">VSM Platforms</span></strong></td>
+                  <td>是<strong>实践</strong>：即使用电子表格手工汇总，只要持续做，也是价值流管理</td>
+                  <td>是<strong>承载这个实践的软件</strong>：打通各工具的数据、自动出端到端视图<br><small class="muted">展开见<a href="../ch06-automation/index.html">第 6 章 VSM 平台（6.6）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 工具链 <span class="en">DevOps toolchain</span></strong></td>
+                  <td>是<strong>看工具链的那双眼睛</strong>：度量工作在工具链中流动的时间</td>
+                  <td>是<strong>被看的对象</strong>：把工作从需求送到生产的那一串工具本身</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>价值流管理不是一个工具类别</strong>。
+            把 VSM 直接等同于「买一套 VSM 平台」，是最常见的误解 —— 平台只是让持续度量变得可行，
+            不做管理动作的平台只会产出一块没人看的大屏。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以此形式给出这些区分。
+            表中 <em>Value stream mapping</em>、<em>Kanban</em>、<em>DevOps toolchain</em> 为 DOFD v3.4 官方术语表条目，
+            <em>Value Stream Management</em> 与 <em>VSM Platforms</em> 为 v3.6 新增学习目标。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把「持续」这件事落到四个具体动作：</p>
+          <ul>
+            <li><strong>先用映射建立基线</strong>：第一圈仍然靠人工。开一次工作坊，把端到端的阶段、处理时间、等待时间量出来，
+              这是后面所有数字的对照起点。</li>
+            <li><strong>把时间戳的采集自动化</strong>：需求创建、开发开始、代码合并、生产可用 —— 这四个时刻分别落在
+              需求管理系统、代码仓库、流水线和发布记录里，都是可以自动抓的。<strong>凡是需要人工填报的数字，三个月内必然失真。</strong></li>
+            <li><strong>评审端到端指标，而不是各团队的局部指标</strong>：固定节奏（如每两周）看同一张端到端视图。
+              各团队的速率、覆盖率放在自己的会上看，价值流评审只看那条从头到尾的时间线。</li>
+            <li><strong>每个改进项都要写验收数字</strong>：「环境自助化」的验收标准不是「上线了自助平台」，
+              而是「构建/测试阶段的等待时间从 6 天降到 1 天」。做不到就承认没做到。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四个动作与采集点为本站教学整理，官方学习目标只给出价值流管理这一主题，未规定具体实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：直接问价值流管理是什么。
+              正确方向必须包含<strong>端到端</strong>与<strong>持续</strong>两个要素，
+              「对端到端价值流进行持续的度量、可视化与优化」这一句就是答案骨架。</li>
+            <li><strong>干扰项长什么样</strong>：<br>
+              ① 写成「<strong>绘制当前状态图与未来状态图的活动</strong>」—— 那是价值流映射；<br>
+              ② 写成「<strong>一类打通工具链数据的平台</strong>」—— 那是 VSM 平台，是工具不是实践；<br>
+              ③ 写成「<strong>一种度量交付速度的指标</strong>」—— VSM 是实践，不是指标；<br>
+              ④ 写成「<strong>提升单个开发团队产能的方法</strong>」—— 方向错了，VSM 的视角必然跨团队。</li>
+            <li><strong>排除技巧</strong>：看选项里有没有<strong>「一次」「一张图」「一个工具」</strong>这类收敛到单点的词。
+              价值流管理的正确描述一定是<strong>持续的、端到端的、跨职能的</strong>。</li>
+            <li><strong>版本相关的提醒</strong>：本主题是 <strong>v3.6 新增</strong>学习目标，
+              <strong>v3.6 未公开重新发布权重表</strong>，因此无法说它在第 3 模块里占几题。
+              按 v3.4 <em>Examination Requirements</em>（2022-05），Key DevOps Practices 整个模块最多 7 题。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">映射是拍一张照片，管理是装一台一直开着的监控。</p>
+          <p class="mb-0 muted"><small>三个动词按顺序记：<strong>度量 → 可视化 → 优化</strong>，然后回到度量验证 —— 缺了最后那一步，就只是做了一次分析。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-9-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-9-2</div>
+        <h3 class="kp__title">价值流映射 vs 价值流管理<span class="en">Value stream mapping vs Value Stream Management</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>这是两个<strong>不同层级</strong>的东西，不是同一件事的两种叫法：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">名称</th><th style="width:22%">类别</th><th>一句话本质</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">价值流映射<br><span class="en">Value stream mapping</span></span></td>
+                  <td><strong>分析活动</strong></td>
+                  <td>在某一时点画出价值流的每一步，区分增值与非增值活动，把等待暴露出来</td>
+                </tr>
+                <tr>
+                  <td><span class="term">价值流管理<br><span class="en">Value Stream Management</span></span></td>
+                  <td><strong>管理实践</strong></td>
+                  <td>持续度量、可视化并优化这条价值流；映射通常是它的<strong>第一圈</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            关系不是并列，是<strong>包含</strong>：管理这个环里有映射这一步，反过来不成立。
+          </p>
+          <div class="src-note">
+            <em>Value stream mapping</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>（66 条），
+            因此本知识点标「⭐ 考纲核心」；
+            <em>Value Stream Management</em> 出自 <strong>PeopleCert 现行产品页学习目标</strong>，是 v3.6 新增。
+            <strong>「映射是管理的第一圈」这一包含关系为本站教学整理</strong>，官方未以此措辞表述两者关系。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一对需要单独拎出来讲，是因为它们在中文和英文里<strong>同时</strong>撞车：
+            中文「映射」和「管理」只差一个字，英文两边的缩写都可能被写成 <strong>VSM</strong>。
+          </p>
+          <ul>
+            <li>设想一次转型启动会：架构组说「VSM 我们上季度已经做完了」，
+              指的是开过一次工作坊、画过一张当前状态图；
+              数字化团队说「VSM 我们正在建」，指的是接通工具链数据的持续度量能力。
+              <strong>两边用同一个词讨论了两周，才发现说的根本不是一件事</strong> ——
+              一边认为工作已经结束，一边认为工作刚开始。</li>
+            <li>更实际的代价：因为「已经做完了」，持续度量的预算被砍掉；
+              半年后端到端时间反弹，没有任何数据可以解释原因。</li>
+          </ul>
+          <p>
+            所以这个辨析不只是考试问题。<strong>分不清这两个词，直接后果是把持续的事当成一次性的事验收掉。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本场景为本站构造的教学示例，用于说明缩写撞车带来的实际后果。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">价值流映射 Value stream mapping</th><th>价值流管理 Value Stream Management</th></tr></thead>
+              <tbody>
+                <tr><td><strong>性质</strong></td><td><strong>活动</strong>：做一次，有明确的开始和结束</td><td><strong>实践</strong>：常设机制，没有结束时间</td></tr>
+                <tr><td><strong>时间跨度</strong></td><td>一次工作坊，几小时到几天</td><td>持续运行，按固定节奏复看</td></tr>
+                <tr><td><strong>产出</strong></td><td>当前状态图与未来状态图，一份改进清单</td><td>持续更新的端到端指标、趋势，以及改进是否兑现的记录</td></tr>
+                <tr><td><strong>数据来源</strong></td><td>访谈、现场观察、人工估算</td><td>工具链自动采集的时间戳</td></tr>
+                <tr><td><strong>典型失效方式</strong></td><td><strong>图过期</strong>：现场变了，图没变</td><td><strong>大屏秀</strong>：数据一直在刷，但没有人依据它做决定</td></tr>
+                <tr><td><strong>考纲地位</strong></td><td>在 v3.4 官方 66 条术语表内</td><td>v3.6 新增学习目标，不在 66 条术语表内</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>不是「新版取代旧版」，而是「一步」和「整个环」的关系</strong>。
+            价值流映射没有被价值流管理淘汰，它仍是官方术语，仍是建立基线的标准手段；
+            价值流管理增加的是「一直做下去」这个维度。
+            考题若把两者写成互斥的两个选项，答案取决于题干强调的是<strong>一次性画图</strong>还是<strong>持续运行</strong>。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>当有人说「我们在做 VSM」时，用三个问题判断他说的是哪一个：</p>
+          <ul>
+            <li><strong>有没有固定节奏重复？</strong> 只做过一次、没有下一次安排 → 是映射。</li>
+            <li><strong>数据是人量的还是系统采的？</strong> 靠访谈估算 → 是映射；从需求系统与流水线自动抓 → 是管理。</li>
+            <li><strong>改进做完之后，有没有回到同一组数字上验证？</strong> 没有闭环 → 只是映射，哪怕买了平台。</li>
+          </ul>
+          <p>
+            落地顺序建议：<strong>先做一次映射拿到基线，再把其中最能自动采集的几个时间戳接起来</strong>，
+            不要一上来就追求覆盖全流程的完整数据。
+          </p>
+          <p class="mb-0 muted"><small>价值流映射的具体绘制步骤（当前状态图 / 未来状态图 / 增值比计算）不在本节展开，
+            见<a href="../ch04-frameworks/index.html">第 4 章 价值流映射（4.6）</a>。以上三个判断问题为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先记牢考纲地位的差别</strong>：<em>Value stream mapping</em> 是 v3.4 官方 66 条术语表条目，
+              是<strong>必须能复述定义</strong>的；<em>Value Stream Management</em> 是 v3.6 新增学习目标。
+              两者都可能出现，但映射的定义题优先级更高。</li>
+            <li><strong>映射的定义题</strong>：正确方向是「<strong>识别价值流的各个步骤，区分增值与非增值活动，把等待和浪费暴露出来</strong>」。
+              干扰项会把「<strong>持续度量与优化</strong>」塞进映射的定义里 —— 那是管理的描述，见到「持续」就要警惕。</li>
+            <li><strong>管理的定义题</strong>：反向操作。干扰项会写成「<strong>绘制一张展示当前流程的图</strong>」，
+              把管理压缩成一次性画图。</li>
+            <li><strong>排除技巧（本站总结）</strong>：抓题干里的时间词。<br>
+              出现<strong>一次性 / 工作坊 / 绘制 / 当前状态图 / 未来状态图</strong> → 答案指向<strong>映射</strong>；<br>
+              出现<strong>持续 / 端到端可视化 / 不断更新 / 跨工具的数据</strong> → 答案指向<strong>管理</strong>。</li>
+            <li><strong>另一类干扰</strong>：把价值流映射与<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>混在一起。
+              映射是<strong>识别手段</strong>（把时间量出来），约束理论是<strong>行动方法</strong>（约束在哪、按什么顺序处理）。
+              二者都服务于<strong>第一步 · 流动</strong> —— 其中「约束理论支持第一步」这一归属
+              <strong>由 DOFD v3.4 官方样题答案键确认</strong>，不是本站推断。</li>
+          </ul>
+          <p class="mb-0 muted"><small><strong>本面中「两者都可能出现、映射的定义题优先级更高」以及两个词的定义措辞，均为本站教学推断</strong>；
+            官方仅公布术语表条目名与 Bloom 1–2 的整体范围，未公布定义原文，也未公布任何出题优先级。
+            本节暂不提供练习题；本章练习中出现的题目均为<strong>仿真题，非官方真题</strong>。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">映射画的是一张图，管理管的是一条流 —— 图会过期，流一直在跑。</p>
+          <p class="mb-0 muted"><small>另一条辅助线索：<strong>只有「映射」进了 v3.4 的 66 条术语表</strong>，
+            「管理」是 v3.6 才加进来的。记住哪个是老词，就不容易在归属题上选反。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-9-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-9-3</div>
+        <h3 class="kp__title">VSM 度量什么 · 与流动和 DORA 指标的关系<span class="en">Flow data: processing time, wait time, flow efficiency</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>价值流管理持续采集的是<strong>时间的构成</strong>，核心是三类数字：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">数据</th><th style="width:26%">英文</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>处理时间</strong></td><td><span class="en">Processing time</span></td><td>真正有人在动手的时间</td></tr>
+                <tr><td><strong>等待时间</strong></td><td><span class="en">Wait time</span></td><td>工作躺在队列里、没人碰它的时间</td></tr>
+                <tr><td><strong>流动效率</strong></td><td><span class="en">Flow efficiency</span></td><td><strong>处理时间 ÷ 端到端总时间</strong>，多数组织低于 25%，常见落在 5%–15%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            三者之上是端到端的<span class="term">变更前置时间 <span class="en">Change lead time</span></span> ——
+            它是这些分段时间的总和，也是 DORA 四指标之一。<strong>VSM 的特点是把这个总和拆开看。</strong>
+          </p>
+          <div class="src-note">
+            <em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
+            <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+            均逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>。
+            <strong>「处理时间 / 等待时间 / 流动效率」这三个词不在 66 条术语表内</strong>，
+            本站作为理解价值流管理所必需的教学补充引入；「多数组织低于 25%、常见落在 5%–15%」是行业常见观察，非官方数据。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点是：<strong>每个团队的指标都在变好，端到端时间纹丝不动，而且没人能解释为什么。</strong>
+          </p>
+          <ul>
+            <li>设想一个电商团队：开发侧的迭代速率一年内提升 40%，自动化测试覆盖率从 45% 提到 85%，
+              缺陷密度下降三分之一。所有汇报都是绿色的。
+              <strong>但从需求提出到功能可用，仍然是 24 天，一天没少。</strong></li>
+            <li>把这 24 天拆开才看得见真相：真正在动手的只有 6 天，剩下 <strong>18 天全在排队</strong> ——
+              等环境、等审批、等另一个团队的接口。开发提速 40%，动的是那 6 天里的 3 天，
+              端到端最多省一天，还会被更长的队列吃回去。</li>
+            <li>机制在于：<strong>局部指标是可加的，端到端时间不是。</strong>
+              每个团队都能在自己的指标上进步，而所有进步之和可以等于零 ——
+              只要改进没有落在等待时间上。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 420" role="img" aria-label="端到端价值流上处理时间与等待时间的分布以及流动效率的计算">
+              <text x="480" y="34" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">端到端价值流的时间构成</text>
+              <text x="480" y="58" class="s-muted" font-size="13" text-anchor="middle">价值流管理持续采集的三类数据：处理时间 · 等待时间 · 流动效率</text>
+
+              <g class="s-ink" font-size="14" font-weight="650" text-anchor="middle">
+                <text x="130" y="106">需求 / 规划</text>
+                <text x="305" y="106">开发</text>
+                <text x="480" y="106">构建 / 测试</text>
+                <text x="655" y="106">评审 / 审批</text>
+                <text x="830" y="106">部署 / 发布</text>
+              </g>
+
+              <rect x="50"  y="118" width="160" height="68" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="225" y="118" width="160" height="68" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="400" y="118" width="160" height="68" rx="9" class="s-2" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+              <rect x="575" y="118" width="160" height="68" rx="9" class="s-2" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+              <rect x="750" y="118" width="160" height="68" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+
+              <g class="f-1" font-size="13" font-weight="650" text-anchor="middle">
+                <text x="130" y="146">处理 1 天</text>
+                <text x="305" y="146">处理 3 天</text>
+                <text x="480" y="146">处理 1 天</text>
+                <text x="655" y="146">处理 0.5 天</text>
+                <text x="830" y="146">处理 0.5 天</text>
+              </g>
+              <g class="f-2" font-size="13" font-weight="650" text-anchor="middle">
+                <text x="130" y="170">等待 4 天</text>
+                <text x="305" y="170">等待 2 天</text>
+                <text x="480" y="170">等待 6 天</text>
+                <text x="655" y="170">等待 5 天</text>
+                <text x="830" y="170">等待 1 天</text>
+              </g>
+
+              <rect x="50" y="196" width="18" height="14" rx="3" class="f-1"/>
+              <text x="76" y="208" class="s-ink" font-size="12">处理时间 Processing time（真正在动手）</text>
+              <rect x="420" y="196" width="18" height="14" rx="3" class="f-2" opacity="0.32"/>
+              <rect x="420" y="196" width="18" height="14" rx="3" class="s-2" stroke-width="1.5" fill="none"/>
+              <text x="446" y="208" class="s-ink" font-size="12">等待时间 Wait time（在队列里）</text>
+
+              <g class="s-ink" font-size="12" text-anchor="middle">
+                <text x="68"  y="240">1</text>
+                <text x="158" y="240">4</text>
+                <text x="283" y="240">3</text>
+                <text x="373" y="240">2</text>
+                <text x="426" y="240">1</text>
+                <text x="552" y="240">6</text>
+                <text x="668" y="240">0.5</text>
+                <text x="767" y="240">5</text>
+                <text x="865" y="240">0.5</text>
+                <text x="892" y="240">1</text>
+              </g>
+
+              <rect x="50"    y="248" width="35.8"  height="30" class="f-1"/>
+              <rect x="85.8"  y="248" width="143.3" height="30" class="f-2" opacity="0.32"/>
+              <rect x="229.2" y="248" width="107.5" height="30" class="f-1"/>
+              <rect x="336.7" y="248" width="71.7"  height="30" class="f-2" opacity="0.32"/>
+              <rect x="408.3" y="248" width="35.8"  height="30" class="f-1"/>
+              <rect x="444.2" y="248" width="215"   height="30" class="f-2" opacity="0.32"/>
+              <rect x="659.2" y="248" width="17.9"  height="30" class="f-1"/>
+              <rect x="677.1" y="248" width="179.2" height="30" class="f-2" opacity="0.32"/>
+              <rect x="856.3" y="248" width="17.9"  height="30" class="f-1"/>
+              <rect x="874.2" y="248" width="35.8"  height="30" class="f-2" opacity="0.32"/>
+              <rect x="50" y="248" width="860" height="30" class="s-stroke" stroke-width="1.5" fill="none"/>
+
+              <text x="480" y="298" class="s-muted" font-size="12" text-anchor="middle">条带按天数等比例绘制，总长 = 端到端 24 天</text>
+              <text x="480" y="328" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">流动效率 = 处理时间 6 天 ÷ 端到端 24 天 = 25%</text>
+              <text x="480" y="356" class="f-2" font-size="13" font-weight="650" text-anchor="middle">18 天里没有任何人在动手 —— 改进空间在等待，不在处理</text>
+              <text x="480" y="388" class="s-muted" font-size="12" text-anchor="middle">本站构造的教学示例数据，用于说明数据构成</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-9-2　把 24 天拆开之后看到的东西。</strong>
+            上排是五个阶段，等宽排列只为对齐阅读；下方条带才是<strong>按真实天数等比例</strong>画的。
+            要看懂的是条带的<strong>长度比例</strong>：深色（处理）加起来只占四分之一，浅色（等待）占四分之三。
+            这解释了为什么「让开发更快」通常无效 —— 它动的是那四分之一里的一小段。
+            这三类数字持续更新，就是价值流管理与一次性映射的实质差别。
+            <strong>这个 25% 已经处在常见区间的上沿</strong>，多数组织比它更低 —— 不是「这家特别差」，而是「这已经算好的」。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">VSM 关注的数据</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DORA 四指标</strong><br><small class="muted">部署频率 · 变更前置时间 · 变更失败率 · 平均恢复时间 MTTR</small></td>
+                  <td>关注<strong>过程内部的时间构成</strong>：这段时间分别花在哪几个阶段、其中多少在排队</td>
+                  <td>关注<strong>结果</strong>：交付得多快、多稳。不回答「慢在哪一段」<br><small class="muted">指标本身见<a href="../ch07-metrics/index.html">第 7 章 度量与指标</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>变更前置时间 <span class="en">Change lead time</span></strong></td>
+                  <td>把它<strong>拆成分段</strong>，并计算处理与等待的比例</td>
+                  <td>是这些分段的<strong>总和</strong>，一个单一数字</td>
+                </tr>
+                <tr>
+                  <td><strong>周期时间 <span class="en">Cycle time</span></strong></td>
+                  <td>视角是<strong>从需求提出到客户可用</strong>的整条链路</td>
+                  <td>通常只覆盖<strong>开始动手到完成</strong>的那一段，起点晚于变更前置时间</td>
+                </tr>
+                <tr>
+                  <td><strong>资源利用率</strong></td>
+                  <td><strong>流动效率</strong>看的是<strong>工作</strong>有多少时间在被处理</td>
+                  <td>看的是<strong>人</strong>有多少时间在忙。两者常反向：人越忙，队列越长，流动效率越低</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>流动效率不是资源利用率</strong>。
+            前者的分母是<strong>工作的端到端总时间</strong>（问工作有多少时间在被处理），
+            后者的分母是<strong>人的可用时间</strong>（问人有多少时间在忙）。
+            一个的主语是工作，一个的主语是人 —— 这才是两者的分界。
+            把所有人排满会让利用率接近 100%，同时让流动效率掉到个位数 ——
+            这正是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>说的「局部效率不等于系统产出」。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以此形式给出这些区分；
+            表中 <em>Change lead time</em> 与 <em>Cycle time</em> 为 DOFD v3.4 官方术语表条目，
+            「DORA」这一名称本身不在 66 条术语表内，表内收录的是四个指标各自的名称。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把 VSM 接到第一步 · 流动上，具体是四个动作：</p>
+          <ul>
+            <li><strong>定四个时间戳</strong>：需求创建、开发开始、代码合并到主干、生产可用。
+              有这四个点，就能算出各段的处理与等待，以及端到端变更前置时间。</li>
+            <li><strong>先看等待最长的那一段</strong>：它就是当前的约束候选。
+              约束理论说产出由约束决定，<strong>VSM 的作用是持续回答「约束现在在哪」以及「改完之后它转移到了哪」</strong>。</li>
+            <li><strong>改进项的验收写成分段数字</strong>：不是「上线了自助环境」，而是「构建/测试段等待时间 6 天 → 1 天，
+              端到端 24 天 → 19 天，流动效率 25% → 32%」（沿用图 3-9-2 的示例数据）。改完两周后回看同一张图。</li>
+            <li><strong>同时盯住稳定性</strong>：只压前置时间会把变更失败率推上去。
+              端到端评审要把速度类与稳定性类指标放在一起看，不能单看一边。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四个动作与时间戳选点为本站教学整理，官方学习目标未规定具体实施方式；
+            承载这些数据的 <em>VSM Platforms</em> 见<a href="../ch06-automation/index.html">第 6 章（6.6）</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方确认的归属先记住</strong>：<strong>约束理论支持三步工作法中的第一步</strong>（不是全部三步），
+              这一点<strong>由 DOFD v3.4 官方样题答案键确认</strong>。
+              价值流管理服务的正是这块领域 —— 让工作流动得更快，属于<strong>第一步</strong>的地盘。</li>
+            <li><strong>指标名称题（Bloom 1）</strong>：出题更可能直接用
+              <em>Change lead time</em> / <em>Cycle time</em> / <em>Deployment frequency</em> /
+              <em>Change failure rate</em> / <em>MTTR</em> 这些术语表内的名称，
+              而不是「DORA」这个统称。<strong>准备重点放在指标名本身。</strong></li>
+            <li><strong>干扰项长什么样</strong>：<br>
+              ① 把流动效率解释成「<strong>人员利用率</strong>」或「<strong>资源饱和度</strong>」；<br>
+              ② 把 VSM 的目的写成「<strong>提高某个团队的产能</strong>」—— 视角错，VSM 必然是端到端的；<br>
+              ③ 把「等待时间」和「处理时间」的定义对调，用「真正在排队的时间」去描述处理时间。</li>
+            <li><strong>场景题的排除技巧</strong>：题干若描述「各团队指标都在改善但交付没变快」，
+              <strong>先划掉所有「继续优化某个单一环节」的选项</strong>，答案方向是
+              <strong>把端到端的时间构成量出来</strong>（价值流管理 / 价值流映射），
+              而不是再给某个团队加资源。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「价值流管理属于第一步领域」为本站教学推断；
+            <strong>「约束理论支持第一步」这一条本身是官方样题答案键确认的事实</strong>。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">局部提速可以造假，端到端的时间不会 —— 拆开看，答案基本都在等待里。</p>
+          <p class="mb-0 muted"><small>一句话公式：<strong>流动效率 = 处理时间 ÷ 端到端总时间</strong>。
+            数值低不代表人不努力，只代表工作在排队。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>价值流管理 Value Stream Management</strong>：对端到端价值流进行<strong>持续的度量、可视化与优化</strong>的管理实践（v3.6 新增）</li>
+        <li>本节唯一必须记牢的辨析：<strong>映射 = 一次性的分析活动；管理 = 持续的管理实践</strong>。中文差一字，英文缩写都写 VSM</li>
+        <li>只有 <strong>Value stream mapping</strong> 在 v3.4 官方 66 条术语表内；<strong>Value Stream Management</strong> 是 v3.6 新增学习目标</li>
+        <li>两者不是替代关系：<strong>映射通常是管理这个环的第一圈</strong>，用来建立基线</li>
+        <li>VSM 采集三类数据：<strong>处理时间 · 等待时间 · 流动效率（处理 ÷ 端到端总时间）</strong>；<strong>流动效率 ≠ 资源利用率</strong></li>
+        <li>与 DORA 的关系：DORA 量<strong>结果</strong>，VSM 拆<strong>过程</strong>；<strong>变更前置时间</strong>是两者的交叉点</li>
+        <li>归属方向：VSM 服务于<strong>第一步 · 流动</strong>；<strong>约束理论支持第一步</strong>由 DOFD v3.4 官方样题答案键确认</li>
+      </ul>
+    </div>
+
+    <p class="muted"><small>本节的跨章边界：映射的绘制步骤见
+      <a href="../ch04-frameworks/index.html">第 4 章（4.6）</a>，VSM 平台见
+      <a href="../ch06-automation/index.html">第 6 章（6.6）</a>，指标本身见
+      <a href="../ch07-metrics/index.html">第 7 章</a>。</small></p>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Value Stream Management</em> 出自
+      <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，属 <strong>v3.6 新增</strong>内容，
+      本节页头与相关知识点已标「🆕 v3.6 新增」；<strong>v3.6 未公开重新发布权重表</strong>，
+      按 v3.4 <em>Examination Requirements</em>（2022-05），Key DevOps Practices 模块最多 7 题。
+      <em>Value stream mapping</em>、<em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
+      <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、<em>Kanban</em>、<em>DevOps toolchain</em>、
+      <em>Constraint</em>、<em>Theory of Constraints</em> 均列于 <strong>DOFD v3.4 官方考纲术语表</strong>（66 条）。<br>
+      <strong>「约束理论支持三步工作法中的第一步（不是全部三步）」这一条由 DOFD v3.4 官方样题答案键确认</strong>，
+      本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      <strong>以下内容为本站教学整理或推断，官方未以此形式给出，均已在对应位置就地标注</strong>：
+      「度量 / 可视化 / 优化」三动作拆分与图 3-9-1 右半的四节点持续循环、
+      「映射是管理的第一圈」这一包含关系、各面的对照表、
+      kp-3-9-2 ⑤ 中两个词的定义措辞与出题优先级判断、
+      判断「是映射还是管理」的三个问题、时间戳选点与改进验收写法、
+      「处理时间 / 等待时间 / 流动效率」三个词（不在 66 条术语表内，作为教学补充引入）、
+      「价值流管理属于第一步领域」这一归属推断，以及两图中的全部示例数字。
+      本节不含任何官方样题原文；本章练习中出现的题目均为<strong>仿真题，非官方真题</strong>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
