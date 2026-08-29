@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.1 什么是组织文化 · DevOps Foundation 学习站</title>
+<meta name="description" content="组织文化（Organizational culture）不是墙上的标语，而是没人监督时人们默认怎么做事。本节给出一个可观察、可验证的定义，三个能看见真实文化的窗口，以及文化为什么是 DevOps 转型里最难的一段。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"5.1-defining-culture"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.1 什么是组织文化</h1>
+      <div class="page-head__en">Defining Culture</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        文化不是墙上那句「客户第一、勇于创新」。
+        文化是<strong>在没有人监督、没有流程强制、没人会来检查的时候，这里的人默认怎么做事</strong>。
+        这个定义的好处是它<strong>可观察</strong>：不用问任何人，只看奖惩、看坏消息跑多快、看新人第一周学会了什么。
+        本节做的是通论——文化是什么、怎么把它看见。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>组织文化到底指什么，怎样给出一个<strong>能被验证</strong>的定义，而不是一段抽象描述</li>
+        <li>不做问卷、不开访谈，用哪三个窗口就能看见一个组织的<strong>真实</strong>文化</li>
+        <li>为什么工具能买、流程能写，<strong>文化却是 DevOps 转型里最难的一段</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 424" role="img" aria-label="墙上宣称的价值观与无人监督时的默认动作对照，以及三个可观察文化的窗口">
+          <defs>
+            <marker id="ah-51-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <text x="225" y="30" class="f-4" font-size="15" font-weight="700" text-anchor="middle">墙上写的（人人都看得见）</text>
+          <text x="735" y="30" class="f-1" font-size="15" font-weight="700" text-anchor="middle">没人看着时实际发生的</text>
+
+          <rect x="30" y="46" width="390" height="204" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <g class="s-ink" font-size="15">
+            <text x="52" y="82">「鼓励创新，允许失败」</text>
+            <text x="52" y="118">「开放透明，坦诚沟通」</text>
+            <text x="52" y="154">「客户第一，快速响应」</text>
+            <text x="52" y="190">「一个团队，不分你我」</text>
+          </g>
+          <text x="52" y="226" class="s-muted" font-size="12.5">这一列可以在一个下午写完，也可以一夜之间换掉</text>
+
+          <rect x="540" y="46" width="390" height="204" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <g class="s-ink" font-size="15">
+            <text x="562" y="82">出了故障，第一个问题是「谁改的」</text>
+            <text x="562" y="118">坏消息压三层，第 6 小时才上达</text>
+            <text x="562" y="154">提交前先想「出事算谁的」</text>
+            <text x="562" y="190">新人第一周学会「别碰计费那个模块」</text>
+          </g>
+          <text x="562" y="226" class="s-muted" font-size="12.5">这一列没人写下来，却每天都在稳定重复</text>
+
+          <line x1="428" y1="148" x2="532" y2="148" class="s-2" stroke-width="2.5" marker-end="url(#ah-51-1)"/>
+          <text x="480" y="136" class="f-2" font-size="13" font-weight="700" text-anchor="middle">不一致时</text>
+          <text x="480" y="172" class="s-muted" font-size="12" text-anchor="middle">右边胜出</text>
+
+          <rect x="30" y="266" width="900" height="42" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="480" y="293" class="s-ink" font-size="15.5" font-weight="700" text-anchor="middle">组织文化 = 右边这一列的稳定重复，不是左边那一列的措辞</text>
+
+          <text x="480" y="336" class="f-3" font-size="15" font-weight="700" text-anchor="middle">要看见右边这一列，只需要三个窗口</text>
+
+          <rect x="30" y="348" width="288" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="174" y="372" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">① 奖励什么 · 惩罚什么</text>
+          <text x="174" y="394" class="s-muted" font-size="12.5" text-anchor="middle">还有：默默容忍什么</text>
+
+          <rect x="336" y="348" width="288" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="480" y="372" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">② 坏消息多久能上达</text>
+          <text x="480" y="394" class="s-muted" font-size="12.5" text-anchor="middle">从发生到决策层知道，几小时</text>
+
+          <rect x="642" y="348" width="288" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="786" y="372" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">③ 新人第一周学到的潜规则</text>
+          <text x="786" y="394" class="s-muted" font-size="12.5" text-anchor="middle">没人教，但一周内一定学会</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-1-1　文化在右边那一列。</strong>
+        这张图要让人看懂的是：<strong>左右两列同时存在于同一个组织，而当两者冲突时，右边永远胜出</strong>——
+        因为右边是行为，左边只是措辞。定义文化时如果盯着左边，得到的是公关文案；盯着右边，得到的才是可验证的事实。
+        下方三个窗口是把右边这一列变成可采集数据的入口，本节第二个知识点逐个展开。
+        <br><small class="muted">左右两列的具体条目与三个观察窗口的归纳，均为本站教学整理，DOFD 官方文件未以此形式给出；
+        <em>Organizational culture</em> 本身是 DOFD v3.4 官方考纲术语表条目。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-5-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-1-1</div>
+        <h3 class="kp__title">组织文化<span class="en">Organizational culture</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">组织文化 <span class="en">Organizational culture</span></span>
+            指一个组织里<strong>被共同持有、并且默认执行的做事方式</strong>：
+            在没有人监督、没有流程强制、没人会来检查的情况下，成员会自动选择的那个动作。
+          </p>
+          <p>
+            这个说法的价值不在于它更好听，而在于它<strong>可以被证伪</strong>。
+            一个定义如果无法指出「什么现象出现就说明不是这样」，它就不是定义，只是修辞。
+            下面三条是本站给出的验证判据：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">判据</th><th style="width:38%">怎么验证</th><th>不满足就说明什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>重复性</strong></td>
+                  <td>同一情境下，不同的人、不同的时间，做出的选择是否一致</td>
+                  <td>只出现一两次的行为是个人风格或偶发事件，不是文化</td>
+                </tr>
+                <tr>
+                  <td><strong>无监督性</strong></td>
+                  <td>把检查、审批、KPI 全部拿掉，行为还在不在</td>
+                  <td>拿掉就消失的，是<strong>流程约束</strong>的效果，不是文化的效果</td>
+                </tr>
+                <tr>
+                  <td><strong>默认性</strong></td>
+                  <td>做这件事需不需要开会讨论、需不需要请示</td>
+                  <td>每次都要重新协商，说明这件事还没有沉淀成共享假设</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Organizational culture</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>（66 条，Bloom 1–2），
+            属必须掌握的名词。上面这句「没人监督时默认怎么做事」的表述与三条验证判据为<strong>本站教学整理</strong>，
+            官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个概念之所以必须单列一节，是因为不给它一个可观察的定义，
+            转型就会全部押在<strong>能采购的部分</strong>上，然后失败得莫名其妙。典型场景：
+          </p>
+          <ul>
+            <li>某公司启动 DevOps 转型，一年内建成流水线，构建到验收测试 <strong>22 分钟</strong>全绿，
+              工具链账单一年 <strong>180 万</strong>。技术能力上，任何一次提交都能在半小时内上生产。</li>
+            <li>一年后复盘：<strong>部署频率从每月 1.2 次变成每月 1.4 次。</strong>
+              流水线大部分时间在跑定时任务，真正被用来发版的次数极少。</li>
+            <li>原因在流水线之外：上一年有过一次线上事故，事后处理是<strong>值班工程师写检讨、绩效降一档</strong>。
+              这件事没有写进任何制度，但全公司都记住了。此后每个人的默认动作变成
+              <strong>「攒到季度发布窗口，跟着大部队一起发」</strong>——出事时法不责众。</li>
+          </ul>
+          <p>
+            机制很直白：<strong>工具改变的是「能不能做」，文化决定「会不会做」。</strong>
+            能力提升到位而默认行为没变，两者的差额就是全部投入的浪费。
+            这也是为什么本章排在工具链一章之前。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">对比对象</th><th style="width:38%">组织文化</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>流程 / 制度</strong></td>
+                  <td>没人检查时依然发生。<strong>拿掉监督，行为还在</strong></td>
+                  <td>写下来、可强制、可审计。<strong>拿掉监督，行为立刻消失</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>价值观标语</strong></td>
+                  <td>是<strong>实际重复发生的行为</strong>，只能被观察，不能被宣布</td>
+                  <td>是组织<strong>希望</strong>自己是什么样。可以一夜之间改写，且改写不改变任何行为</td>
+                </tr>
+                <tr>
+                  <td><strong>团队氛围</strong></td>
+                  <td>回答<strong>「这里默认怎么做事」</strong>，与舒不舒服无关</td>
+                  <td>回答<strong>「待着舒不舒服」</strong>。氛围很好但没人敢说坏消息，是完全可能的组合</td>
+                </tr>
+                <tr>
+                  <td><strong>组织结构</strong></td>
+                  <td>是<strong>行为层</strong>：谁会主动找谁、信息实际走哪条路</td>
+                  <td>是<strong>形式层</strong>：汇报线与部门框。改汇报线不等于改默认行为</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>把文化等同于「氛围好不好」</strong>。
+            一个人人客气、从不争吵、团建满意度很高的团队，可能恰好是最不敢暴露问题的团队——
+            因为「不让别人难堪」正是它的共享假设。<strong>和气是氛围，敢不敢说坏消息才是文化。</strong></small></p>
+          <p class="mb-0 muted"><small>这张四行对照表为<strong>本站教学整理</strong>，官方术语表列出 <em>Organizational culture</em> 与
+            <em>Organizational considerations</em>，未以此形式给出该对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            用法只有一个：<strong>在动工具之前，先取一次文化基线</strong>——基线不是打分，是记录可复查的事实。
+            四项分别采什么、怎么记，见下一个知识点 <strong>kp-5-1-2</strong> 的 ④ 面；这里只留最能单独定性的一条：
+          </p>
+          <ul class="mb-0">
+            <li><strong>最近三次线上事故，事后的第一个问题是什么。</strong>
+              是<strong>「排查时间线」</strong>还是<strong>「谁改的」</strong>——
+              前者把事故当成系统缺陷，后者把事故当成个人过失，两种默认反应会长出完全相反的发布行为。
+              这一条几乎单独就能定性，而且不需要任何人配合调查：翻三份复盘纪要的第一段即可。</li>
+          </ul>
+          <p>
+            基线在转型前记一次、半年后再记一次。两次之间流水线的变化会很大，
+            <strong>这组事实的变化才是文化是否真的动了的证据</strong>。
+          </p>
+          <p class="mb-0 muted"><small>文化基线这一取法为<strong>本站教学整理</strong>，官方未以此形式给出；
+            按成熟度分级评估组织的做法属另一个主题，见本章<a href="5.4-maturity-models.html">5.4 组织成熟度模型</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>本知识点独有的角度：定义辨析题</strong>。问「以下哪一项属于组织文化」时，
+              正确项一定是<strong>「拿掉监督后仍然发生的行为」</strong>；
+              <strong>「写在制度里的规定」「强制执行的审批」「刚发布的价值观宣言」</strong>可以整组排除——
+              它们都过不了 ① 面第二条判据（无监督性）<span class="muted">（此判据为本站教学整理）</span>。</li>
+            <li><strong>命题角度</strong>：给一段组织行为描述，问它反映了什么，或问应当先解决什么。
+              Bloom 1–2 的范围内不会要求分析深层成因，<strong>只要求认出「这是文化问题」</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「引入更强的工具链 / 增加自动化投入」</strong>（把能力问题当文化问题的解）、
+              <strong>「制定更严格的变更流程」</strong>（用制度覆盖文化，方向相反）、
+              <strong>「增加预算与人手」</strong>（资源型答案）。
+              这三类在文化题里几乎必然是错的。</li>
+            <li><strong>排除技巧（本站整理）</strong>：题干里如果出现<strong>行为</strong>类描述——推诿、隐瞒、不敢报障、部门互相甩锅——
+              先把一切「买什么、装什么、加什么流程」的选项整组划掉，答案在<strong>人与承诺</strong>那一侧。</li>
+            <li><strong>边界提醒</strong>：题干若同时出现<strong>指责与恐惧、大量单点故障、频繁战情室</strong>这一组特征，
+              答案方向是<strong>安全文化</strong>而不是笼统的「组织文化」——这一归属同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+              属<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>的范围。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            「干扰项三类」与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">把检查和 KPI 全拿掉，行为还在吗——还在是文化，不在是流程。</p>
+          <p class="mb-0 muted"><small>这一问是 ① 面「无监督性」判据的考场版本：
+            它把「文化」从一句形容词判断变成一次可以当场做的减法。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-5-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-1-2</div>
+        <h3 class="kp__title">怎么看见一个组织的真实文化<span class="en">Observing the Actual Culture</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            观察真实文化不需要问卷，只需要<strong>图 5-1-1 底部那三个窗口</strong>。
+            选中它们的理由只有一条：<strong>三者记录的都是组织已经付出过代价的选择</strong>——
+            说话不要成本，奖惩、延迟和沉默都要成本，因此不会撒谎。下表给的是每个窗口的成本论证与判读阈值。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">窗口</th><th style="width:40%">为什么它不会撒谎</th><th>判读阈值</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>① 奖惩与容忍</strong></td>
+                  <td>每一次晋升、问责、以及「明明不对却没人管」，组织都实际支付了人事、金钱或标准上的代价。<strong>宣言不需要支付任何代价</strong></td>
+                  <td>一年内唯一一次问责如果是因为线上事故，「鼓励试错」在这里就不成立；<strong>被长期容忍的那一项</strong>宣告了哪些标准其实可以不遵守</td>
+                </tr>
+                <tr>
+                  <td><strong>② 坏消息上达</strong></td>
+                  <td>每多一小时延迟，都对应中间某一层在计算「说出去对自己的代价」。这个计算是真实发生的，问卷里的回答不是</td>
+                  <td>按小时分档：<strong>&lt; 1 小时</strong>——说真话几乎不需要评估风险；<strong>1–6 小时</strong>——逐层确认与措辞加工已在发生；<strong>&gt; 6 小时或由外部先发现</strong>——沉默的收益大于说真话</td>
+                </tr>
+                <tr>
+                  <td><strong>③ 新人潜规则</strong></td>
+                  <td>传一条没写在纸上的规则，传的人要担说错的风险。老员工仍然会传，说明这条规则在这里<strong>比明文规定更管用</strong></td>
+                  <td>入职一个月内能说出<strong>至少一条</strong>「人人都知道但没写下来」，即拿到基本假设的直接样本；一条都说不出，通常不是没有，而是新人已经学会不对外说</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>这三个窗口及其判读阈值为<strong>本站教学整理</strong>，官方未以此形式给出；
+            <em>Organizational culture</em> 本身是 DOFD v3.4 官方考纲术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解决的痛点是：<strong>直接问，问不出真话；而组织通常只会直接问。</strong>
+          </p>
+          <ul>
+            <li>某公司做年度文化调研，「本组织鼓励坦诚反馈」一项得分 <strong>4.3 / 5</strong>，
+              管理层据此判断文化健康，把转型重心全部放在工具上。</li>
+            <li>同一季度发生 3 起 P1 事故，事后统计：从故障发生到 CTO 知晓，
+              平均 <strong>5.8 小时</strong>，其中 2 起是客户先在社交平台发帖、公关部门转述回来的。</li>
+            <li>两组数据不矛盾。问卷问的是「你认为组织鼓励什么」——回答这个问题<strong>需要考虑答案会不会被追溯</strong>；
+              事故上达时长记录的是<strong>已经付出代价的真实选择</strong>。</li>
+          </ul>
+          <p>
+            这个落差有一个经典的解释框架：<strong>组织宣称的价值观与真正驱动行为的基本假设，本来就分处不同层次</strong>。
+            下面这张分层图说明为什么两者可以长期并存而互不干扰。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 404" role="img" aria-label="文化三层次：人工制品、信奉的价值观、基本假设，越往下越不可见但越决定行为">
+              <defs>
+                <marker id="ah-51-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <text x="450" y="26" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">文化三层次（教学补充 · 不在 DOFD 考纲术语表内）</text>
+
+              <rect x="152" y="42" width="560" height="88" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="174" y="70" class="f-4" font-size="15" font-weight="700">① 人工制品 Artifacts</text>
+              <text x="174" y="94" class="s-ink" font-size="13">看得见：办公布局、站会形式、看板、工具链、发布仪式</text>
+              <text x="174" y="116" class="s-muted" font-size="12.5">陷阱：最容易看见，也最容易误读——同一块看板可以出于完全相反的动机</text>
+
+              <rect x="152" y="144" width="560" height="88" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="174" y="172" class="f-3" font-size="15" font-weight="700">② 信奉的价值观 Espoused Values</text>
+              <text x="174" y="196" class="s-ink" font-size="13">听得到：价值观宣言、领导讲话、招聘页、转型愿景</text>
+              <text x="174" y="218" class="s-muted" font-size="12.5">陷阱：这是组织「希望自己是什么样」，未必是它实际怎么选</text>
+
+              <rect x="152" y="246" width="560" height="98" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="174" y="274" class="f-1" font-size="15" font-weight="700">③ 基本假设 Basic Underlying Assumptions</text>
+              <text x="174" y="298" class="s-ink" font-size="13">看不见：不假思索、不被讨论、被当成「本来就该这样」的前提</text>
+              <text x="174" y="322" class="s-ink" font-size="13" font-weight="650">真正决定行为的是这一层——例如「出事一定有人要负责」</text>
+
+              <text x="76" y="92" class="s-muted" font-size="15" text-anchor="middle">看得见</text>
+              <text x="76" y="194" class="s-muted" font-size="15" text-anchor="middle">听得到</text>
+              <text x="76" y="292" class="s-muted" font-size="15" text-anchor="middle">看不见</text>
+
+              <line x1="770" y1="52" x2="770" y2="334" class="s-2" stroke-width="2.5" marker-end="url(#ah-51-2)"/>
+              <text x="800" y="150" class="f-2" font-size="15" font-weight="700">越往下</text>
+              <text x="800" y="176" class="s-ink" font-size="13">越难改</text>
+              <text x="800" y="202" class="s-ink" font-size="13">越难看见</text>
+              <text x="800" y="228" class="f-2" font-size="15" font-weight="700">越决定行为</text>
+
+              <text x="450" y="372" class="s-muted" font-size="12.5" text-anchor="middle">②③ 长期不一致而组织仍能运转，是常态而不是异常——因为③从不被拿出来讨论</text>
+              <text x="450" y="394" class="s-muted" font-size="12.5" text-anchor="middle">转型只改①和②，行为不会变；行为不变，说明③没被触动</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-1-2　为什么「说的」和「做的」能长期并存。</strong>
+            要看懂的是：<strong>三层不是三种说法，而是三种可见度</strong>。
+            ① 和 ② 之所以能改得很快，正因为它们浮在表面；③ 之所以难改，正因为没人把它当成一个可讨论的选项。
+            这也解释了转型的常见失败模式：改了看板、换了宣言、行为纹丝不动——说明动的全是上面两层。
+            <br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            文化三层次（人工制品 / 信奉的价值观 / 基本假设）出自 Edgar Schein 的组织文化理论，
+            <strong>这是理解用的补充，不在 DOFD v3.4 的 66 条考纲术语表内，也不是 v3.4 课程大纲的模块子项</strong>。
+            本站引入它，只是因为它能解释「宣称的价值观」与「真实行为」为什么会长期不一致；
+            三层次的名称不在 66 条术语表与 v3.4 课程大纲子项内。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:38%">三个观察窗口</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>文化问卷 / 满意度调研</strong></td>
+                  <td>采集<strong>已经发生、已经付出代价</strong>的事实：奖惩落点、上达时长、潜规则</td>
+                  <td>采集<strong>员工愿意说出口的看法</strong>。回答本身是一次风险评估，越不安全的组织越好看</td>
+                </tr>
+                <tr>
+                  <td><strong>成熟度模型评估</strong></td>
+                  <td>回答<strong>「这里实际怎么做事」</strong>，输出的是事实，不排名</td>
+                  <td>回答<strong>「处在哪一级」</strong>，输出的是等级与改进路线（属本章<a href="5.4-maturity-models.html">5.4</a>，本节不展开）</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 指标</strong></td>
+                  <td>看的是<strong>组织对人的反应</strong>：奖谁、罚谁、容忍什么</td>
+                  <td>看的是<strong>系统的产出</strong>：部署频率、变更前置时间、变更失败率、平均恢复时间 MTTR（属<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>人工制品（图 5-1-2 第 ① 层）</strong></td>
+                  <td>看<strong>行为与代价</strong>，同一现象要追问动机</td>
+                  <td>看<strong>物件与形式</strong>。有站会、有看板、有流水线，与文化好坏没有必然关系</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>把「有没有 DevOps 的形式」当成「有没有 DevOps 的文化」</strong>。
+            每日站会既可以是团队自发同步，也可以是管理者逐个点名要进度——
+            <strong>同一个人工制品，底下的基本假设可以完全相反</strong>。只看形式，必然误判。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出；
+            表中 <em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、<em>MTTR</em>、<em>DevOps metrics</em>
+            均为 DOFD v3.4 官方考纲术语表条目，本节仅点名，展开在第 7 章。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            三个窗口的用法不是「感受一下」，而是各自采一个能写进纪要的数字或事实：
+          </p>
+          <ul>
+            <li><strong>奖惩台账</strong>：列出最近 12 个月所有晋升、表彰、问责、调岗，
+              每条标注真实触发原因。<strong>如果一年里唯一一次问责是因为线上事故，那么「鼓励试错」这四个字在这里不成立</strong>，
+              无论它出现在多少张幻灯片上。</li>
+            <li><strong>坏消息上达时长</strong>：把它当成一个指标持续记录——
+              事故发生时刻、决策层知晓时刻、中间经过几个人。<strong>只记小时数，不记形容词。</strong></li>
+            <li><strong>新人潜规则清单</strong>：每批新人入职满一个月做一次五分钟访谈，
+              只问一句「有没有哪件事人人都知道但没人写下来」。收集到的条目直接就是基本假设的样本。</li>
+            <li><strong>先改奖惩，再改宣言</strong>：想让一条价值观成立，
+              最快的验证是<strong>找到一次它与短期利益冲突的场合，让组织当众选择它</strong>。
+              没有这样一次公开选择，宣言只停留在图 5-1-2 的第 ② 层。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四项操作为<strong>本站教学整理</strong>，官方未以此形式给出。</small></p>
+        </div>
+
+        <!-- ============ 图 5-1-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 428" role="img" aria-label="同一句宣称的价值观，在两种不同奖惩下长出完全相反的行为">
+              <defs>
+                <marker id="ah-51-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+                <marker id="ah-51-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <text x="20" y="30" class="s-ink" font-size="15" font-weight="700">同一句宣言：「鼓励创新，允许失败」　——　奖惩不同，长出的行为完全相反</text>
+
+              <text x="20" y="62" class="f-2" font-size="15" font-weight="700">路径 A ·　奖惩只认「零故障」</text>
+              <rect x="20" y="72" width="206" height="98" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="38" y="100" class="s-ink" font-size="15" font-weight="650">宣称的价值观</text>
+              <text x="38" y="124" class="s-muted" font-size="12.5">「鼓励创新」</text>
+              <text x="38" y="146" class="s-muted" font-size="12.5">写在墙上与官网</text>
+
+              <rect x="258" y="72" width="206" height="98" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="276" y="100" class="s-ink" font-size="15" font-weight="650">真实的奖惩</text>
+              <text x="276" y="124" class="s-muted" font-size="12.5">晋升看「零故障」</text>
+              <text x="276" y="146" class="s-muted" font-size="12.5">出事即写检讨降档</text>
+
+              <rect x="496" y="72" width="206" height="98" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="514" y="100" class="s-ink" font-size="15" font-weight="650">员工推断出的规则</text>
+              <text x="514" y="124" class="s-muted" font-size="12.5">「变更 = 个人风险」</text>
+              <text x="514" y="146" class="s-muted" font-size="12.5">「别当那个署名的人」</text>
+
+              <rect x="734" y="72" width="206" height="98" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="752" y="100" class="s-ink" font-size="15" font-weight="650">长出来的行为</text>
+              <text x="752" y="124" class="s-muted" font-size="12.5">攒批、季度大发布</text>
+              <text x="752" y="146" class="s-muted" font-size="12.5">审批加码、出事先找人</text>
+
+              <g class="s-2" stroke-width="2" fill="none">
+                <line x1="228" y1="121" x2="254" y2="121" marker-end="url(#ah-51-3)"/>
+                <line x1="466" y1="121" x2="492" y2="121" marker-end="url(#ah-51-3)"/>
+                <line x1="704" y1="121" x2="730" y2="121" marker-end="url(#ah-51-3)"/>
+              </g>
+
+              <text x="20" y="216" class="f-3" font-size="15" font-weight="700">路径 B ·　奖惩改为「快速恢复 + 公开复盘」</text>
+              <rect x="20" y="226" width="206" height="98" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="38" y="254" class="s-ink" font-size="15" font-weight="650">宣称的价值观</text>
+              <text x="38" y="278" class="s-muted" font-size="12.5">「鼓励创新」</text>
+              <text x="38" y="300" class="s-muted" font-size="12.5">一字未改</text>
+
+              <rect x="258" y="226" width="206" height="98" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="276" y="254" class="s-ink" font-size="15" font-weight="650">真实的奖惩</text>
+              <text x="276" y="278" class="s-muted" font-size="12.5">表彰最快恢复的人</text>
+              <text x="276" y="300" class="s-muted" font-size="12.5">复盘不追个人责任</text>
+
+              <rect x="496" y="226" width="206" height="98" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="514" y="254" class="s-ink" font-size="15" font-weight="650">员工推断出的规则</text>
+              <text x="514" y="278" class="s-muted" font-size="12.5">「暴露问题 = 贡献」</text>
+              <text x="514" y="300" class="s-muted" font-size="12.5">「早说比说对更重要」</text>
+
+              <rect x="734" y="226" width="206" height="98" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="752" y="254" class="s-ink" font-size="15" font-weight="650">长出来的行为</text>
+              <text x="752" y="278" class="s-muted" font-size="12.5">小批量、频繁提交</text>
+              <text x="752" y="300" class="s-muted" font-size="12.5">主动报障、复盘归档</text>
+
+              <g class="s-3" stroke-width="2" fill="none">
+                <line x1="228" y1="275" x2="254" y2="275" marker-end="url(#ah-51-4)"/>
+                <line x1="466" y1="275" x2="492" y2="275" marker-end="url(#ah-51-4)"/>
+                <line x1="704" y1="275" x2="730" y2="275" marker-end="url(#ah-51-4)"/>
+              </g>
+
+              <rect x="20" y="348" width="920" height="62" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="480" y="374" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">两条路径的第一格完全相同——差别从第二格开始</text>
+              <text x="480" y="398" class="s-muted" font-size="12.5" text-anchor="middle">要换掉第四格的行为，只能动第二格的奖惩；重写第一格的措辞，第四格不会有任何变化</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-1-3　宣言相同，奖惩不同，长出的行为相反。</strong>
+            这张图只有一个要点：<strong>行为不是从宣言推导出来的，是从奖惩推导出来的</strong>。
+            两条路径的第一格一字不差，第四格却完全相反——所以「已经写了价值观宣言」不构成任何证据。
+            观察一个组织时，直接跳到第二格；改变一个组织时，也只能从第二格下手。
+            <br><small class="muted">本因果链与两条路径均为<strong>本站构造的教学示例与教学整理</strong>，官方文件未以此形式给出；
+            「无指责事后复盘」「安全地说出坏消息」属<strong>安全文化</strong>主题，见
+            <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>，本节不展开。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先划清范围</strong>：三个观察窗口与文化三层次都不在 DOFD v3.4 的 66 条官方考纲术语表内，
+              也不是 v3.4 课程大纲的模块子项，<strong>本站按非考点处理</strong>，只把它们当理解工具。
+              需要记住的是它们指向的判断：<strong>组织的实际奖惩，比它宣称的价值观更能说明文化</strong>。</li>
+            <li><strong>官方已确认的一条</strong>：<strong>用指标控制和评价员工，不属于 DevOps 领导力的目标</strong>
+              ——由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              <strong>（本站解读）</strong>它从反面印证了本知识点：指标一旦被用作奖惩个人的工具，它测到的就不再是系统，而是人的自保行为
+              （该考点归属<a href="../ch08-sharing/index.html">第 8 章 DevOps 领导力（8.3）</a>）。</li>
+            <li><strong>命题角度</strong>：给一段组织现象，问它<strong>说明了什么</strong>，或问哪一项<strong>不能</strong>说明文化状况。
+              「有每日站会 / 有看板 / 上了流水线」这类形式描述，是标准的<strong>不能说明</strong>项。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「文化调研得分高」</strong>（自述数据，最常见的诱饵）、
+              <strong>「已发布价值观宣言」</strong>（停在图 5-1-2 第 ② 层）、
+              <strong>「有专门的文化建设活动预算」</strong>（投入不等于结果）。
+              三者共同特征是<strong>都不涉及组织在冲突时刻实际选了什么</strong>。</li>
+            <li><strong>排除技巧（本站整理）</strong>：把每个选项放进一句反问——
+              <strong>「这件事有没有让组织付出过代价？」</strong>
+              没有代价的，是宣称；有代价的，才是证据。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析与排除技巧为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">看奖惩、看坏消息跑多快、看新人第一周学会了什么——三样都不用问人。</p>
+          <p class="mb-0 muted"><small>一句话推论：<strong>宣言不要成本，所以不作数；奖惩、延迟和沉默都要成本，所以是证据。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-5-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-1-3</div>
+        <h3 class="kp__title">协作与沟通，以及文化为什么最难改<span class="en">Collaboration and communication</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">协作与沟通 <span class="en">Collaboration and communication</span></span>
+            是组织文化在 DevOps 里<strong>最直接可观察的载体</strong>：
+            Dev 与 Ops（以及安全、业务）是否<strong>对同一个业务目标共同负责</strong>，
+            以及信息是否在两个方向上都流得动。
+          </p>
+          <p>官方 Blueprint 的定义句把这件事放在了 DevOps 定义的正中间（逐字原文，出自 PeopleCert DevOps Foundation Blueprint）：</p>
+          <p><em>With DevOps, people across the IT organization, working together, enable fast flow, feedback and
+            continuous improvement of planned work into production, while achieving quality, stability,
+            reliability, availability, security and team satisfaction.</em></p>
+          <p>
+            本站译文：借助 DevOps，IT 组织中的各方<strong>协同工作</strong>，
+            使计划中的工作能够快速流动、获得反馈并持续改进，直至进入生产环境，
+            同时达成质量、稳定性、可靠性、可用性、安全与团队满意度。
+          </p>
+          <p class="mb-0">
+            Blueprint 在 <em>Organization</em> 一栏进一步写明（逐字原文）：
+            <em>Cross-function teams focus on business goals. Ops work with Dev, supporting each other to
+            improve flow towards production and monitor results.</em>
+            这两句合起来说明：<strong>协作不是 DevOps 的软性附加项，而是写在定义里的构成要件</strong>。
+          </p>
+          <p class="mb-0 muted"><small><em>Collaboration and communication</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>；
+            上述两段英文为 <strong>PeopleCert DevOps Foundation Blueprint 逐字原文</strong>，中译为本站译文。
+            <em>DevOps teams</em>、<em>DevOps stakeholders</em>、<em>DevOps roles</em> 同为术语表条目，展开见
+            <a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点很具体：<strong>协作是四类转型手段里唯一买不到的那一类。</strong>
+            工具能采购、流程能起草、组织结构能一纸调整，<strong>只有默认行为必须靠一次次兑现才会改变</strong>。
+          </p>
+          <ul>
+            <li>某公司把 Dev 与 Ops 合并进同一个部门，引入 ChatOps 与共享看板，
+              发布会上宣布「从今天起是一个团队」。<strong>结构与工具在一周内全部到位。</strong></li>
+            <li>三个月后：两边仍各开各的站会；变更单还是从 Dev 提给 Ops；
+              事故复盘会上，两边各自准备了一份时间线，用途是<strong>证明问题不在自己这一侧</strong>。</li>
+            <li>转折发生在第 5 个月的一次事故：一名 Ops 工程师在群里说「这次是我改错了参数」，
+              而复盘会当场把议题转向<strong>为什么这个参数可以被单人改错而无人拦截</strong>，没有追究个人。
+              此后 6 周内，<strong>主动上报的配置问题从 0 起涨到 11 起</strong>。</li>
+          </ul>
+          <p>
+            机制在这里：<strong>文化的改变量取决于「行为被公开兑现的次数 × 一致性」。</strong>
+            一次不兑现——比如下一次事故又开始找责任人——之前所有的兑现都会被重新解读为「那次是例外」，
+            <strong>计数从零开始</strong>。这就是文化只能慢、也最容易前功尽弃的原因。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据；
+            「改变量 = 兑现次数 × 一致性」为本站教学整理的表述，官方未如此表述。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:18%">维度</th><th style="width:20%">文化</th><th style="width:20%">工具</th><th style="width:20%">流程</th><th>组织结构</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>能不能采购</strong></td>
+                  <td><strong>不能</strong></td>
+                  <td>能，有报价单</td>
+                  <td>不能采购，但能起草</td>
+                  <td>不能采购，但能一纸下发</td>
+                </tr>
+                <tr>
+                  <td><strong>生效需要多久</strong></td>
+                  <td><strong>月到年</strong>，且随时可能归零</td>
+                  <td>周</td>
+                  <td>天</td>
+                  <td>一次公告即生效</td>
+                </tr>
+                <tr>
+                  <td><strong>靠什么改变</strong></td>
+                  <td><strong>行为被反复公开兑现</strong></td>
+                  <td>预算与实施</td>
+                  <td>文件与审批</td>
+                  <td>决策与任命</td>
+                </tr>
+                <tr>
+                  <td><strong>失败时的表象</strong></td>
+                  <td><strong>什么都上了，行为没变</strong></td>
+                  <td>工具闲置</td>
+                  <td>流程被绕过</td>
+                  <td>换了汇报线，协作方式照旧</td>
+                </tr>
+                <tr>
+                  <td><strong>能不能造假</strong></td>
+                  <td>不能：奖惩与上达时长是硬记录</td>
+                  <td colspan="3">能：三者都可以「已完成」而不产生任何行为变化</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>把组织结构调整当成文化改变</strong>。
+            把 Dev 与 Ops 合并进一个部门，改的是汇报线；
+            <strong>如果事故之后的第一个问题仍然是「谁改的」，那么默认行为一步没动</strong>。
+            结构调整最多是为文化改变创造条件，它本身不是文化改变。</small></p>
+          <p class="mb-0 muted"><small>本四列对照表为<strong>本站教学整理</strong>，官方未以此形式给出；
+            CALMS 中 <strong>C: Culture</strong> 与 <strong>A: Automation</strong> 分列，出自 PeopleCert DevOps Foundation Blueprint 逐字原文，
+            可作为「文化与工具是两件事」的官方依据（CALMS 展开见
+            <a href="../ch01-exploring-devops/1.1-defining-devops.html">第 1 章 定义 DevOps（1.1）</a>）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            落地动作集中在<strong>「兑现」</strong>这两个字上。四个具体场合，每一个都是一次公开计数：
+          </p>
+          <ul>
+            <li><strong>第一次有人报坏消息时的反应</strong>。这是整个转型里权重最高的一个瞬间。
+              当场追问「为什么现在才说」，后面 6 个月不会再有第二个人主动开口；
+              当场把议题转向系统缺陷，主动上报才会开始出现。</li>
+            <li><strong>让协作有共同的成败口径</strong>。Dev 考交付速度、Ops 考稳定性，
+              两边的最优解天然冲突，再多的沟通工具也调和不了。
+              <strong>共享同一组指标，是把协作从道德要求变成利益一致。</strong></li>
+            <li><strong>把跨职能对话变成日常，而不是事故时才有</strong>。
+              联合值班、共同复盘、需求阶段就拉上运维与安全——判据是
+              <strong>「上一次 Dev 和 Ops 坐在一起，是不是因为出事了」</strong>。</li>
+            <li><strong>领导层的兑现要可见</strong>。承诺不体现在讲话里，体现在
+              <strong>「当短期业务目标与新宣称的价值观冲突时，公开选了哪一个」</strong>。
+              没有这样一次公开选择，团队会默认旧规则依然有效。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四项落地动作为<strong>本站教学整理</strong>，官方未以此形式给出；
+            与之相关的两个专门主题：可以安全说出坏消息的组织属<strong>安全文化</strong>，见
+            <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>；
+            把复盘所得沉淀为组织能力属<strong>学习型组织</strong>，见
+            <a href="../ch02-core-principles/2.7-learning-organizations.html">第 2 章 学习型组织（2.7）</a>。
+            两者都是文化的<strong>特定侧面</strong>，本节只做通论。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong>
+              ——由 <strong>DOFD v3.4 官方样题答案键</strong>确认。这是本节最硬的一条，可以直接当判据用。</li>
+            <li><strong>命题角度</strong>：问关键成功因素、问最大挑战、问转型应从哪里入手、问 Dev 与 Ops 长期对立该怎么办。
+              四种问法指向同一侧答案：<strong>文化、协作、领导层承诺</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「引入业界领先的工具链」</strong>、<strong>「实现端到端全自动化」</strong>、
+              <strong>「加大培训与认证投入」</strong>、<strong>「设立一支专职 DevOps 团队」</strong>。
+              这四类都极具迷惑性，因为它们本身都是正面动作；
+              <strong>但它们回答的是「买什么、装什么」，而题目问的是「什么因素决定成败」</strong>。</li>
+            <li><strong>排除技巧（本站整理）</strong>：题干里出现<strong>「关键成功因素 / 最大障碍 / 首要挑战 / 承诺」</strong>这类词时，
+              先把一切可采购、可外包、可一次性交付的选项整组划掉——
+              <strong>能用钱在一个季度内买到的东西，不会是关键成功因素。</strong></li>
+            <li><strong>反向问法</strong>：问哪一项<strong>不是</strong>文化变革的证据。
+              方向是那些<strong>只改了形式而没有付出代价</strong>的选项：发布了宣言、组织了团建、上线了协作工具。</li>
+            <li><strong>还要能认出 CALMS 的 C</strong>：<strong>C: Culture</strong> 与 <strong>S: Sharing</strong>
+              出自 Blueprint 逐字原文，考的是字母与词的对应，不要与 <strong>A: Automation</strong> 混淆。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分类与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">工具能买，流程能写，结构能一纸下发——文化只能一次次兑现。</p>
+          <p class="mb-0 muted"><small>考场判据一句话：<strong>凡问「关键成功因素」，答案在管理层对文化变革的承诺那一侧</strong>
+            （由 DOFD v3.4 官方样题答案键确认）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>定义</strong>：组织文化 = <strong>没人监督时人们默认怎么做事</strong>。验证三问：重复吗、拿掉监督还在吗、需要请示吗（本站教学整理的判据；<em>Organizational culture</em> 是官方术语表条目）</li>
+        <li><strong>三个观察窗口</strong>：奖励/惩罚/容忍什么 · 坏消息多久上达 · 新人第一周学到的潜规则（本站教学整理）</li>
+        <li><strong>官方确认一</strong>：DevOps 的<strong>关键成功因素是管理层对文化变革的承诺</strong>（DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>官方确认二</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（DOFD v3.4 官方样题答案键确认）——<strong>（本站解读）</strong>奖惩一旦对准个人，测到的只是自保</li>
+        <li><strong>官方定义句</strong>：DevOps 是「IT 组织中的各方<strong>协同工作</strong>」使工作快速流动、获得反馈并持续改进（PeopleCert Blueprint 逐字原文）；<em>Collaboration and communication</em> 是术语表条目</li>
+        <li><strong>最难改的原因</strong>：工具能买、流程能写、结构能下发，<strong>文化只能靠行为反复公开兑现</strong>，一次不兑现即计数归零</li>
+        <li><strong>边界</strong>：指责与恐惧、大量单点故障、频繁战情室 → <strong>安全文化</strong>（4.5，官方样题答案键确认）；沉淀学习 → 学习型组织（2.7）；文化债 → <a href="5.2-cultural-debt.html">5.2</a>；行为模型 → <a href="5.3-behavioral-models.html">5.3</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Organizational culture</em> 与 <em>Collaboration and communication</em>
+      均逐字列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条，Bloom 1–2）</strong>，出自 DOFD v3.4 Examination Requirements（2022-05）；
+      <strong>该术语表只列出词条、不附定义</strong>，因此本页出现的每一条中文释义都是本站措辞，不是官方逐字定义；
+      本节主题对应 <strong>DOFD v3.4 课程大纲</strong> M5 模块子项 <em>Defining Culture</em>。
+      <strong>官方定义句与 <em>Organization</em> 段落</strong>为 PeopleCert DevOps Foundation Blueprint 逐字原文，中译为本站译文；
+      CALMS 的 <strong>C: Culture</strong>、<strong>A: Automation</strong>、<strong>S: Sharing</strong> 同出自该 Blueprint。
+      <strong>两条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」、
+      「<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标」；
+      边界提示中「指责与恐惧文化、大量单点故障、频繁战情室的组织应转向<strong>安全文化</strong>」同由该答案键确认。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「没人监督时默认怎么做事」这一可观察定义与三条验证判据、三个观察窗口、
+      图 5-1-1、图 5-1-3、文化基线清单、四列（文化/工具/流程/组织结构）对照表、
+      「改变量 = 兑现次数 × 一致性」的表述，以及各面的干扰项分析与排除技巧，官方均未以此形式给出，已分别就地标注。
+      <strong>延伸补充</strong>：图 5-1-2 的文化三层次（人工制品 / 信奉的价值观 / 基本假设）出自 Edgar Schein 的组织文化理论，
+      <strong>不在 66 条术语表内，也不是 v3.4 课程大纲子项</strong>，仅用于解释宣称价值观与真实行为为何长期不一致。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      相邻主题：安全文化见<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>；
+      学习型组织见<a href="../ch02-core-principles/2.7-learning-organizations.html">第 2 章（2.7）</a>；
+      DevOps 指标见<a href="../ch07-metrics/index.html">第 7 章</a>；
+      DevOps 领导力与角色见<a href="../ch08-sharing/index.html">第 8 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

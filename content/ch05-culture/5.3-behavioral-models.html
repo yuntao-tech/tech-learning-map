@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.3 行为模型 · DevOps Foundation 学习站</title>
+<meta name="description" content="Kubler-Ross 变革曲线、Thomas-Kilmann 冲突处理模式、Golden Circle 黄金圈 —— 本章官方术语最密集的一节。三个模型分别回答「什么时候说」「谈不拢怎么办」「怎么说」，并包含两条由官方样题答案键确认的考点。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"5.3-behavioral-models"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.3 行为模型</h1>
+      <div class="page-head__en">Behavioral Models</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        本节是全章官方术语最密集的一节：<strong>Kubler-Ross Change Curve</strong>、
+        <strong>Thomas-Kilmann Conflict Modes</strong>、<strong>Golden Circle</strong>
+        三个模型全部逐字列于 DOFD v3.4 官方考纲术语表。
+        转型失败极少是方案错，多数是人的反应没有被预期。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>为什么变革一定会出现士气低谷，<strong>低谷期的正确动作与最常见的误判</strong>分别是什么</li>
+        <li>五种冲突处理模式为什么<strong>没有哪一种绝对正确</strong>，故障现场与长期分歧该分别用哪一种</li>
+        <li>官方样题答案键确认的两条：Golden Circle 的「why」<strong>代表什么</strong>，重大变革该请<strong>谁</strong>参与规划并当推动者</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 720" role="img" aria-label="Kubler-Ross 变革曲线（变革管理常用的七阶段版本）：横轴为时间，纵轴为士气与效能，曲线先下降至低谷再回升并超过变革前水平">
+
+          <!-- 低谷区带 -->
+          <rect x="400" y="64" width="180" height="356" rx="10" class="s-5" stroke-width="2" stroke-dasharray="7 6" fill="var(--dia-fill-2)"/>
+          <text x="490" y="92" class="f-5" font-size="15" font-weight="700" text-anchor="middle">低谷区</text>
+          <text x="490" y="114" class="s-ink" font-size="12.5" text-anchor="middle">必经阶段，不是失败信号</text>
+
+          <!-- 坐标轴 -->
+          <path d="M70 60 L70 420" class="s-stroke" stroke-width="2" fill="none"/>
+          <path d="M70 420 L920 420" class="s-stroke" stroke-width="2" fill="none"/>
+          <text x="70" y="48" class="s-muted" font-size="13">士气 · 效能</text>
+          <text x="920" y="444" class="s-muted" font-size="13" text-anchor="end">时间 →</text>
+
+          <!-- 变革前水平基准线 -->
+          <path d="M70 145 L870 145" class="s-muted" stroke-width="1.5" stroke-dasharray="5 5" fill="none"/>
+          <text x="800" y="136" class="s-muted" font-size="12.5" text-anchor="end">变革前水平</text>
+
+          <!-- 曲线 -->
+          <path d="M110 145 C145 155 165 163 180 175 C210 198 240 205 265 225 C300 252 330 265 355 290 C395 325 440 372 470 372 C505 372 560 348 600 300 C632 240 680 235 715 210 C765 175 805 140 840 118"
+                class="s-1" stroke-width="3" fill="none"/>
+          <circle cx="110" cy="145" r="5" class="f-1"/>
+          <text x="96" y="128" class="s-muted" font-size="12.5" text-anchor="end">变革宣布</text>
+
+          <!-- 阶段节点（变革管理常用的七阶段版本） -->
+          <g>
+            <circle cx="180" cy="175" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="180" y="180" class="f-1" font-size="13" font-weight="700" text-anchor="middle">1</text>
+            <circle cx="265" cy="225" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="265" y="230" class="f-1" font-size="13" font-weight="700" text-anchor="middle">2</text>
+            <circle cx="355" cy="290" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="355" y="295" class="f-1" font-size="13" font-weight="700" text-anchor="middle">3</text>
+            <circle cx="470" cy="372" r="14" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+            <text x="470" y="377" class="f-5" font-size="13" font-weight="700" text-anchor="middle">4</text>
+            <circle cx="600" cy="300" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="600" y="305" class="f-1" font-size="13" font-weight="700" text-anchor="middle">5</text>
+            <circle cx="715" cy="210" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="715" y="215" class="f-1" font-size="13" font-weight="700" text-anchor="middle">6</text>
+            <circle cx="840" cy="118" r="13" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="840" y="123" class="f-1" font-size="13" font-weight="700" text-anchor="middle">7</text>
+          </g>
+
+          <!-- 阶段图例 · 第一行 -->
+          <g>
+            <circle cx="82" cy="473" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="82" y="478" class="f-1" font-size="13" font-weight="700" text-anchor="middle">1</text>
+            <text x="102" y="469" class="s-ink" font-size="14" font-weight="650">震惊</text>
+            <text x="102" y="487" class="s-muted" font-size="12.5">「什么？没听说要动这块」</text>
+
+            <circle cx="392" cy="473" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="392" y="478" class="f-1" font-size="13" font-weight="700" text-anchor="middle">2</text>
+            <text x="412" y="469" class="s-ink" font-size="14" font-weight="650">否认</text>
+            <text x="412" y="487" class="s-muted" font-size="12.5">「不至于吧，多半是风声」</text>
+
+            <circle cx="702" cy="473" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="702" y="478" class="f-1" font-size="13" font-weight="700" text-anchor="middle">3</text>
+            <text x="722" y="469" class="s-ink" font-size="14" font-weight="650">挫折 / 愤怒</text>
+            <text x="722" y="487" class="s-muted" font-size="12.5">「凭什么先改我们这边」</text>
+          </g>
+
+          <!-- 阶段图例 · 第二行 -->
+          <g>
+            <circle cx="82" cy="523" r="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+            <text x="82" y="528" class="f-5" font-size="13" font-weight="700" text-anchor="middle">4</text>
+            <text x="102" y="519" class="s-ink" font-size="14" font-weight="650">沮丧（曲线低谷）</text>
+            <text x="102" y="537" class="s-muted" font-size="12.5">「旧办法没了，新办法还不会」</text>
+
+            <circle cx="392" cy="523" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="392" y="528" class="f-1" font-size="13" font-weight="700" text-anchor="middle">5</text>
+            <text x="412" y="519" class="s-ink" font-size="14" font-weight="650">实验</text>
+            <text x="412" y="537" class="s-muted" font-size="12.5">「先挑一个服务试试看」</text>
+
+            <circle cx="702" cy="523" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="702" y="528" class="f-1" font-size="13" font-weight="700" text-anchor="middle">6</text>
+            <text x="722" y="519" class="s-ink" font-size="14" font-weight="650">决定</text>
+            <text x="722" y="537" class="s-muted" font-size="12.5">「以后就按新流程走」</text>
+          </g>
+
+          <!-- 阶段图例 · 第三行 -->
+          <g>
+            <circle cx="82" cy="573" r="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+            <text x="82" y="578" class="f-1" font-size="13" font-weight="700" text-anchor="middle">7</text>
+            <text x="102" y="569" class="s-ink" font-size="14" font-weight="650">整合</text>
+            <text x="102" y="587" class="s-muted" font-size="12.5">「本来就该这么干」</text>
+
+            <text x="392" y="569" class="s-muted" font-size="12.5">回升段的「实验」与「决定」最容易被漏掉 ——</text>
+            <text x="392" y="587" class="s-muted" font-size="12.5">曲线不会从低谷直接跳到整合。</text>
+          </g>
+
+          <!-- 两个判读框 -->
+          <rect x="60" y="606" width="420" height="80" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="78" y="630" class="f-5" font-size="13" font-weight="700">领导者最常在低谷区误判为「推行失败」</text>
+          <text x="78" y="652" class="s-ink" font-size="12.5">指标变差 + 抱怨变多 → 判定方案不适用 → 撤回变革</text>
+          <text x="78" y="674" class="s-muted" font-size="12.5">代价：组织学会「熬一熬就过去」，下一次变革更难推</text>
+
+          <rect x="510" y="606" width="390" height="80" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="528" y="630" class="f-1" font-size="13" font-weight="700">低谷期该做的三件事</text>
+          <text x="528" y="652" class="s-ink" font-size="12.5">提高沟通频率 · 交付一个看得见的小胜利</text>
+          <text x="528" y="674" class="s-ink" font-size="12.5">允许公开表达不满，且不追究</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-3-1　变革曲线与那道致命的误判。</strong>
+        要看懂的只有一件事：<strong>曲线先下后上，低谷位于路径中段而不是终点</strong>。
+        虚线是变革前的水平，注意第 7 点「整合」最终高于这条虚线 —— 变革的收益本来就在低谷之后才出现。
+        真正的风险不在低谷本身，而在<strong>低谷区那个红框</strong>：此时看到的所有数据都支持「失败」这个结论，
+        撤回决定通常就是在这里做出的。
+        <br><small class="muted">术语 <em>Kubler-Ross Change Curve</em> 逐字列于 DOFD v3.4 官方考纲术语表
+        （<strong>官方术语表逐字写作 Kubler-Ross，不带变音符</strong>；心理学原始文献中的姓氏拼作 Kübler-Ross，本站正文一律采用官方拼法）。
+        <strong>图中标定的是变革管理领域常用的七阶段版本</strong>（震惊 → 否认 → 挫折/愤怒 → 沮丧 → 实验 → 决定 → 整合），
+        它与原始的五阶段模型并存，两版清单见 kp-5-3-1 ① 面的对照表。
+        <strong>DOFD 未指定采用哪一版，本站并列呈现，考试若涉及具体阶段名以官方教材为准</strong>。
+        括注的典型说法与两个判读框为本站教学整理。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-5-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-3-1</div>
+        <h3 class="kp__title">Kubler-Ross 变革曲线<span class="en">Kubler-Ross Change Curve</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">Kubler-Ross 变革曲线 <span class="en">Kubler-Ross Change Curve</span></span>
+            描述<strong>同一个人</strong>在面对重大变革时，情绪与效能随时间经过的一段<strong>先下降、后回升</strong>的路径。
+            它给出的最重要结论只有一句：<strong>低谷是必经的，不是失败信号。</strong>
+          </p>
+          <p><strong>阶段清单有两个真实存在、且必须分清的版本</strong>，本站按通行的两个版本并列列出：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:8%">#</th><th style="width:30%">(a) 原始 Kubler-Ross 五阶段<br><span class="en">DABDA</span></th><th>(b) 变革管理常用的 Change Curve 七阶段<br><span class="en">Shock → … → Integration</span></th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>否认 <span class="en">Denial</span></td><td>震惊 <span class="en">Shock</span></td></tr>
+                <tr><td>2</td><td>愤怒 <span class="en">Anger</span></td><td>否认 <span class="en">Denial</span></td></tr>
+                <tr><td>3</td><td>讨价还价 <span class="en">Bargaining</span></td><td>挫折 / 愤怒 <span class="en">Frustration / Anger</span></td></tr>
+                <tr><td>4</td><td>沮丧 <span class="en">Depression</span></td><td><strong>沮丧 <span class="en">Depression</span>（曲线低谷）</strong></td></tr>
+                <tr><td>5</td><td>接受 <span class="en">Acceptance</span></td><td>实验 <span class="en">Experiment</span></td></tr>
+                <tr><td>6</td><td>—</td><td>决定 <span class="en">Decision</span></td></tr>
+                <tr><td>7</td><td>—</td><td>整合 <span class="en">Integration</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><strong>两版的差别集中在两端</strong>：五阶段版没有「震惊」这个开头，回升段只到「接受」为止；
+            七阶段版在开头补了「震惊」，并把回升段拆成<strong>实验 → 决定 → 整合</strong>三步。
+            <strong>回升段的「实验」与「决定」是最容易被漏掉的两个阶段</strong>；
+            而「接受」与「整合」分属不同版本，不要把它们串成同一条清单。</p>
+          <p>下表按<strong>(b) 七阶段版</strong>展开，图 5-3-1 标定的也是这一版：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">阶段（七阶段版）</th><th style="width:30%">内部状态</th><th>外在表现</th></tr></thead>
+              <tbody>
+                <tr><td><strong>1 震惊</strong></td><td>信息刚到，还没形成判断</td><td>反应停顿、反复追问细节，工作节奏先不变</td></tr>
+                <tr><td><strong>2 否认</strong></td><td>信息还没被当真</td><td>照旧工作，把公告当作又一次「风声」</td></tr>
+                <tr><td><strong>3 挫折 / 愤怒</strong></td><td>感到被剥夺、被指责</td><td>质疑决策合理性，把矛头指向发起方</td></tr>
+                <tr><td><strong>4 沮丧（低谷）</strong></td><td>旧能力失效、新能力未成</td><td><strong>产出实际下降</strong>，抱怨增多，人员流失风险最高</td></tr>
+                <tr><td><strong>5 实验</strong></td><td>开始小范围试着做事</td><td>提问从「为什么要改」变成「这个该怎么做」</td></tr>
+                <tr><td><strong>6 决定</strong></td><td>确认新方式可行，主动选定它</td><td>不再保留旧路径，开始按新流程排期</td></tr>
+                <tr><td><strong>7 整合</strong></td><td>新方式成为默认</td><td>效能超过变革前水平，旧做法无人再提</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>Kubler-Ross Change Curve</em> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List），属必须掌握的名词。
+            <strong>官方术语表逐字写作 Kubler-Ross</strong>（不带变音符），本站正文一律采用该拼法。
+            上面并列的是这一模型通行的两个版本。
+            <strong>DOFD 未指定采用哪一版，本站并列呈现，考试若涉及具体阶段名以官方教材为准</strong>。
+            两张表均为<strong>本站教学整理</strong>，其中第二张表的「内部状态 / 外在表现」两列尤其如此。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点非常具体：<strong>转型的成本先发生，收益后发生，所以指标必然先坏后好</strong> ——
+            而多数组织没有为「先坏」这段时间准备任何解释。
+          </p>
+          <ul>
+            <li>某企业推行流水线自动发布，第 1 个月宣讲、第 2 个月改造、第 3 个月起全员按新流程走。
+              第 3 个月末的数据：部署频率没升，<strong>工单积压反而多了 40%</strong>，两名资深运维提出转岗。
+              管理层看完数据得出结论「这套东西不适合我们的业务」，第 4 个月宣布暂停，回到旧流程。</li>
+            <li>问题在于，这些数据恰恰是<strong>低谷期应有的样子</strong>：旧的手工发布技能刚刚贬值，
+              新的流水线还不熟练，同一件事要花两倍时间。撤回决定发生在曲线最低点的前后，
+              <strong>把一段过程读成了一个结论。</strong></li>
+            <li>更贵的是后果：撤回本身也是一次变革。组织从中学到的是
+              <strong>「顶住三个月，任何变革都会自己消失」</strong>。下一次推动时，同样的人会更早进入否认与挫折阶段，
+              低谷来得更快也更深 —— 这正是<span class="term">变革疲劳 <span class="en">Change fatigue</span></span>的形成方式。</li>
+          </ul>
+          <p class="mb-0">
+            变革曲线的作用不是安慰，而是<strong>把低谷从「意外」变成「计划中的一段」</strong>：
+            事先说明会有这一段、事先约定低谷期不做撤回决定，撤回的冲动才不会在数据最难看的那一周发生。
+          </p>
+          <p class="mb-0 muted"><small>上述企业案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。
+            <em>Change fatigue</em> 列于 DOFD v3.4 官方考纲术语表；「撤回会加深下一次低谷」这一因果链条为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">变革曲线</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>变革疲劳 <span class="en">Change fatigue</span></strong></td>
+                  <td>描述<strong>一次</strong>变革内部的情绪路径，终点是回升</td>
+                  <td>描述<strong>多次</strong>变革累积后的耗竭状态，终点是麻木与不再投入</td>
+                </tr>
+                <tr>
+                  <td><strong>文化债 <span class="en">Cultural debt</span></strong></td>
+                  <td>是<strong>过程</strong>：会自己走完，只要不中途撤回</td>
+                  <td>是<strong>存量</strong>：不主动偿还就一直在，还会计息（见本章<a href="5.2-cultural-debt.html">5.2 文化债</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>组织成熟度模型</strong></td>
+                  <td>量的是<strong>人的情绪与效能</strong>，横轴是时间，形状先下后上</td>
+                  <td>量的是<strong>组织的能力等级</strong>，只升不降，没有低谷概念（见本章<a href="5.4-maturity-models.html">5.4 组织成熟度模型</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>早期采用者 / 后期多数等人群划分</strong></td>
+                  <td>是<strong>同一个人在时间上的路径</strong></td>
+                  <td>是<strong>不同人在同一时刻的分类</strong>（见 kp-5-3-3）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>变革曲线是「一个人走过的路」，不是「一群人的分类」</strong>。
+            考题很爱把这两件事对调 —— 用「哪一类人最先接受变革」的问法去套变革曲线，
+            或者用「人在变革中会经历哪些情绪」的问法去套人群划分。
+            <strong>看题干问的是「阶段」还是「人群」，一秒可分。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出对比；
+            表中 <em>Change fatigue</em>、<em>Cultural debt</em> 均为 DOFD v3.4 官方考纲术语表条目。
+            「早期采用者 / 后期多数」所属的创新采用曲线 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            不在 DOFD 66 条术语表内，也不在 v3.4 课程大纲子项内；其中<strong>「早期采用者」这一称谓因 DOFD v3.4 官方样题答案键而有官方依据</strong>，
+            本节仅借用其人群称谓，不展开整条曲线。
+            文化债见本章<a href="5.2-cultural-debt.html">5.2</a>，组织成熟度模型见本章<a href="5.4-maturity-models.html">5.4</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把曲线当成<strong>排期工具</strong>，不是心理学读物。四个具体动作：</p>
+          <ul>
+            <li><strong>启动时就预告低谷</strong>：在变革公告里直接写「前两个月会更慢，这是预期内的」。
+              预告过的下降是代价，没预告的下降是事故 —— 同样的数据，读法完全不同。</li>
+            <li><strong>设一条「低谷期不撤回」的规则</strong>：约定评估窗口（例如「满两个完整周期后再评估」），
+              并且<strong>在情绪最低之前就把规则定死</strong>。低谷期做的决定不算数，这一条要写在纸上。</li>
+            <li><strong>把第一个小胜利排在低谷附近</strong>：不是最有价值的那个改进，而是<strong>最快能被看见</strong>的那个
+              （例如把一个折磨人的手工步骤先自动化掉）。低谷期需要的是证据，不是承诺。</li>
+            <li><strong>按阶段换沟通方式</strong>（对应上面的七阶段版）：震惊期给完整信息，否认期给事实与时间表，
+              挫折/愤怒期给倾听渠道，沮丧期给具体帮助与培训，实验期给练习机会与试错空间，
+              决定期给明确承诺，整合期把新做法固化进流程。
+              <strong>同一套说辞用在七个阶段，只有一个阶段会奏效。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>这四项动作与阶段-沟通方式的对应，均为本站教学整理，
+            官方文件收录 <em>Kubler-Ross Change Curve</em> 这一术语，未规定实施手册。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：术语识别（Bloom 1）</strong>。问 Kubler-Ross Change Curve 描述的是什么。
+              正确方向是<strong>人在面对变革时经历的情绪 / 反应阶段</strong>，关键词是「情绪」「阶段」「随时间」。</li>
+            <li><strong>命题角度二：场景归位（Bloom 2）</strong>。给一段描述（士气下降、抱怨增多、产出暂时变差），
+              问这属于什么。方向是<strong>变革曲线的低谷阶段，属正常路径</strong>，而不是「变革失败」或「应当回滚」。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>组织成熟度模型的等级</strong>（它只升不降，没有低谷）、
+              <strong>Thomas-Kilmann 的五种模式</strong>（那是处理冲突的方式，不是时间阶段）、
+              <strong>创新采用人群的划分</strong>（那是分类，不是路径；
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span>非考纲术语，此处仅作干扰项类型说明）、
+              以及把它说成<strong>事故处理或变更管理流程</strong>的选项 —— 它跟流程无关，跟人有关。</li>
+            <li><strong>排除技巧</strong>：先判断选项在描述<strong>「阶段（时间）」还是「类别（人群）」还是「等级（能力）」</strong>。
+              变革曲线只可能落在「阶段」这一格；落在另外两格的整组划掉。</li>
+            <li><strong>反向问法</strong>：问低谷期<strong>不应该</strong>做什么。方向是「不应据此判定变革失败并撤回」。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析与「阶段 / 类别 / 等级」三格排除法为本站教学整理，官方仅公布考试范围为 Bloom 1–2。
+            <strong>若考题涉及具体阶段名称，以官方教材的逐字表述为准</strong> —— DOFD 未指定采用五阶段还是七阶段版本，本站两版并列。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">低谷是路上的坑，不是路的尽头。</p>
+          <p class="mb-0 muted"><small>配套的一句：<strong>在低谷里做的撤回决定，撤掉的不是方案，是下一次变革的可能性。</strong>
+            所以「低谷期不做撤回决定」这条规则必须在启动时就定，不能等到低谷里再商量。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-5-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-3-2</div>
+        <h3 class="kp__title">Thomas-Kilmann 冲突处理模式<span class="en">Thomas-Kilmann Conflict Modes</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">Thomas-Kilmann 冲突处理模式 <span class="en">Thomas-Kilmann Conflict Modes</span></span>
+            用<strong>两个维度</strong>给冲突中的行为定位：<strong>关注自身诉求</strong>的程度（坚定性）与
+            <strong>关注他人诉求</strong>的程度（合作性）。两个维度的高低组合出<strong>五种模式</strong>：
+            竞争、协作、妥协、回避、迁就。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">模式</th><th style="width:14%">关注自身</th><th style="width:14%">关注他人</th><th>一句话</th></tr></thead>
+              <tbody>
+                <tr><td><strong>竞争 <span class="en">Competing</span></strong></td><td>高</td><td>低</td><td>我方主张优先，<strong>快速给出决断</strong></td></tr>
+                <tr><td><strong>协作 <span class="en">Collaborating</span></strong></td><td>高</td><td>高</td><td>重新定义问题，找双方都满足的解，<strong>代价是时间</strong></td></tr>
+                <tr><td><strong>妥协 <span class="en">Compromising</span></strong></td><td>中</td><td>中</td><td>各让一步，<strong>都不完全满意但都能接受</strong></td></tr>
+                <tr><td><strong>回避 <span class="en">Avoiding</span></strong></td><td>低</td><td>低</td><td>先不处理，<strong>分歧留在原地</strong></td></tr>
+                <tr><td><strong>迁就 <span class="en">Accommodating</span></strong></td><td>低</td><td>高</td><td>接受对方方案，<strong>优先保住关系</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0"><strong>模型的核心主张是：没有哪种模式绝对正确。</strong>
+            五种都有各自成立的场合，选错场合才是问题 —— 包括回避，它在某些场合是最省事的正解。</p>
+          <div class="src-note">
+            <em>Thomas-Kilmann Conflict Modes</em> 逐字列于 DOFD v3.4 官方考纲术语表，属必须掌握的名词。
+            五种模式的名称与「关注自身 × 关注他人」两维度定位按该模型的通行表述给出，「一句话」一列亦然 —— 两处均为<strong>本站教学整理</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点是：<strong>组织把冲突当成「有人性格不好」，于是处理方式只剩两种 —— 吵到一方放弃，或者永远搁置。</strong>
+          </p>
+          <ul>
+            <li>某公司 Dev 要求一周发布两次，Ops 坚持一月一次。双方各有正当理由：一边被业务催需求，
+              一边为线上稳定性背责任。<strong>5 个月开了 11 次协调会，每次都以「再研究一下」结束</strong> ——
+              这是典型的回避：会开了，分歧一点没动。</li>
+            <li>回避的账在别处结算：Dev 绕过正式流程，自己搭了一条旁路发布通道。
+              半年后一次事故，<strong>故障系统不在 Ops 的监控范围内</strong>，定位花了 4 小时。
+              分歧没有消失，只是从会议室转移到了生产环境。</li>
+            <li>换成协作后，双方第一次把问题重新定义：争的不是「一周几次」，而是
+              <strong>「怎样让一次发布的风险小到不值得开会」</strong>。这个问题有解 —— 缩小批量、自动化回滚、
+              把发布权和值班责任绑在一起。原来的数字之争自动消失了。</li>
+          </ul>
+          <p class="mb-0">
+            模型的价值在于把冲突从<strong>性格标签</strong>变成<strong>可选择的工具</strong>：
+            要问的不是「我是什么类型的人」，而是<strong>「这一次该用哪一种」</strong>。
+          </p>
+          <p class="mb-0 muted"><small>上述 Dev / Ops 案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-3-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 640" role="img" aria-label="Thomas-Kilmann 五种冲突处理模式在关注自身诉求与关注他人诉求两个维度上的定位">
+              <defs>
+                <marker id="ah-53-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <!-- 坐标轴 -->
+              <path d="M120 500 L120 74" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-53-1)"/>
+              <path d="M120 500 L796 500" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-53-1)"/>
+              <text x="60" y="52" class="s-ink" font-size="13.5" font-weight="650">↑ 关注自身诉求（坚定性 assertiveness）</text>
+              <text x="460" y="552" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">关注他人诉求（合作性 cooperativeness）→</text>
+              <text x="110" y="102" class="s-muted" font-size="12.5" text-anchor="end">高</text>
+              <text x="110" y="492" class="s-muted" font-size="12.5" text-anchor="end">低</text>
+              <text x="126" y="520" class="s-muted" font-size="12.5">低</text>
+              <text x="790" y="520" class="s-muted" font-size="12.5" text-anchor="end">高</text>
+
+              <!-- 竞争 -->
+              <rect x="140" y="96" width="210" height="88" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="245" y="126" class="f-5" font-size="15.5" font-weight="700" text-anchor="middle">竞争 Competing</text>
+              <text x="245" y="148" class="s-ink" font-size="12.5" text-anchor="middle">我方主张优先 · 快速决断</text>
+              <text x="245" y="168" class="s-muted" font-size="12.5" text-anchor="middle">生产故障中最合适</text>
+
+              <!-- 协作 -->
+              <rect x="570" y="96" width="210" height="88" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="675" y="126" class="f-1" font-size="15" font-weight="700" text-anchor="middle">协作 Collaborating</text>
+              <text x="675" y="148" class="s-ink" font-size="12" text-anchor="middle">重新定义问题 · 双方诉求都满足</text>
+              <text x="675" y="168" class="s-muted" font-size="12.5" text-anchor="middle">Dev 与 Ops 的长期分歧</text>
+
+              <!-- 妥协 -->
+              <rect x="355" y="254" width="210" height="88" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="460" y="284" class="f-2" font-size="15" font-weight="700" text-anchor="middle">妥协 Compromising</text>
+              <text x="460" y="306" class="s-ink" font-size="12.5" text-anchor="middle">各让一步 · 都不完全满意</text>
+              <text x="460" y="326" class="s-muted" font-size="12.5" text-anchor="middle">时间不够时的临时解</text>
+
+              <!-- 回避 -->
+              <rect x="140" y="396" width="210" height="88" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="245" y="426" class="f-3" font-size="15.5" font-weight="700" text-anchor="middle">回避 Avoiding</text>
+              <text x="245" y="448" class="s-ink" font-size="12.5" text-anchor="middle">不处理 · 分歧留在原地</text>
+              <text x="245" y="468" class="s-muted" font-size="12.5" text-anchor="middle">琐碎议题或情绪过热时</text>
+
+              <!-- 迁就 -->
+              <rect x="570" y="396" width="210" height="88" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="675" y="426" class="f-4" font-size="14" font-weight="700" text-anchor="middle">迁就 Accommodating</text>
+              <text x="675" y="448" class="s-ink" font-size="12.5" text-anchor="middle">让步对方 · 优先保住关系</text>
+              <text x="675" y="468" class="s-muted" font-size="12.5" text-anchor="middle">对方更在乎而你无所谓时</text>
+
+              <!-- 底部两框 -->
+              <rect x="60" y="566" width="380" height="70" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="78" y="592" class="f-5" font-size="13" font-weight="700">没有哪一种模式绝对正确</text>
+              <text x="78" y="616" class="s-ink" font-size="12.5">选哪种，取决于还剩多少时间、还要合作多久</text>
+
+              <rect x="470" y="566" width="370" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="488" y="592" class="f-1" font-size="13" font-weight="700">两个必须记住的落点</text>
+              <text x="488" y="616" class="s-ink" font-size="12.5">生产故障中 → 竞争　长期分歧 → 协作</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-3-2　五种模式的二维定位。</strong>
+            要看懂的是：<strong>五个格子不是好坏排序，而是坐标</strong>。
+            左上角的竞争与右上角的协作都「关注自身诉求」，差别只在要不要同时满足对方；
+            左下角的回避与右下角的迁就都「不坚持自己」，差别在于对方的诉求有没有被满足。
+            中间的妥协不是协作的低配 —— 它<strong>刻意</strong>让双方都不完全满意，换取速度。
+            <br><small class="muted">五模式名称与两维度定位按该模型的通行表述给出，见上方 ① 面的来源说明；
+            各框第三行的适用场景与底部两个判读框为本站教学整理。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">易混的一对</th><th style="width:40%">分界线</th><th>选择依据</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>协作 vs 妥协</strong></td>
+                  <td>协作<strong>重新定义问题</strong>，产出是双方原本没想到的第三方案；
+                      妥协<strong>接受原问题</strong>，在两端之间切一刀</td>
+                  <td>时间够、关系长 → 协作；时间不够、议题不值得深挖 → 妥协</td>
+                </tr>
+                <tr>
+                  <td><strong>竞争 vs 协作</strong></td>
+                  <td>竞争<strong>只优化自身诉求</strong>，速度最快；协作<strong>两边都要</strong>，速度最慢</td>
+                  <td>看时间压力：分钟级决策 → 竞争；季度级议题 → 协作</td>
+                </tr>
+                <tr>
+                  <td><strong>回避 vs 迁就</strong></td>
+                  <td>回避后<strong>分歧仍在</strong>，没人的诉求被满足；迁就后<strong>分歧结束</strong>，对方的诉求被满足</td>
+                  <td>议题真的不重要 → 回避；议题对对方重要、对你不重要 → 迁就</td>
+                </tr>
+                <tr>
+                  <td><strong>竞争 vs 迁就</strong></td>
+                  <td>同一个维度的两端：一个只要自己，一个只要对方</td>
+                  <td>谁的判断在这件事上更可靠，就往哪一端走</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>妥协不是协作的低配版本，两者的产出形态不同</strong>。
+            协作的成功标志是「出现了原来不存在的第三个方案」，妥协的成功标志是「双方都少拿了一点但当场结束」。
+            考题常把「各让一步、快速达成一致」写成协作 —— 那是妥协；<strong>协作里没有「让一步」这个动作</strong>。</small></p>
+          <p class="mb-0 muted"><small>本对照表与「选择依据」一列为本站教学整理，官方未以此形式给出对比。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选模式之前先问两件事：<strong>还剩多少时间，还要合作多久。</strong>DevOps 场景里的典型落点：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:34%">场景</th><th style="width:16%">适合的模式</th><th>理由</th></tr></thead>
+              <tbody>
+                <tr><td><strong>生产故障处置中</strong>，几方对根因判断不一致</td><td><strong>竞争</strong></td><td>时间以分钟计，需要<strong>单一决策者当场拍板</strong>。此刻开共识会，系统还在挂着</td></tr>
+                <tr><td><strong>Dev 与 Ops 的长期分歧</strong>：发布节奏、值班责任、变更审批</td><td><strong>协作</strong></td><td>双方要长期共事，且议题背后有真问题。<strong>压服一方等于把分歧转入地下</strong></td></tr>
+                <tr><td>发布前一天的次要争议（日志格式、告警阈值取值）</td><td><strong>妥协</strong></td><td>议题价值小于继续讨论的成本，各让一步当场结束</td></tr>
+                <tr><td>代码风格、工具偏好这类无实质影响的争论</td><td><strong>回避</strong>或<strong>迁就</strong></td><td>不值得消耗关系。若对方明显更在意，直接迁就</td></tr>
+                <tr><td>对方在其专业领域内的判断，你没有更强依据</td><td><strong>迁就</strong></td><td>让步不是软弱，是把决定权交给信息更多的一方</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>两个高频反模式：</p>
+          <ul class="mb-0">
+            <li><strong>把协作用在故障现场</strong>：战情室里追求全员共识，恢复时间被会议吃掉。
+              故障中的目标是先恢复，根因的分歧留到无指责事后复盘里用协作解决。</li>
+            <li><strong>把竞争用在长期分歧</strong>：靠层级压服对方，<strong>赢了这次会议，输掉之后所有的配合</strong>。
+              被压服的一方会转为回避 —— 表面同意，实际另建旁路。</li>
+          </ul>
+          <p class="mb-0 muted"><small>上表的场景-模式对应与两个反模式均为本站教学整理，
+            官方文件收录 <em>Thomas-Kilmann Conflict Modes</em> 这一术语，未给出场景适用表。
+            无指责事后复盘见 <a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步：持续学习与实验（2.5）</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：术语识别</strong>。问 Thomas-Kilmann Conflict Modes 是什么。
+              方向是<strong>处理冲突的若干种行为模式</strong>，按对自身诉求与他人诉求的关注程度区分。</li>
+            <li><strong>命题角度二：场景选模式</strong>。给一个冲突场景，问最适合哪种方式。
+              判据在题干里：<strong>时间压力</strong>（越紧越靠近竞争）与<strong>关系时长</strong>（越长越靠近协作）。</li>
+            <li><strong>干扰项长什么样</strong>：最典型的一种是把<strong>「协作永远最好」</strong>写成看似正确的选项 ——
+              协作确实最符合 DevOps 的价值取向，所以它是最诱人的错误答案。
+              <strong>只要题干强调了时间紧迫或需要立即决断，协作就是错的。</strong>
+              另一种是把<strong>回避写成绝对负面</strong>；模型里回避是五种之一，不是错误行为。</li>
+            <li><strong>第三种干扰</strong>：把冲突模式与<strong>变革曲线的阶段</strong>混在一组选项里。
+              前者是「怎么应对分歧」，后者是「情绪走到哪一步」，不在同一个问题空间。</li>
+            <li><strong>排除技巧</strong>：先在题干里找两个词 —— 有没有<strong>「立即 / 紧急 / 生产中断」</strong>，
+              有没有<strong>「长期 / 反复出现 / 双方都要继续合作」</strong>。前者指向竞争，后者指向协作，
+              两者都没有则多半在妥协、回避、迁就之间按议题重要性判断。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            「时间压力 × 关系时长」判据与干扰项分析为本站教学整理，官方仅公布考试范围为 Bloom 1–2。
+            <strong>若考题涉及五种模式的具体名称，以官方教材的逐字表述为准</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先看两件事：还剩多少时间，还要合作多久。</p>
+          <p class="mb-0 muted"><small>坐标助记：<strong>上排两个都硬（竞争、协作），下排两个都软（回避、迁就），右列两个都顾对方（协作、迁就），中间那个谁都不完全满意（妥协）。</strong>
+            再加一句反向提醒：<strong>协作不是万能答案</strong> —— 它是最贵的一种，贵在时间。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-5-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-3-3</div>
+        <h3 class="kp__title">Golden Circle 黄金圈与变革推动者<span class="en">Golden Circle · why / how / what</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">Golden Circle 黄金圈 <span class="en">Golden Circle</span></span>
+            把一段沟通拆成三层同心圆：<strong>why（为什么）· how（怎么做）· what（做什么）</strong>，
+            并主张沟通应当<strong>从内向外</strong>：先讲 why，再讲 how，最后才讲 what。
+          </p>
+          <p>
+            官方对最内层给出了明确口径：<strong>Golden Circle 的「why」代表组织的目的、事业与信念</strong> ——
+            这一条<strong>由 DOFD v3.4 官方样题答案键确认</strong>。
+            换句话说，why 不是「今年的目标」，也不是「要达成的指标」，而是组织<strong>为何存在</strong>这一层的东西。
+          </p>
+          <p>
+            本知识点还带着第二个考点：<strong>推动重大变革时，应当参与规划并担任变革推动者的是「早期采用者」</strong> ——
+            这一条同样<strong>由 DOFD v3.4 官方样题答案键确认</strong>。可复述的定义是：
+            <strong>早期采用者不需要看到完整证据就愿意行动，但仍留在主流圈子里、在同伴中有内部信誉</strong> ——
+            两个条件缺一不可，这正是他能把 why 翻译给别人听的原因。
+          </p>
+          <div class="src-note">
+            <em>Golden Circle</em> 逐字列于 DOFD v3.4 官方考纲术语表。
+            <strong>「why 代表组织的目的、事业与信念」由 DOFD v3.4 官方样题答案键确认</strong>（本站只陈述结论，不复制题干与选项原文）。
+            官方口径只确认了 why 这一层；<strong>how 与 what 各自代表什么、以及「从内向外」的顺序主张，
+            为本站按 Golden Circle 通行表述给出的教学整理</strong>。
+            <strong>「参与规划并担任变革推动者的是早期采用者」由 DOFD v3.4 官方样题答案键确认</strong>；
+            但「早期采用者」所属的<strong>创新采用曲线</strong> <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            不在 66 条术语表、也不在 v3.4 课程大纲子项内 —— 上面那句行为特征描述为<strong>本站教学整理</strong>，
+            官方答案键只确认了这个人群称谓本身。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点是：<strong>组织宣布变革时，几乎总是从 what 讲起，而 what 层的信息回答不了「为什么值得我改变现有工作方式」。</strong>
+          </p>
+          <ul>
+            <li>某公司的转型公告全文只有 what：「下季度全面启用 CI/CD 流水线，各团队于 3 月底前完成迁移，
+              迁移进度纳入季度考核。」两周后统计，<strong>迁移率 12%</strong>，
+              多数团队把它当成又一个摊派下来的 IT 指标。</li>
+            <li>失败的机制很直白：读到这段话的人无法判断<strong>这件事跟自己每天遇到的麻烦有没有关系</strong>。
+              没有关系，就只剩考核压力；只剩考核压力，做出来的就是应付考核的最小动作 ——
+              流水线建起来了，但没人用它发布。</li>
+            <li>换成从 why 开始：「客户报一个缺陷，平均 9 天才能拿到修复。这 9 天里有 6 天在等发布窗口。
+              我们要把它变成 1 天。」<strong>同一批团队第一次有了自己的判断依据</strong> ——
+              后面的 how（缩小批量、自动化测试）与 what（流水线）才成为手段，而不是任务。</li>
+          </ul>
+          <p class="mb-0">
+            黄金圈的作用不是让公告更好听，而是<strong>把「服从」换成「判断」</strong>：
+            听懂 why 的人可以在你没想到的场景里自己做决定；只听到 what 的人只能等下一条指令。
+          </p>
+          <p class="mb-0 muted"><small>上述公告案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-3-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 520" role="img" aria-label="黄金圈三层同心圆：why 在最内层，how 在中层，what 在最外层，沟通顺序由内向外">
+              <defs>
+                <marker id="ah-53-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 三层同心圆 -->
+              <circle cx="300" cy="250" r="180" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <circle cx="300" cy="250" r="120" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <circle cx="300" cy="250" r="62" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+
+              <text x="300" y="100" class="f-4" font-size="17" font-weight="700" text-anchor="middle">what</text>
+              <text x="300" y="120" class="s-muted" font-size="12.5" text-anchor="middle">做什么</text>
+
+              <text x="300" y="158" class="f-3" font-size="17" font-weight="700" text-anchor="middle">how</text>
+              <text x="300" y="176" class="s-muted" font-size="12.5" text-anchor="middle">怎么做</text>
+
+              <text x="300" y="246" class="f-1" font-size="20" font-weight="700" text-anchor="middle">why</text>
+              <text x="300" y="268" class="s-muted" font-size="12.5" text-anchor="middle">为什么</text>
+
+              <!-- 由内向外的箭头 -->
+              <path d="M300 320 L300 464" class="s-2" stroke-width="2.5" stroke-dasharray="6 5" fill="none" marker-end="url(#ah-53-2)"/>
+              <text x="300" y="492" class="f-2" font-size="13.5" font-weight="700" text-anchor="middle">先讲 why，再讲 how，最后才讲 what</text>
+
+              <!-- 右侧三层说明 -->
+              <rect x="520" y="110" width="360" height="92" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="538" y="136" class="f-1" font-size="14.5" font-weight="700">why —— 目的、事业与信念</text>
+              <text x="538" y="160" class="s-ink" font-size="12.5">回答「我们为什么存在、为什么值得改变」</text>
+              <text x="538" y="184" class="s-muted" font-size="12">由 DOFD v3.4 官方样题答案键确认</text>
+
+              <rect x="520" y="222" width="360" height="92" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="538" y="248" class="f-3" font-size="14.5" font-weight="700">how —— 实现 why 的方式</text>
+              <text x="538" y="272" class="s-ink" font-size="12.5">工作原则、协作方式、流程的改动</text>
+              <text x="538" y="296" class="s-muted" font-size="12">本站教学整理（见正文标注）</text>
+
+              <rect x="520" y="334" width="360" height="92" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="538" y="360" class="f-4" font-size="14.5" font-weight="700">what —— 看得见的产物</text>
+              <text x="538" y="384" class="s-ink" font-size="12.5">工具、流水线、指标 —— 公告最爱从这里写起</text>
+              <text x="538" y="408" class="s-muted" font-size="12">本站教学整理（见正文标注）</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-3-3　黄金圈与 DevOps 转型沟通的顺序。</strong>
+            要看懂的是<strong>箭头的方向</strong>：三层的内容本身并不新鲜，出问题的永远是叙述顺序。
+            绝大多数转型公告从最外层的 what 开始写（上什么工具、几月几号完成），
+            而<strong>只有最内层的 why 能让人自己判断该不该改</strong>。
+            右侧三个框中，只有最上面那一条有官方口径 —— 这也提示了考点落在哪一层。
+            <br><small class="muted">「why 代表组织的目的、事业与信念」由 DOFD v3.4 官方样题答案键确认；
+            how / what 两层的表述与「从内向外」的顺序主张为本站教学整理，见 ① 面来源说明。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">黄金圈</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>变革曲线 <span class="en">Kubler-Ross</span></strong></td>
+                  <td>解决<strong>「怎么说」</strong>：一段话按什么顺序组织</td>
+                  <td>解决<strong>「什么时候说、预期什么反应」</strong>：同一句话在挫折期和实验期效果完全不同</td>
+                </tr>
+                <tr>
+                  <td><strong>冲突处理模式 <span class="en">Thomas-Kilmann</span></strong></td>
+                  <td>假设对方<strong>愿意听</strong>，目标是让人理解</td>
+                  <td>处理<strong>已经谈不拢</strong>之后的局面，目标是让分歧有个了结</td>
+                </tr>
+                <tr>
+                  <td><strong>CALMS</strong></td>
+                  <td>是<strong>沟通结构</strong>：三层同心圆，讲究顺序</td>
+                  <td>是<strong>价值观清单</strong>：文化 / 自动化 / 精益 / 度量 / 分享，五项并列无顺序</td>
+                </tr>
+                <tr>
+                  <td><strong>业务战略与目标</strong></td>
+                  <td>why 是<strong>目的、事业与信念</strong>（官方样题答案键确认）</td>
+                  <td>决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>（同样由官方样题答案键确认）</td>
+                </tr>
+                <tr>
+                  <td><strong>早期采用者 vs 创新者</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+                  <td><strong>早期采用者</strong>：愿意在证据不完整时先动，<strong>但人还在主流圈子里，同伴信他</strong></td>
+                  <td><strong>创新者</strong>：动得更早，却<strong>脱离主流圈子</strong> —— 他说的话同伴不信，所以不是推动者人选</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 why 理解成「目标」或「KPI」</strong>。
+            官方确认的 why 是<strong>目的、事业与信念</strong>那一层 ——
+            「今年部署频率提升 3 倍」这类说法是可测量的结果，落在 what 一侧，不是 why。
+            考题的干扰项常拿产品、利润、市场、流程来占位，这些全都在外层。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出对比；
+            末行「早期采用者 vs 创新者」的分界线为本站教学整理，两者所属的<strong>创新采用曲线</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span> 不在 DOFD 66 条术语表内；
+            「why 代表目的、事业与信念」与「业务战略与目标决定哪些原则实践最有益」两条均由 DOFD v3.4 官方样题答案键确认，
+            后者的展开见 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>；
+            「目标 / KPI 落在 what 一侧」为本站教学整理。
+            CALMS 见 <a href="../ch01-exploring-devops/1.1-defining-devops.html">第 1 章 定义 DevOps（1.1）</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>第一件事：把公告倒过来写。</strong>先写清楚现在最痛的那件事和它的代价（why），
+            再写打算改变的工作方式（how），最后才写工具与时间点（what）。
+            检验方法：把公告的最后一段删掉，读的人还能不能明白这事为什么值得做。</p>
+          <p><strong>第二件事：选对第一批人。</strong>
+            推动重大变革时，<strong>应当参与规划并担任变革推动者的是「早期采用者」</strong> ——
+            这一条<strong>由 DOFD v3.4 官方样题答案键确认</strong>。为什么是他们，而不是别人：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">人群</th><th style="width:34%">他们的行为特征</th><th>为什么不该是第一批</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>早期采用者</strong><br><small class="muted">官方答案键确认的正确对象</small></td>
+                  <td>不需要看到完整证据就愿意行动，同时仍处在主流圈子里、有内部信誉</td>
+                  <td><strong>—— 就该是他们。</strong>他们能把 why 翻译成同伴听得懂的语言，
+                      并且做出后期多数需要的那份证据</td>
+                </tr>
+                <tr>
+                  <td>需要先看到证据才行动的人</td>
+                  <td>等别人趟过、等数据出来才跟进</td>
+                  <td>变革刚启动时<strong>根本还没有证据</strong>，请他们当推动者等于让他们空等</td>
+                </tr>
+                <tr>
+                  <td>保守派与公开反对者</td>
+                  <td>倾向维持现状，对变革持怀疑或抵触</td>
+                  <td>说服成本最高、收益最低。<strong>先攻最硬的一块，变革会死在启动阶段</strong></td>
+                </tr>
+                <tr>
+                  <td>只有管理层</td>
+                  <td>发布公告、批预算、要进度</td>
+                  <td>管理层的承诺是必要条件，但<strong>公告本身不是推动力</strong>；
+                      一线不认，公告只会变成考核指标</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p><strong>让早期采用者「参与规划」而不只是「执行试点」</strong>，这一点是官方确认里容易被读漏的部分：
+            参与规划意味着方案里带着现场的真实约束，也意味着推广时说话的人是同事，不是文件。</p>
+          <p><strong>第三件事：三个模型合起来用。</strong></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">模型</th><th style="width:26%">它回答的问题</th><th>用在变革的哪个位置</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Golden Circle</strong></td><td><strong>怎么说</strong></td><td>启动沟通、每一次进展通报：永远从 why 起头</td></tr>
+                <tr><td><strong>Kubler-Ross 变革曲线</strong></td><td><strong>什么时候说、预期什么反应</strong></td><td>排期与预期管理：预告低谷、约定低谷期不撤回、按阶段换沟通方式</td></tr>
+                <tr><td><strong>Thomas-Kilmann 冲突模式</strong></td><td><strong>谈不拢时怎么办</strong></td><td>挫折/愤怒与沮丧阶段的具体分歧：按时间压力与关系时长选模式</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            顺序上，三者是串起来的：<strong>先用黄金圈把话说对（why → how → what），
+            用变革曲线预判听众此刻在哪一步、这句话会被怎么接收，
+            当分歧演变成对立时再用冲突模式决定这一次该竞争、协作还是搁置。</strong>
+          </p>
+          <p class="mb-0 muted"><small>「参与规划并担任变革推动者的是早期采用者」由 <strong>DOFD v3.4 官方样题答案键</strong>确认；
+            上表中<strong>四类人群的行为特征与排除理由为本站教学整理</strong>，
+            「早期采用者 / 后期多数」所属的创新采用曲线本身
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span> 不在 DOFD 66 条术语表内，本节只借用其人群称谓。
+            「管理层对文化变革的承诺是关键成功因素」同样由官方样题答案键确认，
+            但属领导力与关键成功因素范畴，见 <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>。
+            「三个模型合起来用」的分工表为本站教学整理，官方未以此形式给出组合方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>Golden Circle 的「why」代表组织的目的、事业与信念</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              <strong>干扰项长什么样</strong>：通常从<strong>外层取材</strong> —— 可交付的产物、可执行的流程与方法、
+              可测量的商业结果，都会被拿来占 why 的位置。它们分别落在 what 与 how 层，或者根本不在三层里。
+              <strong>排除技巧：凡是「可以被交付、被测量、被列成清单」的东西，都不是 why。</strong>
+              （干扰项的取材方式为本站按 what / how 层归纳的教学整理，非官方选项文本）</li>
+            <li><strong>官方已确认的第二条</strong>：<strong>推动重大变革时，应当参与规划并担任变革推动者的是「早期采用者」</strong>
+              —— 同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              <strong>干扰项长什么样</strong>：
+              <strong>「需要看到证据才行动的人」</strong>（变革之初没有证据，逻辑上不可能）、
+              <strong>保守派或公开反对者</strong>（成本最高的一群，不是起点）、
+              <strong>高管 / 管理层</strong>（听上去最「正确」，因此最危险 —— 题干问的是<strong>推动者与规划参与者</strong>，不是发起人或赞助人）、
+              以及<strong>最超前的少数创新者</strong>（他们脱离主流，说的话同伴不信）。</li>
+            <li><strong>排除技巧（针对第二条）</strong>：先划掉一切「等待型」的选项 —— 凡是描述里带
+              「在看到成效之后」「等到被证明」的，都不可能是<strong>推动者</strong>。
+              再在剩下的里面选<strong>既愿意早行动、又还在主流圈子里</strong>的那个。</li>
+            <li><strong>组合题的问法</strong>：给一段失败的变革沟通（只讲了工具与时间表），问缺了什么。
+              方向是<strong>缺 why</strong>。这类题会把「缺预算」「缺培训」「缺工具」作为干扰项 ——
+              它们都在 what 层，补上去仍然回答不了「为什么值得改」。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            两条结论出自 DOFD v3.4 官方样题答案键，本站只陈述结论。
+            排除技巧与干扰项分析为本站教学整理，官方仅公布考试范围为 Bloom 1–2。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">从 why 开始说，先说给早期采用者听。</p>
+          <p class="muted"><small>官方口径两句话：<strong>why = 目的、事业与信念</strong>；
+            <strong>变革推动者与规划参与者 = 早期采用者</strong>。两条都由 DOFD v3.4 官方样题答案键确认，可以直接当判据用。</small></p>
+          <p class="mb-0 muted"><small>三模型串联口诀：<strong>黄金圈管「怎么说」，曲线管「何时说、会被怎么接」，冲突模式管「说崩了怎么办」。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>三个模型全部在 66 条官方术语表内</strong>：Kubler-Ross Change Curve · Thomas-Kilmann Conflict Modes · Golden Circle</li>
+        <li><strong>变革曲线</strong>：情绪与效能<strong>先下后上</strong>，低谷是必经阶段。
+          <strong>领导者最常在低谷期误判为「推行失败」并撤回</strong> —— 撤回教会组织「熬一熬就过去」
+          （撤回加深下一次低谷的因果链为本站教学整理）</li>
+        <li><strong>阶段 vs 人群 vs 等级</strong>：变革曲线是同一个人的<strong>时间路径</strong>；早期采用者是<strong>人群分类</strong>；成熟度是<strong>能力等级</strong>。三者不在同一个问题空间（三格排除法为本站教学口诀）</li>
+        <li><strong>冲突模式</strong>：竞争 · 协作 · 妥协 · 回避 · 迁就，按「关注自身 × 关注他人」定位。
+          <strong>没有哪种绝对正确</strong> —— 生产故障中用<strong>竞争</strong>（快速决断），Dev 与 Ops 的长期分歧用<strong>协作</strong>
+          （场景-模式对应为本站教学整理，官方只收录术语名）</li>
+        <li><strong>协作 ≠ 妥协</strong>：协作产出第三方案，妥协是各让一步。「协作永远最好」是最常见的诱人错误答案（干扰项分析为本站教学整理）</li>
+        <li><strong>官方确认一</strong>：<strong>Golden Circle 的「why」代表组织的目的、事业与信念</strong>（DOFD v3.4 官方样题答案键确认）。产品、流程、利润、市场都不是 why</li>
+        <li><strong>官方确认二</strong>：推动重大变革时应参与规划并担任变革推动者的是<strong>早期采用者</strong>（DOFD v3.4 官方样题答案键确认）—— 不是保守派、不是管理层、不是需要看到证据才行动的人</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Kubler-Ross Change Curve</em>、<em>Thomas-Kilmann Conflict Modes</em>、
+      <em>Golden Circle</em>、<em>Change fatigue</em>、<em>Cultural debt</em>
+      均逐字列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，出自 DOFD v3.4 Examination Requirements（2022-05）；
+      本节主题「行为模型 <em>Behavioral Models</em>」是 DOFD v3.4 课程大纲各模块子项中 M5 模块
+      <em>Culture, Behaviors &amp; Operating Models</em> 的子项。
+      <strong>两条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「Golden Circle 的 why 代表组织的<strong>目的、事业与信念</strong>」，
+      「推动重大变革时应参与规划并担任变革推动者的是<strong>早期采用者</strong>」。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <br>
+      <strong>官方考纲术语表只列出词条、不附定义</strong>，因此本页三个模型的展开清单都是<strong>本站教学整理</strong>：
+      ① Kubler-Ross 变革曲线的阶段清单 —— <strong>DOFD 未指定采用哪一版</strong>，本站并列列出两个真实存在的版本：
+      原始五阶段 DABDA（否认 → 愤怒 → 讨价还价 → 沮丧 → 接受）与变革管理常用的 Change Curve 七阶段
+      （震惊 → 否认 → 挫折/愤怒 → 沮丧 → 实验 → 决定 → 整合），考试若涉及具体阶段名以官方教材为准；
+      ② Thomas-Kilmann 的<strong>五种模式名称</strong>（竞争 / 协作 / 妥协 / 回避 / 迁就）<strong>与「关注自身 × 关注他人」两维度定位</strong>；
+      ③ Golden Circle 中 <strong>how 与 what 两层的含义</strong>及「从内向外」的顺序主张（why 一层已由官方样题答案键确认）。
+      <br>
+      <strong>教学整理部分</strong>：变革曲线的「内部状态 / 外在表现」两列与低谷期四项动作、
+      「阶段 / 类别 / 等级」三格排除法、冲突模式的场景适用表与两个反模式、
+      「时间压力 × 关系时长」判据、四类人群的行为特征与排除理由、三模型分工表，
+      以及各面中的干扰项分析与排除技巧 —— 官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为<strong>本站构造的教学示例</strong>，非真实调研数据。
+      「早期采用者 / 后期多数」所属的创新采用曲线不在 DOFD 66 条术语表内，本节仅借用其人群称谓。
+      领导力与关键成功因素（含「管理层对文化变革的承诺」）归
+      <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>；
+      组织成熟度模型归本章<a href="5.4-maturity-models.html">5.4</a>，文化债归本章<a href="5.2-cultural-debt.html">5.2</a>，
+      组织文化 <em>Organizational culture</em> 归本章<a href="5.1-defining-culture.html">5.1</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.3 Lean 与八项浪费 · DevOps Foundation 学习站</title>
+<meta name="description" content="Lean production、Lean thinking、Lean tools 与 Lean types of Waste (DOWNTIME) 都是 DOFD 官方术语。本节把 DOWNTIME 八条浪费逐条落到 IT 场景，并说清「浪费遍布各处、约束只有一处」这一关键区别。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.3-lean"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.3 Lean 与八项浪费</h1>
+      <div class="page-head__en">Lean and the Types of Waste</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        DevOps 的很多做法不是新发明的：<strong>缩小批量、让工作流动、由下游拉动、消除浪费</strong>，
+        四条全部来自 Lean。官方 Blueprint 在 <em>Related Frameworks</em> 里给 Lean 的一行注解只有两个词
+        —— <strong>Reduce Waste</strong>。所以本节的重点不是「Lean 是什么流派」，
+        而是：<strong>浪费长什么样，怎么认出来，认出来之后先动哪一处</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>Lean production、Lean thinking、Lean tools 三个官方术语各自指什么，别混成一个词</li>
+        <li>DOWNTIME 八条浪费在 IT 现场分别长什么样，怎么当巡检清单用</li>
+        <li>浪费和约束都要消除，为什么<strong>动手的优先级完全不同</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 484" role="img" aria-label="DOWNTIME 八条浪费及其在 IT 场景中的对应例子">
+          <text x="480" y="26" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">DOWNTIME　八条浪费，每条在 IT 里的样子</text>
+          <text x="480" y="48" class="s-muted" font-size="12.5" text-anchor="middle">词条名 Lean types of Waste (DOWNTIME) 为官方术语；八个字母的英文展开与右侧 IT 场景为本站教学整理</text>
+
+          <!-- D -->
+          <rect x="24" y="64" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="91" class="f-1" font-size="18" font-weight="700">D</text>
+          <text x="76" y="90" class="s-ink" font-size="14" font-weight="650">Defects　缺陷</text>
+          <text x="340" y="90" class="s-muted" font-size="13">缺陷流到下游才被发现，返工与热修复占满迭代</text>
+
+          <!-- O -->
+          <rect x="24" y="112" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="139" class="f-2" font-size="18" font-weight="700">O</text>
+          <text x="76" y="138" class="s-ink" font-size="14" font-weight="650">Overproduction　过量生产</text>
+          <text x="340" y="138" class="s-muted" font-size="13">做了没人要的功能：上线半年零调用的报表页</text>
+
+          <!-- W -->
+          <rect x="24" y="160" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="187" class="f-3" font-size="18" font-weight="700">W</text>
+          <text x="76" y="186" class="s-ink" font-size="14" font-weight="650">Waiting　等待</text>
+          <text x="340" y="186" class="s-muted" font-size="13">代码等测试环境、等审批、等另一个团队排期</text>
+
+          <!-- N -->
+          <rect x="24" y="208" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="235" class="f-4" font-size="18" font-weight="700">N</text>
+          <text x="76" y="234" class="s-ink" font-size="14" font-weight="650">Non-utilized talent　人才未被利用</text>
+          <text x="340" y="234" class="s-muted" font-size="13">资深工程师整天手工发版、填工单、复制粘贴报表</text>
+
+          <!-- T -->
+          <rect x="24" y="256" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="283" class="f-5" font-size="18" font-weight="700">T</text>
+          <text x="76" y="282" class="s-ink" font-size="14" font-weight="650">Transportation　搬运</text>
+          <text x="340" y="282" class="s-muted" font-size="13">工件在团队之间传递：开发→测试→安全→运维，每次交接都掉信息</text>
+
+          <!-- I -->
+          <rect x="24" y="304" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="331" class="f-1" font-size="18" font-weight="700">I</text>
+          <text x="76" y="330" class="s-ink" font-size="14" font-weight="650">Inventory　库存</text>
+          <text x="340" y="330" class="s-muted" font-size="13">未发布的代码、积压的待办、几个月不合并的长分支</text>
+
+          <!-- M -->
+          <rect x="24" y="352" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="379" class="f-2" font-size="18" font-weight="700">M</text>
+          <text x="76" y="378" class="s-ink" font-size="14" font-weight="650">Motion　动作</text>
+          <text x="340" y="378" class="s-muted" font-size="13">人在工具间来回切换：需求在 A、代码在 B、告警在 C</text>
+
+          <!-- E -->
+          <rect x="24" y="400" width="912" height="40" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="42" y="427" class="f-3" font-size="18" font-weight="700">E</text>
+          <text x="76" y="426" class="s-ink" font-size="14" font-weight="650">Extra processing　过度加工</text>
+          <text x="340" y="426" class="s-muted" font-size="13">超出需要的文档、层层审批、没人读的周报与评审材料</text>
+
+          <text x="480" y="466" class="s-muted" font-size="12.5" text-anchor="middle">读法：一条价值流上，同时存在的往往不是一条浪费，而是八条里的五六条</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-3-1　DOWNTIME 八条浪费与它们的 IT 面孔。</strong>
+        这张图要让人看懂的是：<strong>浪费不是「有人在偷懒」，恰恰相反，八条里有六条发生在所有人都很忙的时候</strong>
+        —— 等待、库存、搬运、动作，都是忙碌本身制造出来的。
+        用它当巡检清单：对着一条真实的价值流逐条问「这一条在我这里长什么样」，问不出来的那几条，多半是没看见，不是没有。
+        <br><small class="muted">DOWNTIME 作为浪费类型的助记形式是 DOFD v3.4 官方考纲术语表条目
+        <em>Lean types of Waste (DOWNTIME)</em>；<strong>八个字母到具体 IT 场景的映射为本站教学整理</strong>，官方未以此形式给出对照。
+        另注：<strong>N（Non-utilized talent）是在经典七种浪费（TIMWOOD）之上补入的第八项</strong>，
+        所以 DOWNTIME 是<strong>八项</strong>而不是七种（见 kp-4-3-2 ① 面的说明）。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-3-1</div>
+        <h3 class="kp__title">Lean production · Lean thinking · Lean tools<span class="en">精益生产 · 精益思想 · 精益工具</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            Lean 在官方术语表里不是一个词，而是<strong>三个并列条目</strong>，指向三个不同层面：
+            一套<strong>生产体系</strong>、一种<strong>思考方式</strong>、一箱<strong>具体工具</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">官方术语</th><th style="width:16%">层面</th><th>一句话本质</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">精益生产 <span class="en">Lean production</span></span></td>
+                  <td>生产体系</td>
+                  <td>以更少的资源、更短的时间交付同样的价值，其手段是<strong>系统性地识别并消除浪费</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="term">精益思想 <span class="en">Lean thinking</span></span></td>
+                  <td>思考方式</td>
+                  <td>把「什么算价值」的定义权交给<strong>客户</strong>，凡是不为客户创造价值的活动都是待消除的对象</td>
+                </tr>
+                <tr>
+                  <td><span class="term">精益工具 <span class="en">Lean tools</span></span></td>
+                  <td>具体手段</td>
+                  <td>落地精益的方法集合，<span class="term">价值流映射 <span class="en">Value stream mapping</span></span>、看板等都属于这一层</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            官方 Blueprint 的 <em>Related Frameworks</em> 一栏给 Lean 的注解是
+            <strong><em>Lean: Reduce Waste</em></strong>；CALMS 五个字母里的 <strong>L 就是 Lean</strong>。
+            这两处都可以直接引为官方表述。
+          </p>
+          <p class="mb-0 muted"><small><em>Lean production</em>、<em>Lean thinking</em>、<em>Lean tools</em>、<em>Waste</em>、
+            <em>Value stream mapping</em>、<em>CALMS</em> 均列于 DOFD v3.4 官方考纲术语表；
+            <em>Lean: Reduce Waste</em> 与 <em>L: Lean</em> 为 PeopleCert DevOps Foundation Blueprint 原文。
+            Lean production 起源于制造业的生产实践，这一历史背景是本站补充说明，官方术语表只收录词条本身，未给出沿革。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它针对的是一种看起来完全合理、结果却很糟的逻辑：<strong>按预测大批量地做，用产能利用率证明自己没闲着。</strong>
+          </p>
+          <ul>
+            <li>某企业内部平台团队按半年度立项，一次性规划 <strong>40 个需求</strong>，
+              开发完成后统一进入测试。前 20 个需求在等后 20 个写完，<strong>平均积压 4 个月</strong>才第一次被真实用户看到。</li>
+            <li>上线之后统计使用情况：40 个功能里 <strong>13 个三个月内零调用</strong>。
+              这 13 个功能的开发、测试、文档、培训全部是<strong>过量生产</strong> —— 它们消耗了资源，
+              却从未为任何客户创造价值。</li>
+            <li>更隐蔽的一层：因为要「填满」每个人的排期，团队一直在开新需求，
+              于是<strong>在制品越堆越多</strong>，每个人手上同时有三四件事，切换成本吃掉了本来就不多的产出。
+              <strong>所有人都很忙，端到端交付却更慢了。</strong></li>
+          </ul>
+          <p class="mb-0">
+            精益的切入点不是「让大家更努力」，而是换一个计量对象：
+            <strong>不看每个人有多忙，看一个需求从提出到交付的这段时间里，真正被加工的时间占多少。</strong>
+            剩下的那部分，就是浪费。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">Lean</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agile</strong></td>
+                  <td>关注<strong>整条价值流的浪费</strong>，从需求提出一直看到客户手上，制造业出身</td>
+                  <td>关注<strong>需求的响应方式</strong>：迭代、增量、拥抱变化，软件开发出身（详见本章 <a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>约束理论 <span class="en">Theory of Constraints</span></strong></td>
+                  <td>问「<strong>哪些活动不创造价值</strong>」，答案<strong>遍布</strong>整条价值流</td>
+                  <td>问「<strong>产出被哪一处卡住</strong>」，答案在任一时刻<strong>只有一处</strong>（见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>降本增效</strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>削减的是<strong>不创造价值的活动</strong>，能力保持不变甚至增强</td>
+                  <td>常常削减的是<strong>能力本身</strong>（人员、测试、演练）。产能降了，浪费一条没少</td>
+                </tr>
+                <tr>
+                  <td><strong>Lean thinking vs Lean tools</strong><br><small class="muted">三层里的两层，互为目的与手段</small></td>
+                  <td><strong><em>Lean thinking</em></strong>（判据层）是<strong>目的与判据</strong>：什么才算价值</td>
+                  <td><strong><em>Lean tools</em></strong>（手段层）是<strong>手段</strong>。工具全部上齐但不问「客户要什么」，会精确地优化出一堆没人要的东西</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Lean 的「精」不是「省钱」，是「不做没用的事」</strong>。
+            把 Lean 等同于压缩预算、裁减人手，是考试与实践里同时出现的经典误读 ——
+            少了测试、少了演练，浪费（缺陷、等待、返工）反而会变多。</small></p>
+          <p class="mb-0 muted"><small>「降本增效」一行为本站教学整理的常见误读对照，官方术语表未列该词，也未以此形式给出该区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            精益思想有一条常被引用的推进顺序，来自 Lean 原著，可以当作动作次序使用：
+            <strong>定义价值 → 识别价值流 → 让价值流动 → 由下游拉动 → 追求尽善尽美</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">五步</th><th>在 IT 里的具体动作</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 定义价值</strong><br><span class="en">Specify value</span></td><td>由客户说了算，不是由需求方的职级说了算。一句话写清「谁、在什么场景下、因此少做了什么」</td></tr>
+                <tr><td><strong>② 识别价值流</strong><br><span class="en">Map the value stream</span></td><td>把从需求提出到用户可用的全部环节画出来，标出每段的加工时间与等待时间（方法见本章 4.6 价值流映射）</td></tr>
+                <tr><td><strong>③ 让价值流动</strong><br><span class="en">Create flow</span></td><td>缩小批量、去掉交接与排队，目标是<span class="term">流动 <span class="en">Flow</span></span>不中断</td></tr>
+                <tr><td><strong>④ 由下游拉动</strong><br><span class="en">Establish pull</span></td><td>下游有空位才放行新工作，而不是上游有产能就往里塞（看板的拉动机制见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>）</td></tr>
+                <tr><td><strong>⑤ 追求尽善尽美</strong><br><span class="en">Seek perfection</span></td><td>把前四步变成常态循环，而不是一次性改造项目</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            这五条原则出自 Womack &amp; Jones 的《Lean Thinking》，属<strong>教学补充</strong>。
+            <em>Lean thinking</em>、<em>Flow</em>、<em>Value stream mapping</em>、<em>Kanban</em> 是 DOFD v3.4 官方术语表条目，
+            但<strong>「五步顺序」本身不在 66 条术语表内，官方也未把它列为考点</strong>。
+            右列的 IT 具体动作为本站教学整理。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：Lean 在 DevOps 里代表什么</strong>。
+              可依据的官方原文有两处 —— Blueprint 的 <em>Related Frameworks</em> 写作
+              <strong><em>Lean: Reduce Waste</em></strong>，CALMS 的 <strong>L = Lean</strong>。
+              方向题只要看到「减少浪费」这一支，基本就是 Lean。</li>
+            <li><strong>命题角度二：三个术语的区分</strong>。<em>Lean production</em>、<em>Lean thinking</em>、<em>Lean tools</em>
+              在术语表里是三条，题目可能问其中一条的所指。判据：<strong>体系 / 思考方式 / 工具</strong>三层。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把 Lean 写成<strong>「削减成本、减少人员」</strong>（这是降本，不是精益）；
+              把 Lean 写成<strong>「加快迭代节奏、拥抱变化」</strong>（这是 Agile 的措辞）；
+              把 Lean 写成<strong>「找到瓶颈并提升它」</strong>（这是约束理论的措辞）。
+              三个干扰项都读起来正面且合理，靠「正不正确」判断没用。</li>
+            <li><strong>排除技巧</strong>：先在选项里找<strong>关键动词</strong>。
+              出现 <strong>waste / 浪费</strong> → Lean；出现 <strong>constraint / bottleneck</strong> → 约束理论；
+              出现 <strong>iteration / customer collaboration</strong> → Agile。
+              这三个词族在官方措辞里几乎不交叉。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「三词族」排除技巧与干扰项分析为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">精益不是少花钱，是少做没用的事。</p>
+          <p class="mb-0 muted"><small>三层结构一句话记住：<strong>production 是体系，thinking 是判据，tools 是手段</strong>；
+            官方给 Lean 的注解只有两个词 —— <strong>Reduce Waste</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-3-2</div>
+        <h3 class="kp__title">浪费与 DOWNTIME 八条清单<span class="en">Waste · Lean types of Waste (DOWNTIME)</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">浪费 <span class="en">Waste</span></span>
+            指<strong>消耗了资源、却不为客户创造价值的活动</strong>。
+            官方术语表把浪费的类型收成一条独立词条 ——
+            <span class="term">精益浪费类型 DOWNTIME <span class="en">Lean types of Waste (DOWNTIME)</span></span>，
+            <strong>DOWNTIME 是八个首字母的助记词，对应八项浪费</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:8%">字母</th><th style="width:32%">英文 / 中文</th><th>判断它的一句话</th></tr></thead>
+              <tbody>
+                <tr><td><strong class="f-1" style="color:var(--dia-1)">D</strong></td><td><strong>Defects</strong>　缺陷</td><td>做出来的东西不对，必须回头重做</td></tr>
+                <tr><td><strong class="f-2" style="color:var(--dia-2)">O</strong></td><td><strong>Overproduction</strong>　过量生产</td><td>做出来的东西没人要，或者做早了、放着不用</td></tr>
+                <tr><td><strong class="f-3" style="color:var(--dia-3)">W</strong></td><td><strong>Waiting</strong>　等待</td><td>工件停在原地，等人、等环境、等批准</td></tr>
+                <tr><td><strong class="f-4" style="color:var(--dia-4)">N</strong></td><td><strong>Non-utilized talent</strong>　人才未被利用</td><td>有能力的人被用来做机器该做的事，或意见不被采纳</td></tr>
+                <tr><td><strong class="f-5" style="color:var(--dia-5)">T</strong></td><td><strong>Transportation</strong>　搬运</td><td>工件在团队、系统之间被反复传递，每次交接都掉信息</td></tr>
+                <tr><td><strong class="f-1" style="color:var(--dia-1)">I</strong></td><td><strong>Inventory</strong>　库存</td><td>做完但还没交付的东西堆着：未发布的代码、待办积压</td></tr>
+                <tr><td><strong class="f-2" style="color:var(--dia-2)">M</strong></td><td><strong>Motion</strong>　动作</td><td>人自己在来回跑：工具间切换、找信息、重复登录</td></tr>
+                <tr><td><strong class="f-3" style="color:var(--dia-3)">E</strong></td><td><strong>Extra processing</strong>　过度加工</td><td>做得超出了需要：多余的文档、层层审批、没人看的产物</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>Waste</em> 与 <em>Lean types of Waste (DOWNTIME)</em> 两条列于
+            <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>，助记词 DOWNTIME 本身即出自官方词条名。
+            <strong>本站教学整理</strong>：上表八个字母各自展开成哪个英文词（尤其 <em>N = Non-utilized talent</em>，
+            业界另有 <em>Non-utilized skills</em> 等写法）属通行精益知识，不出自 DOFD 文件；
+            经典精益浪费是七种（TIMWOOD），加入 <em>Non-utilized talent</em> 之后成为<strong>八项</strong>，助记词读作 DOWNTIME
+            —— 这一层来龙去脉同样是本站教学整理。中文译名「精益浪费类型 DOWNTIME」依写作契约 §5 统一译法表。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            需要一张清单，是因为<strong>浪费在现场从来不以「浪费」的样子出现，它长得和正常工作一模一样</strong>。
+          </p>
+          <ul>
+            <li>某支付团队的变更前置时间是 <strong>19 天</strong>。团队自评「人手不够」，申请加人。
+              照着 DOWNTIME 逐条核对之后，19 天的构成变成：
+              <strong>真正写代码 1.5 天</strong>，等测试环境 <strong>4 天</strong>（W），
+              等安全评审排期 <strong>5 天</strong>（W），等变更窗口 <strong>6 天</strong>（W），
+              修上一轮遗留缺陷 <strong>2.5 天</strong>（D）。</li>
+            <li>结论是加人一天也省不下来：<strong>19 天里有 15 天没有任何人在这个需求上工作。</strong>
+              加人只会让在制品（I）更多、切换（M）更频繁。</li>
+            <li>清单的价值就在这里：它把「感觉很忙」翻译成<strong>八个可以分别指认、分别归因的类别</strong>，
+              让改进动作有落点 —— 等待要拆的是排队，缺陷要拆的是反馈时机，两者的解法完全不同。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">浪费 Waste</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>约束 <span class="en">Constraint</span></strong></td>
+                  <td><strong>分布</strong>：遍布价值流每一个环节，同一时刻可能有几十处</td>
+                  <td><strong>分布</strong>：任一时刻<strong>只有一处</strong>，它决定整条价值流的产出上限</td>
+                </tr>
+                <tr>
+                  <td><strong>缺陷 <span class="en">Defects</span></strong></td>
+                  <td>是<strong>八条之一</strong>（D），不是浪费的全部</td>
+                  <td>只覆盖「做错了要返工」这一类。把浪费等同于缺陷，会漏掉等待、库存这些占比更大的类别</td>
+                </tr>
+                <tr>
+                  <td><strong>必要的非增值活动</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>可以直接消除，消除后没有损失</td>
+                  <td>客户不为它付钱，但当下删不掉：合规审计留痕、监管要求的授权记录。目标是<strong>把它做小做快，而不是删掉</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「都是要消除的东西」不等于「消除的优先级一样」</strong>。
+            浪费到处都有，清单能指出<strong>有哪些</strong>；约束只有一处，它决定<strong>先动哪一处</strong> ——
+            「清单」与「顺序」的关系。为什么顺序如此关键（非约束处改进不提升全局产出），
+            完整机制在 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，本节不重复。</small></p>
+          <p class="mb-0 muted"><small>「必要的非增值活动」一行为本站教学整理，DOFD v3.4 官方术语表列出 <em>Waste</em> 与 <em>Constraint</em>，
+            未收录该分类，也未以此形式给出该对照。约束理论的展开见
+            <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，本节不重复。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把 DOWNTIME 当<strong>巡检清单</strong>用，动作顺序固定为三步：</p>
+          <ul>
+            <li><strong>先量时间，别先列问题</strong>：取最近 10 个已交付的变更，
+              量出每一个的端到端时间，并拆成「有人在做」与「停着不动」两段。
+              绝大多数价值流里，后者占七成以上 —— 这一段就是浪费的主战场。</li>
+            <li><strong>再对着八条逐个指认</strong>：停着不动的那部分，属于 W（等待）还是 I（库存）？
+              有人在做的那部分，有多少是 D（返工）和 E（多余产物）？
+              指认要落到<strong>具体环节</strong>，「我们沟通有浪费」不算指认。</li>
+            <li><strong>最后按约束排序动手</strong>：先确认约束在哪一环，
+              约束处的浪费优先清；非约束处的浪费先记录，不急着投入 —— <strong>非约束环节的改进不提升全局产出</strong>，机制见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</li>
+          </ul>
+          <p>常用的两个配套手段：</p>
+          <ul class="mb-0">
+            <li><strong>价值流映射</strong>用来把等待时间显影 —— 方法与画法归本章 <a href="4.6-value-stream-mapping.html">4.6 价值流映射</a>，本节不展开。</li>
+            <li><strong>看板与限制在制品</strong>用来压住 I（库存）和 M（切换），
+              并让 W（等待）在板上以「卡片停在同一列」的形式变得可见 ——
+              见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>。</li>
+          </ul>
+          <div class="src-note">
+            这套「量时间 → 逐条指认 → 按约束排序」的三步动作为本站教学整理。
+            DOFD v3.4 官方术语表收录 <em>Waste</em>、<em>Lean types of Waste (DOWNTIME)</em>、<em>Value stream mapping</em>、
+            <em>Kanban</em>、<em>Constraint</em> 等词条，<strong>未规定实施步骤，也未给出巡检清单的用法</strong>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：术语识别（Bloom 1）</strong>。
+              <em>Waste</em> 与 <em>Lean types of Waste (DOWNTIME)</em> 都是官方术语表条目，
+              可能直接问 DOWNTIME 指什么，或给一个具体现象问它属于哪一类浪费。
+              <strong>助记词本身必须能默写出来</strong>。</li>
+            <li><strong>命题角度二：场景归类（Bloom 2）</strong>。给一段现场描述，问它体现了哪种浪费。
+              最常考的三类现象：<strong>排队等待</strong>（W）、<strong>做了没人用的功能</strong>（O）、
+              <strong>未发布的代码与积压待办</strong>（I）。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把浪费<strong>整体等同于缺陷</strong>（缺陷只是八条里的 D）；
+              把浪费和<strong>约束</strong>互换措辞（说「浪费只有一处，要集中消除」）；
+              用<strong>指标名</strong>顶替浪费类型（变更失败率、平均恢复时间 MTTR 是度量结果，不是浪费类别）。</li>
+            <li><strong>排除技巧</strong>：读到「<strong>只有一处 / 决定整体产出 / 提升它</strong>」这类措辞，
+              指向的是<strong>约束</strong>而不是浪费；读到「<strong>不创造价值 / 客户不愿为之付钱</strong>」，
+              指向的才是浪费。<strong>约束理论支持三步工作法中的第一步（不是全部三步）</strong>
+              —— 这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认，涉及「Lean / 约束 / 第几步」的组合题时可直接用作判据。</li>
+          </ul>
+          <p class="mb-0 muted"><small>干扰项分析与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">DOWNTIME：缺陷、过量生产、等待、人才未被利用、搬运、库存、动作、过度加工。</p>
+          <p class="muted"><small>一句话背助记词：<strong>「停机时间」本身就是最大的浪费</strong> ——
+            DOWNTIME 这个词的字面意思正好就是它要消除的东西。</small></p>
+          <p class="mb-0 muted"><small>分布判据：<strong>浪费是散点，约束是一个点</strong>。
+            所以浪费清单回答「有哪些」，约束回答「先动哪一处」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-3-3</div>
+        <h3 class="kp__title">DevOps 从 Lean 继承了什么<span class="en">What DevOps inherits from Lean</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            DevOps 里最核心的四条做法，来源都可以追到 Lean：
+            <strong>缩小批量、让工作流动、由下游拉动、消除浪费</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">继承自 Lean</th><th style="width:40%">在 DevOps 里的样子</th><th>可依据的官方表述</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>批量 <span class="en">Batch size</span></strong></td>
+                  <td>频繁的小批量发布取代季度大版本，一次只送一个变更上路</td>
+                  <td>Blueprint <em>Principles &amp; Practices</em>：<em>Frequent small releases … reduce lead time, costs and risks</em></td>
+                </tr>
+                <tr>
+                  <td><strong>流动 <span class="en">Flow</span></strong></td>
+                  <td>三步工作法的第一步：工作从左到右不间断地流向客户</td>
+                  <td>Blueprint <em>1st Way: Continuous Flow</em>；<em>Flow</em> 为官方术语表条目</td>
+                </tr>
+                <tr>
+                  <td><strong>拉动 <span class="en">Pull</span></strong></td>
+                  <td>看板上的 WIP 上限：下游有空位才放行新工作，而不是上游有产能就往下压</td>
+                  <td><em>Kanban</em> 为官方术语表条目与 M3 模块子项；<strong>「拉动」一词本身不在 66 条术语表内</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>消除浪费 <span class="en">Reduce Waste</span></strong></td>
+                  <td>用 DOWNTIME 巡检整条价值流，删掉不创造价值的环节</td>
+                  <td>Blueprint <em>Related Frameworks</em>：<strong><em>Lean: Reduce Waste</em></strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>右列引文为 PeopleCert DevOps Foundation Blueprint 原文；
+            <strong>「四条继承」这一归纳形式为本站教学整理</strong>，官方未以此形式给出 Lean → DevOps 的继承清单。
+            CALMS 中的 <strong>L: Lean</strong> 同为 Blueprint 原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一条要单独讲，是因为第 4 章考的是<strong>关系</strong>，不是框架本身
+            —— 而「Lean 是制造业的东西，和软件没关系」这个印象，会直接导致两种失败：
+          </p>
+          <ul>
+            <li><strong>只搬工具，不要原则</strong>：某团队引入了看板墙，卡片贴得很整齐，
+              但没有设 WIP 上限，也没人管卡片停留时长。三个月后板上有 <strong>60 张卡片同时在「进行中」</strong>，
+              板子精确地记录了堵塞，却没有改变任何堵塞 —— 拉动的机制被丢掉了，只剩下可视化的外壳。</li>
+            <li><strong>只谈自动化，不谈批量</strong>：另一种常见做法是把预算全投给流水线工具，
+              但发布节奏仍然是季度一次。构建从 40 分钟压到 6 分钟，
+              而一个变更的端到端时间仍是 <strong>11 周</strong>，因为省下的 34 分钟落在了非约束环节上（机制见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>）。</li>
+          </ul>
+          <p class="mb-0">
+            把继承关系摆清楚，是为了在遇到任何一项 DevOps 实践时都能追问一句：
+            <strong>它在减少哪一类浪费？如果答不上来，这项实践大概率只是在做样子。</strong>
+          </p>
+          <p class="mb-0 muted"><small>两个案例均为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:19%">维度</th><th style="width:27%">Lean</th><th style="width:27%">Agile</th><th>DevOps</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>核心问句</strong></td>
+                  <td>哪些活动<strong>不创造价值</strong></td>
+                  <td>怎样<strong>快速响应变化</strong></td>
+                  <td>怎样让计划中的工作<strong>快速流入生产</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>覆盖范围</strong></td>
+                  <td>任何价值流，不限于软件</td>
+                  <td>主要是需求到「开发完成」</td>
+                  <td>需求一直到<strong>生产环境与客户</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>标志性手段</strong></td>
+                  <td>价值流映射、消除浪费、拉动</td>
+                  <td>迭代、增量、客户协作</td>
+                  <td>持续集成 / 交付 / 部署、自动化、遥测</td>
+                </tr>
+                <tr>
+                  <td><strong>官方一句话注解</strong></td>
+                  <td><em>Lean: Reduce Waste</em></td>
+                  <td><em>Agile: Lean Development</em></td>
+                  <td>见 Blueprint 正文的 DevOps 定义句（本页末尾来源栏）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Blueprint 给 Agile 的注解写的是 <em>Agile: Lean Development</em></strong>
+            —— Lean 这个词在官方表述里同时出现在 Agile 那一行和 Lean 那一行。
+            读题时要看的是<strong>整行的落点</strong>：落在「Reduce Waste」的是 Lean，落在开发方式上的是 Agile。</small></p>
+          <p class="mb-0 muted"><small>前三行的三列对照为本站教学整理，官方未以此形式给出三框架对比；
+            第四行两条注解为 Blueprint <em>Related Frameworks</em> 原文。Agile 的展开见本章 <a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把四条继承变成四个可以当场问出口的问题，用来体检任何一项「DevOps 改进」：</p>
+          <ul>
+            <li><strong>批量</strong>：这次改进之后，一次上路的变更是<strong>变多了还是变少了</strong>？
+              变多说明方向反了 —— 自动化如果被用来「一次推更多东西」，风险是上升的。</li>
+            <li><strong>流动</strong>：端到端时间里「停着不动」的比例降了吗？
+              只降加工时间不降等待时间，端到端几乎不动。</li>
+            <li><strong>拉动</strong>：新工作是被<strong>下游的空位</strong>放进来的，还是被上游的排期压进来的？
+              后者迟早堆成库存（I）。</li>
+            <li><strong>消除浪费</strong>：这项改进对着的是 DOWNTIME 里的哪一条？
+              说不出字母，就说明还没定位问题，只是在换工具。</li>
+          </ul>
+          <p class="mb-0">
+            四问之上还有一条排序原则：<strong>先找约束，再消浪费</strong>。
+            约束在哪一环，就先把那一环的浪费清掉；其余环节的浪费记录在案，等约束转移后再处理。
+          </p>
+          <div class="src-note">
+            这四个体检问题与「先找约束、再消浪费」的排序原则均为本站教学整理。
+            官方术语表收录 <em>Flow</em>、<em>Waste</em>、<em>Constraint</em>、<em>Kanban</em> 等词条，
+            <strong>未规定改进的实施顺序</strong>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最常见的命题角度：框架归属</strong>。给一段描述，问它属于哪个框架 / 体现了 CALMS 的哪个字母。
+              <strong>凡是围绕「减少浪费」的，落点在 Lean（CALMS 的 L）</strong> —— 这依据的是 Blueprint 原文
+              <em>Lean: Reduce Waste</em> 与 <em>L: Lean</em>。</li>
+            <li><strong>第二种：Lean 与三步工作法的对应</strong>。流动、小批量、拉动三条的落点都在<strong>第一步 · 流动</strong>那一侧。
+              遇到「以上皆是 / All of the above」型选项时，先判断这段描述落在哪一步，别被「都对」诱走
+              ——「约束理论与第几步」的官方归属见 kp-4-3-2 ⑤ 面，此处不重复。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把 Lean 的措辞安到 Agile 头上（用「迭代与客户协作」去回答「减少浪费」的题干）；
+              把「拉动」写成「上游按计划推送」（推动 push 是被 Lean 明确反对的那一侧）；
+              把「小批量」写成「一次发布更多功能以摊薄发布成本」——
+              这句话听起来像成本优化，方向恰好相反。</li>
+            <li><strong>排除技巧</strong>：本节只补一条词族 —— <strong>flow into production → DevOps</strong>：
+              「让计划中的工作快速流入生产」是官方 DevOps 定义句的落点，不是 Lean 的措辞，
+              框架归属题里这两支最容易被互换。另三条词族（waste / constraint / iteration）见 kp-4-3-1 ⑤ 面。</li>
+          </ul>
+          <p class="mb-0 muted"><small>词族标签法与干扰项分析为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">DevOps 向 Lean 借了四样东西：小批量、流动、拉动、消除浪费。</p>
+          <p class="mb-0 muted"><small>四条连起来是一条因果链：<strong>批量小了才流得动，流得动才谈得上由下游拉动，
+            拉动之后仍剩下的停顿，就是待清的浪费</strong>。体检任何一项改进，从链条的第一环往下问。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方注解</strong>：Blueprint <em>Related Frameworks</em> 给 Lean 的一行是 <strong><em>Lean: Reduce Waste</em></strong>；CALMS 的 <strong>L = Lean</strong></li>
+        <li><strong>三个并列术语</strong>：<em>Lean production</em>（体系）· <em>Lean thinking</em>（判据）· <em>Lean tools</em>（手段），术语表里是三条不是一条</li>
+        <li><strong>DOWNTIME 八条</strong>：缺陷 · 过量生产 · 等待 · 人才未被利用 · 搬运 · 库存 · 动作 · 过度加工（八字母到 IT 场景的映射为本站教学整理）</li>
+        <li><strong>最易考的三类现象</strong>：排队等待 → W；做了没人用的功能 → O；未发布的代码与积压待办 → I</li>
+        <li><strong>浪费 vs 约束</strong>：浪费<strong>遍布</strong>价值流，约束<strong>只有一处</strong>；清除非约束处的浪费<strong>不提升全局产出</strong>（机制见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>）</li>
+        <li><strong>官方样题答案键确认</strong>：<strong>约束理论支持三步工作法中的第一步</strong>（不是全部三步）—— 涉及「Lean / 约束 / 第几步」的组合题可直接用作判据</li>
+        <li><strong>DevOps 的四条继承</strong>：小批量 · 流动 · 拉动 · 消除浪费（归纳形式为本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Lean production</em>、<em>Lean thinking</em>、<em>Lean tools</em>、
+      <em>Lean types of Waste (DOWNTIME)</em>、<em>Waste</em>、<em>Flow</em>、<em>Value stream mapping</em>、
+      <em>Constraint</em>、<em>Kanban</em>、<em>CALMS</em>、<em>Theory of Constraints</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>的 66 条词条内；
+      该表<strong>只列词条、不附定义</strong>，因此本站给出的每一条中文释义都是本站措辞；
+      v3.4 课程大纲 M4 模块子项 <em>Lean</em> 即本节主题；
+      <strong>页头标 ⭐ 考纲核心的依据</strong>：本节主题词 <em>Lean thinking</em> / <em>Lean production</em> /
+      <em>Lean tools</em> / <em>Lean types of Waste (DOWNTIME)</em> 逐字落在 66 条术语表内（术语表不含单独的 <em>Lean</em>，
+      该词是 M4 模块子项，这一层身份在 ① 面说明）。
+      <strong>Blueprint 原文</strong>（出自 PeopleCert DevOps Foundation Blueprint）：
+      <em>Related Frameworks</em> 的 <em>Lean: Reduce Waste</em> 与 <em>Agile: Lean Development</em>、
+      CALMS 的 <em>L: Lean</em>、<em>1st Way: Continuous Flow</em>、
+      <em>Principles &amp; Practices</em> 的 <em>Frequent small releases using continuous integration, testing, delivery,
+      deployments and monitoring reduce lead time, costs and risks</em>，以及 Blueprint 正文的官方 DevOps 定义句
+      「<em>With DevOps, people across the IT organization, working together, enable fast flow, feedback and continuous
+      improvement of planned work into production, while achieving quality, stability, reliability, availability,
+      security and team satisfaction.</em>」。
+      <strong>一条归属由 DOFD v3.4 官方样题答案键确认</strong>：约束理论支持三步工作法中的<strong>第一步</strong>（不是全部三步）。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <br><strong>教学整理部分</strong>：DOWNTIME 八字母到 IT 场景的映射（图 4-3-1）、
+      「必要的非增值活动」分类、三步巡检动作、
+      「Lean / Agile / DevOps 三列对比」前三行、「四条继承」的归纳形式、四个体检问题与「先找约束再消浪费」的排序原则，
+      官方均未以此形式给出，已分别在对应位置就地标注。文中的数字化案例均为本站构造的教学示例，非真实调研数据。
+      <strong>延伸补充</strong>：精益思想五步原则（定义价值 → 识别价值流 → 让价值流动 → 拉动 → 追求尽善尽美）出自
+      Womack &amp; Jones《Lean Thinking》，<strong>不在 66 条术语表内</strong>，已标 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>。
+      DOWNTIME 八个字母各自的英文展开词（尤其 <em>N = Non-utilized talent</em>）以及「经典七种 + Non-utilized talent = 八项」
+      的说明，属通行精益知识、不出自 DOFD 文件，已在对应位置标注为本站教学整理。
+      <br><strong>边界</strong>：约束理论的展开见
+      <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>；
+      看板与限制在制品见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>；
+      价值流映射的方法与画法归本章 <a href="4.6-value-stream-mapping.html">4.6 价值流映射</a>，本节不展开。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

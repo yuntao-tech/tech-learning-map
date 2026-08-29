@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.6 价值流映射 · DevOps Foundation 学习站</title>
+<meta name="description" content="价值流映射（Value stream mapping）是把一件工作从需求到客户的每个环节画在一条时间轴上、为每段标注处理时间与等待时间的分析活动。本节讲清怎么画、怎么算流动效率，以及它的四个产出：当前状态图、最大等待段、未来状态图、改进计划。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.6-value-stream-mapping"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.6 价值流映射</h1>
+      <div class="page-head__en">Value Stream Mapping</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        <span class="term">价值流映射 <span class="en">Value stream mapping</span></span>
+        只做一件事：把一件工作从需求提出到客户可用所经过的<strong>每一个环节画在同一条时间轴上</strong>，
+        为每一段分别标出<strong>处理时间</strong>与<strong>等待时间</strong>。
+        画完之后，几乎所有组织都会看到同一个事实 ——
+        <strong>绝大部分时间，工作根本没有人在处理，它只是在排队。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>一张价值流映射图具体怎么画：画哪些环节、标哪两个时间、<strong>流动效率</strong>怎么算</li>
+        <li>它的产出到底是什么 —— 从当前状态图到未来状态图与改进计划的完整链条</li>
+        <li>本节与<strong><a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论（2.3）</a></strong>、<strong><a href="../ch03-key-practices/3.9-vsm.html">价值流管理（3.9）</a></strong>的分工：谁负责画、谁负责排序、谁负责持续 ——
+          价值流映射与价值流管理的辨析已在 3.9 建立，本节不重复</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-6-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="一张价值流映射的当前状态图：六个环节按真实时间比例展开，处理时间合计六天，总前置时间四十天，流动效率百分之十五">
+          <defs>
+            <marker id="ah-46-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="480" y="24" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">当前状态图 · 一个需求从提出到客户可用</text>
+
+          <!-- 六个环节 -->
+          <rect x="16"  y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="164" y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="312" y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="460" y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="608" y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="756" y="40" width="96" height="68" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="890" y="40" width="58" height="68" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="64"  y="70" class="s-ink" font-size="14.5" font-weight="650">需求确认</text>
+            <text x="212" y="70" class="s-ink" font-size="14.5" font-weight="650">设计排期</text>
+            <text x="360" y="70" class="s-ink" font-size="14.5" font-weight="650">开发实现</text>
+            <text x="508" y="70" class="s-ink" font-size="14.5" font-weight="650">代码评审</text>
+            <text x="656" y="70" class="s-ink" font-size="14.5" font-weight="650">测试验证</text>
+            <text x="804" y="70" class="s-ink" font-size="14.5" font-weight="650">发布上线</text>
+            <text x="919" y="78" class="f-3" font-size="14.5" font-weight="700">客户</text>
+
+            <text x="64"  y="92" class="f-1" font-size="12">处理 0.5 天</text>
+            <text x="212" y="92" class="f-1" font-size="12">处理 0.5 天</text>
+            <text x="360" y="92" class="f-1" font-size="12">处理 3 天</text>
+            <text x="508" y="92" class="f-1" font-size="12">处理 0.5 天</text>
+            <text x="656" y="92" class="f-1" font-size="12">处理 1 天</text>
+            <text x="804" y="92" class="f-1" font-size="12">处理 0.5 天</text>
+          </g>
+
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="112" y1="74" x2="158" y2="74" marker-end="url(#ah-46-1)"/>
+            <line x1="260" y1="74" x2="306" y2="74" marker-end="url(#ah-46-1)"/>
+            <line x1="408" y1="74" x2="454" y2="74" marker-end="url(#ah-46-1)"/>
+            <line x1="556" y1="74" x2="602" y2="74" marker-end="url(#ah-46-1)"/>
+            <line x1="704" y1="74" x2="750" y2="74" marker-end="url(#ah-46-1)"/>
+            <line x1="852" y1="74" x2="884" y2="74" marker-end="url(#ah-46-1)"/>
+          </g>
+
+          <text x="480" y="134" class="s-muted" font-size="12.5" text-anchor="middle">下面按同一比例把这 40 天摊开：空心段 = 等待时间，实心段 = 处理时间</text>
+
+          <!-- 环节与时间轴的对应连线 -->
+          <g class="s-stroke" stroke-width="1" fill="none" stroke-dasharray="3 4">
+            <line x1="64"  y1="108" x2="89"  y2="296"/>
+            <line x1="212" y1="108" x2="210" y2="296"/>
+            <line x1="360" y1="108" x2="315" y2="296"/>
+            <line x1="508" y1="108" x2="441" y2="296"/>
+            <line x1="656" y1="108" x2="590" y2="296"/>
+            <line x1="804" y1="108" x2="914" y2="296"/>
+          </g>
+
+          <!-- 等待时间标注 -->
+          <g text-anchor="middle" font-size="12.5">
+            <text x="62"  y="288" class="f-2">2 天</text>
+            <text x="150" y="288" class="f-2">5 天</text>
+            <text x="249" y="288" class="f-2">3 天</text>
+            <text x="392" y="288" class="f-2">4 天</text>
+            <text x="513" y="288" class="f-2">6 天</text>
+            <text x="755" y="288" class="f-5" font-weight="700">14 天 · 最大等待段</text>
+          </g>
+
+          <!-- 时间轴：等待段 -->
+          <rect x="40"  y="298" width="44"  height="32" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="95"  y="298" width="110" height="32" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="216" y="298" width="66"  height="32" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="348" y="298" width="88"  height="32" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="447" y="298" width="132" height="32" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="601" y="298" width="308" height="32" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+
+          <!-- 时间轴：处理段 -->
+          <rect x="84"  y="298" width="11" height="32" class="f-1"/>
+          <rect x="205" y="298" width="11" height="32" class="f-1"/>
+          <rect x="282" y="298" width="66" height="32" class="f-1"/>
+          <rect x="436" y="298" width="11" height="32" class="f-1"/>
+          <rect x="579" y="298" width="22" height="32" class="f-1"/>
+          <rect x="909" y="298" width="11" height="32" class="f-1"/>
+
+          <!-- 处理时间标注 -->
+          <g text-anchor="middle" font-size="12.5" class="f-1">
+            <text x="89"  y="350">0.5 天</text>
+            <text x="210" y="350">0.5 天</text>
+            <text x="315" y="350">3 天</text>
+            <text x="441" y="350">0.5 天</text>
+            <text x="590" y="350">1 天</text>
+            <text x="914" y="350">0.5 天</text>
+          </g>
+
+          <!-- 图例 -->
+          <rect x="300" y="370" width="22" height="14" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="330" y="382" class="s-muted" font-size="12.5">等待时间（在排队）</text>
+          <rect x="520" y="370" width="22" height="14" class="f-1"/>
+          <text x="550" y="382" class="s-muted" font-size="12.5">处理时间（真的有人在做）</text>
+
+          <!-- 流动效率 -->
+          <rect x="200" y="400" width="560" height="54" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="480" y="424" class="s-ink" font-size="15.5" font-weight="700" text-anchor="middle">流动效率 = 处理 6 天 ÷ 总前置时间 40 天 = 15%</text>
+          <text x="480" y="445" class="s-muted" font-size="12" text-anchor="middle">40 天里有 34 天，这件工作只是在等</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-6-1　一张价值流映射的当前状态图。</strong>
+        要看懂的是<strong>上下两排的比例反差</strong>：上排六个环节看起来平均分布，
+        下排按真实时间摊开后，六段处理时间被挤成几根细条，而<strong>「发布上线」前那一段等待独占了 14 天</strong>。
+        虚线把每个环节连到它在时间轴上真正占据的位置 —— 这正是价值流映射唯一要制造的冲击：
+        <strong>问题通常不在任何一个环节内部，而在环节之间。</strong>
+        <br><small class="muted">图中数据为<strong>本站构造的教学示例</strong>，用于说明计算方式，非真实调研数据。
+        发布等待取的是<strong>该需求实际遇到的最坏情形 14 天</strong>，与 kp-4-6-2 ④ 面所说「双周窗口平均 7 天、最坏 14 天」一致。
+        「处理时间 / 等待时间 / 流动效率」三个词<strong>不在 DOFD v3.4 官方 66 条术语表内</strong>，
+        作为教学补充引入（同一说明见 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>）；
+        表内收录的是 <em>Value stream mapping</em>、<em>Flow</em>、<em>Cycle time</em>、<em>Change lead time</em>、<em>Waste</em>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-6-1</div>
+        <h3 class="kp__title">价值流映射：怎么画<span class="en">Value Stream Mapping</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">价值流映射 <span class="en">Value stream mapping</span></span>
+            是一次<strong>分析活动</strong>：把一件工作从<strong>需求提出</strong>到<strong>客户可用</strong>之间经过的所有环节，
+            按先后顺序画在一条线上，并为每一段标注<strong>处理时间</strong>与<strong>等待时间</strong>。
+            它的产出是<strong>一张图</strong>，不是一份流程制度。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">缺一不可的三件事</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>边界</strong></td><td>先定「从哪一刻算起、到哪一刻算完」。常用写法：从需求被正式受理起，到功能在生产上对客户可用止。<strong>边界不定死，后面所有数字都不可比</strong></td></tr>
+                <tr><td><strong>环节</strong></td><td>每个方框是一次<strong>交接或一种活动</strong>，不是一个部门。跨部门交接必须画成独立的一步，因为等待几乎都发生在交接处</td></tr>
+                <tr><td><strong>两个时间</strong></td><td>每段都要有两个数：<strong>处理时间</strong>（真的有人在做）与<strong>等待时间</strong>（在队列里）。只标一个数的图没有诊断价值</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Value stream mapping</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>（66 条）。
+            v3.4 课程大纲 M4 模块列有 <em>Lean</em>，本站据此把价值流映射归入 Lean 一支 —— <strong>此归属为本站教学整理，官方未逐字声明这一归属</strong>。
+            本表对「三件事」的归纳同样为<strong>本站教学整理</strong>，官方未以此形式给出绘制要件。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它解决的痛点非常具体：<strong>同一件事，每个部门报出来的时间都对，加起来却对不上。</strong></p>
+          <ul>
+            <li>某保险公司 IT 部门的季度复盘会上：开发说「这个功能我三天就写完了」，
+              测试说「我这边两天出报告」，运维说「上线当晚一个小时搞定」。
+              业务方在会上问了一句：<strong>「那为什么这个需求我 2 月提的，8 月才用上？」</strong>会议室没人答得上来。</li>
+            <li>原因不是有人撒谎，而是<strong>没有任何一个人手里有全程视图</strong>。
+              每个环节只看自己那一段，而每一段自己的指标都达标 ——
+              于是所有人都在优化自己的处理时间，<strong>没有人对环节之间的排队负责</strong>。</li>
+            <li>后果是一种典型的局部优化：开发把编码时间从 5 天压到 3 天（省 2 天），
+              端到端却仍是 40 天，因为省下的这 2 天只是让工作更早进入下一个队列，<strong>队列本身没有变短</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            价值流映射用一个很笨但很有效的方式切断这个循环：<strong>把所有环节的人叫到同一张纸前，用同一条时间轴对齐</strong>。
+            当 14 天的等待段被画出来，「那为什么要半年」这个问题第一次有了可以指着看的答案。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">价值流映射</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>流程图 / 泳道图</strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>问的是<strong>「时间去哪了」</strong>：每个方框上挂着两个时间数字，画完得到的是一条时间轴</td>
+                  <td>问的是<strong>「步骤对不对、该谁做」</strong>：方框上挂的是责任人与判断分支，通常<strong>不带时间</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>价值流管理 <span class="en">Value Stream Management</span></strong></td>
+                  <td><strong>一次性的分析活动</strong>，产出是一张图<br><small class="muted">辨析已在 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>建立，本节不重复</small></td>
+                  <td><strong>持续的管理实践</strong>，产出是一条不断更新的数据流</td>
+                </tr>
+                <tr>
+                  <td><strong>约束理论 <span class="en">Theory of Constraints</span></strong></td>
+                  <td>负责<strong>看见</strong>：把每段时间量出来，指出最大的等待段在哪</td>
+                  <td>负责<strong>处置</strong>：找到之后按什么顺序动、动完之后约束转移到哪里<br><small class="muted">见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>看板方法 <span class="en">Kanban</span></strong></td>
+                  <td>是一次<strong>诊断</strong>：开一次工作坊，画一张当前状态图</td>
+                  <td>是一种<strong>日常运行方式</strong>：每天在板上可视化在制品并限制它<br><small class="muted">见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>价值流映射不是流程图</strong>。
+            很多团队交上来的所谓「价值流映射图」其实是泳道流程图 —— 环节画得很细，
+            <strong>但一个时间数字都没有</strong>。判断标准只有一条：
+            <strong>图上如果找不到「等待了多少天」，它就不是价值流映射。</strong></small></p>
+          <p class="mb-0 muted"><small>本表四组对照为<strong>本站教学整理</strong>；表中 <em>Value stream mapping</em>、
+            <em>Theory of Constraints</em>、<em>Kanban</em> 为 DOFD v3.4 官方术语表条目，
+            <em>Value Stream Management</em> 属 v3.6 新增学习目标（出自 PeopleCert 现行产品页公布的学习目标），
+            「流程图 / 泳道图」不在考纲内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>一场价值流映射工作坊的关键动作，全部集中在「取数」这一件事上：</p>
+          <ul>
+            <li><strong>选一个具体的工作项，不要用「平均需求」</strong>：挑最近真实交付过的一条需求，
+              带着它的工单号从头走到尾。「平均」会把最长的那条队列抹平掉。</li>
+            <li><strong>逆流走一遍</strong>：从客户端往回问「你上一步是从谁那里拿到的、等了多久」。
+              顺着走容易画成理想流程，倒着走才问得出交接处的真实等待。</li>
+            <li><strong>时间用实测，不用估</strong>：工单的状态变更时间戳、代码合并请求从打开到合并的间隔、
+              看板卡片进列与出列的时间，都是现成的证据。会议室里凭印象报的数字通常只报处理时间。</li>
+            <li><strong>把返工也标上</strong>：某一环节 30% 的工作要退回上一步，这条回流线必须画出来。
+              返工是<span class="term">浪费 <span class="en">Waste</span></span>中最贵的一种，且它不会出现在任何一段的处理时间里。</li>
+            <li><strong>每个环节至少来一个真正干活的人</strong>：只有主管在场的工作坊，画出来的是制度规定的流程，不是实际发生的流程。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五项操作要点为<strong>本站教学整理</strong>，官方文件把 <em>Value stream mapping</em> 列为术语，
+            <strong>未规定工作坊的组织方式与取数手段</strong>。
+            <em>Waste</em> 与 <em>Lean types of Waste (DOWNTIME)</em> 是 DOFD v3.4 官方术语表条目，DOWNTIME 浪费类型的展开属本章 Lean 一节（4.3），本节不重复。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：认名词</strong>。给一段活动描述，问它属于哪个实践。
+              指向价值流映射的关键词是<strong>「端到端」「画出 / 绘制」「识别浪费与等待」「一次性的分析」</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>价值流管理</strong>（把它写成「持续度量与可视化的平台或实践」—— 那是 3.9，出现「持续 / 仪表盘 / 自动采集」就不是本节）、
+              <strong>约束理论</strong>（把它写成「识别并提升瓶颈的方法」—— 那是找到之后的处置，见 2.3）、
+              <strong>看板</strong>（把它写成「限制在制品」—— 那是日常运行，不是一次诊断）。</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：先分辨题干问的是<strong>动作</strong>还是<strong>状态</strong>。
+              「画一张图、量一次时间、开一次工作坊」→ 价值流映射；
+              「持续跟踪、始终可见」→ 价值流管理；「排序、先动哪一个」→ 约束理论。</li>
+            <li><strong>另一种考法是归属</strong>：价值流映射属于 <strong>Lean</strong> 这一支的框架内容，
+              不是某个 CI/CD 工具实践。选项里若出现「属于持续集成的一部分」，可以直接排除。
+              <span class="muted">（此归属判断为本站教学整理：v3.4 课程大纲 M4 模块列有 <em>Lean</em>，Blueprint 的 Related Frameworks 亦写有 <em>Lean: Reduce Waste</em>，但官方未逐字声明「价值流映射属于 Lean」。）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            官方公布的考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">把时间画出来，才知道时间去了哪。</p>
+          <p class="mb-0 muted"><small>验图口诀：<strong>没有等待时间的图，不是价值流映射</strong> —— 那只是一张流程图换了个名字。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-6-2</div>
+        <h3 class="kp__title">给每段标时间：周期时间与变更前置时间<span class="en">Cycle Time &amp; Change Lead Time</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            一张价值流映射图上的每一段都要落两个数，全图汇总后得到三个量。
+            其中<strong>两个是官方术语表条目</strong>，另外三个是为了算清楚而引入的教学补充：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">量</th><th style="width:20%">英文</th><th>怎么理解</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>周期时间</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td><span class="en">Cycle time</span></td>
+                  <td>从<strong>真正开始做</strong>到做完的时间。它<strong>不含开始之前的排队</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>变更前置时间</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td><span class="en">Change lead time</span></td>
+                  <td>从<strong>变更被提出 / 代码提交</strong>算起，到它<strong>在生产上可用</strong>为止的全部时间。<strong>包含所有排队</strong>。两张图中记作「总前置时间」</td>
+                </tr>
+                <tr>
+                  <td>处理时间 <span class="badge badge--note">📝 教学整理</span></td>
+                  <td><span class="en">Process time</span></td>
+                  <td>某一段里<strong>真的有人在做</strong>的时间</td>
+                </tr>
+                <tr>
+                  <td>等待时间 <span class="badge badge--note">📝 教学整理</span></td>
+                  <td><span class="en">Wait time</span></td>
+                  <td>某一段里工作<strong>躺在队列里</strong>的时间：等评审、等环境、等发布窗口、等排期</td>
+                </tr>
+                <tr>
+                  <td>流动效率 <span class="badge badge--note">📝 教学整理</span></td>
+                  <td><span class="en">Flow efficiency</span></td>
+                  <td><strong>处理时间总和 ÷ 总前置时间</strong>。图 4-6-1 的算式：6 ÷ 40 = 15%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Cycle time</em>、<em>Change lead time</em>、<em>Flow</em> 均逐字列于
+            <strong>DOFD v3.4 官方考纲术语表</strong>，且 <em>Change lead/cycle time</em> 是 v3.4 课程大纲 M7 模块的子项。
+            <strong>「处理时间 / 等待时间 / 流动效率」三个词不在 66 条术语表内</strong>，
+            本站作为教学补充引入，用于把官方术语的构成拆开讲（同一标注见 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            要标两个时间而不是一个，是因为<strong>只测处理时间的组织，会把力气全用在改不动的地方</strong>。
+          </p>
+          <ul>
+            <li>承接上一节那家保险公司：管理层拿到的报表只有一列「开发耗时」。
+              这一列从 5 天优化到 3 天，报表很好看，<strong>而客户感知到的交付速度一天没变</strong>。</li>
+            <li>接下来的动作几乎是必然的：既然开发是瓶颈，就加人。
+              团队从 6 人扩到 10 人，在制品同步变多，<strong>代码评审队列与测试队列同时变长</strong> ——
+              等待时间从 30 天涨到 36 天，端到端反而更慢了。</li>
+            <li>把等待时间单列出来之后，事实才浮出水面：<strong>40 天里有 34 天没有任何人在处理这件工作</strong>。
+              继续在那 6 天上做文章，理论上限也只有 6 天可省；而 34 天那一侧还从未被碰过。</li>
+          </ul>
+          <p class="mb-0">
+            流动效率这个比值的全部作用，就是把这句话变成一个数：<strong>15% 意味着还有 85% 的时间根本不需要更努力，只需要不排队。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">变更前置时间 <span class="en">Change lead time</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>周期时间 <span class="en">Cycle time</span></strong></td>
+                  <td>起点在<strong>「被提出 / 被提交」</strong>那一刻，<strong>包含所有排队</strong>，是客户真正感受到的时间</td>
+                  <td>起点在<strong>「开始动手做」</strong>那一刻，<strong>不含开始之前的排队</strong>，是团队感受到的时间</td>
+                </tr>
+                <tr>
+                  <td><strong>处理时间</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>是<strong>端到端的总长</strong>：处理 + 等待</td>
+                  <td>只是总长里<strong>有人在做</strong>的那一部分。图 4-6-1 中它只占 15%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>另需与<strong>流动效率 / 资源利用率</strong>区分：流动效率看的是<strong>工作</strong>有多少时间在被处理，
+            资源利用率看的是<strong>人</strong>有多少时间在忙，两者常常反向。
+            这一组对照已在 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>展开，本节只作提醒。
+            <span class="badge badge--note">📝 教学整理</span></small></p>
+          <p class="muted"><small>最容易混的一点：<strong>周期时间与变更前置时间的差别只在起点，不在终点</strong>。
+            两者的终点都是「做完 / 可用」，但一个从「开始做」起算，另一个从「被提出」起算。
+            <strong>两者之间的差额，就是那段没人愿意认领的排队时间</strong> —— 价值流映射要量的正是这个差额。</small></p>
+          <p class="mb-0 muted"><small><em>Cycle time</em> 与 <em>Change lead time</em> 是官方术语表条目；
+            <strong>本表对两者「起点不同」的表述方式为本站教学整理</strong>，官方术语表只列词，未给出对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>取数比画图难。几条能让数字站得住的做法：</p>
+          <ul>
+            <li><strong>用时间戳，不用回忆</strong>：工单状态从「待开发」变到「开发中」的那一刻是处理开始，
+              之前那段就是等待。代码合并请求打开到被合并的间隔、卡片进列到出列的间隔，同理。</li>
+            <li><strong>用中位数，不用平均数</strong>：交付时间的分布是长尾的，几条被卡了三个月的需求会把平均数彻底拉偏。
+              中位数更接近「一件普通需求的真实体验」。</li>
+            <li><strong>同一条工作项从头量到尾</strong>：不要把 A 需求的开发时间和 B 需求的测试时间拼在一张图上。
+              各段取自不同工作项的「拼装图」，算出来的流动效率没有意义。</li>
+            <li><strong>把发布窗口这类周期性等待单独标出</strong>：双周发布意味着平均要等 7 天、最坏要等 14 天。
+              这类等待不随努力程度变化，只随<strong>制度</strong>变化 —— 它往往是全图最大的一段。</li>
+            <li><strong>不要用流动效率考核团队</strong>：它是诊断指标。一旦变成 KPI，最快的提升方式是修改统计口径，而不是缩短队列。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上取数做法为<strong>本站教学整理</strong>，官方术语表列出 <em>Cycle time</em> 与 <em>Change lead time</em>，
+            <strong>未规定统计口径与采集方式</strong>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度：术语配定义</strong>。<em>Change lead time</em> 与 <em>Cycle time</em> 都是 66 条术语表条目，
+              最常见的问法是给出一段时间描述，问它对应哪个词。<strong>抓起点</strong>：
+              「从提出 / 从提交起算」→ 变更前置时间；「从开始做起算」→ 周期时间。</li>
+            <li><strong>干扰项长什么样</strong>：
+              ① <strong>把两者的起点对调</strong>，这是最标准的一种，读起来完全通顺；
+              ② 把变更前置时间说成<strong>「部署本身花的时间」</strong>（那只是最后一小段，不是端到端）；
+              ③ 用<strong>部署频率 <span class="en">Deployment frequency</span></strong> 顶替 ——
+              它回答「多久发一次」，不回答「一件事要多久」。</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：读题时先圈出<strong>计时的起点</strong>。
+              题干里只要出现「客户提出 / 需求受理 / 代码提交」这类起点词，方向就是变更前置时间；
+              出现「开始处理 / 进入开发」，方向是周期时间。终点词（上线、可用）两者共享，<strong>不具备区分力</strong>。</li>
+            <li><strong>关于流动效率的注意</strong>：它<strong>不在 66 条术语表内</strong>（DOFD v3.4 官方考纲术语表），
+              因此本站判断它不会作为独立术语被直接考定义 —— <strong>此判断为本站教学整理，官方未就此作出说明</strong>；但它是理解「等待占大头」这一结论的工具，
+              在<a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>与本节都作为教学补充使用。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上干扰项分析与排除技巧为<strong>本站教学整理</strong>；
+            仅描述命题角度，<strong>不复制任何官方样题的题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">处理时间决定你最快能多快，等待时间决定你实际有多慢。</p>
+          <p class="mb-0 muted"><small>起点助记：<strong>变更前置时间从「别人提出」起算，周期时间从「自己动手」起算</strong>。
+            两个数字之间的空隙，就是价值流映射要暴露的东西。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-6-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-6-3</div>
+        <h3 class="kp__title">它的产出：当前状态图 → 最大等待段 → 未来状态图 → 改进计划<span class="en">Current State → Future State → Improvement Plan</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            价值流映射不是画完就结束。一次完整的映射有<strong>四个依次产生的产出</strong>，缺任何一个，前面的工作都白做：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">产出</th><th>它回答的问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 当前状态图</strong><br><small class="muted"><span class="en">Current state map</span></small></td><td>事实是什么。每段的处理时间、等待时间、总前置时间、流动效率 —— 就是图 4-6-1</td></tr>
+                <tr><td><strong>② 最大的等待段</strong></td><td>该动哪一段。按同一比例尺画出来后，最长的那段通常一眼可见 —— 图 4-6-1 中它是 14 天的发布等待</td></tr>
+                <tr><td><strong>③ 未来状态图</strong><br><small class="muted"><span class="en">Future state map</span></small></td><td>改完之后长什么样。<strong>同一张图、同一个比例尺</strong>，只改动那一段，让新的总前置时间可以直接对比</td></tr>
+                <tr><td><strong>④ 改进计划</strong></td><td>谁在什么时候做什么，以及<strong>什么时候回到这张图重测一次</strong>。没有回看日期的改进计划等于没有</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>
+            「<strong>当前状态图 / 未来状态图</strong>」（<em>current state map</em> / <em>future state map</em>）是精益价值流映射的通行术语，
+            <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>亦按此表述并指向本节；
+            <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）只收录 <em>Value stream mapping</em> 一词本身</strong>，
+            这两个子术语与上表「四个产出」的分解方式均为<strong>本站教学整理</strong>。
+          </small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            四步之所以要说全，是因为绝大多数失败的价值流映射<strong>都死在第 ① 步和第 ③ 步之间</strong>。
+          </p>
+          <ul>
+            <li>典型场景：一场两天的工作坊，二十个人贴满一整面墙的便利贴，
+              最后拍照存档、发全员邮件、领导表扬「可视化做得很好」。<strong>然后没有第二步。</strong></li>
+            <li>三个月后有人想起那张图，去核对时发现：发布窗口早就改了，测试环境换了一套，
+              图上的数字全部作废。<strong>下一次只能从头再画一遍</strong> —— 这也正是
+              <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>要解决的那个痛点。</li>
+            <li>更常见的一种失败是<strong>贪多</strong>：改进计划里列了 11 条行动，覆盖全部六个环节。
+              三个月后端到端时间确实降了 4 天，<strong>但没有人说得清是哪一条起了作用</strong>，
+              下一轮该复制哪个做法完全没有依据。</li>
+          </ul>
+          <p class="mb-0">
+            所以未来状态图的价值不在「好看」，而在<strong>它是一个可证伪的预测</strong>：
+            只改一段、预测总前置时间从 40 天降到 27 天、约定六周后回来重测。
+            改完之后要么对得上，要么对不上 —— 两种结果都能学到东西。
+          </p>
+          <p class="mb-0 muted"><small>本场景为<strong>本站构造的教学示例</strong>，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 4-6-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 440" role="img" aria-label="当前状态图与未来状态图的对比：只改动发布窗口一段，总前置时间从四十天降到二十七天，处理时间不变">
+              <defs>
+                <marker id="ah-46-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <text x="40" y="26" class="s-ink" font-size="15" font-weight="700">当前状态图　总前置时间 40 天 · 流动效率 15%</text>
+
+              <!-- 当前状态：等待段 -->
+              <rect x="40"  y="44" width="44"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="95"  y="44" width="110" height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="216" y="44" width="66"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="348" y="44" width="88"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="447" y="44" width="132" height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="601" y="44" width="308" height="30" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <!-- 当前状态：处理段 -->
+              <rect x="84"  y="44" width="11" height="30" class="f-1"/>
+              <rect x="205" y="44" width="11" height="30" class="f-1"/>
+              <rect x="282" y="44" width="66" height="30" class="f-1"/>
+              <rect x="436" y="44" width="11" height="30" class="f-1"/>
+              <rect x="579" y="44" width="22" height="30" class="f-1"/>
+              <rect x="909" y="44" width="11" height="30" class="f-1"/>
+
+              <text x="40"  y="96" class="s-muted" font-size="12">段的划分与比例尺同图 4-6-1</text>
+              <text x="755" y="96" class="f-5" font-size="12.5" font-weight="700" text-anchor="middle">发布窗口：双周一次 → 这一段等 14 天</text>
+
+              <!-- 改动说明 -->
+              <line x1="480" y1="106" x2="480" y2="132" class="s-5" stroke-width="2" marker-end="url(#ah-46-2)"/>
+              <rect x="250" y="136" width="460" height="70" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="480" y="164" class="f-5" font-size="14.5" font-weight="700" text-anchor="middle">唯一改动：发布从双周窗口改为按需发布</text>
+              <text x="480" y="188" class="s-muted" font-size="12.5" text-anchor="middle">该段等待 14 天 → 1 天，其余十一段一个字都没改</text>
+              <line x1="480" y1="208" x2="480" y2="238" class="s-5" stroke-width="2" marker-end="url(#ah-46-2)"/>
+
+              <text x="40" y="262" class="s-ink" font-size="15" font-weight="700">未来状态图　总前置时间 27 天 · 流动效率 22%</text>
+
+              <!-- 未来状态：等待段 -->
+              <rect x="40"  y="278" width="44"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="95"  y="278" width="110" height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="216" y="278" width="66"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="348" y="278" width="88"  height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="447" y="278" width="132" height="30" class="s-2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="601" y="278" width="22"  height="30" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <!-- 未来状态：处理段 -->
+              <rect x="84"  y="278" width="11" height="30" class="f-1"/>
+              <rect x="205" y="278" width="11" height="30" class="f-1"/>
+              <rect x="282" y="278" width="66" height="30" class="f-1"/>
+              <rect x="436" y="278" width="11" height="30" class="f-1"/>
+              <rect x="579" y="278" width="22" height="30" class="f-1"/>
+              <rect x="623" y="278" width="11" height="30" class="f-1"/>
+
+              <!-- 省掉的时间 -->
+              <rect x="634" y="278" width="286" height="30" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 5" fill="none"/>
+              <text x="777" y="298" class="s-muted" font-size="12.5" text-anchor="middle">省掉的 13 天</text>
+              <text x="612" y="328" class="f-3" font-size="12" font-weight="700" text-anchor="middle">1 天</text>
+
+              <!-- 三个结论 -->
+              <rect x="40"  y="350" width="280" height="66" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="340" y="350" width="280" height="66" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="640" y="350" width="280" height="66" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="180" y="374" class="s-muted" font-size="13">处理时间</text>
+                <text x="180" y="400" class="s-ink"   font-size="16" font-weight="700">6 天 → 6 天（不变）</text>
+                <text x="480" y="374" class="s-muted" font-size="13">总前置时间</text>
+                <text x="480" y="400" class="f-3"     font-size="16" font-weight="700">40 天 → 27 天</text>
+                <text x="780" y="374" class="s-muted" font-size="13">流动效率</text>
+                <text x="780" y="400" class="f-1"     font-size="16" font-weight="700">15% → 22%</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-6-2　只改一段，总前置时间少了三分之一。</strong>
+            要看懂的是最下面那三个数字之间的关系：<strong>处理时间一天没变，端到端却少了 13 天</strong>。
+            这说明这一轮改进<strong>没有让任何人干得更快</strong>，只是让工作少排了一次队。
+            两张图用<strong>同一个比例尺</strong>，所以下面那条短出来的一截就是收益本身，不需要另配表格。
+            <br><small class="muted">数据为<strong>本站构造的教学示例</strong>（延续图 4-6-1），非真实调研数据。
+            改完之后约束会转移到新的一段（此处是 6 天的测试等待），<strong>「约束转移」与处理顺序归
+            <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></strong>，本节不展开。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:26%">当前状态图</th><th style="width:26%">未来状态图</th><th>改进计划</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>它是什么</strong></td>
+                  <td>一份<strong>事实记录</strong></td>
+                  <td>一个<strong>可证伪的预测</strong></td>
+                  <td>一份<strong>带负责人和日期的清单</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>数字从哪来</strong></td>
+                  <td>实测：时间戳、工单、卡片</td>
+                  <td>推算：把改动那一段的等待时间替换掉，其余照抄</td>
+                  <td>不含数字，含动作</td>
+                </tr>
+                <tr>
+                  <td><strong>画错了会怎样</strong></td>
+                  <td>后面全错 —— 这一步不能靠估</td>
+                  <td>改完对不上账，但<strong>对不上账本身就是收获</strong></td>
+                  <td>行动太多，收益无法归因</td>
+                </tr>
+                <tr>
+                  <td><strong>什么时候作废</strong></td>
+                  <td>流程一变就过期</td>
+                  <td>改进落地后即刻作废，被新的当前状态图取代</td>
+                  <td>回看日期到了就结算</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>未来状态图不是「理想状态图」</strong>。
+            它不描述三年后的完美流程，而是描述<strong>下一次回看之前能真正做到的那一版</strong>。
+            一张画着「所有等待都归零」的未来状态图没有任何用处 —— 它无法被验证，也无法指导先动哪一段。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出三者的区分；
+            「当前状态图 / 未来状态图」两个子术语的官方出处<strong>待核</strong>，说明见本知识点 ① 面。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>拿到当前状态图之后，把它变成结果的做法：</p>
+          <ul>
+            <li><strong>只挑一段动</strong>：选最大的那个等待段，这一轮就只改它。
+              图 4-6-2 里 14 天的发布窗口就是这样一段 —— 它不随任何人更努力而缩短，只随发布制度改变。</li>
+            <li><strong>先问这段等待是「制度性的」还是「能力性的」</strong>：
+              等发布窗口、等审批会、等季度排期属于制度性的，改规则即可，见效快；
+              等测试环境、等专家评审属于能力性的，要投入建设，见效慢。<strong>制度性的等待优先动</strong>。</li>
+            <li><strong>未来状态图用同一个比例尺画</strong>：变的只有那一段的长度。
+              不同比例尺的两张图放在一起，会把收益说成一个感觉，而不是一个数字。</li>
+            <li><strong>写死回看日期</strong>：约定六周后用同样的方法重测同一条价值流。
+              重测出来的图就是下一轮的当前状态图，映射由此进入循环 ——
+              把这个循环自动化、常态化，就走到了<a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>。</li>
+            <li><strong>不要在第一轮就追求全景</strong>：一条价值流、一个具体工作项、一次工作坊。
+              一上来就映射「整个 IT 部门」的团队，通常连边界都定不下来。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实施做法为<strong>本站教学整理</strong>，
+            官方文件把 <em>Value stream mapping</em> 列为术语，<strong>未规定改进顺序与实施节奏</strong>；
+            「制度性等待 / 能力性等待」这一分类同样是本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：产出是什么</strong>。问价值流映射活动会产生什么。
+              方向是<strong>「当前状态图与未来状态图，以及据此制定的改进计划」</strong>，
+              不是「一套持续采集的指标」（那是价值流管理），也不是「一块限制在制品的看板」。</li>
+            <li><strong>命题角度二：找到瓶颈之后做什么</strong>。这类题会滑向约束理论。
+              必须记住的一条边界：<strong>约束理论支持三步工作法中的第一步 —— 这一归属由 DOFD v3.4 官方样题答案键确认</strong>，
+              不要误选成第二步或第三步；处理顺序的完整规则见
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              ① <strong>把当前状态图与未来状态图对调</strong>（把「实测得到的那张」说成未来状态图）；
+              ② 把<strong>提升约束、五步聚焦</strong><span class="badge badge--ext">🧭 延伸 · 非考纲</span>写成价值流映射的组成部分 —— 那属于约束理论，不属于本节；
+              ③ 把产出说成<strong>「实时仪表盘」「自动采集的流动指标」</strong> —— 出现「持续 / 实时 / 自动」，方向就转向价值流管理。</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：本节的一切产出都是<strong>「某个时间点的一份东西」</strong>。
+              凡是选项里带着「不断」「实时」「持续」的，先划掉；凡是带着「排序」「提升瓶颈」的，划给约束理论。</li>
+            <li><strong>关于「浪费」的连带考法</strong>：价值流映射常与<span class="term">浪费 <span class="en">Waste</span></span>、
+              <em>Lean types of Waste (DOWNTIME)</em> 同题出现，因为图上的等待段正是浪费的一种。
+              两者都是官方术语表条目，DOWNTIME 八项浪费的展开在本章 <a href="4.3-lean.html">4.3 Lean 与八项浪费</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            §4.8 中被引用的唯一一条是「约束理论支持第一步」，本站只陈述结论。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">当前状态图给事实，未来状态图给目标，改进计划给下一步，回看日期给结论。</p>
+          <p class="mb-0 muted"><small>一句话推论：<strong>改进的收益写在等待时间那一栏里，不写在处理时间那一栏里</strong>。
+            图 4-6-2 的三个数字就是这句话的全部证据 —— 处理时间不变，端到端少了三分之一。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>价值流映射是一次性的分析活动</strong>：画出从需求到客户的每个环节，为每段标<strong>处理时间</strong>与<strong>等待时间</strong>。产出是一张图</li>
+        <li><strong>流动效率 = 处理时间 ÷ 总前置时间</strong>。图 4-6-1 的示例是 6 ÷ 40 = 15%；<strong>典型组织常见落在 5%–15%</strong>（此观察为本站教学整理，非官方数据）</li>
+        <li><strong>四个产出，顺序固定</strong>：当前状态图 → 最大等待段 → 未来状态图 → 带回看日期的改进计划</li>
+        <li><strong>两个官方术语抓起点</strong>：<em>Change lead time</em> 从「被提出 / 提交」起算（含排队），<em>Cycle time</em> 从「开始做」起算（不含之前的排队）</li>
+        <li><strong>三节分工</strong>：<strong>4.6 怎么画</strong> · <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 找到之后按什么顺序处理</a> · <a href="../ch03-key-practices/3.9-vsm.html">3.9 怎么变成持续的管理</a></li>
+        <li><strong>约束理论支持三步工作法的第一步</strong>（DOFD v3.4 官方样题答案键确认），不要误选第二步或第三步</li>
+        <li><strong>验图口诀</strong>：图上找不到「等待了多少天」，那就不是价值流映射，只是一张流程图</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Value stream mapping</em>、<em>Flow</em>、<em>Cycle time</em>、<em>Change lead time</em>、
+      <em>Waste</em>、<em>Lean types of Waste (DOWNTIME)</em>、<em>Constraint</em>、<em>Kanban</em>、<em>Theory of Constraints</em>、
+      <em>Lean thinking</em>、<em>Lean tools</em> 均列于
+      <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>的 66 条词条内；
+      该表<strong>只列词条、不附定义</strong>，因此本站给出的每一条中文释义都是本站措辞；
+      v3.4 课程大纲 M4 模块列有 <em>Lean</em>，M7 模块列有 <em>Change lead/cycle time</em>（DOFD v3.4 课程大纲模块构成）；
+      PeopleCert DevOps Foundation Blueprint 的 Related Frameworks 写有 <em>Lean: Reduce Waste</em> 与
+      <em>Value Stream Management: End-to-End</em>。
+      <strong>本节引用的官方样题结论只有一条</strong>：「约束理论支持三步工作法中的第一步」，
+      由 <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论，<strong>不复制题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「处理时间 / 等待时间 / 流动效率」三个词不在 66 条术语表内（作为教学补充引入，同一标注见
+      <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>）；
+      绘图三要件、工作坊取数做法、四个产出的分解、制度性 / 能力性等待的分类、
+      各面中的干扰项分析与排除技巧、「价值流映射属于 Lean 一支」的归属判断，官方均未以此形式给出，已分别就地标注。
+      图 4-6-1 与图 4-6-2 中的全部数字（40 天 / 6 天 / 15% / 27 天 / 22%）为<strong>本站构造的教学示例</strong>，非真实调研数据；
+      「典型组织流动效率常低于 15%」为本站教学整理的观察，不是官方公布的数据。
+      「当前状态图 <em>current state map</em> / 未来状态图 <em>future state map</em>」是精益价值流映射的通行术语，
+      官方术语表未逐字收录，已按本站教学整理就地标注。
+      <em>Value Stream Management</em> 属 <strong>v3.6 新增学习目标</strong>（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+      其与本节的辨析见 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>；
+      约束的处理顺序与转移见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>；
+      DOWNTIME 八项浪费的展开在本章 <a href="4.3-lean.html">4.3 Lean 与八项浪费</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

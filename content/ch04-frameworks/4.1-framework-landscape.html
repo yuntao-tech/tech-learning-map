@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 框架全景与彼此关系 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 4 章考的不是 Agile、Lean、ITSM、安全文化各自的内部机制，而是它们与 DevOps 的关系。本节给出 v3.4 官方六项与 v3.6 框架层两份清单、框架覆盖价值流的全景图，以及「DevOps 不取代它们，而是把它们接到同一条价值流上」这条主线。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.1-framework-landscape"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.1 框架全景与彼此关系</h1>
+      <div class="page-head__en">The Framework Landscape</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--note">📝 教学整理</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        这一章最容易被当成「Agile 速成 + ITIL 速成」来复习，方向从一开始就偏了。
+        <strong>本章考的不是各框架自身的内部机制，而是它们与 DevOps 的关系</strong> ——
+        每个框架解决什么问题、DevOps 从它那里继承了什么、边界画在哪一段价值流上。
+        本节是全章的地图：先把六个（v3.6 是八个）名字摆到同一条价值流上，
+        再逐节展开。<strong>DevOps 不取代它们，而是把它们接到同一条价值流上。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>M4「Business and Technology Frameworks」的官方清单到底有哪几项，v3.4 与 v3.6 差在哪</li>
+        <li>Agile、Lean、ITSM、安全文化各解决什么问题，DevOps 分别从它们继承了什么</li>
+        <li>为什么说 DevOps 不是这些框架的替代品 —— 官方文件在哪一处支持这个判断</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 500" role="img" aria-label="以价值流为主轴的框架覆盖全景图：Agile、Lean、ITSM、SRE、价值流管理各自覆盖价值流的哪一段，安全文化作为底层前提">
+          <defs>
+            <marker id="ah-41-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <text x="480" y="24" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">同一条价值流 —— 每个框架覆盖其中一段，重叠处正是它们最容易被混为一谈的地方</text>
+
+          <!-- 价值流阶段条 -->
+          <rect x="20"  y="40" width="153" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="173" y="40" width="153" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="326" y="40" width="154" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="480" y="40" width="153" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="633" y="40" width="153" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="786" y="40" width="154" height="54" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="96"  y="66" class="s-ink" font-size="15" font-weight="650">需求与规划</text>
+            <text x="96"  y="86" class="s-muted" font-size="12">Plan</text>
+            <text x="249" y="66" class="s-ink" font-size="15" font-weight="650">开发</text>
+            <text x="249" y="86" class="s-muted" font-size="12">Develop</text>
+            <text x="403" y="66" class="s-ink" font-size="15" font-weight="650">集成与测试</text>
+            <text x="403" y="86" class="s-muted" font-size="12">Build · Test</text>
+            <text x="556" y="66" class="s-ink" font-size="15" font-weight="650">交付与部署</text>
+            <text x="556" y="86" class="s-muted" font-size="12">Release · Deploy</text>
+            <text x="709" y="66" class="s-ink" font-size="15" font-weight="650">运行与运维</text>
+            <text x="709" y="86" class="s-muted" font-size="12">Operate</text>
+            <text x="863" y="66" class="s-ink" font-size="15" font-weight="650">反馈与改进</text>
+            <text x="863" y="86" class="s-muted" font-size="12">Feedback</text>
+          </g>
+
+          <!-- 交接竖线 -->
+          <path d="M480 38 L480 326" class="s-stroke" stroke-width="2" stroke-dasharray="7 6"/>
+          <path d="M633 38 L633 326" class="s-stroke" stroke-width="2" stroke-dasharray="7 6"/>
+
+          <!-- 覆盖带 · 价值流管理 VSM -->
+          <rect x="20" y="106" width="920" height="34" rx="8" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <line x1="48" y1="123" x2="36" y2="123" class="s-2" stroke-width="2" marker-end="url(#ah-41-2)"/>
+          <line x1="912" y1="123" x2="924" y2="123" class="s-2" stroke-width="2" marker-end="url(#ah-41-2)"/>
+          <text x="58" y="128" font-size="15"><tspan class="f-2" font-weight="700">价值流管理 VSM</tspan><tspan class="s-ink">　端到端 —— Blueprint 逐字原文：Value Stream Management: End-to-End</tspan></text>
+
+          <!-- 覆盖带 · Lean -->
+          <rect x="20" y="150" width="920" height="34" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="34" y="172" font-size="15"><tspan class="f-3" font-weight="700">精益 Lean</tspan><tspan class="s-ink">　流动与消除浪费 —— 把等待、返工、堆积的在制品当成要消掉的东西</tspan></text>
+
+          <!-- 覆盖带 · Agile -->
+          <rect x="20" y="194" width="460" height="34" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="34" y="216" font-size="15"><tspan class="f-1" font-weight="700">敏捷 Agile</tspan><tspan class="s-ink">　迭代与响应变化</tspan></text>
+
+          <!-- 覆盖带 · ITSM -->
+          <rect x="480" y="238" width="460" height="34" rx="8" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="494" y="260" font-size="15"><tspan class="f-4" font-weight="700">IT 服务管理 ITSM</tspan><tspan class="s-ink">　服务、变更、事件的运营纪律</tspan></text>
+
+          <!-- 覆盖带 · SRE -->
+          <rect x="633" y="282" width="307" height="34" rx="8" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="647" y="304" font-size="15"><tspan class="f-2" font-weight="700">SRE</tspan><tspan class="s-ink">　可靠性即工程目标</tspan></text>
+
+          <!-- 地基 · 安全文化 -->
+          <rect x="20" y="326" width="920" height="46" rx="8" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="34" y="347" font-size="15"><tspan class="f-5" font-weight="700">安全文化 Safety Culture</tspan><tspan class="s-ink">　不覆盖价值流的任何一段 —— 它是上面五条能不能说真话的前提</tspan></text>
+          <text x="34" y="365" class="s-muted" font-size="12.5">指「可以安全地说出坏消息」的文化，不是信息安全。指责与恐惧、大量单点故障、频繁战情室的组织应转向安全文化 —— 由 DOFD v3.4 官方样题答案键确认。</text>
+
+          <!-- 读图要点 -->
+          <text x="20" y="394" class="s-ink" font-size="13">① 「交付与部署」这条竖线两侧：Agile 的覆盖到此为止，ITSM 从此开始 —— 谁负责生产变更，考的就是这条线。</text>
+          <text x="20" y="416" class="s-ink" font-size="13">② 从「运行与运维」起，ITSM 与 SRE 覆盖同一段 —— 差别不在管辖范围，在于把可靠性当成服务流程还是工程问题。</text>
+          <text x="20" y="438" class="s-ink" font-size="13">③ Lean 与 VSM 横贯全程，所以它们不与任何框架争地盘，而是给整条价值流提供消除浪费与端到端度量的方法。</text>
+          <text x="20" y="462" class="s-muted" font-size="12">M4 官方六项中的 Learning Organizations（学习型组织）与 Continuous Funding（持续资金）不落在价值流的某一段上，本图未画出，见 kp-4-1-1。</text>
+          <text x="20" y="482" class="s-muted" font-size="12">本图的覆盖区间划分与「重叠处」判断为本站教学整理，官方未给出框架与价值流阶段的对应图。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-1-1　框架全景：谁覆盖价值流的哪一段。</strong>
+        这张图要让人看懂的不是六个框架各自是什么，而是<strong>它们的边界与重叠</strong>：
+        Agile 停在交付之前，ITSM 从交付开始，两者在「交付与部署」这条竖线上交接；
+        ITSM 与 SRE 覆盖同一段运维，所以最容易被问「区别在哪」；
+        Lean 与 VSM 横贯全程，因此它们与其他框架不是并列关系。
+        安全文化被画成底座而不是一段，是因为它决定其余五条上的坏消息能不能被说出来。
+        <br><small class="muted">VSM 与 SRE 用同一种颜色，标记的是<strong>同一件事</strong>：这两项是 v3.6 现行页面在框架层显式加入的
+        （来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），v3.4 课程大纲 M4 的六项子项中没有它们。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-1-1</div>
+        <h3 class="kp__title">M4 的官方框架清单：v3.4 六项与 v3.6 框架层<span class="en">Business and Technology Frameworks</span></h3>
+        <div class="badge-row"><span class="badge badge--note">📝 教学整理</span><span class="badge badge--new">🆕 v3.6 新增</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            M4 是 DOFD 八大知识域中的第四个，官方英文名
+            <span class="term">业务与技术框架 <span class="en">Business and Technology Frameworks</span></span>。
+            它在 v3.4 权重表下<strong>最多 7 题</strong>，与第 3 章并列全考纲最高。
+          </p>
+          <p><strong>v3.4 课程大纲 M4 的官方子项，一共六项：</strong></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">官方子项（英文）</th><th style="width:22%">本站译名</th><th>它在这一章的位置</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Agile</strong></td><td>敏捷</td><td>展开见本章 <a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td></tr>
+                <tr><td><strong>ITSM</strong></td><td>IT 服务管理</td><td>展开见本章 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td></tr>
+                <tr><td><strong>Lean</strong></td><td>精益</td><td>展开见本章 <a href="4.3-lean.html">4.3 Lean 与八项浪费</a></td></tr>
+                <tr><td><strong>Safety Culture</strong></td><td>安全文化</td><td>展开见本章 <a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a></td></tr>
+                <tr><td><strong>Learning Organizations</strong></td><td>学习型组织</td><td>同时是 <strong>M2 的子项</strong>，第 2 章已展开：<a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td></tr>
+                <tr><td><strong>Continuous Funding</strong></td><td>持续资金</td><td>展开见本章 <a href="4.7-continuous-funding.html">4.7 持续资金</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <strong>v3.6 现行页面在框架层显式加入了两项</strong>：
+            <span class="term">价值流管理 <span class="en">Value Stream Management / VSM</span></span> 与
+            <span class="term">站点可靠性工程 <span class="en">Site Reliability Engineering / SRE</span></span>。
+            两份清单都要记住，因为它们的差异本身就是考点边界。
+          </p>
+          <p>
+            <strong>清单之外还要认得的三个名字。</strong>
+            66 条术语表里另有多条框架相关术语（<em>Agile Manifesto</em>、<em>Agile software development</em>、
+            <em>Lean thinking</em>、<em>Lean tools</em>、<em>Lean production</em>、<em>Scrum</em>、
+            <em>IT service management</em>、<em>Kanban</em>、<em>Value stream mapping</em>、<em>Waterfall</em> 等），
+            分散在本章各节展开。本节先点名其中三条<strong>尚无专节承接</strong>的：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:34%">术语</th><th>在这张全景图里的位置</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">Collective Body of Knowledge <span class="en">CBOK</span></span><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>指一个领域被集体沉淀下来的知识总体。它解释了本章这些框架<strong>为什么值得学</strong>：
+                    每一个都是别人踩过坑之后沉淀的公共知识，不必从零重新发明</td>
+                </tr>
+                <tr>
+                  <td><span class="term">敏捷服务管理 <span class="en">Agile service management</span></span><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>正好落在图 4-1-1 中 Agile 与 ITSM 交接的那条竖线上 —— 把敏捷的做法用到服务管理流程本身。
+                    展开见本章 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+                </tr>
+                <tr>
+                  <td><span class="term">Scaled Agile Framework <span class="en">SAFe</span></span><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>敏捷在大型组织中的规模化形态，属于图中 Agile 那一段的放大版。
+                    展开见本章 <a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>三条术语均逐字列于 DOFD v3.4 官方考纲术语表（66 条）；
+            「在全景图里的位置」这一栏为本站教学整理，官方未给出这三者与其余框架的位置关系。
+            考纲为 Bloom 1–2，这三条要求认得名字与大意，不要求掌握内部机制。</small></p>
+          <p class="mb-0 muted"><small>六项子项出自 DOFD v3.4 课程大纲 M4；题数分布出自
+            <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+            <strong>v3.6 未公开重新发布权重表</strong>，本站沿用 v3.4 分布并全程标注。
+            框架层加入 VSM 与 SRE 出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这份清单出现之前，IT 组织里已经同时跑着好几套框架，<strong>但没有一份东西说明它们之间是什么关系</strong>。
+            具体场景：
+          </p>
+          <ul>
+            <li>某企业的三套节奏各自为政：<strong>开发按 Scrum 的两周迭代跑</strong>，
+              <strong>运维按 ITIL 的变更窗口跑</strong>（每月两个窗口，CAB 会议审批），
+              <strong>预算按项目制年度拨款</strong>（钱在年初一次分完，中途改需求要走立项变更）。</li>
+            <li>结果是需求全卡在交接处：迭代结束时功能已经可用，却要等下一个变更窗口；
+              等到窗口，预算口径又对不上。<strong>每一套框架在自己的范围内都在正常运转，
+              端到端的交付却看不出任何改善。</strong></li>
+            <li>没有一份统一清单时，转型只能<strong>逐个框架各自局部优化</strong> ——
+              敏捷教练把迭代做得更顺，ITSM 顾问把变更流程做得更规范，
+              两边都交了合格的报告，<strong>谁也说不清边界该画在哪、哪一段本来就该由对方负责</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明多框架并行时的交接失效机制，非真实调研数据。</small></p>
+          <p>
+            清单的作用，就是把这些名字<strong>摆到同一张图上</strong>，先划出各自覆盖哪一段，
+            才谈得上接口怎么接。图 4-1-1 就是这张图。
+          </p>
+          <p>
+            官方文件本身给出了一个方向性判断：
+            <strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+            —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+            这句话的含义是：框架不是按「哪个更先进」来选的，而是按<strong>它接在这条价值流的哪一段、解决哪个具体问题</strong>来选的。
+            清单的作用，就是把候选项限定在这几个名字上。
+          </p>
+          <p class="mb-0">
+            <strong>v3.6 之所以在框架层补上 VSM 与 SRE</strong>，也是同一个逻辑：
+            这两者已经不再只是「实践」，而是被当作组织层面的方法体系来用了。
+            <span class="muted"><small>（这一解释为本站教学整理，官方仅公布了学习目标清单，未说明加入原因。）</small></span>
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">v3.4 课程大纲 M4 子项</th><th>v3.6 现行页面的框架层</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>清单本身</strong></td>
+                  <td>Agile · ITSM · Lean · Safety Culture · Learning Organizations · Continuous Funding（<strong>六项</strong>）</td>
+                  <td>在上述基础上<strong>显式加入 VSM 与 SRE</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>VSM 的位置</strong></td>
+                  <td>不在 M4 的六项子项里；官方 Blueprint 的 <em>Related Frameworks</em> 一栏<strong>已列出</strong> <em>Value Stream Management: End-to-End</em></td>
+                  <td><strong>框架层的正式一项</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>SRE 的位置</strong></td>
+                  <td>在 <strong>M3 关键实践</strong>的子项里（<em>Site Reliability &amp; Resilience Engineering</em>），不在 M4</td>
+                  <td><strong>框架层的正式一项</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>权重表</strong></td>
+                  <td>M4 最多 <strong>7 题</strong>（Examination Requirements，2022-05）</td>
+                  <td><strong>未公开重新发布权重表</strong>，本站沿用 v3.4 分布</td>
+                </tr>
+                <tr>
+                  <td><strong>对复习的影响</strong></td>
+                  <td>六项都要能说出「解决什么 / DevOps 继承什么」</td>
+                  <td>再加 VSM 与 SRE 两项，但它们在本站分别已有专节</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>两份清单不是「新版换掉旧版」，而是同一个模块在两个版本下的表述</strong>。
+            SRE 在 v3.4 并不是「没有」，只是挂在 M3 关键实践下；VSM 在 v3.4 大纲子项里确实没有，
+            但官方 Blueprint 的「相关框架」栏早已列出它。看到「v3.6 新增」四个字就以为 v3.4 完全不涉及，是最常见的误读。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以「v3.4 对照 v3.6」的形式给出该表；
+            表中每一行的事实来源已在 ① 面列出。
+            另需注意：官方 Blueprint 未标注它对应哪一个大纲版本，
+            因此本站只写「Blueprint 已列出 VSM」，不写「v3.4 已列出 VSM」。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            把这份清单当成一张<strong>盘点表</strong>：组织里已经在跑的框架逐行填进去，五列填满为止。
+            <strong>本 kp 只做盘点（有什么、各占哪一段）；留不留、怎么改属于取舍，在 kp-4-1-2 的 ④ 面。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">框架</th><th style="width:20%">覆盖价值流哪一段</th><th style="width:20%">DevOps 继承什么</th><th style="width:24%">哪一部分挡住流动</th><th>结论</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>变更评审会<br><small class="muted">（组织现有的 ITSM 实践）</small></td>
+                  <td>交付与部署段</td>
+                  <td>可追溯的授权记录</td>
+                  <td>会议式审批：一周两次，变更平均等 2 天</td>
+                  <td><strong>改</strong>（保留授权记录，换成自动化闸门）</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="muted"><small>组织里每跑着一个框架就填一行。
+                    <strong>填不满的格子是覆盖缺口</strong>（例如没有任何一行覆盖「运行与运维」）；
+                    <strong>两行填出同一格却互相冲突，是接口没接好</strong>（例如迭代节奏与变更窗口各排各的）。</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            前三列对着图 4-1-1 就能填；<strong>第四列必须看实际发生了什么，不能看框架文档怎么写</strong> ——
+            同一个变更评审会，在做风险判断的组织里是价值，在只走签字的组织里是延迟。
+          </p>
+          <div class="src-note">
+            这张五列盘点表与「留-改-撤」的结论口径为<strong>本站教学整理</strong>，
+            官方给出的是框架清单与各自的贡献，<strong>未给出盘点表或盘点流程</strong>。
+            表中示例行为本站构造，非真实调研数据。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <p>
+            复习方向最容易错在这里：<strong>把两周时间花在背 Scrum 的角色工件与几十个 ITSM 流程名上，
+            却答不出「DevOps 从 Agile 继承了什么」</strong> —— 而框架的内部细节，正好是干扰项的原料。
+            <span class="muted"><small>（此提示为本站教学整理。）</small></span>
+          </p>
+          <ul>
+            <li><strong>命题角度一：清单归属</strong>。给出若干名字，问哪一个属于（或不属于）业务与技术框架。
+              六项是硬清单，直接对照即可。</li>
+            <li><strong>命题角度二：方向判断</strong>。<strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>
+              —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。凡是问「按什么来选」的题，
+              答案方向是业务侧，不是技术侧。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>框架内部细节</strong>（某框架的角色数、流程数、仪式名）——
+              题干在问 DevOps 与框架的关系，选项却在描述框架自己的内部机制，这类选项通常可以整组划掉；
+              <strong>具体厂商工具名</strong>（框架层的题不会用工具名作正确答案）；
+              <strong>看起来更「先进」的技术名词</strong>（用来诱导凭印象选新词）。</li>
+            <li><strong>排除技巧</strong>：先看题干问的是<strong>「关系」还是「内部」</strong>。
+              M4 的题几乎都在问关系；选项一旦滑进某个框架的内部构造，就与题干不在同一层。</li>
+            <li><strong>关于版本</strong>：版本沿革本身不是考纲列出的知识点，
+              两份清单要记不是为了答版本题，而是为了不被「这个不在考纲里吧」这种自我怀疑干扰。
+              <span class="muted">（官方未公布题目层面的排除清单，此为本站教学提示。）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">官方六项：敏捷 · ITSM · 精益 · 安全文化 · 学习型组织 · 持续资金；v3.6 在框架层又摆上了 VSM 与 SRE。</p>
+          <p class="mb-0 muted"><small>六项里有<strong>两项不谈技术</strong> —— 安全文化谈的是人敢不敢说话，持续资金谈的是钱怎么给。
+            清单里出现非技术项，本身就是「这一章考的是关系不是技术」的一个信号。<span class="muted">（此提示为本站教学整理。）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-1-2</div>
+        <h3 class="kp__title">DevOps 与这些框架的关系：不取代，而是接到同一条价值流上<span class="en">DevOps and Related Frameworks</span></h3>
+        <div class="badge-row"><span class="badge badge--note">📝 教学整理</span><span class="badge badge--hot">📌 高频</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            这是本章唯一必须记牢的一句话：
+            <strong>DevOps 不提供任何一个框架的替代品，它把这些框架接到同一条价值流上。</strong>
+          </p>
+          <p>
+            这个判断有官方依据。PeopleCert DevOps Foundation Blueprint 有一栏叫
+            <strong><em>Related Frameworks</em>（相关框架）</strong>，逐字原文是：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:44%">Blueprint 逐字原文</th><th>它说了什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Agile: Lean Development</strong></td><td>敏捷这一栏挂着的是<strong>精益开发</strong>；官方只给出这行对应关系，未说明二者是并列、包含还是同源 —— 本站不替官方定性</td></tr>
+                <tr><td><strong>ITSM: Processes</strong></td><td>ITSM 贡献的是<strong>流程</strong>，即运营侧的纪律</td></tr>
+                <tr><td><strong>Lean: Reduce Waste</strong></td><td>精益贡献的是<strong>消除浪费</strong></td></tr>
+                <tr><td><strong>Value Stream Management: End-to-End</strong></td><td>价值流管理贡献的是<strong>端到端</strong>的视角</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            关键在这一栏的<strong>名字</strong>：它叫「相关框架」，不叫「被取代的框架」。
+            官方把这四者与 DevOps 并置，每一条后面跟的是<strong>它贡献了什么</strong>。
+          </p>
+          <div class="src-note">
+            上表左列为 <strong>PeopleCert DevOps Foundation Blueprint 的逐字原文</strong>，可直接引用；
+            右列的中文解读与「叫相关框架而不叫被取代的框架」这一推论，是<strong>本站教学整理</strong>。
+            <em>Agile: Lean Development</em> 一条的字面含义存在多种读法
+            （「敏捷即精益开发」或「敏捷之下的精益开发」），本站只陈述官方原文并给出中性解读，未替官方定性。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这句话解决的痛点，是<strong>把 DevOps 当成一次「换框架」的组织改造</strong>。具体场景：
+          </p>
+          <ul>
+            <li>某企业启动 DevOps 转型，口号是「敏捷已经过时了，我们直接上 DevOps」。
+              第一步取消了 Scrum 的迭代评审，理由是「持续交付了还要迭代干什么」；
+              第二步把变更管理流程停掉，理由是「审批就是官僚」。</li>
+            <li><strong>三个月后的结果</strong>：迭代评审没了，需求方失去了固定的反馈入口，
+              改需求变成随时插队，在制品越堆越多；变更管理没了，
+              生产上出了故障查不到是谁在什么时候改了什么，事件复盘无法进行，年度审计直接不通过。</li>
+            <li>补救方式是把两者又装了回去 —— 但这时候<strong>它们变成了「DevOps 之外的额外流程」</strong>，
+              团队认为是倒退，抵触更强。<strong>拆掉容易，接回去很贵。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明「取代式转型」的失败机制，非真实调研数据。</small></p>
+          <p>
+            正确的机制是<strong>接线，不是拆换</strong>：Agile 那一段的迭代与响应变化继续保留，
+            只是它的终点从「可工作的软件」延长到「在生产上稳定运行」；
+            ITSM 的变更与事件纪律继续保留，只是审批从会议变成自动化闸门与预授权。
+            <strong>每个框架的价值被继承，它挡住流动的那一部分被改造。</strong>
+          </p>
+          <p class="mb-0">
+            这与<a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法（2.1）</a>是同一件事的两个层面：
+            三步工作法讲的是流动、反馈、持续改进这条因果链，本节讲的是<strong>哪个框架接在这条链的哪一段</strong>。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:15%">框架</th><th style="width:25%">它解决什么问题</th><th style="width:25%">DevOps 从它继承什么</th><th>最容易被混淆的那一点</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agile</strong></td>
+                  <td>需求会变，长周期计划必然失准 —— 用短迭代把计划切小</td>
+                  <td><strong>迭代与响应变化</strong>：小批量、频繁交付、拥抱变更</td>
+                  <td>以为 <strong>DevOps 是 Agile 的下一代</strong>。实际上 Agile 通常止于「可工作的软件」，
+                    DevOps 接的是它之后<strong>直到生产运行</strong>的那一段</td>
+                </tr>
+                <tr>
+                  <td><strong>Lean</strong></td>
+                  <td>工序之间堆积库存与等待，整体交期被拖长</td>
+                  <td><strong>流动与消除浪费</strong>：等待、返工、在制品堆积都是要消掉的浪费</td>
+                  <td>以为 Lean 只是「做减法」。它真正给的是<strong>把价值流当整体看</strong>的视角，
+                    局部效率高不等于整体流动快</td>
+                </tr>
+                <tr>
+                  <td><strong>ITSM</strong></td>
+                  <td>系统上线之后没人管，变更无记录、事件无响应、服务无承诺</td>
+                  <td><strong>服务与运营纪律</strong>：变更、事件、服务连续性的管理方式</td>
+                  <td>以为 <strong>DevOps 意味着不要流程</strong>。DevOps 反对的是<strong>拖慢流动的流程形态</strong>，
+                    不是流程本身 —— 官方样题答案键的方向恰恰相反（见 ⑤ 面）</td>
+                </tr>
+                <tr>
+                  <td><strong>安全文化</strong></td>
+                  <td>坏消息说不出口，问题只能等到爆炸时才被看见</td>
+                  <td><strong>「能说真话」的前提</strong>：无指责的复盘、故障可以公开讨论</td>
+                  <td>把 Safety Culture 当成<strong>信息安全</strong>。它指的是「可以安全地说出坏消息」，
+                    与 DevSecOps 不是一回事</td>
+                </tr>
+                <tr>
+                  <td><strong>VSM</strong></td>
+                  <td>各环节都说自己很快，端到端交付却很慢，且没人有全局数据</td>
+                  <td><strong>端到端的度量与可见性</strong>（Blueprint 原文：End-to-End）</td>
+                  <td>与<span class="term">价值流映射 <span class="en">Value stream mapping</span></span>混用。
+                    映射是一次性的分析动作，管理是持续的运营方式</td>
+                </tr>
+                <tr>
+                  <td><strong>SRE</strong></td>
+                  <td>可靠性靠人盯、靠加班，无法量化也无法工程化</td>
+                  <td><strong>把可靠性当成工程问题</strong>来设计与度量</td>
+                  <td>与 ITSM 抢地盘。两者覆盖同一段价值流，
+                    差别在<strong>用服务流程管，还是用工程手段解</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的那一点，六行里其实是同一个：
+            <strong>把「DevOps 与 X 的关系」读成了「DevOps 还是 X，二选一」</strong>。
+            只要选项里出现「取代 / 替换 / 不再需要」这类词，方向基本就是错的。</small></p>
+          <p class="muted"><small>本表四列结构与「最容易被混淆的那一点」为<strong>本站教学整理</strong>，
+            官方未以此形式给出框架对照表；其中「DevOps 从它继承什么」一列的前四行方向，
+            与 Blueprint <em>Related Frameworks</em> 逐字原文一致（见 ① 面）。</small></p>
+          <p class="mb-0 muted"><small>各框架的展开分别在本章 <a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a> 至 <a href="4.7-continuous-funding.html">4.7 持续资金</a>；
+            VSM 与 SRE 在实践层的展开见：
+            <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>、
+            <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            组织里已经有一堆框架时，逐个过一遍这三问，答案决定它是留、是改、还是撤：
+          </p>
+          <ul>
+            <li><strong>问一：它接在价值流的哪一段？</strong>
+              答不上来，说明这个框架在组织里已经只剩形式（例如「敏捷」只剩每日站会，不影响任何交付节奏）。</li>
+            <li><strong>问二：它现在提供的是价值，还是延迟？</strong>
+              变更评审会如果在做风险判断，是价值；如果只是走个签字流程，那是延迟。
+              <strong>同一个流程在两个组织里可以是相反的答案</strong>，必须看实际发生了什么。</li>
+            <li><strong>问三：如果明天把它撤掉，谁会先出问题？</strong>
+              没人出问题 → 它早就是形式了；审计、客服、财务先出问题 → 它承担着组织的真实约束，
+              要做的是把它<strong>做快</strong>，不是拆掉。</li>
+          </ul>
+          <p class="mb-0">
+            改造的方向永远是<strong>保留职责、改变形态</strong>：
+            变更管理保留可追溯的授权记录，但把「开会审批」换成「自动化闸门 + 低风险变更预授权清单」；
+            迭代评审保留固定的反馈入口，但把评审对象从「演示环境」换成「生产上的真实数据」。
+          </p>
+          <div class="src-note">
+            这套「三问 + 保留职责改变形态」的判断方法为<strong>本站教学整理</strong>，
+            官方文件列出了框架清单与各自的贡献，<strong>未给出框架取舍的判断流程</strong>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条 · ITSM</strong>：
+              <strong>对 DevOps 最关键的 ITSM 流程是「组织变革管理、服务连续性管理、事件管理」三者皆是</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条特别值得记，因为它同时证明了两件事：<strong>官方并不认为 DevOps 排斥 ITSM 流程</strong>；
+              以及在这一类题上，<strong>「以上皆是」可以是正确答案</strong>，不要因为它看起来太省事就跳过。三个流程的展开见 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>。</li>
+            <li><strong>官方已确认的一条 · 安全文化</strong>：
+              面对<strong>指责与恐惧的文化、大量单点故障、频繁的战情室</strong>这一组现象的组织，
+              应当转向<strong>安全文化</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这是典型的「症状 → 框架」题型：题干给现象，选项给框架名。症状束与排除法见 <a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              最常见的一类是<strong>取代式表述</strong> —— 「DevOps 取代 ITSM」「有了 DevOps 就不需要流程 / 不需要变更管理」。
+              第二类是<strong>张冠李戴</strong>：把某个框架的贡献安到另一个头上（例如说消除浪费来自 Agile、迭代来自 Lean）。
+              第三类是<strong>把安全文化理解成信息安全</strong>，于是「症状 → 框架」题的答案被换成 DevSecOps。</li>
+            <li><strong>排除技巧</strong>：
+              第一步，划掉一切含「取代 / 替换 / 不再需要 / 淘汰」的选项；
+              第二步，回到 Blueprint 的四条对应关系 —— <strong>Agile 给迭代、Lean 给消除浪费、ITSM 给流程、VSM 给端到端</strong>，
+              哪一条被挪了位置，那个选项就是错的。
+              <span class="muted">（四条对应关系出自 Blueprint 逐字原文；把它当排除工具用是本站教学整理。）</span></li>
+            <li><strong>反向问法</strong>：问「以下哪一项<strong>不是</strong> DevOps 与相关框架的关系」，
+              正确答案往往就是那个写着「取代」的选项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅陈述官方样题答案键确认的结论与命题角度，
+            <strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分类与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">DevOps 不换掉任何一个框架，它把它们接到同一条价值流上。</p>
+          <p class="muted"><small>Blueprint 四条对应关系，按贡献记：
+            <strong>Agile 给迭代与响应变化 · Lean 给流动与消除浪费 · ITSM 给服务与运营纪律 · VSM 给端到端</strong>；
+            再补一条不在这四条里但同样关键的：<strong>安全文化给「能说真话」的前提</strong>。</small></p>
+          <p class="mb-0 muted"><small>只要选项里出现「取代」两个字，先怀疑它。<span class="muted">（此提示为本站教学整理。）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-1-3</div>
+        <h3 class="kp__title">Waterfall：所有这些框架共同的对照系<span class="en">Waterfall</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">瀑布式 <span class="en">Waterfall</span></span>
+            是一种<strong>阶段串行</strong>的交付方式：需求、设计、开发、测试、上线依次进行，
+            <strong>前一阶段全部完成并交付文档之后，才进入下一阶段</strong>，像水从上一级台阶落到下一级，不回头。
+          </p>
+          <p class="mb-0">
+            本节把它单列出来，不是为了学它，而是因为
+            <strong>Agile、Lean、ITSM、安全文化以及 DevOps，都可以被读成对瀑布式交付某个缺陷的回应</strong>。
+            它是这一整章的<strong>共同对照系</strong>。
+          </p>
+          <div class="src-note">
+            <em>Waterfall</em> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条），要求达到 Bloom 1–2，即认得并能理解。
+            v3.4 课程大纲的八个模块子项中<strong>没有</strong>出现 <em>Waterfall</em>，官方未指明这条术语归属哪个模块；
+            把它放在本章作为共同对照系，是<strong>本站的教学安排</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            瀑布式本身也是对痛点的回应：它出现之前，软件交付缺少阶段划分与文档纪律，
+            <strong>项目做到哪一步、谁负责什么、验收标准是什么，全靠口头约定</strong>。
+            瀑布式给出了明确的阶段、明确的交接物、明确的责任边界 —— 这在当年是进步。
+          </p>
+          <p>它自己制造的痛点，才是后面所有框架的起点：</p>
+          <ul>
+            <li>某企业一个 18 个月的核心系统项目，需求在第 2 个月冻结、签字封存。
+              第 16 个月进入集成测试，<strong>第一次把各模块拼在一起</strong>，
+              发现三个模块对同一个字段的理解各不相同。</li>
+            <li>此时距离需求冻结已经 14 个月：<strong>改一处要回溯设计文档、重排开发排期、
+              重签变更单</strong>。而业务侧在这 14 个月里早已换了打法，
+              最终上线的是一套<strong>按 14 个月前的业务假设造出来的系统</strong>。</li>
+            <li>三个结构性缺陷同时出现：<strong>批量巨大</strong>（18 个月的变更一次交付）、
+              <strong>反馈滞后</strong>（集成与用户验证都堆在末端）、
+              <strong>变更昂贵</strong>（越晚发现，改动成本越高）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明阶段串行交付的失效机制，非真实调研数据。</small></p>
+          <p class="mb-0">
+            后面每一个框架，都在拆这三条中的一条或几条：
+            Agile 拆批量与反馈滞后，Lean 拆等待与浪费，ITSM 补上线之后无人负责的那一段，
+            安全文化拆「坏消息不敢说，所以问题一直藏到集成时才爆」这一层。
+            <span class="muted"><small>（这一因果归纳为本站教学整理。）</small></span>
+          </p>
+        </div>
+
+        <!-- ============ 图 4-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 980 550" role="img" aria-label="框架补位关系图：瀑布、精益生产、敏捷宣言、IT 服务管理、DevOps、SRE 与价值流管理，以及每一个补上了前一个没覆盖的哪一段">
+
+              <text x="490" y="26" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">每个框架补上前一个没覆盖的那一段 —— 这是覆盖范围的补位，不是年代顺序</text>
+
+              <!-- 补位关系链（无方向、非时间轴） -->
+              <line x1="16" y1="200" x2="960" y2="200" class="s-stroke" stroke-width="2" stroke-dasharray="7 6"/>
+              <text x="960" y="188" class="s-muted" font-size="12" text-anchor="end">回应关系链</text>
+
+              <!-- 节点框 -->
+              <rect x="16"  y="92" width="148" height="84" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="176" y="92" width="148" height="84" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="336" y="92" width="148" height="84" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="496" y="92" width="148" height="84" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="656" y="92" width="148" height="84" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <rect x="816" y="92" width="148" height="84" rx="10" class="s-2" stroke-width="2" stroke-dasharray="6 4" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle">
+                <text x="90"  y="120" class="f-5" font-size="15" font-weight="700">瀑布式</text>
+                <text x="90"  y="142" class="s-muted" font-size="12">Waterfall</text>
+                <text x="90"  y="164" class="s-muted" font-size="12">阶段串行交付</text>
+
+                <text x="250" y="120" class="f-3" font-size="15" font-weight="700">精益生产</text>
+                <text x="250" y="142" class="s-muted" font-size="12">Lean production</text>
+                <text x="250" y="164" class="s-muted" font-size="12">源自制造业</text>
+
+                <text x="410" y="120" class="f-1" font-size="15" font-weight="700">敏捷宣言</text>
+                <text x="410" y="142" class="s-muted" font-size="12">Agile Manifesto</text>
+                <text x="410" y="164" class="s-muted" font-size="12">软件开发侧</text>
+
+                <text x="570" y="120" class="f-4" font-size="15" font-weight="700">IT 服务管理</text>
+                <text x="570" y="142" class="s-muted" font-size="12">IT service management</text>
+                <text x="570" y="164" class="s-muted" font-size="12">运维服务侧</text>
+
+                <text x="730" y="120" class="f-2" font-size="15" font-weight="700">DevOps</text>
+                <text x="730" y="142" class="s-muted" font-size="12">Dev + Ops 合流</text>
+                <text x="730" y="164" class="s-muted" font-size="12">同一条价值流</text>
+
+                <text x="890" y="120" class="f-2" font-size="15" font-weight="700">SRE · VSM</text>
+                <text x="890" y="142" class="s-muted" font-size="12">Reliability · Value Stream</text>
+                <text x="890" y="164" class="s-muted" font-size="12">v3.6 框架层增补</text>
+              </g>
+
+              <!-- 节点连线与圆点 -->
+              <g class="s-stroke" stroke-width="1.6">
+                <line x1="90" y1="176" x2="90" y2="192"/>
+                <line x1="250" y1="176" x2="250" y2="192"/>
+                <line x1="410" y1="176" x2="410" y2="192"/>
+                <line x1="570" y1="176" x2="570" y2="192"/>
+                <line x1="730" y1="176" x2="730" y2="192"/>
+                <line x1="890" y1="176" x2="890" y2="192"/>
+                <line x1="90" y1="208" x2="90" y2="228"/>
+                <line x1="250" y1="208" x2="250" y2="228"/>
+                <line x1="410" y1="208" x2="410" y2="228"/>
+                <line x1="570" y1="208" x2="570" y2="228"/>
+                <line x1="730" y1="208" x2="730" y2="228"/>
+                <line x1="890" y1="208" x2="890" y2="228"/>
+              </g>
+              <circle cx="90"  cy="200" r="8" class="f-5"/>
+              <circle cx="250" cy="200" r="8" class="f-3"/>
+              <circle cx="410" cy="200" r="8" class="f-1"/>
+              <circle cx="570" cy="200" r="8" class="f-4"/>
+              <circle cx="730" cy="200" r="9" class="f-2"/>
+              <circle cx="890" cy="200" r="8" class="f-2"/>
+
+              <!-- 回应框 -->
+              <rect x="16"  y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="176" y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="336" y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="496" y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="656" y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="816" y="228" width="148" height="110" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+
+              <g text-anchor="middle" class="s-ink" font-size="12.5">
+                <text x="90" y="252">阶段串行推进</text>
+                <text x="90" y="272">批量大、周期长</text>
+                <text x="90" y="292">反馈只在最末端</text>
+                <text x="90" y="312">后面全部框架</text>
+                <text x="90" y="332">都在回应它</text>
+
+                <text x="250" y="252">以流动与消除</text>
+                <text x="250" y="272">浪费对付等待</text>
+                <text x="250" y="292">与在制品堆积</text>
+                <text x="250" y="312">继承：流动</text>
+                <text x="250" y="332">Lean: Reduce Waste</text>
+
+                <text x="410" y="252">把反馈从末端</text>
+                <text x="410" y="272">提前到每个迭代</text>
+                <text x="410" y="292">但通常止于</text>
+                <text x="410" y="312">「可工作的软件」</text>
+                <text x="410" y="332">上线之后不管</text>
+
+                <text x="570" y="252">给运维侧建立</text>
+                <text x="570" y="272">服务、变更、事件</text>
+                <text x="570" y="292">的运营纪律</text>
+                <text x="570" y="312">但与开发侧</text>
+                <text x="570" y="332">各自成体系</text>
+
+                <text x="730" y="252">两段之间那道墙</text>
+                <text x="730" y="272">原本没人负责</text>
+                <text x="730" y="292">把它们接到</text>
+                <text x="730" y="312">同一条价值流上</text>
+                <text x="730" y="332">不新造替代品</text>
+
+                <text x="890" y="252">把可靠性做成</text>
+                <text x="890" y="272">工程问题，把流动</text>
+                <text x="890" y="292">做成端到端度量</text>
+                <text x="890" y="312">v3.6 框架层</text>
+                <text x="890" y="332">加入 SRE 与 VSM</text>
+              </g>
+
+              <!-- Blueprint 官方原文框 -->
+              <rect x="16" y="360" width="948" height="86" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="34" y="386" class="f-2" font-size="13.5" font-weight="700">PeopleCert DevOps Foundation Blueprint · Related Frameworks（逐字原文）</text>
+              <text x="34" y="411" class="s-ink" font-size="14">Agile: Lean Development　·　ITSM: Processes　·　Lean: Reduce Waste　·　Value Stream Management: End-to-End</text>
+              <text x="34" y="434" class="s-muted" font-size="12.5">官方把这四者列在「相关框架」一栏，而不是「被取代的框架」一栏 —— 这是本节最重要的一条官方依据。</text>
+
+              <text x="16" y="470" class="s-muted" font-size="12">平台工程 Platform Engineering 为 v3.6 新增学习目标，官方未将其列入框架层，故不在本图节点内（来源：PeopleCert 现行产品页学习目标）。</text>
+              <text x="16" y="490" class="s-muted" font-size="12">Waterfall、Lean production、Agile Manifesto、IT service management、Site Reliability Engineering 均逐字列于 DOFD v3.4 官方考纲术语表。</text>
+              <text x="16" y="510" class="s-muted" font-size="12">ITIL 为 ITSM 的具体实践框架，不在 66 条术语表与 v3.4 模块子项内，属背景补充。</text>
+              <text x="16" y="530" class="s-muted" font-size="12">本图排列的是覆盖范围的补位关系，不是年代顺序；这条因果链为本站教学整理，官方未给出框架演进谱系。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-1-2　补位关系：每个框架补上前一个没覆盖的哪一段。</strong>
+            要看懂的是<strong>下排那六个框，不是上排的名字</strong>。
+            上排任何一个框架单独拿出来都能讲一整门课，但考试问的是下排：它补上了前一步的哪个缺口，又留下了什么没管。
+            读完这条链会发现 DevOps 的位置很特别 —— 它下面那一格写的不是「一种新方法」，
+            而是「把两段接到同一条价值流上」。最下方的官方原文框，是这个判断的依据。
+            <br><small class="muted"><strong>虚线框 = v3.6 在框架层显式加入的两项（SRE 与 VSM）</strong>，DevOps 节点为实线，不属于增补范围。
+            本图排列的是<strong>覆盖范围的补位关系</strong>，与各框架的实际问世年代无关
+            （ITSM 早于敏捷宣言，SRE 早于 DevOps）。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:26%">Waterfall</th><th style="width:26%">Agile</th><th>DevOps</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>覆盖到哪一段</strong></td>
+                  <td>需求到上线，但每段之间是<strong>交接</strong></td>
+                  <td>需求到<strong>可工作的软件</strong></td>
+                  <td>需求到<strong>生产上稳定运行并产生反馈</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>批量</strong></td>
+                  <td>一次交付整个项目</td>
+                  <td>一次交付一个迭代</td>
+                  <td>一次交付一个变更，越小越好</td>
+                </tr>
+                <tr>
+                  <td><strong>反馈出现在哪</strong></td>
+                  <td><strong>末端</strong>：集成测试与上线之后</td>
+                  <td><strong>每个迭代末</strong></td>
+                  <td><strong>贯穿全程</strong>，含生产运行的遥测</td>
+                </tr>
+                <tr>
+                  <td><strong>与运维的关系</strong></td>
+                  <td>上线即交接，之后是别人的事</td>
+                  <td>通常不覆盖运维</td>
+                  <td><strong>开发与运维同属一条价值流</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>它留给下一步的问题</strong></td>
+                  <td>批量大、反馈晚、变更贵</td>
+                  <td>上线之后那一段没人管</td>
+                  <td>—— 本章其余各节在补它的各个侧面</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 DevOps 当成「Agile 的升级版」</strong>。
+            这个说法把三者排成了一条替代链（瀑布 → 敏捷 → DevOps，后者淘汰前者），方向就错了。
+            正确的读法是<strong>覆盖范围不同</strong>：Agile 的终点是可工作的软件，
+            DevOps 把这条线延长到生产运行与反馈，并且<strong>把 Agile 原样接了进来</strong>。</small></p>
+          <p class="mb-0 muted"><small>本三列对照表为<strong>本站教学整理</strong>，官方未以此形式给出瀑布、敏捷、DevOps 的对比；
+            <em>Waterfall</em> 与 <em>Agile software development</em> 均逐字列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            实际工作里很少见到自称瀑布的团队，常见的是<strong>披着敏捷外衣的瀑布</strong>。
+            识别它不看仪式，看四个结构特征：
+          </p>
+          <ul>
+            <li><strong>需求仍然一次冻结</strong>：迭代计划做了，但整个季度的需求在第一个迭代前就全部锁定，
+              中途变更走「需求变更单」。<strong>迭代变成了排期单位，不是反馈单位。</strong></li>
+            <li><strong>测试堆在最后</strong>：前六个迭代开发，后两个迭代「集中测试」。
+              这是把瀑布的阶段串行缩小了尺寸，缺陷结构完全没变。</li>
+            <li><strong>上线仍是一次性事件</strong>：每个迭代都有「潜在可交付的增量」，但一年只上线两次。
+              批量并没有变小，只是被藏在了迭代背后。</li>
+            <li><strong>交接物还是文档</strong>：迭代之间靠文档交接，跨职能团队名义上存在，
+              实际上开发、测试、运维仍按职能排队等待。</li>
+          </ul>
+          <p class="mb-0">
+            判据只有一句：<strong>看反馈到达的时刻有没有真的提前</strong>。
+            仪式全套但反馈仍然只在末端出现，那就仍然是瀑布。
+          </p>
+          <div class="src-note">
+            这份「披着敏捷外衣的瀑布」四特征清单与识别判据为<strong>本站教学整理</strong>，
+            官方术语表收录 <em>Waterfall</em>，<strong>未给出识别标准或反模式清单</strong>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>Waterfall 主要作为对照系出现</strong>，很少单独成题。
+              典型形态是题干描述一个「阶段串行、反馈只在末端、变更成本高」的组织，
+              问应当引入什么，或问这体现了什么问题。</li>
+            <li>考纲为 <strong>Bloom 1–2</strong>，要求认得与理解；瀑布模型的阶段数、提出年份与提出人
+              不在 66 条术语表与八个模块子项内。
+              <span class="muted">（官方未公布题目层面的排除清单，此为本站教学提示。）</span></li>
+            <li><strong>干扰项长什么样</strong>：
+              把 Waterfall 描述成「已经被淘汰、不应存在」的选项 —— 措辞绝对化的通常不对；
+              以及<strong>把某个框架的贡献错配到瀑布的另一个缺陷上</strong>，
+              例如说「引入 Agile 是为了补上线之后无人负责的那一段」（那是 ITSM 与 DevOps 的位置，不是 Agile 的）。</li>
+            <li><strong>排除技巧</strong>：先在题干里找<strong>症状词</strong> ——
+              「批量大 / 周期长 / 反馈晚」指向 Agile 与 Lean 那一侧；
+              「上线之后没人管 / 变更无记录 / 事件无响应」指向 ITSM 那一侧；
+              「不敢报告问题 / 频繁救火 / 大量单点故障」指向<strong>安全文化</strong>
+              （由 DOFD v3.4 官方样题答案键确认）。<strong>症状定位框架，是本章最通用的一把钥匙。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，
+            <strong>不复制任何官方样题的题干与选项原文</strong>；
+            「症状定位框架」这一排除技巧为本站教学整理。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">所有这些框架都在回答同一个问题：怎么不再像瀑布那样，把反馈留到最后。</p>
+          <p class="mb-0 muted"><small>瀑布留下三条缺陷，正好对应本章的分工：
+            <strong>批量大 → Lean 与 Agile；反馈晚 → Agile 与 DevOps；上线之后无人管 → ITSM 与 SRE</strong>。
+            记住这条分配表，「症状 → 框架」类的题就有了固定入口。<span class="muted">（分配表为本站教学整理。）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>本章考什么</strong>：不考各框架的内部机制，考<strong>它们与 DevOps 的关系</strong>。M4 在 v3.4 权重表下最多 <strong>7 题</strong>，与第 3 章并列最高（DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）</li>
+        <li><strong>官方六项</strong>：Agile · ITSM · Lean · Safety Culture · Learning Organizations · Continuous Funding（v3.4 课程大纲 M4）；<strong>v3.6 现行页面在框架层显式加入 VSM 与 SRE</strong>（PeopleCert 现行产品页学习目标）</li>
+        <li><strong>主线一句话</strong>：<strong>DevOps 不取代任何框架，而是把它们接到同一条价值流上</strong> —— 官方 Blueprint 把它们列在 <em>Related Frameworks</em> 一栏</li>
+        <li><strong>Blueprint 四条对应（逐字原文）</strong>：Agile: Lean Development · ITSM: Processes · Lean: Reduce Waste · Value Stream Management: End-to-End；补一条：<strong>安全文化给「能说真话」的前提</strong></li>
+        <li><strong>官方确认一</strong>：对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>（DOFD v3.4 官方样题答案键确认）—— 官方并不认为 DevOps 排斥 ITSM 流程</li>
+        <li><strong>官方确认二</strong>：指责与恐惧文化、大量单点故障、频繁战情室的组织应转向<strong>安全文化</strong>（DOFD v3.4 官方样题答案键确认）。<strong>官方确认三</strong>：决定哪些 DevOps 原则与实践最有益的是<strong>业务战略与目标</strong>（同上）</li>
+        <li><strong>排除技巧</strong>：选项里出现<strong>「取代 / 替换 / 不再需要」</strong>先划掉；再用「症状定位框架」——批量大反馈晚 → Agile/Lean，上线后无人管 → ITSM/SRE，不敢说真话 → 安全文化（排除技巧为本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：M4 的六个子项 <em>Agile</em>、<em>ITSM</em>、<em>Lean</em>、<em>Safety Culture</em>、
+      <em>Learning Organizations</em>、<em>Continuous Funding</em> 出自 <strong>DOFD v3.4 课程大纲 M4「Business and Technology Frameworks」</strong>；
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，<strong>v3.6 未公开重新发布权重表</strong>。
+      <strong>框架层显式加入 VSM 与 SRE</strong> 出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。
+      <em>Related Frameworks</em> 四条（Agile: Lean Development / ITSM: Processes / Lean: Reduce Waste /
+      Value Stream Management: End-to-End）为 <strong>PeopleCert DevOps Foundation Blueprint 逐字原文</strong>。
+      <em>Waterfall</em>、<em>Agile Manifesto</em>、<em>Agile software development</em>、<em>Agile service management</em>、
+      <em>Lean production</em>、<em>Lean thinking</em>、<em>IT service management</em>、<em>Value stream mapping</em>、
+      <em>Site Reliability Engineering</em>、<em>Collective Body of Knowledge (CBOK)</em>、
+      <em>Scaled Agile Framework (SAFe)</em> 均逐字列于 <strong>DOFD v3.4 官方考纲术语表（66 条）</strong>。
+      <strong>三条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是；
+      指责与恐惧文化、大量单点故障、频繁战情室的组织应转向安全文化；
+      决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：框架覆盖价值流的区间划分与重叠判断（图 4-1-1）、框架之间「补上前一个没覆盖的哪一段」的补位关系链（图 4-1-2，非年代顺序）、
+      v3.4 与 v3.6 两份清单的对照表、四框架的「解决什么 / 继承什么 / 易混点」对照表、
+      框架取舍三问、「披着敏捷外衣的瀑布」四特征、瀑布/敏捷/DevOps 三列对比、
+      各面中的干扰项分析与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例为本站构造的教学示例，非真实调研数据。
+      <strong>存疑待核</strong>：官方 Blueprint 未标注其对应的大纲版本，故本站只写「Blueprint 已列出 VSM」，不写「v3.4 已列出 VSM」；
+      <em>Waterfall</em> 在 66 条术语表内，但 v3.4 八个模块的子项中未出现该词，官方未指明其归属模块，
+      把它放在本章作为共同对照系属本站教学安排。
+      各框架的展开分别在本章 4.2 至 4.7 各节；
+      相关小节可直接跳转：<a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>、
+      <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a>、
+      <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a>、
+      <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>、
+      <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>；
+      文化侧的展开见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 文化、行为与运营模型</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

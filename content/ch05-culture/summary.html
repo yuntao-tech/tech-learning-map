@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.6 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 5 章文化、行为与运营模型的总结：把 5.1–5.5 串成一条因果闭环的知识地图、一页纸复习表、九对易混淆概念、官方样题答案键确认的本章两条结论、本章官方术语速查与考试权重。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.6 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章五节不是五个并列话题，而是<strong>一条会绕回起点的链</strong>：
+        先定义文化，再看它坏掉的样子，然后给出改它的行为模型，接着量出当前位置，
+        最后发现<strong>团队结构本身就在持续生产文化</strong>。
+        这一页只做三件事：把链条画出来、把最容易被相邻选项拖走的九对并排放好、
+        再把<strong>官方样题答案键真正确认过的两条</strong>单独拎出来。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>5.1–5.5 之间是什么关系，为什么 5.5 的结论会回到 5.1</li>
+        <li>本章哪两条结论有官方答案键背书，哪些只是本站的教学归类 —— 两者必须分清</li>
+        <li>哪些主题词看着像官方术语其实不在 66 条术语表内（本章一共有九个）</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-6-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 736" role="img" aria-label="第 5 章五节串成一条因果闭环的知识地图：定义文化、文化债、行为模型、成熟度模型、运营模型与团队结构">
+          <defs>
+            <marker id="ah-56-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-56-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <text x="16" y="28" class="s-ink" font-size="17" font-weight="700">第 5 章 · 五节串成一条因果链，而且这条链会绕回起点</text>
+          <text x="16" y="52" class="s-muted" font-size="13">文化是什么（5.1）→ 坏掉长什么样（5.2）→ 用什么改（5.3）→ 改到哪一步了（5.4）→ 结构如何反过来生产文化（5.5）</text>
+          <text x="16" y="76" class="s-muted" font-size="12.5">节号带虚线下划 = 可点击跳转该小节　·　左侧竖箭头 = 因果顺序　·　底部虚线回环 = 5.5 的结论回流到 5.1</text>
+
+          <!-- ============ 5.1 ============ -->
+          <a href="5.1-defining-culture.html">
+            <rect x="62" y="96" width="906" height="88" rx="12" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="126" r="19" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="131" class="f-1" font-size="14" font-weight="700" text-anchor="middle">5.1</text>
+            <line x1="112" y1="151" x2="160" y2="151" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="170" class="s-muted" font-size="12.5" text-anchor="middle">文化是什么</text>
+            <line x1="210" y1="108" x2="210" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="126" class="s-ink" font-size="16" font-weight="700">什么是组织文化</text>
+            <text x="222" y="148" class="s-muted" font-size="12.5">Defining Culture</text>
+            <text x="222" y="170" class="f-1" font-size="12" font-weight="650">官方模块子项 · Defining Culture（M5）</text>
+            <line x1="478" y1="108" x2="478" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="124" class="s-ink" font-size="13.5">文化是组织里真实发生的行为与默认共识，不是墙上的标语</text>
+            <text x="490" y="148" class="s-muted" font-size="12.5">它是本章地基：后面四节讲的是它的病症、改法、量法与成因</text>
+            <text x="490" y="170" class="s-muted" font-size="12.5">节内术语：Organizational culture（在 66 条术语表内）</text>
+          </a>
+          <line x1="136" y1="186" x2="136" y2="206" class="s-1" stroke-width="2" marker-end="url(#ah-56-1)"/>
+
+          <!-- ============ 5.2 ============ -->
+          <a href="5.2-cultural-debt.html">
+            <rect x="62" y="210" width="906" height="88" rx="12" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="240" r="19" class="s-2" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="245" class="f-2" font-size="14" font-weight="700" text-anchor="middle">5.2</text>
+            <line x1="112" y1="265" x2="160" y2="265" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="284" class="s-muted" font-size="12.5" text-anchor="middle">坏掉的形态</text>
+            <line x1="210" y1="222" x2="210" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="240" class="s-ink" font-size="16" font-weight="700">文化债</text>
+            <text x="222" y="262" class="s-muted" font-size="12.5">Cultural Debt</text>
+            <text x="222" y="284" class="f-2" font-size="12" font-weight="650">考纲核心 · Cultural debt · Change fatigue</text>
+            <line x1="478" y1="222" x2="478" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="238" class="s-ink" font-size="13.5">为赶进度而一再推迟的文化修复，会像技术债一样累积并产生利息</text>
+            <text x="490" y="262" class="s-muted" font-size="12.5">本节描述的是症状：指责、沉默、信息不对称、跨部门推诿</text>
+            <text x="490" y="284" class="s-muted" font-size="12.5">它只回答「坏成什么样」，不回答「怎么改」—— 改法在 5.3</text>
+          </a>
+          <line x1="136" y1="300" x2="136" y2="320" class="s-1" stroke-width="2" marker-end="url(#ah-56-1)"/>
+
+          <!-- ============ 5.3 ============ -->
+          <a href="5.3-behavioral-models.html">
+            <rect x="62" y="324" width="906" height="88" rx="12" class="s-3" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="354" r="19" class="s-3" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="359" class="f-3" font-size="14" font-weight="700" text-anchor="middle">5.3</text>
+            <line x1="112" y1="379" x2="160" y2="379" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="398" class="s-muted" font-size="12.5" text-anchor="middle">用什么改</text>
+            <line x1="210" y1="336" x2="210" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="354" class="s-ink" font-size="16" font-weight="700">行为模型</text>
+            <text x="222" y="376" class="s-muted" font-size="12.5">Behavioral Models</text>
+            <text x="222" y="398" class="f-3" font-size="12" font-weight="650">官方模块子项 · 内含三条考纲术语</text>
+            <line x1="478" y1="336" x2="478" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="352" class="s-ink" font-size="13.5">Golden Circle 定方向 · 变革曲线预判低谷 · 冲突模式处理分歧</text>
+            <text x="490" y="376" class="s-muted" font-size="12.5">术语：Golden Circle · Kubler-Ross Change Curve</text>
+            <text x="490" y="398" class="s-muted" font-size="12.5">Thomas-Kilmann Conflict Modes；本节含官方答案键确认的两条</text>
+          </a>
+          <line x1="136" y1="414" x2="136" y2="434" class="s-1" stroke-width="2" marker-end="url(#ah-56-1)"/>
+
+          <!-- ============ 5.4 ============ -->
+          <a href="5.4-maturity-models.html">
+            <rect x="62" y="438" width="906" height="88" rx="12" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="468" r="19" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="473" class="f-4" font-size="14" font-weight="700" text-anchor="middle">5.4</text>
+            <line x1="112" y1="493" x2="160" y2="493" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="512" class="s-muted" font-size="12.5" text-anchor="middle">改到哪一步</text>
+            <line x1="210" y1="450" x2="210" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="468" class="s-ink" font-size="16" font-weight="700">组织成熟度模型</text>
+            <text x="222" y="490" class="s-muted" font-size="12.5">Organizational maturity models</text>
+            <text x="222" y="512" class="f-4" font-size="12" font-weight="650">官方模块子项 · 不在术语表</text>
+            <line x1="478" y1="450" x2="478" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="466" class="s-ink" font-size="13.5">用来定位当前位置与下一步动作，不是用来给团队打分排名</text>
+            <text x="490" y="490" class="s-muted" font-size="12.5">一旦当成考核指标，被测的人就会开始优化分数而不是能力</text>
+            <text x="490" y="512" class="s-muted" font-size="12.5">在 v3.4 课程大纲 M5 子项内，但不在 66 条官方术语表内</text>
+          </a>
+          <line x1="136" y1="528" x2="136" y2="548" class="s-1" stroke-width="2" marker-end="url(#ah-56-1)"/>
+
+          <!-- ============ 5.5 ============ -->
+          <a href="5.5-operating-models.html">
+            <rect x="62" y="552" width="906" height="88" rx="12" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="582" r="19" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="587" class="f-5" font-size="14" font-weight="700" text-anchor="middle">5.5</text>
+            <line x1="112" y1="607" x2="160" y2="607" class="s-5" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="626" class="s-muted" font-size="12.5" text-anchor="middle">结构反作用</text>
+            <line x1="210" y1="564" x2="210" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="582" class="s-ink" font-size="16" font-weight="700">运营模型与团队结构</text>
+            <text x="222" y="604" class="s-muted" font-size="12.5">Operating Models &amp; Team Structures</text>
+            <text x="222" y="626" class="f-5" font-size="12" font-weight="650">官方模块名成分 · Operating Models（M5）</text>
+            <line x1="478" y1="564" x2="478" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="580" class="s-ink" font-size="13.5">团队怎么切分，沟通路径就怎么长；结构决定文化改不改得动</text>
+            <text x="490" y="604" class="s-muted" font-size="12.5">Blueprint 原文：Cross-function teams focus on business goals</text>
+            <text x="490" y="626" class="s-muted" font-size="12.5">术语：DevOps teams · DevOps roles · Collaboration and communication</text>
+          </a>
+
+          <!-- ============ 回环 ============ -->
+          <path d="M 515 640 L 515 662 Q 515 674 503 674 L 42 674 Q 30 674 30 662 L 30 152 Q 30 140 42 140 L 56 140"
+                class="s-5" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-56-2)"/>
+          <text x="300" y="662" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">结构反过来生产文化：5.5 的结论回流到 5.1，本章是一个闭环</text>
+
+          <text x="16" y="702" class="s-muted" font-size="12">五节的因果顺序与「结构 → 文化」这条回环为本站教学整理，官方未以此形式给出章节结构图。</text>
+          <text x="16" y="724" class="s-muted" font-size="12">v3.4 课程大纲 M5 的四个子项：Defining Culture · Cultural Debt · Behavioral Models · Organizational maturity models；模块名本身含 Operating Models。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-6-1　第 5 章的因果闭环。</strong>
+        这张图要看懂的是<strong>为什么本章必须按这个顺序读</strong>：
+        没有 5.1 的定义，5.2 的「债」就无从计量；没有 5.2 的症状，5.3 的行为模型只是几个人名；
+        没有 5.4 的定位，5.3 的改法不知道从哪起手。
+        而底部那条虚线回环是本章最反直觉的一点 ——
+        <strong>5.5 讲的团队结构不是文化的结果，而是文化的持续生产装置</strong>：
+        结构不动，前面四节的努力都会被结构慢慢磨回原样。
+        <br><small class="muted">五节的因果顺序、「结构 → 文化」回环、以及把 <em>Golden Circle</em>、<em>Kubler-Ross Change Curve</em>、
+        <em>Thomas-Kilmann Conflict Modes</em> 三条术语归入 5.3「Behavioral Models」子项、把 <em>Change fatigue</em> 放在 5.2 展开，
+        <strong>均为本站教学整理</strong> —— 官方术语表只逐条列出这些术语，未标注它们分属哪个模块子项。
+        M5 的官方模块名为 <em>Culture, Behaviors &amp; Operating Models</em>（DOFD v3.4 Examination Requirements，2022-05），
+        <em>Operating Models</em> 是官方模块名成分；v3.4 课程大纲未把它单列为子项，本站据模块名设 5.5 一节，
+        用于承接 <em>DevOps teams</em> 与 <em>DevOps roles</em> 两条术语 ——
+        <strong>小节切分为本站教学整理，<em>Operating Models</em> 一词本身是官方措辞</strong>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查的优先级排</strong>，与下面的易混淆汇总表配合使用。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:14%">小节</th><th style="width:31%">核心结论</th><th style="width:26%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="5.1-defining-culture.html">5.1 什么是组织文化</a></strong><br><small class="muted">Defining Culture</small></td>
+            <td>组织文化是<strong>群体里真实发生的行为与默认共识</strong>，由被奖励和被容忍的事定义，不是由宣言定义</td>
+            <td>文化 = 这里的人默认会怎么做，不是墙上写着该怎么做</td>
+            <td>把文化当成「氛围好不好」这类感受；把价值观宣讲、团建活动当成文化建设的成果</td>
+          </tr>
+          <tr>
+            <td><strong><a href="5.2-cultural-debt.html">5.2 文化债</a></strong><br><small class="muted">Cultural Debt</small></td>
+            <td>为赶进度而一再推迟的文化修复会<strong>累积并产生利息</strong>：越拖，改变所需的代价越高</td>
+            <td>技术债让代码越来越难改，文化债让人越来越不肯说</td>
+            <td>把文化债说成「员工态度问题」——它是<strong>累积机制</strong>，不是个人品质；也不要和技术债互换定义</td>
+          </tr>
+          <tr>
+            <td><strong><a href="5.3-behavioral-models.html">5.3 行为模型</a></strong><br><small class="muted">Behavioral Models</small></td>
+            <td>改变行为要用模型而不是靠喊话：<strong>Golden Circle</strong> 定方向、<strong>Kubler-Ross Change Curve</strong> 预判低谷、<strong>Thomas-Kilmann Conflict Modes</strong> 处理分歧（<strong>Change fatigue</strong> 解释「为什么第五次变革没人响应」，本站把它的展开放在 <a href="5.2-cultural-debt.html">5.2</a>）</td>
+            <td>先说 why，再准备接住低谷，最后管住冲突与疲劳</td>
+            <td>Golden Circle 的 why 被读成「产品优势」或「怎么做」；把变革曲线的低谷读成转型失败的证据</td>
+          </tr>
+          <tr>
+            <td><strong><a href="5.4-maturity-models.html">5.4 组织成熟度模型</a></strong><br><small class="muted">Organizational maturity models</small></td>
+            <td>成熟度模型是<strong>定位工具</strong>：说明当前在哪一级、下一级差什么，用来排改进顺序</td>
+            <td>它是地图上的「你在这里」，不是成绩单上的分数</td>
+            <td>误以为它在 66 条官方术语表内 —— <strong>它不在</strong>，它是 v3.4 课程大纲 M5 的模块子项；以及把它当成团队考核指标</td>
+          </tr>
+          <tr>
+            <td><strong><a href="5.5-operating-models.html">5.5 运营模型与团队结构</a></strong><br><small class="muted">Operating Models &amp; Team Structures</small></td>
+            <td>官方 Blueprint 的组织表述是<strong>跨职能团队围绕业务目标工作，Ops 与 Dev 相互支持</strong>，共同改进流向生产的流动并监控结果</td>
+            <td>把交接减少一次，文化就少一次生产摩擦的机会</td>
+            <td>把「成立一个 DevOps 团队」当成正确答案；把平台团队理解成改了名的运维部门</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语与官方名称</strong>的依据：<em>Organizational culture</em>、<em>Cultural debt</em>、<em>Golden Circle</em>、
+      <em>Kubler-Ross Change Curve</em>、<em>Thomas-Kilmann Conflict Modes</em>、<em>Change fatigue</em>、
+      <em>DevOps teams</em>、<em>DevOps roles</em> 均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Defining Culture</em>、<em>Cultural Debt</em>、<em>Behavioral Models</em>、<em>Organizational maturity models</em>
+      是 v3.4 课程大纲 M5 的四个模块子项；
+      5.5 行引用的组织表述逐字出自 PeopleCert《DevOps Foundation® Blueprint》
+      —— <em>Cross-function teams focus on business goals. Ops work with Dev, supporting each other to improve flow towards production and monitor results.</em>
+      <strong>「记忆锚点」与「最易错点」两列是本站教学整理</strong>，官方未以此形式给出复习表；
+      5.3 与 5.5 两行的核心结论另有官方背书成分，见下方「官方样题答案键确认的本章考点」。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总 · 九对</div>
+
+    <p>
+      本章的易混淆有一个共同特点：<strong>混淆双方往往分属不同章节</strong>，
+      所以光在本章内复习不够，要按下表的「归属」一列跨章确认。
+      看表的方法：遮住「分界线」一列，逐对说出分界线，说不出来的那一对就是要回去重读的地方。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:22%">易混的一对</th><th style="width:40%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>组织文化 vs 安全文化 vs 学习型组织</strong><br>
+              <small class="muted">5.1 / <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a> / <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7</a> —— 本章最容易混的一组</small></td>
+            <td><strong>组织文化</strong>是<strong>范畴</strong>：一个组织真实的行为总和，可好可坏。<br>
+              <strong>安全文化</strong>是这个范畴里的一种<strong>目标状态</strong>：坏消息可以被安全地说出来。<br>
+              <strong>学习型组织</strong>是另一种<strong>目标状态</strong>：组织能把个体经验转成集体能力。</td>
+            <td>三者都被随口叫作「文化」，但只有 <em>Organizational culture</em> 在 66 条官方术语表内；
+              <em>Safety culture</em> 与 <em>Learning organizations</em> 是<strong>模块子项</strong>（M4 / M2、M4），不在术语表内。
+              另一个陷阱：题面描述<strong>指责与恐惧、大量单点故障、频繁战情室</strong>时，
+              落点是<strong>安全文化</strong>而不是泛泛的「改善组织文化」——
+              这一条由 DOFD v3.4 官方样题答案键确认，正式讲解在<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a></td>
+          </tr>
+          <tr>
+            <td><strong>文化债 vs 技术债</strong><br><small class="muted">5.2</small></td>
+            <td>两者<strong>机制相同、标的不同</strong>：技术债的利息是<strong>代码越来越难改</strong>，文化债的利息是<strong>人越来越不肯说</strong>。
+              技术债可以靠重构一次性偿还，文化债只能靠<strong>持续改变被奖励的行为</strong>慢慢还。</td>
+            <td>干扰项把文化债写成「团队氛围差」或「员工满意度低」——那是<strong>症状读数</strong>，不是这个词的定义。
+              另一个方向：把文化债说成技术债的一种，两者是<strong>并列的类比</strong>，不是包含关系。
+              <em>Cultural debt</em> 在官方术语表内，「技术债」不在</td>
+          </tr>
+          <tr>
+            <td><strong>变革曲线的低谷 vs 转型失败</strong><br><small class="muted">5.3</small></td>
+            <td>低谷是 <em>Kubler-Ross Change Curve</em> 中<strong>被预期会出现</strong>的一段：抵触、情绪下滑、产出暂时变差。
+              失败是<strong>曲线不再往上走</strong>：过了合理时间仍无回升，或组织退回旧做法。
+              <strong>低谷是过程指标，失败是结果判断。</strong></td>
+            <td>题面描述「推行后团队抵触、效率暂时下降」时，正确方向是<strong>这属于变革曲线的正常阶段，需要支持而不是叫停</strong>；
+              干扰项写成「说明方案错误，应当回退」。用曲线本身当判据：<strong>模型预测到了它，就不该拿它当失败证据</strong></td>
+          </tr>
+          <tr>
+            <td><strong>成熟度模型作为诊断 vs 作为考核</strong><br><small class="muted">5.4</small></td>
+            <td><strong>诊断</strong>：回答「现在在哪、下一步差什么」，结果指向<strong>改进动作</strong>。<br>
+              <strong>考核</strong>：回答「谁比谁好」，结果指向<strong>评价与排名</strong>。
+              同一份模型，用途一变，数据的真实性立刻改变。</td>
+            <td>干扰项把「用成熟度评分给团队排名 / 与绩效挂钩」写成正确用法。判据：
+              <strong>一旦被测的人有动机让分数好看，模型就不再测量能力，而是在测量粉饰能力</strong>。
+              与第 8 章那条方向一致：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（该条由官方样题答案键确认，见<a href="../ch08-sharing/index.html">第 8 章（8.3）</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>跨职能团队 vs 独立 DevOps 团队</strong><br><small class="muted">5.5</small></td>
+            <td><strong>跨职能团队</strong>：Dev 与 Ops 的能力<strong>在同一个团队内</strong>围绕业务目标工作，交接数为零。<br>
+              <strong>独立 DevOps 团队</strong>：在 Dev 与 Ops 之间<strong>新增一个团队</strong>，交接数从一次变成两次。</td>
+            <td>看到「成立一个专门团队」就判对。判据不是有没有新团队，而是<strong>交接是被消除了还是被增加了</strong>。
+              官方 Blueprint 对组织的表述是 <em>Cross-function teams focus on business goals</em>，
+              官方文件本身没有对「独立 DevOps 团队」作反模式定性，该定性是业界与本站的提法
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+          </tr>
+          <tr>
+            <td><strong>平台团队 vs 运维部门</strong><br><small class="muted">5.5 / <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10</a></small></td>
+            <td><strong>平台团队</strong>把内部平台<strong>当产品运营</strong>，交付的是<strong>自助能力</strong>，交付责任仍留在产品团队手里。<br>
+              <strong>运维部门</strong>接管的是<strong>运行责任本身</strong>，产品团队把东西扔过墙就完事。</td>
+            <td>干扰项把「集中管理基础设施的团队」直接等同于平台工程。唯一验收标准是<strong>产品团队能不能自助</strong>；
+              平台团队一旦替产品团队按下部署按钮，它就退回成了新的交接方。
+              <em>Platform Engineering</em> 属 <span class="badge badge--new">🆕 v3.6 新增</span>学习目标，<strong>不在 v3.4 的 66 条术语表内</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Golden Circle 的 why vs how / what</strong><br><small class="muted">5.3 / <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a></small></td>
+            <td><strong>why</strong> = 组织的<strong>目的、事业与信念</strong>；<strong>how</strong> = 实现方式；<strong>what</strong> = 产出物。
+              三层由内向外，why 在最里面。</td>
+            <td>干扰项把 why 写成「产品的差异化优势」「商业模式」「市场定位」——
+              那些都落在 how / what 上。<strong>why 的落点是信念，不是打法</strong>。
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认，见下一节</td>
+          </tr>
+          <tr>
+            <td><strong>变革阻力 vs 变革疲劳</strong><br><small class="muted"><a href="5.2-cultural-debt.html">5.2</a></small></td>
+            <td><strong>阻力</strong>是对<strong>这一次</strong>变革的抵触，原因在方案本身。<br>
+              <strong>变革疲劳 <span class="en">Change fatigue</span></strong> 是对<strong>连续多次</strong>变革的耗竭，原因在变革的<strong>频率与未完成度</strong>。</td>
+            <td>题面出现「这几年换了太多套做法，团队已经不接了」时，落点是<strong>变革疲劳</strong>，不是「沟通不到位」。
+              区分方法：问题出在<strong>这一次</strong>还是<strong>累计很多次</strong>。
+              <em>Change fatigue</em> 在官方术语表内，「变革阻力」不是官方术语</td>
+          </tr>
+          <tr>
+            <td><strong>高绩效组织 vs 高成熟度等级</strong><br><small class="muted"><a href="5.4-maturity-models.html">5.4</a></small></td>
+            <td><strong>高绩效组织 <span class="en">High-performing organizations</span></strong>是<strong>结果</strong>：速度与稳定性同时领先，别人也能测出来。<br>
+              <strong>高成熟度等级</strong>是<strong>过程自评</strong>：组织按分级表判定自己在哪一格。
+              两者可以严重不一致。</td>
+            <td>干扰项把「成熟度评到最高级的组织」「自动化程度最高的组织」「工具链最完整的组织」当成高绩效组织 ——
+              前者是自评，后两者是手段。判据：<strong>四项指标一起好才算数</strong>（部署频率、变更前置时间、变更失败率、平均恢复时间 MTTR）；
+              自评与结果对不上时，<strong>先信结果指标</strong>。
+              <em>High-performing organizations</em> 在官方术语表内，「成熟度等级」不是术语表条目</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）与
+      v3.4 课程大纲的模块子项；<em>Platform Engineering</em> 出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）。
+      第 1 行末尾的「指责与恐惧文化 → 安全文化」与第 4 行末尾的「用指标控制和评价员工不属于 DevOps 领导力目标」
+      两条方向由 <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论。
+      <strong>「分界线」与「诱导你选错的地方」两列是本站教学整理</strong>，用于描述命题角度与干扰项的构造方式；
+      官方未以对照表形式给出这些区分，本站也不复制任何官方样题的题干与选项原文。
+      「独立 DevOps 团队是反模式」「平台团队一旦代按部署就退回成交接方」两处判断为本站与业界的常见提法，
+      官方未作此定性，已就地标为延伸。
+      末行 <em>High-performing organizations</em> 的「速度与稳定性同时领先」是本站对该术语的教学性刻画 ——
+      <strong>官方考纲术语表只列出词条、不附定义</strong>（与 5.4 kp-5-4-3 的标注一致）。
+    </div>
+
+    <!-- ============ 官方样题答案键确认的本章考点 ============ -->
+    <div class="divider-label">官方样题答案键确认的本章考点</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这两条不是推断，是官方确认</div>
+      <p>
+        本页绝大多数「命题角度」「干扰项长相」都标注为本站教学推断。下面两条不同 ——
+        它们来自 <strong>DOFD v3.4 官方样题答案键</strong>，是<strong>关于官方文件的事实陈述</strong>：
+        官方在这两个判断上给出了明确的正确答案方向。两条都落在 <a href="5.3-behavioral-models.html">5.3 行为模型</a>。
+      </p>
+      <ul>
+        <li><strong>推动重大变革时，应当参与规划并担任变革推动者的是「早期采用者」。</strong>
+          → 见 <a href="5.3-behavioral-models.html">5.3 行为模型</a>，另与
+          <a href="../ch08-sharing/index.html">第 8 章（8.4 组织考量与如何起步）</a>相关。
+          常见误选方向是把「谁来推动变革」答成高层管理者（他们提供的是承诺与授权，不是同伴影响力），
+          或答成最抵触的那一群人（争取他们是后续动作，不是起手动作）。
+          <span class="muted">—— 括号中的误选分析为本站教学整理，官方只确认了正确答案方向。</span></li>
+        <li><strong>Golden Circle 的「why」代表组织的目的、事业与信念。</strong>
+          → 见 <a href="5.3-behavioral-models.html">5.3 行为模型</a>，首次出现在
+          <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a>。
+          落点是<strong>信念层</strong>，不是产品的差异化优势、商业模式或市场定位 —— 那些属于 how 与 what。
+          <span class="muted">—— 干扰项方向为本站教学整理。</span></li>
+      </ul>
+      <p><strong>与本章直接相邻的答案键结论</strong>（落在邻章，但判断落点是文化，本章复习时一并记住）：</p>
+      <ul>
+        <li><strong>DevOps 的关键成功因素是管理层对文化变革的承诺。</strong>
+          → 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，正式讲解在
+          <a href="../ch08-sharing/index.html">第 8 章（8.5 挑战、风险与关键成功因素）</a>。
+          它与本章的关系是：<strong>文化变革要落地，缺的通常不是方法而是管理层的承诺</strong>，
+          5.3 的行为模型与 5.5 的结构调整都以此为前提。</li>
+        <li><strong>面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向安全文化。</strong>
+          → 同由官方样题答案键确认，正式讲解在<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>，本页易混淆表第 1 行已引用。</li>
+        <li><strong>用指标控制和评价员工不属于 DevOps 领导力的目标。</strong>
+          → 同由官方样题答案键确认，正式讲解在<a href="../ch08-sharing/index.html">第 8 章（8.3）</a>，本页易混淆表第 4 行已引用。</li>
+      </ul>
+      <p class="mb-0 muted"><small>本站只陈述这些结论，<strong>不复制官方样题的题干与选项原文</strong>。
+        本章其余所有关于「会怎么考」的说法，均为本站对命题角度的推断，已在各处就地标注。</small></p>
+    </div>
+
+    <!-- ============ 图 5-6-2 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 306" role="img" aria-label="第 5 章两条由官方样题答案键确认的结论记忆卡片">
+          <text x="16" y="26" class="s-ink" font-size="17" font-weight="700">DOFD v3.4 官方样题答案键确认的第 5 章两条结论</text>
+          <text x="16" y="50" class="s-muted" font-size="12.5">这两张卡是本章唯一「官方认为哪个答案对」有硬证据的部分。卡片下半的「误选方向」是本站教学整理，不是官方样题的选项。</text>
+
+          <!-- 卡片 1 -->
+          <rect x="12" y="70" width="460" height="192" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="30" y="98" class="f-1" font-size="14" font-weight="700">#7</text>
+          <text x="454" y="98" class="s-muted" font-size="12" text-anchor="end">见 5.3　·　相关 8.4</text>
+          <line x1="30" y1="110" x2="454" y2="110" class="s-1" stroke-width="1.2"/>
+          <text x="30" y="140" class="s-ink" font-size="14">推动重大变革时，应当参与规划</text>
+          <text x="30" y="164" class="s-ink" font-size="14">并担任变革推动者的，是「早期采用者」</text>
+          <line x1="30" y1="192" x2="454" y2="192" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="30" y="216" class="f-2" font-size="12.5">误选方向：答成高层管理者（他们给的是承诺与授权），</text>
+          <text x="30" y="238" class="f-2" font-size="12.5">或答成最抵触的那一群人（争取他们是后续动作）</text>
+
+          <!-- 卡片 2 -->
+          <rect x="508" y="70" width="460" height="192" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="526" y="98" class="f-3" font-size="14" font-weight="700">#14</text>
+          <text x="950" y="98" class="s-muted" font-size="12" text-anchor="end">见 5.3　·　首次出现 1.2</text>
+          <line x1="526" y1="110" x2="950" y2="110" class="s-3" stroke-width="1.2"/>
+          <text x="526" y="140" class="s-ink" font-size="14">Golden Circle 的「why」代表</text>
+          <text x="526" y="164" class="s-ink" font-size="14">组织的目的、事业与信念</text>
+          <line x1="526" y1="192" x2="950" y2="192" class="s-3" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="526" y="216" class="f-2" font-size="12.5">误选方向：把 why 读成产品的差异化优势、</text>
+          <text x="526" y="238" class="f-2" font-size="12.5">商业模式或市场定位 —— 那些落在 how 与 what 上</text>
+
+          <text x="16" y="290" class="s-muted" font-size="12.5">两条均出自 DOFD v3.4 官方样题答案键，本站只陈述结论，不复制题干与选项原文；#7 / #14 为本站对该答案键条目的内部编号，不是官方题号。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-6-2　本章两条官方确认结论的记忆卡片。</strong>
+        这张图要看懂的是<strong>两条各钉住一个问句</strong>：#7 钉住「变革由谁来推」，#14 钉住「why 落在哪一层」。
+        两条都落在 5.3，也就是说 —— <strong>本章最多 6 题的配额里，受官方背书最密集的是行为模型这一节</strong>，
+        考前时间不够时优先复查它。卡片下半的误选方向是本站教学整理。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章展开过、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目。
+      本章还有九个看着很像官方术语、其实<strong>不在</strong>术语表内的主题词，见下方单独列表。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:30%">官方术语</th><th style="width:19%">固定中文</th><th style="width:11%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Organizational culture</em></td><td>组织文化</td><td>5.1</td><td>组织里真实发生的行为与默认共识，本章唯一的「范畴」词</td></tr>
+          <tr><td><em>Collaboration and communication</em></td><td>协作与沟通</td><td>5.1 · 5.5</td><td>文化在日常里可被观察到的载体，也是团队结构影响文化的通道</td></tr>
+          <tr><td><em>Cultural debt</em></td><td>文化债</td><td>5.2</td><td>推迟修复文化所累积的利息；与技术债是并列类比，不是包含关系</td></tr>
+          <tr><td><em>Golden Circle</em></td><td>Golden Circle</td><td>5.3 · <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a></td><td>why / how / what 三层，why 代表目的、事业与信念（官方答案键确认）</td></tr>
+          <tr><td><em>Kubler-Ross Change Curve</em></td><td>Kubler-Ross 变革曲线</td><td>5.3</td><td>预判变革中必然出现的情绪低谷；低谷是过程阶段，不是失败证据。阶段清单有两版：原始五阶段 <strong>否认 → 愤怒 → 讨价还价 → 沮丧 → 接受</strong>，变革管理常用的七阶段 <strong>震惊 → 否认 → 挫折/愤怒 → 沮丧 → 实验 → 决定 → 整合</strong><br><small class="muted">两版并列见 <a href="5.3-behavioral-models.html">5.3</a> kp-5-3-1；<strong>DOFD 未指定采用哪一版，考试若涉及具体阶段名以官方教材为准</strong></small></td></tr>
+          <tr><td><em>Thomas-Kilmann Conflict Modes</em></td><td>Thomas-Kilmann 冲突模式</td><td>5.3</td><td>处理分歧的五种模式：<strong>竞争 / 协作 / 妥协 / 回避 / 迁就</strong><span class="en">Competing / Collaborating / Compromising / Avoiding / Accommodating</span>；用于跨职能协作中的冲突，不是绩效工具<br><small class="muted">模式名枚举为本站教学整理，源自 Thomas-Kilmann 原始模型，官方术语表只给术语名</small></td></tr>
+          <tr><td><em>Change fatigue</em></td><td>变革疲劳<br><small class="muted">本站译名</small></td><td><a href="5.2-cultural-debt.html">5.2</a></td><td>对<strong>连续多次</strong>变革的耗竭；与「这一次的阻力」不是一回事</td></tr>
+          <tr><td><em>DevOps teams</em></td><td>DevOps 团队</td><td>5.5</td><td>团队结构讨论的官方措辞；「独立 DevOps 团队是反模式」这一定性是业界与本站的提法，官方未作此定性</td></tr>
+          <tr><td><em>DevOps roles</em></td><td>DevOps 角色</td><td>5.5<br><small class="muted">正式讲解见<a href="../ch08-sharing/index.html">第 8 章（8.2）</a></small></td><td>运营模型里职责边界所对应的官方措辞</td></tr>
+          <tr><td><em>High-performing organizations</em></td><td>高绩效组织</td><td><a href="5.4-maturity-models.html">5.4</a> · <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a></td><td>结构与文化改动想要达到的结果侧描述；<strong>成熟度是自评出来的，绩效是结果测出来的</strong></td></tr>
+          <tr><td><em>DevOps stakeholders</em></td><td>DevOps 干系人</td><td><a href="5.1-defining-culture.html">5.1</a><br><small class="muted">正式讲解见<a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a></small></td><td>协作与沟通要覆盖的对象范围，本章只点名，不展开</td></tr>
+          <tr><td><em>Organizational considerations</em></td><td>组织考量</td><td>5.5<br><small class="muted">正式讲解见<a href="../ch08-sharing/index.html">第 8 章（8.4）</a></small></td><td>与本章运营模型直接相邻的官方术语，属 M8 模块</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称</strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。
+      <strong>「本章出处」与「一句话定位」两列为本站教学整理</strong> ——
+      官方术语表只逐条列出术语名，<strong>未标注每条术语分属哪个模块</strong>，
+      因此把这些术语挂到具体小节是本站的编排结果，不是官方归属。
+      <strong>Thomas-Kilmann 的五种冲突模式名与 Kubler-Ross 变革曲线的阶段清单同为本站教学整理</strong> ——
+      官方术语表只列出术语名称本身，未展开其内部构成，两处枚举源自 Thomas-Kilmann 与 Kübler-Ross 的原始模型（<strong>官方术语表逐字写作 Kubler-Ross，不带变音符，本站正文一律采用官方拼法</strong>）。
+      <em>Change fatigue</em> 的中文「变革疲劳」是本站译名。
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这九个主题词不在 66 条官方术语表内</div>
+      <p>本章最容易踩的一类错，是把下面这些词当成「考纲核心术语」。它们各有各的准确说法：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:32%">主题词</th><th style="width:13%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><em>Defining Culture</em><br>什么是组织文化（5.1 英文名）</td>
+              <td>5.1</td>
+              <td>是 <strong>v3.4 课程大纲 M5 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                在术语表内的是 <em>Organizational culture</em> —— 两者一个是模块子项名，一个是术语名，不要互换</td>
+            </tr>
+            <tr>
+              <td><em>Behavioral Models</em><br>行为模型（5.3 英文名）</td>
+              <td>5.3</td>
+              <td>是 <strong>v3.4 课程大纲 M5 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                在术语表内的是它下面的三条 —— <em>Golden Circle</em>、<em>Kubler-Ross Change Curve</em>、
+                <em>Thomas-Kilmann Conflict Modes</em>（<em>Change fatigue</em> 同在术语表内，展开放在 <a href="5.2-cultural-debt.html">5.2</a>）。
+                本站 5.3 页头因此标 <span class="badge badge--plain">📘 官方模块子项</span></td>
+            </tr>
+            <tr>
+              <td><em>Operating Models</em><br>运营模型（5.5 英文名）</td>
+              <td>5.5</td>
+              <td>逐字出现在 <strong>§4.2 的官方模块名 <em>Culture, Behaviors &amp; Operating Models</em></strong> 中，
+                但<strong>既不是 M5 的四个子项之一，也不在 66 条术语表内</strong>。
+                在术语表内的是 <em>DevOps teams</em> 与 <em>DevOps roles</em></td>
+            </tr>
+            <tr>
+              <td><em>Organizational maturity models</em><br>组织成熟度模型</td>
+              <td>5.4</td>
+              <td>是 <strong>v3.4 课程大纲 M5 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                本站页头因此标 <span class="badge badge--plain">📘 官方模块子项</span>，不标「⭐ 考纲核心」</td>
+            </tr>
+            <tr>
+              <td><em>Safety culture</em><br>安全文化</td>
+              <td><a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a></td>
+              <td>是 <strong>v3.4 课程大纲 M4 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                在术语表内的是 <em>Organizational culture</em>。指「可以安全地说出坏消息」，不是信息安全</td>
+            </tr>
+            <tr>
+              <td><em>Learning organizations</em><br>学习型组织</td>
+              <td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7</a> · <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a></td>
+              <td>是 <strong>v3.4 课程大纲 M2 与 M4 共同列出的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                与「组织文化」是<strong>不同层级</strong>的词：一个是范畴，一个是目标状态</td>
+            </tr>
+            <tr>
+              <td><em>Conway's Law</em><br>康威定律</td>
+              <td>5.5</td>
+              <td><strong>既不在术语表，也不在任何模块子项内</strong> —— 属他人理论。
+                本站只把它当作理解「结构如何塑造沟通路径」的解释工具
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td>「你构建你运维」<br><em>You build it, you run it</em></td>
+              <td>5.5</td>
+              <td><strong>不是官方措辞</strong>，是业界流传的口号。官方 Blueprint 对应的逐字表述是
+                <em>Ops work with Dev, supporting each other to improve flow towards production and monitor results</em>
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td><em>Platform Engineering</em><br>平台工程</td>
+              <td>5.5 · <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10</a></td>
+              <td>出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标，属
+                <span class="badge badge--new">🆕 v3.6 新增</span>，<strong>不在 v3.4 的 66 条术语表内</strong>。
+                在术语表内的是 <em>DevOps teams</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>判定依据：DOFD v3.4 官方考纲 66 条术语表逐字比对 + v3.4 课程大纲模块子项 + PeopleCert 现行产品页学习目标。
+        徽章口径：主题词逐字出现在 66 条术语表内才标「⭐ 考纲核心」，只出现在 v3.4 课程大纲模块子项内则标「📘 官方模块子项」。</small></p>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>以下四项均出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；v3.6 未公开重新发布权重表。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">6</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">15%</div><div class="stat__k">6 ÷ 40，按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">第 3 位</div><div class="stat__k">仅次于第 3、4 章（各 7 题）</div></div>
+      <div class="stat"><div class="stat__v">2</div><div class="stat__k">官方答案键确认的结论</div></div>
+    </div>
+
+    <p>
+      全卷 40 题、及格线 <strong>26 / 40</strong>，允许错 14 题。
+      本章按上限出到 6 题，若错掉一半，等于把全卷容错额度用掉两成有余。
+      而本章内容<strong>没有一条能靠工程直觉猜对</strong> —— 术语归属、模型名称、官方措辞都要逐条记，
+      这是它比题数看起来更值得投入的原因。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:36%">模块</th><th style="width:14%">最多题数</th><th>与本章的关系</th></tr></thead>
+        <tbody>
+          <tr><td>3　Key DevOps Practices</td><td class="num">7</td><td>并列最高。平台工程（3.10）是本章团队结构一节的对照概念</td></tr>
+          <tr><td>4　Business &amp; Technology Frameworks</td><td class="num">7</td><td>并列最高。<strong>安全文化与学习型组织在那一章</strong>，是本章第一组易混的另外两方</td></tr>
+          <tr><td><strong>5　Culture, Behaviors &amp; Operating Models</strong></td><td class="num"><strong>6</strong></td><td>本章</td></tr>
+          <tr><td>1　Exploring DevOps</td><td class="num">5</td><td>Golden Circle 首次出现在 1.2，本章 5.3 再次使用</td></tr>
+          <tr><td>6　Automation &amp; Architecting DevOps Toolchains</td><td class="num">5</td><td>—</td></tr>
+          <tr><td>2　Core DevOps Principles</td><td class="num">4</td><td>学习型组织（2.7）在那一章，与本章的组织文化不是同一层级的词</td></tr>
+          <tr><td>8　Sharing, Shadowing and Evolving</td><td class="num">4</td><td>DevOps 角色、组织考量、领导力在那一章，与本章运营模型直接相邻</td></tr>
+          <tr><td>7　Measurement, Metrics, and Reporting</td><td class="num">2</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题）同源。
+      <strong>v3.6 未公开重新发布权重表</strong>，因此本页仍以 v3.4 的分布作为唯一可引用依据。
+      15% 由题数上限 6 ÷ 40 计算得到，是<strong>占比上限</strong>而非实测比重；
+      「第 3 位」为<strong>本站按上表题数排序算出的名次</strong>，官方未给出名次表述。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>做自测更有效：
+        遮住「分界线」一列，逐对说出分界线；说不出来的那一对，就是要回去重读的小节。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文；
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 6 题</strong>，占全卷 40 题的 <strong>15%</strong>，题数居第 3 位（来源：DOFD v3.4 Examination Requirements；官方给的是每模块题数上限，不是固定配额）</li>
+        <li>五节是一条<strong>闭环</strong>：定义（5.1）→ 病症（5.2）→ 改法（5.3）→ 定位（5.4）→ 结构（5.5）→ 结构又回头生产文化（本站教学整理）</li>
+        <li>官方答案键确认的两条，<strong>都在 5.3</strong>：<strong>担任变革推动者的是早期采用者</strong>；<strong>Golden Circle 的 why = 组织的目的、事业与信念</strong></li>
+        <li>三个「文化」不是一回事：<strong>组织文化是范畴，安全文化与学习型组织是两种目标状态</strong>；三者中只有 <em>Organizational culture</em> 在 66 条术语表内</li>
+        <li>九个词<strong>不在</strong> 66 条术语表内：<strong>Defining Culture（M5 子项 · 5.1 英文名）· Behavioral Models（M5 子项 · 5.3 英文名）· Operating Models（只在 M5 模块名内 · 5.5 英文名）· Organizational maturity models（M5 子项）· Safety culture（M4 子项）· Learning organizations（M2 · M4 子项）· 康威定律（非考纲）·「你构建你运维」（非官方措辞）· Platform Engineering（v3.6 新增）</strong></li>
+        <li>结构类题目的统一判据：<strong>交接是被消除了还是被增加了</strong>，而不是有没有成立新团队；官方 Blueprint 的措辞是 <em>Cross-function teams focus on business goals</em></li>
+        <li>两个「别把它当分数」：<strong>成熟度模型是定位工具不是考核工具</strong>；<strong>变革曲线的低谷是过程阶段不是失败证据</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数与考试形式出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      并同时说明 <strong>v3.6 未公开重新发布权重表</strong>。<br>
+      <em>Organizational culture</em>、<em>Cultural debt</em>、<em>Golden Circle</em>、<em>Kubler-Ross Change Curve</em>、
+      <em>Thomas-Kilmann Conflict Modes</em>、<em>Change fatigue</em>、<em>Collaboration and communication</em>、
+      <em>DevOps teams</em>、<em>DevOps roles</em>、<em>DevOps stakeholders</em>、<em>Organizational considerations</em>、
+      <em>High-performing organizations</em> 均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，
+      出自 DOFD v3.4 Examination Requirements（2022-05）；<strong>该术语表只列出词条、不附定义</strong>，
+      因此本页术语速查表里的每一条中文释义都是本站措辞，不是官方逐字定义；
+      v3.4 课程大纲 M5 的模块子项为 <em>Defining Culture</em>、<em>Cultural Debt</em>、<em>Behavioral Models</em>、
+      <em>Organizational maturity models</em>，四者均<strong>不在 66 条术语表内</strong>；
+      <em>Operating Models</em> 逐字出现在 M5 的官方模块名 <em>Culture, Behaviors &amp; Operating Models</em> 中，
+      但既不是这四个子项之一，也不在术语表内。<br>
+      本页引用的组织表述逐字出自 PeopleCert《DevOps Foundation® Blueprint》——
+      <em>Cross-function teams focus on business goals. Ops work with Dev, supporting each other to improve flow towards production and monitor results.</em><br>
+      <em>Safety culture</em>（M4）与 <em>Learning organizations</em>（M2 · M4）是官方模块子项但<strong>不在 66 条术语表内</strong>；
+      <em>Platform Engineering</em> 出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>（v3.6 新增），同样不在 v3.4 术语表内；
+      <em>Conway's Law</em> 与「你构建你运维」既不在术语表也不在模块子项内，属延伸补充，已就地标注。<br>
+      本页高亮的<strong>两条结论由 DOFD v3.4 官方样题答案键确认</strong>（早期采用者担任变革推动者；Golden Circle 的 why 代表组织的目的、事业与信念），
+      另有<strong>三条</strong>相邻章节的答案键结论被本页引用：指责与恐惧文化 → 安全文化（<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>）；
+      用指标控制和评价员工不属于 DevOps 领导力目标（<a href="../ch08-sharing/index.html">第 8 章（8.3）</a>）；
+      DevOps 的关键成功因素是管理层对文化变革的承诺（<a href="../ch08-sharing/index.html">第 8 章（8.5）</a>）。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。<br>
+      <strong>本站教学整理部分</strong>：图 5-6-1 的五节因果顺序与「结构 → 文化」回环、把四条行为模型术语归入 5.3 子项、
+      5.5「运营模型与团队结构」这一小节安排、一页纸复习表的「记忆锚点」与「最易错点」两列、
+      易混淆汇总表的「分界线」与「诱导你选错的地方」两列、术语速查表的「本章出处」与「一句话定位」两列、
+      图 5-6-2 中的「误选方向」、以及「第 3 位」这一名次，官方均未以此形式给出，已在各自下方就地标注。
+      本页不含任何官方样题原文，练习题上线后将标注「仿真题，非官方真题」。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

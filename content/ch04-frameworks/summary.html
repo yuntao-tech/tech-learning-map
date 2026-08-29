@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.8 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 4 章六个框架的总结：以价值流为主轴的本章知识地图、一页纸复习表、九对易混淆概念、官方样题答案键确认的本章 2 条结论、本章官方术语速查，以及三个不在 66 条术语表内的主题词说明。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.8 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章考的从来不是 Agile、Lean、ITSM 各自的内部流程，而是<strong>它们与 DevOps 的关系，以及彼此的分工</strong>。
+        六个框架看似各说各话，放到同一条价值流上就会各就各位：
+        <strong>有的管上游怎么切工作，有的管下游怎么运行服务，有的管整条流怎么被看见，有的管钱怎么进来，还有一个管人敢不敢说真话。</strong>
+        这一页把它们摆回原位，再把两条有官方答案键背书的结论单独拎出来。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>六个框架各自作用在价值流的哪一段，为什么本章按这个顺序排</li>
+        <li>本章哪两条结论有官方样题答案键背书，其余哪些只是本站的教学归类</li>
+        <li>哪三个主题词<strong>不在</strong> 66 条官方术语表内 —— 这是本章最容易踩的判定陷阱</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-8-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 1000 740" role="img" aria-label="第 4 章六个框架按其作用的价值流区段排布的知识地图：持续资金在上游供给，Agile 与 Scrum 管上游四段，ITSM 与 ITIL 管下游三段，Lean 与价值流映射作用于整条价值流，安全文化与学习型组织是底座。图中方框为可点击的小节入口，同样的入口在下方「一页纸复习表」的小节列里也有一份。">
+          <defs>
+            <marker id="ah-48-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+            <marker id="ah-48-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 标题与图例 -->
+          <text x="20" y="32" class="s-ink" font-size="17" font-weight="700">第 4 章 · 六个框架挂在同一条价值流上</text>
+          <text x="20" y="56" class="s-muted" font-size="12.5">节号带虚线下划 = 可点击跳转　·　卡片的横向跨度 = 该框架主要作用的价值流区段</text>
+
+          <!-- 4.1 入口卡 -->
+          <a href="4.1-framework-landscape.html" tabindex="-1" aria-hidden="true">
+            <rect x="624" y="12" width="362" height="50" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="638" y="34" class="f-2" font-size="12.5" font-weight="700">4.1</text>
+            <line x1="638" y1="39" x2="662" y2="39" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="676" y="34" class="s-ink" font-size="14" font-weight="700">框架全景与彼此关系</text>
+            <text x="676" y="53" class="s-muted" font-size="12">本图即 4.1 的主题：六个框架彼此的位置关系</text>
+          </a>
+
+          <!-- ===== 4.7 持续资金：上游供给 ===== -->
+          <a href="4.7-continuous-funding.html" tabindex="-1" aria-hidden="true">
+            <rect x="14" y="72" width="972" height="68" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="30" y="98" class="f-5" font-size="12.5" font-weight="700">4.7</text>
+            <line x1="30" y1="103" x2="54" y2="103" class="s-5" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="72" y="100" class="s-ink" font-size="15.5" font-weight="700">持续资金</text>
+            <text x="146" y="100" class="s-muted" font-size="12.5">Continuous Funding</text>
+            <text x="30" y="126" class="s-ink" font-size="13">按产品与价值流持续投入，取代按项目一次性审批 —— 决定这条流能不能长期存在</text>
+            <text x="972" y="98" class="s-muted" font-size="12" text-anchor="end">M4 官方模块子项 · 不在 66 条术语表内</text>
+          </a>
+
+          <!-- 资金注入价值流的两条通道 -->
+          <path d="M22 146 L22 296" class="s-5" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-48-5)"/>
+          <path d="M966 146 L966 296" class="s-5" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-48-5)"/>
+
+          <!-- ===== 4.2 Agile 与 Scrum：上游四段 ===== -->
+          <a href="4.2-agile-scrum.html" tabindex="-1" aria-hidden="true">
+            <rect x="36" y="176" width="504" height="104" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="48" y="200" class="f-1" font-size="12.5" font-weight="700">4.2</text>
+            <line x1="48" y1="205" x2="72" y2="205" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="90" y="201" class="s-ink" font-size="15.5" font-weight="700">Agile 与 Scrum</text>
+            <text x="48" y="228" class="s-ink" font-size="13">Agile 是一组价值观与原则，Scrum 是实现它的一种具体框架</text>
+            <text x="48" y="250" class="s-muted" font-size="12.5">术语表内：Agile Manifesto · Scrum · SAFe · Velocity · Epics</text>
+            <text x="48" y="270" class="s-muted" font-size="12.5">作用区段：想法 → 测试集成，管「怎么把需求切小、按节奏交付」</text>
+          </a>
+          <!-- 4.2 的跨度括号 -->
+          <path d="M36 300 L36 290 L548 290 L548 300" class="s-1" stroke-width="1.6" fill="none"/>
+
+          <!-- ===== 4.4 ITSM 与 ITIL：下游三段 ===== -->
+          <a href="4.4-itsm-itil.html" tabindex="-1" aria-hidden="true">
+            <rect x="556" y="176" width="376" height="104" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="568" y="200" class="f-2" font-size="12.5" font-weight="700">4.4</text>
+            <line x1="568" y1="205" x2="592" y2="205" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="610" y="201" class="s-ink" font-size="15.5" font-weight="700">ITSM 与 ITIL</text>
+            <text x="568" y="228" class="s-ink" font-size="13">术语表内是 IT service management；ITIL 不在表内</text>
+            <text x="568" y="250" class="s-muted" font-size="12.5">官方答案键确认：最关键的 ITSM 流程是「三者皆是」</text>
+            <text x="568" y="270" class="s-muted" font-size="12.5">作用区段：部署 → 运行服务 → 客户价值</text>
+          </a>
+          <!-- 4.4 的跨度括号 -->
+          <path d="M548 300 L548 290 L932 290 L932 300" class="s-2" stroke-width="1.6" fill="none"/>
+
+          <!-- ===== 价值流主轴 ===== -->
+          <rect x="36" y="300" width="896" height="68" rx="12" class="s-1" stroke-width="2.6" fill="var(--dia-fill)"/>
+          <g text-anchor="middle">
+            <text x="100" y="330" class="s-ink" font-size="14.5" font-weight="650">想法 · 需求</text>
+            <text x="100" y="350" class="s-muted" font-size="12">Idea</text>
+            <text x="228" y="330" class="s-ink" font-size="14.5" font-weight="650">计划 · 排期</text>
+            <text x="228" y="350" class="s-muted" font-size="12">Plan</text>
+            <text x="356" y="330" class="s-ink" font-size="14.5" font-weight="650">开发 · 构建</text>
+            <text x="356" y="350" class="s-muted" font-size="12">Build</text>
+            <text x="484" y="330" class="s-ink" font-size="14.5" font-weight="650">测试 · 集成</text>
+            <text x="484" y="350" class="s-muted" font-size="12">Test</text>
+            <text x="612" y="330" class="s-ink" font-size="14.5" font-weight="650">部署 · 发布</text>
+            <text x="612" y="350" class="s-muted" font-size="12">Deploy</text>
+            <text x="740" y="330" class="s-ink" font-size="14.5" font-weight="650">运行 · 服务</text>
+            <text x="740" y="350" class="s-muted" font-size="12">Operate</text>
+            <text x="868" y="330" class="f-1" font-size="14.5" font-weight="700">客户价值</text>
+            <text x="868" y="350" class="s-muted" font-size="12">Customer value</text>
+          </g>
+          <!-- 阶段之间的流向箭头 -->
+          <g class="s-1" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M159 327 L167 334 L159 341"/>
+            <path d="M287 327 L295 334 L287 341"/>
+            <path d="M415 327 L423 334 L415 341"/>
+            <path d="M543 327 L551 334 L543 341"/>
+            <path d="M671 327 L679 334 L671 341"/>
+            <path d="M799 327 L807 334 L799 341"/>
+          </g>
+
+          <!-- ===== 端到端括号 ===== -->
+          <path d="M36 368 L36 390 L932 390 L932 368" class="s-3" stroke-width="1.8" fill="none" stroke-dasharray="7 5"/>
+          <text x="484" y="408" class="f-3" font-size="13" font-weight="700" text-anchor="middle">以下两者作用于整条价值流 · 端到端</text>
+          <line x1="256" y1="392" x2="256" y2="420" class="s-3" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <line x1="712" y1="392" x2="712" y2="420" class="s-3" stroke-width="1.4" stroke-dasharray="4 3"/>
+
+          <!-- ===== 4.3 Lean ===== -->
+          <a href="4.3-lean.html" tabindex="-1" aria-hidden="true">
+            <rect x="36" y="420" width="440" height="104" rx="10" class="s-3" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="48" y="444" class="f-3" font-size="12.5" font-weight="700">4.3</text>
+            <line x1="48" y1="449" x2="72" y2="449" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="90" y="445" class="s-ink" font-size="15.5" font-weight="700">Lean 与八项浪费</text>
+            <text x="48" y="472" class="s-ink" font-size="13">识别并消除不产生客户价值的活动（Waste）</text>
+            <text x="48" y="494" class="s-muted" font-size="12.5">术语表内：Lean thinking · Lean production · Lean tools · Waste</text>
+            <text x="48" y="514" class="s-muted" font-size="12.5">浪费问「哪些活动白做」，约束问「哪一环定速度」</text>
+          </a>
+
+          <!-- ===== 4.6 价值流映射 ===== -->
+          <a href="4.6-value-stream-mapping.html" tabindex="-1" aria-hidden="true">
+            <rect x="492" y="420" width="440" height="104" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="504" y="444" class="f-4" font-size="12.5" font-weight="700">4.6</text>
+            <line x1="504" y1="449" x2="528" y2="449" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="546" y="445" class="s-ink" font-size="15.5" font-weight="700">价值流映射</text>
+            <text x="638" y="445" class="s-muted" font-size="12.5">Value stream mapping</text>
+            <text x="504" y="472" class="s-ink" font-size="13">把每个环节与每段等待时间画出来，用来找浪费与约束</text>
+            <text x="504" y="494" class="s-muted" font-size="12.5">术语表内是 Value stream mapping；Value Stream Management 不在</text>
+            <text x="504" y="514" class="s-muted" font-size="12.5">映射是拍照片，管理是一直开着的监控</text>
+          </a>
+
+          <!-- ===== 4.5 安全文化与学习型组织：底座 ===== -->
+          <a href="4.5-safety-culture.html" tabindex="-1" aria-hidden="true">
+            <rect x="14" y="552" width="972" height="80" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="30" y="578" class="f-4" font-size="12.5" font-weight="700">4.5</text>
+            <line x1="30" y1="583" x2="54" y2="583" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="72" y="579" class="s-ink" font-size="15.5" font-weight="700">安全文化与学习型组织</text>
+            <text x="248" y="579" class="s-muted" font-size="12.5">Safety Culture / Learning Organizations</text>
+            <text x="30" y="604" class="s-ink" font-size="13">能安全地说出坏消息 · 从故障中学习 —— 上面五个框架能不能真正落地，取决于这一层</text>
+            <text x="30" y="624" class="s-muted" font-size="12.5">官方答案键确认：指责与恐惧文化、大量单点故障、频繁战情室 → 应转向安全文化</text>
+            <text x="972" y="578" class="s-muted" font-size="12" text-anchor="end">两者均为 M4 官方模块子项 · 都不在 66 条术语表内</text>
+          </a>
+
+          <!-- 文化托底的两条通道 -->
+          <path d="M22 550 L22 374" class="s-4" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-48-4)"/>
+          <path d="M966 550 L966 374" class="s-4" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-48-4)"/>
+
+          <!-- ===== 页脚说明 ===== -->
+          <text x="20" y="658" class="s-muted" font-size="12.5">本图的框架摆位、以及各卡片内的对照式判据（如「浪费问白做什么、约束问谁定速度」「映射是拍照片、管理是监控」）均属本站教学整理，</text>
+          <text x="20" y="678" class="s-muted" font-size="12.5">官方未以此形式给出框架关系图。Blueprint 的 Related Frameworks 一栏逐字列出：</text>
+          <text x="20" y="697" class="s-muted" font-size="12.5">Agile: Lean Development / ITSM: Processes / Lean: Reduce Waste / Value Stream Management: End-to-End。</text>
+          <text x="20" y="722" class="s-muted" font-size="12.5">4.1–4.7 七节均可点击跳转。安全文化 · 学习型组织 · 持续资金三个主题词不在 66 条术语表内，见本页单独说明。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-8-1　六个框架的归位图。</strong>
+        这张图要看懂的是<strong>「为什么这六个框架会被放进同一章」</strong>：它们不是六个竞争方案，而是同一条价值流上<strong>六个不同的着力点</strong>。
+        4.2 管上游怎么把工作切小，4.4 管下游服务怎么运行，4.3 与 4.6 横跨整条流（一个消除浪费、一个让浪费先被看见），
+        4.7 从上方注入资金、4.5 从下方托住人 —— <strong>上下两条虚线通道是本图的重点：它们不作用于某一段，而是决定整条流能不能持续跑</strong>。
+        任何一节内容记不清时，先问它作用在哪一段，位置一定，它的对照对象与易错点也就跟着定了。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查的优先级排</strong>，与下面的易混淆汇总表配合使用。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:14%">小节</th><th style="width:32%">核心结论</th><th style="width:24%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="4.1-framework-landscape.html">4.1 框架全景与彼此关系</a></strong><br><small class="muted">Related Frameworks</small></td>
+            <td>DevOps 不替代 Agile / Lean / ITSM，而是把它们接到同一条价值流上。Blueprint 的 <em>Related Frameworks</em> 一栏逐字给出四项定位：<em>Agile: Lean Development</em>、<em>ITSM: Processes</em>、<em>Lean: Reduce Waste</em>、<em>Value Stream Management: End-to-End</em></td>
+            <td>本章考的是「关系」，不是各框架的内部流程</td>
+            <td>把本章当成 Agile 或 ITIL 的入门课去背内部流程；答题时选「DevOps 取代了 Agile / ITSM」这类替代式表述</td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></strong><br><small class="muted">Agile / Scrum</small></td>
+            <td>Agile 是一组<strong>价值观与原则</strong>（<em>Agile Manifesto</em>）；Scrum 是实现 Agile 的<strong>一种具体框架</strong>，规定了角色、工件与事件</td>
+            <td>Agile 说「为什么这么干」，Scrum 说「具体怎么排」</td>
+            <td>把 Agile 与 Scrum 当同义词；把 Velocity、Epics 当成 Agile 的定义要素（它们是 Scrum 侧的度量与工作项）</td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.3-lean.html">4.3 Lean 与八项浪费</a></strong><br><small class="muted">Lean / Waste</small></td>
+            <td>Lean 的主轴是<strong>识别并消除不产生客户价值的活动</strong>。官方术语分三层：<em>Lean thinking</em>（思维）、<em>Lean production</em>（生产体系）、<em>Lean tools</em>（工具）</td>
+            <td>浪费问「哪些活动白做了」，约束问「哪一环决定整体速度」</td>
+            <td>把浪费与约束当同义词；把 <em>Lean thinking</em> / <em>Lean production</em> / <em>Lean tools</em> 混成一个词作答</td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></strong><br><small class="muted">IT service management</small></td>
+            <td>术语表内的是 <em>IT service management</em> —— 管理 IT 服务的实践总称；ITIL 是它最流行的一套<strong>具体框架实现</strong>。<strong>官方答案键确认：对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是</strong></td>
+            <td>ITSM 是学科，ITIL 是其中一本教材</td>
+            <td>把 ITSM 与 ITIL 当同义词；在「哪个 ITSM 流程对 DevOps 最关键」上挑单一流程 —— 官方答案是三者皆是</td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a></strong><br><small class="muted">Safety Culture / Learning Organizations</small></td>
+            <td><span class="term">安全文化 <span class="en">Safety culture</span></span>指<strong>可以安全地说出坏消息</strong>的文化。<strong>官方答案键确认：面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向安全文化</strong></td>
+            <td>安全文化 = 说真话不受罚，与信息安全无关</td>
+            <td>把 Safety culture 读成信息安全或 DevSecOps；误以为这两个主题词在 66 条术语表内 —— <strong>都不在</strong></td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.6-value-stream-mapping.html">4.6 价值流映射</a></strong><br><small class="muted">Value stream mapping</small></td>
+            <td>把一条价值流的<strong>每个环节与每段等待时间</strong>画出来，据此找出浪费与约束。它是官方术语表条目，也是 Lean 的识别手段</td>
+            <td>先让浪费被看见，才谈得上消除</td>
+            <td>与 <em>Value Stream Management</em> 混淆 —— <strong>表内的是 mapping，不是 management</strong>；把它答成「持续采集的流动指标」（那是 <em>Value Stream Management</em>）；画出的图上没有任何等待时间数字 —— 那只是流程图，不是价值流映射</td>
+          </tr>
+          <tr>
+            <td><strong><a href="4.7-continuous-funding.html">4.7 持续资金</a></strong><br><small class="muted">Continuous Funding</small></td>
+            <td>把预算从<strong>按项目一次性审批</strong>改为<strong>按产品 / 价值流持续投入</strong>，让长期存在的团队不必为每次投入重新立项</td>
+            <td>给团队持续拨款，不给项目一次性拨款</td>
+            <td>误以为 <em>Continuous Funding</em> 在 66 条术语表内（<strong>不在</strong>，它是 M4 官方模块子项）；把它理解成「不断追加预算」</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语名称</strong>（<em>Agile Manifesto</em>、<em>Agile software development</em>、<em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、
+      <em>Lean thinking</em>、<em>Lean production</em>、<em>Lean tools</em>、<em>Waste</em>、<em>IT service management</em>、<em>Value stream mapping</em> 等）
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Agile</em>、<em>ITSM</em>、<em>Lean</em>、<em>Safety Culture</em>、<em>Learning Organizations</em>、<em>Continuous Funding</em>
+      是 DOFD v3.4 课程大纲 M4 <em>Business and Technology Frameworks</em> 的官方模块子项。
+      4.1 行引用的四项定位逐字出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 的 <em>Related Frameworks</em> 一栏。
+      <strong>「记忆锚点」一列为本站教学整理</strong>，官方未以此形式给出复习表；
+      <strong>「最易错点」一列</strong>中，4.4 行的「官方答案是三者皆是」出自 <strong>DOFD v3.4 官方样题答案键</strong>，
+      4.5 / 4.6 / 4.7 行关于「是否逐字出现在 66 条术语表内」的判断出自 <strong>DOFD v3.4 官方考纲术语表与 v3.4 课程大纲 M4 模块子项</strong>，
+      其余措辞（易错倾向、常见误读）为本站教学整理。
+      <strong>「核心结论」一列</strong>除标明出自 Blueprint（4.1 行）与官方样题答案键（4.4 / 4.5 行）的部分外，
+      其余为本站依据官方术语名所作的教学表述 —— <strong>官方只公布术语名称，未公布这些定义句</strong>。<br>
+      官方术语逐字写作 <em>Lean types of Waste (DOWNTIME)</em>，本身不带数量词；DOWNTIME 由八个首字母构成，对应<strong>八项</strong>浪费
+      （经典精益七种 TIMWOOD 加上 <em>Non-utilized talent</em>），这一层来龙去脉属<strong>本站教学整理</strong>。
+      4.7 行「按项目一次性审批 → 按产品持续投入」这一对比框架，是对 <em>Continuous Funding</em> 通行含义的<strong>本站教学整理</strong>，
+      官方大纲只给出子项名称、未附定义句。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总 · 九对</div>
+
+    <p>
+      这九对是本站判断最容易被相邻选项拖走的地方（本站教学整理，官方未公布干扰项构造方式与易错点分布；
+      模块级的最多题数分布见本页「本章在考试中的位置」）。
+      看表的方法：<strong>先记「分界线」那一列，再记「诱导你选错的地方」</strong>；能一句话说出分界线，这一对就丢不了分。
+      其中一行是一组三个词（<em>Lean thinking / production / tools</em>），判定方式相同。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:20%">易混的一对</th><th style="width:40%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DevOps vs Agile</strong><br><small class="muted">4.1 / 4.2</small></td>
+            <td>Agile 主要解决<strong>「怎么把需求做出来」</strong>（开发侧的迭代与响应变化）；DevOps 把这条流<strong>延长到生产环境与运维</strong>，让计划中的工作快速流动、获得反馈并持续改进</td>
+            <td>选项把 DevOps 写成「Agile 的升级版」或「取代 Agile 的新方法」。<strong>Blueprint 把 Agile 列在 <em>Related Frameworks</em> 里，是相关框架，不是被替代对象</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Agile vs Scrum</strong><br><small class="muted">4.2</small></td>
+            <td>Agile 是<strong>价值观与原则</strong>（<em>Agile Manifesto</em>）；Scrum 是<strong>一种实现框架</strong>，规定了角色、工件与事件</td>
+            <td>选项用 Scrum 的具体元素（Sprint、Velocity、Scrum 角色）去定义 Agile。<strong>能用 Scrum 之外的方式做 Agile，反过来不成立</strong></td>
+          </tr>
+          <tr>
+            <td><strong>ITSM vs ITIL</strong><br><small class="muted">4.4</small></td>
+            <td>ITSM 是<strong>学科 / 实践总称</strong>（官方术语 <em>IT service management</em>）；ITIL 是这门学科里<strong>一套具体的框架实现</strong></td>
+            <td>选项把两者当同义词互换。判定线索：<strong>66 条术语表里只有 <em>IT service management</em>，没有 ITIL</strong>，题面通常也用 ITSM 而非 ITIL</td>
+          </tr>
+          <tr>
+            <td><strong>安全文化 vs 信息安全</strong><br><small class="muted">4.5 · 与 <a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a> 对照</small></td>
+            <td><span class="en">Safety culture</span> 关心<strong>人敢不敢说出坏消息</strong>（心理安全）；信息安全 / <span class="en">Security</span> 关心<strong>系统会不会被攻破</strong>。两者中文都带「安全」，含义完全不同</td>
+            <td>题干出现「安全」就往 DevSecOps 上靠。<strong>官方答案键确认的场景是指责文化、单点故障、频繁战情室 → 安全文化</strong>，落点是文化，不是安全测试</td>
+          </tr>
+          <tr>
+            <td><strong>浪费 vs 约束</strong><br><small class="muted">4.3 · 与 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a> 对照</small></td>
+            <td><span class="en">Waste</span> 是<strong>不产生客户价值的活动</strong>，哪里都可能有，可以并行消除；<span class="en">Constraint</span> 是<strong>决定整条流速度的那一环</strong>，同一时刻通常只有一个</td>
+            <td>选项把「消除浪费」与「提升约束」当成同一件事。判据：<strong>浪费问「白做了什么」，约束问「谁在定速度」</strong>；消除非约束环节的浪费不会让整体变快</td>
+          </tr>
+          <tr>
+            <td><strong>价值流映射 vs 价值流管理</strong><br><small class="muted">4.6 · <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a></small></td>
+            <td>映射是<strong>一次性</strong>画出当前状态、找出浪费与约束；管理是对同一条价值流做<strong>长期</strong>的度量、可视化与治理</td>
+            <td>两者中文只差两个字，英文都能缩成 VSM。另一层陷阱：<strong><em>Value stream mapping</em> 在 66 条术语表内，<em>Value Stream Management</em> 不在</strong>（后者出现在 Blueprint 的 <em>Related Frameworks</em> 与 v3.6 学习目标中）</td>
+          </tr>
+          <tr>
+            <td><strong>项目制资金 vs 产品制资金</strong><br><small class="muted">4.7 <span class="badge badge--note">📝 教学整理</span></small></td>
+            <td>项目制：<strong>按一次性立项审批预算</strong>，项目结束团队解散；产品制 / 持续资金：<strong>按长期存在的产品与价值流持续拨款</strong>，团队稳定</td>
+            <td>选项把持续资金写成「预算不封顶」或「随时追加预算」。分界不在金额多少，而在<strong>拨款对象是一次性的项目，还是长期存在的价值流</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Lean thinking / production / tools 三层</strong><br><small class="muted">4.3</small></td>
+            <td>三个都是官方术语、三个不同层次：<em>Lean thinking</em> 是<strong>思维方式</strong>，<em>Lean production</em> 是<strong>一整套生产体系</strong>，<em>Lean tools</em> 是<strong>具体手段</strong></td>
+            <td>选项把三者随意互换。<strong>不能靠「哪个更官方」排除 —— 三个都在 66 条术语表内</strong>，只能靠层次判断</td>
+          </tr>
+          <tr>
+            <td><strong>Scrum vs Kanban</strong><br><small class="muted">4.2 / <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></small></td>
+            <td>Scrum 是<strong>固定时长的 Sprint</strong> + 规定的角色、工件与事件；Kanban 是<strong>持续流 + 限制在制品</strong>，不规定迭代长度与角色</td>
+            <td>选项把「限制在制品」写成 Scrum 的要素，或把 Velocity 安到看板上。两个词都在术语表内，只能靠<strong>「有没有固定迭代与规定角色」</strong>区分</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>是否官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）与 v3.4 课程大纲 M4 模块子项；
+      <em>Value Stream Management</em> 的位置依据 PeopleCert DevOps Foundation Blueprint 的 <em>Related Frameworks</em> 一栏与 PeopleCert 现行产品页公布的 v3.6 学习目标。
+      「安全文化 vs 信息安全」行与「浪费 vs 约束」行的分界线中，安全文化与约束的落点分别有官方答案键与官方术语支持，
+      <strong>但两列的「分界线」「诱导你选错的地方」措辞均为本站教学整理</strong>，用于描述命题角度与干扰项的构造方式，官方未以对照表形式给出这些区分。
+      「项目制 vs 产品制资金」一行按<strong>本站教学整理</strong>呈现：官方大纲只给出 <em>Continuous Funding</em> 子项名称，未附定义句。
+      本站不复制任何官方样题的题干与选项原文。
+    </div>
+
+    <!-- ============ 官方样题答案键确认的本章考点 ============ -->
+    <div class="divider-label">官方样题答案键确认的本章考点</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这两条不是推断，是官方确认</div>
+      <p>
+        本页绝大多数「命题角度」都标注为教学推断。下面两条不同 ——
+        它们来自 <strong>DOFD v3.4 官方样题答案键</strong>，是<strong>关于官方文件的事实陈述</strong>：官方在这两个判断上给出了明确的正确答案方向。
+      </p>
+      <ul>
+        <li><strong>对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理 —— 三者皆是。</strong>
+          → 见 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>。
+          这一条的价值不只是答案本身，还在于它说明<strong>官方把 ITSM 看作与 DevOps 多点耦合的框架</strong>，而不是只在事件管理一处相接。
+          常见误选方向是从三个流程里挑出一个自己最熟的（多数人挑事件管理）。</li>
+        <li><strong>面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向安全文化。</strong>
+          → 见 <a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a>。
+          落点是<strong>文化层面的转向</strong>，不是补一轮安全测试、也不是先去消灭单点故障 ——
+          题面里的单点故障与战情室是<strong>症状</strong>，不是要治的病。</li>
+      </ul>
+      <p class="mb-0 muted"><small>本站只陈述这两条结论，<strong>不复制官方样题的题干与选项原文</strong>。
+        本页其余所有「命题角度」「诱导你选错的地方」的描述，均为本站教学推断，已在各处标注。</small></p>
+    </div>
+
+    <!-- ============ 图 4-8-2　答案键记忆卡片 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 306" role="img" aria-label="第 4 章两条由官方样题答案键确认的结论记忆卡片">
+          <text x="16" y="28" class="s-ink" font-size="16.5" font-weight="700">DOFD v3.4 官方样题答案键确认的第 4 章两条结论</text>
+          <text x="16" y="52" class="s-muted" font-size="12.5">这两张卡是本章唯一「官方认为哪个答案对」有硬证据的部分。卡片下半的「误选方向」是本站教学整理。</text>
+
+          <!-- 卡片 #5 -->
+          <rect x="16" y="70" width="452" height="184" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="32" y="98" class="f-2" font-size="14" font-weight="700">#5</text>
+          <text x="452" y="98" class="s-muted" font-size="12" text-anchor="end">见 4.4 ITSM 与 ITIL</text>
+          <line x1="32" y1="110" x2="452" y2="110" class="s-2" stroke-width="1.2"/>
+          <text x="32" y="138" class="s-ink" font-size="13">对 DevOps 最关键的 ITSM 流程：</text>
+          <text x="32" y="160" class="s-ink" font-size="13">组织变革管理 · 服务连续性管理 · 事件管理</text>
+          <text x="32" y="186" class="f-2" font-size="14.5" font-weight="700">→ 三者皆是</text>
+          <line x1="32" y1="204" x2="452" y2="204" class="s-2" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="32" y="226" class="s-muted" font-size="12">误选方向：从三个流程里挑一个最熟的</text>
+          <text x="32" y="244" class="s-muted" font-size="12">记法：ITSM 与 DevOps 是多点耦合，不是单点相接</text>
+
+          <!-- 卡片 #6 -->
+          <rect x="492" y="70" width="452" height="184" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="508" y="98" class="f-4" font-size="14" font-weight="700">#6</text>
+          <text x="928" y="98" class="s-muted" font-size="12" text-anchor="end">见 4.5 安全文化</text>
+          <line x1="508" y1="110" x2="928" y2="110" class="s-4" stroke-width="1.2"/>
+          <text x="508" y="140" class="s-ink" font-size="13">官方确认：以指责与恐惧文化、大量单点故障、</text>
+          <text x="508" y="162" class="s-ink" font-size="13">频繁战情室为特征的组织，</text>
+          <text x="508" y="186" class="f-4" font-size="14.5" font-weight="700">应转向安全文化 Safety Culture</text>
+          <line x1="508" y1="204" x2="928" y2="204" class="s-4" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="508" y="226" class="s-muted" font-size="12">误选方向：读成信息安全 / DevSecOps</text>
+          <text x="508" y="244" class="s-muted" font-size="12">记法：单点故障与战情室是症状，不是要治的病</text>
+
+          <text x="16" y="288" class="s-muted" font-size="12.5">#5 / #6 为本站对该答案键条目的内部编号，仅用于回查，不是官方题号。本站只陈述结论，不复制题干与选项原文。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-8-2　两条官方确认结论的记忆卡片。</strong>
+        这张图要看懂的是<strong>两条结论的共同结构</strong>：官方给的都不是「挑一个最贴切的名词」，而是<strong>抬高一层</strong> ——
+        #5 抬到「ITSM 整体与 DevOps 多点耦合」，#6 抬到「文化层面的转向」。
+        本章遇到「以下哪一项最关键 / 最应该做」的问法时，先检查有没有一个更高一层的选项，那往往就是官方的落点（这一提示为本站教学整理）。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章正文真正展开过、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目。
+      本章<strong>六个官方模块子项</strong>（<em>Agile</em> / <em>ITSM</em> / <em>Lean</em> / <em>Safety Culture</em> / <em>Learning Organizations</em> / <em>Continuous Funding</em>）中，
+      有三个（<em>Safety Culture</em> / <em>Learning Organizations</em> / <em>Continuous Funding</em>）不在 66 条术语表内，因此<strong>不在这张表里</strong>，
+      连同 ITIL 与 <em>Value Stream Management</em> 一起，见下方单独说明。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:31%">官方术语</th><th style="width:19%">固定中文</th><th style="width:12%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Agile Manifesto</em></td><td>敏捷宣言</td><td>4.2</td><td>Agile 的价值观与原则出处，不规定任何具体做法</td></tr>
+          <tr><td><em>Agile software development</em></td><td>敏捷软件开发</td><td>4.2</td><td>把 Agile 应用到软件开发的统称，Scrum 只是其中一种做法</td></tr>
+          <tr><td><em>Agile service management</em></td><td>敏捷服务管理</td><td>4.2 · 4.4</td><td>Agile 与 ITSM 的接口：把敏捷方式带进服务管理流程</td></tr>
+          <tr><td><em>Scrum</em></td><td>Scrum</td><td>4.2</td><td>固定时长 Sprint + 规定角色、工件与事件的实现框架</td></tr>
+          <tr><td><em>Scrum roles, artifacts and events</em></td><td>Scrum 的角色、工件与事件</td><td>4.2</td><td>Scrum「规定得很具体」的那部分，也是与 Kanban 的分界</td></tr>
+          <tr><td><em>Scaled Agile Framework (SAFe)</em></td><td>规模化敏捷框架 SAFe</td><td>4.2</td><td>把 Agile 推到多团队 / 组织级的一种框架</td></tr>
+          <tr><td><em>Velocity</em></td><td>Velocity</td><td>4.2</td><td>Scrum 侧的产能度量，看板不用它</td></tr>
+          <tr><td><em>Epics</em></td><td>Epics</td><td>4.2</td><td>需求切分的上游粒度单位</td></tr>
+          <tr><td><em>Waterfall</em></td><td>瀑布</td><td>4.2</td><td>Agile 的对照物：阶段串行、批量大、反馈晚</td></tr>
+          <tr><td><em>Kanban</em></td><td>看板</td><td>4.2 · 4.3<br><small class="muted">正式讲解见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></small></td><td>源自 Lean 的拉动式方法：可视化、限制在制品、管理流动</td></tr>
+          <tr><td><em>IT service management</em></td><td>IT 服务管理 ITSM</td><td>4.4</td><td>管理 IT 服务的实践总称；<strong>ITIL 是它的一种具体实现，不在术语表内</strong></td></tr>
+          <tr><td><em>Service</em></td><td>服务</td><td>4.4</td><td>ITSM 的管理对象，也是价值流下游真正交到客户手里的东西</td></tr>
+          <tr><td><em>Lean thinking</em></td><td>精益思维</td><td>4.3</td><td>三层里最上层：以客户价值定义什么是浪费</td></tr>
+          <tr><td><em>Lean production</em></td><td>精益生产</td><td>4.3</td><td>中间层：把精益思维落成一整套生产体系</td></tr>
+          <tr><td><em>Lean tools</em></td><td>精益工具</td><td>4.3</td><td>最下层：具体手段，价值流映射是其中之一</td></tr>
+          <tr><td><em>Lean types of Waste (DOWNTIME)</em></td><td>精益浪费类型 DOWNTIME</td><td>4.3</td><td>用首字母串起来的浪费分类，是识别浪费时的检查清单<br><small class="muted">DOWNTIME 为八个首字母，对应<strong>八项</strong>浪费：经典精益是七种（TIMWOOD），加入 Non-utilized talent 后成为八项 —— 这一层为本站教学整理</small></td></tr>
+          <tr><td><em>Waste</em></td><td>浪费</td><td>4.3</td><td>不产生客户价值的活动；与约束不是一回事</td></tr>
+          <tr><td><em>Constraint</em></td><td>约束</td><td>4.3 · 4.6</td><td>决定整条价值流速度的那一环，同一时刻通常只有一个</td></tr>
+          <tr><td><em>Theory of Constraints</em></td><td>约束理论 ToC</td><td>4.3<br><small class="muted">正式讲解见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></small></td><td>解释为什么只有改善约束才能提升整体产出</td></tr>
+          <tr><td><em>Flow</em></td><td>流动</td><td>4.3 · 4.6</td><td>Lean 与价值流映射共同的关注对象，也是三步工作法第一步的名字</td></tr>
+          <tr><td><em>Value stream mapping</em></td><td>价值流映射</td><td>4.6</td><td>画出环节与等待时间，让浪费与约束先被看见</td></tr>
+          <tr><td><em>Cycle time</em></td><td>周期时间</td><td>4.6</td><td>映射图上单个环节的耗时读数</td></tr>
+          <tr><td><em>Change lead time</em></td><td>变更前置时间</td><td>4.6<br><small class="muted">正式讲解见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></small></td><td>映射图上端到端的总耗时读数，不是单环节的周期时间</td></tr>
+          <tr><td><em>Single Point of Failure (SPOF)</em></td><td>单点故障 SPOF</td><td>4.5</td><td>官方答案键 #6 场景里的症状之一：它挂，服务就停</td></tr>
+          <tr><td><em>Organizational culture</em></td><td>组织文化</td><td>4.5<br><small class="muted">正式讲解见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 文化、行为与运营模型</a></small></td><td>安全文化所属的上位概念，术语表内收的是这一条</td></tr>
+          <tr><td><em>High-performing organizations</em></td><td>高绩效组织</td><td>4.5</td><td>安全文化与学习型组织指向的结果状态</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称逐字取自 DOFD v3.4 官方考纲术语表</strong>（Concept and Terminology List），中文取自本站统一译法表；
+      <strong>「一句话定位」一列与「本章出处」的归属均为本站教学整理</strong>，官方未给出这些定位式说明，也未把术语按章分配。<br>
+      该表<strong>只列词条、不附定义</strong>，因此本页每一条中文释义都是本站措辞。
+      <em>Lean types of Waste (DOWNTIME)</em> 的官方写法不含数量词；DOWNTIME 由八个首字母构成，对应<strong>八项</strong>浪费，
+      八个字母的英文展开属通行精益知识、不出自 DOFD 文件，已按本站教学整理标注。
+    </div>
+
+    <!-- ============ 不在术语表内的主题词 ============ -->
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这几个主题词不在 66 条官方术语表内</div>
+      <p>
+        本章最容易踩的判定陷阱在这里：<strong>「是官方模块子项」和「是官方术语表条目」是两回事</strong>。
+        下面五个词都会在本章出现，但<strong>没有一个逐字出现在 66 条术语表内</strong>，因此本站一律不给它们标「⭐ 考纲核心」。
+        其中 <em>Safety Culture</em> / <em>Learning Organizations</em> / <em>Continuous Funding</em> / <em>ITIL</em>
+        属 <strong>v3.4 课程大纲 M4 这一层</strong>（ITIL 挂在 M4 的服务管理一支下，Blueprint 对该支的逐字写法是 <em>ITSM: Processes</em>），
+        <em>Value Stream Management</em> 则出自 <strong>Blueprint 的 <em>Related Frameworks</em> 与 v3.6 学习目标</strong>。
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:28%">主题词</th><th style="width:12%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><em>Safety Culture</em> 安全文化</td><td>4.5</td>
+              <td>是 <strong>v3.4 课程大纲 M4 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong> → 本站标 <span class="badge badge--plain">📘 官方模块子项</span>。
+                术语表内与之最接近的是 <em>Organizational culture</em>；官方样题答案键确认的那条结论（症状 → 安全文化）依然成立</td>
+            </tr>
+            <tr>
+              <td><em>Learning Organizations</em> 学习型组织</td><td>4.5<br><small class="muted">另见 <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7</a></small></td>
+              <td>同为官方模块子项，且<strong>在 M2 与 M4 各出现一次</strong>；<strong>不在 66 条术语表内</strong> → 标 <span class="badge badge--plain">📘 官方模块子项</span>。
+                表内可引用的相关条目是 <em>High-performing organizations</em>（正式讲解见 <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7</a>）</td>
+            </tr>
+            <tr>
+              <td><em>Continuous Funding</em> 持续资金</td><td>4.7</td>
+              <td>官方模块子项，<strong>不在 66 条术语表内</strong> → 标 <span class="badge badge--plain">📘 官方模块子项</span>。
+                <strong>66 条术语表内没有任何资金 / 预算类条目</strong>，所以这一节没有可标核心的术语</td>
+            </tr>
+            <tr>
+              <td>ITIL <span class="badge badge--plain">📘 官方模块子项</span></td><td>4.4</td>
+              <td><strong>不在 66 条术语表内</strong>，术语表内的是 <em>IT service management</em>（M4 子项写作 <em>ITSM</em>）→ 本站标 <span class="badge badge--plain">📘 官方模块子项</span>。
+                ITIL 在本章只作为「ITSM 的一种具体框架实现」出现，题面通常用 ITSM 而不是 ITIL</td>
+            </tr>
+            <tr>
+              <td><em>Value Stream Management</em> 价值流管理</td><td>4.6<br><small class="muted">另见 <a href="../ch03-key-practices/3.9-vsm.html">3.9</a></small></td>
+              <td>出现在 <strong>Blueprint 的 <em>Related Frameworks</em> 一栏</strong>（逐字为 <em>Value Stream Management: End-to-End</em>）与 v3.6 学习目标中，
+                但<strong>不在 66 条术语表内</strong>。表内的是 <em>Value stream mapping</em>，两者不能互换</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>判定依据：DOFD v3.4 官方考纲术语表逐字比对 + v3.4 课程大纲 M4 模块子项 + PeopleCert DevOps Foundation Blueprint。
+        <strong>徽章判定口径</strong>：只有逐字出现在 66 条术语表内的主题词才标「⭐ 考纲核心」，
+        出现在模块子项但不在术语表内的标「📘 官方模块子项」。</small></p>
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 反过来说：本章哪些内容没有官方背书</div>
+      <ul class="mb-0">
+        <li>图 4-8-1 把六个框架按「作用在价值流的哪一段」摆放，是本站教学整理；官方只在 Blueprint 的 <em>Related Frameworks</em> 一栏给出四项一句话定位，没有给出关系图。</li>
+        <li>本页所有「诱导你选错的地方」「误选方向」都是本站对命题角度的推断；官方就命题角度可引用的只有 Bloom 1–2 层级与本页单列的两条样题答案键结论。</li>
+        <li><strong>「项目制 vs 产品制资金」的对比框架、以及 DOWNTIME 八个字母的英文展开</strong>都是本站教学整理：前者官方只给出 <em>Continuous Funding</em> 子项名称，后者属通行精益知识，不出自 DOFD 文件。</li>
+      </ul>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>以下各项均出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；<strong>v3.6 未公开重新发布权重表</strong>，本站沿用 v3.4 分布并全程标注。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">7</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">≤17.5%</div><div class="stat__k">按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">并列第 1</div><div class="stat__k">与第 3 章同为权重最高</div></div>
+      <div class="stat"><div class="stat__v">2</div><div class="stat__k">官方答案键确认的结论</div></div>
+    </div>
+
+    <p>
+      全卷 40 题、及格线 <strong>26 / 40</strong>。本章与<a href="../ch03-key-practices/summary.html">第 3 章</a>的题数上限各为 7 题，
+      两章合计最多 14 题 —— <strong>上限之和已超过及格线所需分数的一半</strong>
+      （官方给的是每模块<strong>最多题数</strong>，不是固定配额，实际出题可能更少）。
+      本章又是最容易被当成「背景章」草草带过的一章：六个框架听起来都是常识，真考起来问的却是它们之间的边界。
+      按题数分配复习时间，本章不应低于第 3 章。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:36%">模块</th><th style="width:14%">最多题数</th><th>与本章的关系</th></tr></thead>
+        <tbody>
+          <tr><td><strong>4　Business &amp; Technology Frameworks</strong></td><td class="num"><strong>7</strong></td><td>本章</td></tr>
+          <tr><td>3　Key DevOps Practices</td><td class="num">7</td><td>并列最高。Kanban 与价值流管理的实践视角在<a href="../ch03-key-practices/summary.html">那一章</a></td></tr>
+          <tr><td>5　Culture, Behaviors &amp; Operating Models</td><td class="num">6</td><td>组织文化、文化债与行为模型在<a href="../ch05-culture/index.html">那一章</a>；本章 4.5 是它的前置</td></tr>
+          <tr><td>1　Exploring DevOps</td><td class="num">5</td><td>DevOps 的官方定义句在<a href="../ch01-exploring-devops/1.1-defining-devops.html">那一节</a>，本章讲的是它与各框架的关系</td></tr>
+          <tr><td>6　Automation &amp; Architecting DevOps Toolchains</td><td class="num">5</td><td>工具链视角在<a href="../ch06-automation/index.html">那一章</a></td></tr>
+          <tr><td>2　Core DevOps Principles</td><td class="num">4</td><td>约束理论与学习型组织在<a href="../ch02-core-principles/2.1-three-ways.html">那一章</a>，本章 4.3 与 4.5 与之直接相接</td></tr>
+          <tr><td>8　Sharing, Shadowing and Evolving</td><td class="num">4</td><td>组织级推行与领导力在<a href="../ch08-sharing/index.html">那一章</a></td></tr>
+          <tr><td>7　Measurement, Metrics, and Reporting</td><td class="num">2</td><td>周期时间、变更前置时间的正式讲解在<a href="../ch07-metrics/index.html">那一章</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题）同源。
+      <strong>v3.6 未公开重新发布权重表</strong>，因此本页仍以 v3.4 的分布作为唯一可引用依据。
+      ≤17.5% 由题数上限 7 ÷ 40 计算得到；官方给的是<strong>每个模块的最多题数</strong>，不是固定配额，因此该比例应读作占比上限。
+      <strong>「本章易被当成背景章、复习时间不应低于第 3 章」为本站教学建议</strong>，官方未就复习优先级作任何表述。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>做自测更有效：遮住「分界线」一列，逐对说出分界线，
+        说不出来的那一对就是要回去重读的小节。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文，仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，
+        用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 7 题</strong>，按上限算占全卷 40 题的 <strong>≤17.5%</strong>，与第 3 章并列最高（来源：DOFD v3.4 Examination Requirements；官方给的是每模块题数上限，不是固定配额；v3.6 未公开重新发布权重表）</li>
+        <li>六个框架的归位：<strong>4.2 管上游切工作 · 4.4 管下游运行服务 · 4.3 与 4.6 横跨整条流 · 4.7 从上游注入资金 · 4.5 在底下托住人</strong>（本站教学整理）</li>
+        <li>官方答案键确认的两条：<strong>最关键的 ITSM 流程是「组织变革管理 · 服务连续性管理 · 事件管理」三者皆是 · 指责与恐惧文化 + 大量单点故障 + 频繁战情室 → 应转向安全文化</strong></li>
+        <li><strong>Safety Culture · Learning Organizations · Continuous Funding 三个词不在 66 条术语表内</strong>，它们是 M4 官方模块子项；ITIL 与 Value Stream Management 同样不在表内</li>
+        <li>层次别混：<strong>Agile 是价值观、Scrum 是框架；ITSM 是学科、ITIL 是实现；Lean thinking / production / tools 是三层</strong></li>
+        <li><strong>浪费 ≠ 约束</strong>：浪费问「哪些活动白做了」，约束问「哪一环决定整体速度」；<strong>映射 ≠ 管理</strong>：表内的是 <em>Value stream mapping</em></li>
+        <li>「最关键 / 最应该做」的问法，先找有没有<strong>更高一层</strong>的选项 —— 本章两条官方结论都落在更高一层（此提示为本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数与考试形式出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      并同时说明 <strong>v3.6 未公开重新发布权重表</strong>。<br>
+      <em>Agile Manifesto</em>、<em>Agile software development</em>、<em>Agile service management</em>、<em>Scrum</em>、
+      <em>Scrum roles, artifacts and events</em>、<em>Scaled Agile Framework (SAFe)</em>、<em>Velocity</em>、<em>Epics</em>、<em>Waterfall</em>、<em>Kanban</em>、
+      <em>IT service management</em>、<em>Service</em>、<em>Lean thinking</em>、<em>Lean production</em>、<em>Lean tools</em>、
+      <em>Lean types of Waste (DOWNTIME)</em>、<em>Waste</em>、<em>Constraint</em>、<em>Theory of Constraints</em>、<em>Flow</em>、
+      <em>Value stream mapping</em>、<em>Cycle time</em>、<em>Change lead time</em>、<em>Single Point of Failure (SPOF)</em>、
+      <em>Organizational culture</em>、<em>High-performing organizations</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。<br>
+      <em>Agile</em>、<em>ITSM</em>、<em>Lean</em>、<em>Safety Culture</em>、<em>Learning Organizations</em>、<em>Continuous Funding</em>
+      为 <strong>DOFD v3.4 课程大纲 M4 Business and Technology Frameworks 的官方模块子项</strong>；后三者<strong>不在 66 条术语表内</strong>，本页已单独列表说明。
+      <em>Related Frameworks</em> 四项定位（<em>Agile: Lean Development</em> / <em>ITSM: Processes</em> / <em>Lean: Reduce Waste</em> /
+      <em>Value Stream Management: End-to-End</em>）逐字出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>。<br>
+      本页高亮的<strong>两条结论由 DOFD v3.4 官方样题答案键确认</strong>（对应 4.4 与 4.5 两节），本站只陈述结论，
+      <strong>不复制官方样题的题干与选项原文</strong>。<br>
+      <strong>本站教学整理部分</strong>：图 4-8-1 的「框架 → 价值流区段」归位、一页纸复习表的「记忆锚点」与「最易错点」两列、
+      易混淆汇总表的「分界线」与「诱导你选错的地方」两列、术语速查表的「一句话定位」列、图 4-8-2 中的「误选方向」与「记法」、
+      「先找更高一层的选项」这一排除提示 —— 官方均未以此形式给出，已在各自下方就地标注。<br>
+      另有三项同属<strong>本站教学整理</strong>：① <em>Lean types of Waste (DOWNTIME)</em> 的官方写法不含数量词，
+      DOWNTIME 为八个首字母、对应<strong>八项</strong>浪费，八个字母的英文展开属通行精益知识，不出自 DOFD 文件；
+      ② 4.7 持续资金的「项目制一次性审批 → 产品制持续投入」对比框架 —— 官方大纲只给出 <em>Continuous Funding</em> 子项名称、未附定义句；
+      ③ <strong>ITIL</strong> 与 ITSM 的关系表述 —— <em>ITIL</em> 这一框架名不在 66 条术语表内，本页按行业通行事实呈现。
+      官方考纲术语表<strong>只列词条、不附定义</strong>，本页每一条中文释义都是本站措辞；
+      官方也未公布命题规律、题型分布与逐题 Bloom 分级，本页对命题角度的分析均为本站教学推断。
+      本页不含任何官方样题原文，练习题上线后将标注「仿真题，非官方真题」。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

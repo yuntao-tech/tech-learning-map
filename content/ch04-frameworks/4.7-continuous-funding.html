@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.7 持续资金 · DevOps Foundation 学习站</title>
+<meta name="description" content="持续资金（Continuous Funding）把拨款对象从一次性的项目立项换成长期存在的产品团队。本节讲清项目制资金的三个后果、资金模式如何反向决定团队寿命与架构边界，以及它为什么常常是企业级转型的隐形天花板。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.7-continuous-funding"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.7 持续资金</h1>
+      <div class="page-head__en">Continuous Funding</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+      </div>
+      <p class="page-head__lede">
+        本章其余小节讲的是方法，这一节讲的是<strong>钱怎么发</strong>。
+        钱按<strong>一次性的项目</strong>发，团队就是临时的；团队是临时的，
+        领域知识就没有容器，端到端责任就没有主人。
+        <strong>持续资金 Continuous Funding 换掉的正是这个前提：拨款对象从项目变成长期存在的产品团队。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>持续资金到底改了哪一件事（换掉的是<strong>拨款对象</strong>，不是拨款金额），以及它在 <strong>M4 六个官方子项</strong>里占哪一格</li>
+        <li>项目制资金的<strong>三个后果</strong>，为什么每一个都在正面对抗持续改进与快速响应</li>
+        <li>为什么资金模式常常是企业级推广的<strong>隐形天花板</strong>：技术实践全改完了，团队每年仍被打散重组</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-7-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="同一支工程团队在项目制资金与持续资金两种模式下，两年内的生命周期与领域知识水位对比">
+          <defs>
+            <marker id="ah-47-0" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="s-muted"/>
+            </marker>
+          </defs>
+
+          <!-- 泳道 A 标题 -->
+          <text x="30" y="34" class="f-5" font-size="15" font-weight="700">路径 A · 项目制资金：按一次性立项拨款</text>
+
+          <!-- 泳道 A 区块 -->
+          <rect x="60"  y="52" width="112" height="54" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="178" y="52" width="212" height="54" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="396" y="52" width="72"  height="54" rx="9" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <rect x="474" y="52" width="72"  height="54" rx="9" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 4"/>
+          <rect x="552" y="52" width="110" height="54" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="668" y="52" width="252" height="54" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="116" y="74"  class="s-ink" font-size="15" font-weight="650">立项审批</text>
+            <text x="116" y="95"  class="s-muted" font-size="12">预算年初锁定</text>
+
+            <text x="284" y="74"  class="s-ink" font-size="15" font-weight="650">项目 A 团队组建 → 交付</text>
+            <text x="284" y="95"  class="s-muted" font-size="12">按计划完成 = 项目成功</text>
+
+            <text x="432" y="74"  class="s-ink" font-size="15" font-weight="650">结项</text>
+            <text x="432" y="95"  class="s-ink" font-size="15" font-weight="650">解散</text>
+
+            <text x="510" y="75"  class="s-muted" font-size="13">人员打散</text>
+            <text x="510" y="95"  class="s-muted" font-size="13">空窗期</text>
+
+            <text x="607" y="74"  class="s-ink" font-size="15" font-weight="650">重新立项</text>
+            <text x="607" y="95"  class="s-muted" font-size="12">再走一遍审批</text>
+
+            <text x="794" y="74"  class="s-ink" font-size="15" font-weight="650">项目 B 新团队接手同一套系统</text>
+            <text x="794" y="95"  class="s-muted" font-size="12">从读代码开始，重新摸索</text>
+          </g>
+
+          <!-- 泳道 A 起点水位基线 -->
+          <line x1="60" y1="196" x2="920" y2="196" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+          <text x="56" y="200" class="s-muted" font-size="12" text-anchor="end">起点水位</text>
+
+          <!-- 泳道 A 知识水位曲线 -->
+          <polyline points="60,196 178,196 390,150 396,150 432,196 668,196 920,162"
+                    class="s-5" stroke-width="1.5" fill="none"/>
+          <text x="920" y="144" class="f-5" font-size="12" text-anchor="end">细线 = 领域知识水位（示意）：两年后仍贴近起点水位</text>
+
+          <!-- 知识流失点 1 -->
+          <circle cx="432" cy="196" r="9" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <path d="M428 192 L436 200 M436 192 L428 200" class="s-5" stroke-width="2"/>
+          <text x="432" y="222" class="f-5" font-size="12" text-anchor="middle">知识流失点 ①</text>
+          <text x="432" y="238" class="s-muted" font-size="12" text-anchor="middle">懂系统的人被调走</text>
+
+          <!-- 知识流失点 2 -->
+          <circle cx="668" cy="196" r="9" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <path d="M664 192 L672 200 M672 192 L664 200" class="s-5" stroke-width="2"/>
+          <text x="668" y="222" class="f-5" font-size="12" text-anchor="middle">知识流失点 ②</text>
+          <text x="668" y="238" class="s-muted" font-size="12" text-anchor="middle">同样的坑再踩一次</text>
+
+          <!-- 泳道 B 标题 -->
+          <text x="30" y="278" class="f-1" font-size="15" font-weight="700">路径 B · 持续资金：按长期存在的产品团队拨款</text>
+
+          <text x="490" y="300" class="s-muted" font-size="12" text-anchor="middle">▲ 每个评审点调整方向与投入，但团队不解散</text>
+
+          <!-- 泳道 B 区块 -->
+          <rect x="60" y="308" width="860" height="54" rx="9" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <g class="s-1" stroke-width="1.6" stroke-dasharray="6 4">
+            <line x1="275" y1="308" x2="275" y2="362"/>
+            <line x1="490" y1="308" x2="490" y2="362"/>
+            <line x1="705" y1="308" x2="705" y2="362"/>
+          </g>
+          <text x="167" y="331" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">产品团队 P 持续存在</text>
+          <text x="167" y="352" class="s-muted" font-size="12" text-anchor="middle">同一批人一直在同一套系统上</text>
+          <text x="382" y="342" class="s-muted" font-size="13" text-anchor="middle">滚动评审</text>
+          <text x="597" y="342" class="s-muted" font-size="13" text-anchor="middle">滚动评审</text>
+          <text x="812" y="342" class="s-muted" font-size="13" text-anchor="middle">滚动评审</text>
+
+          <!-- 泳道 B 起点水位基线 -->
+          <line x1="60" y1="412" x2="920" y2="412" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+          <text x="56" y="416" class="s-muted" font-size="12" text-anchor="end">起点水位</text>
+
+          <!-- 泳道 B 知识水位曲线 -->
+          <polyline points="60,412 178,398 390,382 552,372 920,360"
+                    class="s-1" stroke-width="1.5" fill="none"/>
+          <text x="920" y="396" class="f-1" font-size="12" text-anchor="end">细线 = 领域知识水位（示意）：始终高于起点水位，单调上升</text>
+
+          <!-- 时间轴 -->
+          <line x1="60" y1="432" x2="920" y2="432" class="s-stroke" stroke-width="1.5" marker-end="url(#ah-47-0)"/>
+          <g class="s-stroke" stroke-width="1.5">
+            <line x1="60"  y1="428" x2="60"  y2="436"/>
+            <line x1="275" y1="428" x2="275" y2="436"/>
+            <line x1="490" y1="428" x2="490" y2="436"/>
+            <line x1="705" y1="428" x2="705" y2="436"/>
+            <line x1="920" y1="428" x2="920" y2="436"/>
+          </g>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="60"  y="452">第 0 月</text>
+            <text x="275" y="452">第 6 月</text>
+            <text x="490" y="452">第 12 月</text>
+            <text x="705" y="452">第 18 月</text>
+            <text x="920" y="452">第 24 月</text>
+          </g>
+          <text x="920" y="34" class="s-muted" font-size="12" text-anchor="end">每条泳道各有一条虚线「起点水位」，细线越往上＝领域知识越多</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-7-1　同一支团队，两年，两种资金模式。</strong>
+        要看懂的只有两条细线的形状 —— 每条线只跟<strong>本泳道自己的那条「起点水位」虚线</strong>比：
+        <strong>上面那条会跌回起点，下面那条不会</strong>。
+        项目制资金的知识水位在结项那一刻直落回起点 —— 不是人变笨了，是<strong>知识的容器（团队）被拆掉了</strong>；
+        两年后新团队从读代码开始，水位仍贴着起点线走。
+        持续资金没有取消评审与问责，评审点照样每半年出现一次（图中第 6 / 12 / 18 月），但
+        <strong>评审调整的是方向与投入，不是团队的存亡</strong>，所以那条线始终在起点之上、单调上升。
+        两条线的<strong>纵向高度不可跨泳道直接比较</strong>，只比各自相对起点的走向。
+        <br><small class="muted">本图为本站教学整理，用于呈现两种资金模式的机制差异；两年周期、评审频率与知识水位曲线均为示意，<strong>非官方图示，也非实测数据</strong>。官方 v3.4 课程大纲 M4 只列出 <em>Continuous Funding</em> 这一子项名称，未给出此类生命周期对比图。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-7-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-7-1</div>
+        <h3 class="kp__title">持续资金<span class="en">Continuous Funding</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">持续资金 <span class="en">Continuous Funding</span></span>
+            是把预算<strong>持续拨给一支长期存在的产品团队</strong>的出资方式，
+            而不是按一次性的项目立项、一次性地把钱批给一个临时组建、交付完就解散的项目组。
+          </p>
+          <p>一句话可复述的版本：<strong>钱跟着长期存在的团队走，不跟着一次性的项目走。</strong></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">被换掉的是</th><th style="width:39%">项目制拨款</th><th>持续资金</th></tr></thead>
+              <tbody>
+                <tr><td><strong>拨款对象</strong></td><td>一个<strong>项目</strong>（有明确起止的临时事物）</td><td>一支<strong>产品团队</strong>（长期存在的组织单元）</td></tr>
+                <tr><td><strong>拨款节奏</strong></td><td>立项时<strong>一次性锁定</strong>，中途改动要走变更审批</td><td><strong>滚动、分批</strong>拨付，每个评审点依据新信息调整</td></tr>
+                <tr><td><strong>结束条件</strong></td><td>项目交付完成 → <strong>团队解散</strong></td><td>产品下线或不再投资 → 才停止拨款，<strong>团队不因某次交付而解散</strong></td></tr>
+                <tr><td><strong>问什么问题</strong></td><td>「这个项目做完了吗」</td><td>「这个产品这一段时间产生了什么价值，下一段该投多少」</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Continuous Funding</em> 是 <strong>DOFD v3.4 课程大纲 M4 Business and Technology Frameworks</strong> 的官方模块子项，
+            与 Agile、ITSM、Lean、Safety Culture、Learning Organizations 并列。
+            但它<strong>不在 v3.4 官方考纲的 66 条术语表内</strong>，因此本节按「📘 官方模块子项」标注，不标「⭐ 考纲核心」。</small></p>
+          <div class="src-note">
+            官方 v3.4 课程大纲只给出 <em>Continuous Funding</em> 这一<strong>子项名称</strong>，未附定义句。
+            上表与上文的定义（拨款对象由项目改为长期产品团队、滚动拨付、团队不随交付解散）
+            是<strong>本站依该术语的通行含义所作的教学整理</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个概念之所以出现在一门 DevOps 课里，是因为<strong>项目制资金会从组织外部持续破坏 DevOps 想要的东西</strong>。
+            具体是三个后果，每一个都有对应的场景：
+          </p>
+          <ul>
+            <li><strong>后果一 · 团队随项目解散，知识跟着人走。</strong>
+              某支付网关由一个 14 人的项目组建成，上线验收后项目结项，成员按新立项分流到四个项目。
+              半年后网关出现一次超时故障，<strong>还留在原地的只有 2 人</strong>，
+              限流阈值当初为什么设成那个数，文档里没有，知道的人已经在别的项目上。
+              定位耗时 <strong>9 小时</strong> —— 其中 7 小时花在重新理解自己公司的系统上。</li>
+            <li><strong>后果二 · 预算年初锁定，学到的新信息无处可用。</strong>
+              同一份立项书里写着「第 3 季度交付批量导入功能」。
+              第 2 季度的真实使用数据显示，用户真正卡住的是对账差异排查，批量导入几乎无人使用。
+              但改需求要走变更审批，审批的问题是「偏离原计划的理由」，而不是「哪个功能价值更高」。
+              <strong>于是团队照原计划做完了一个已知没人用的功能</strong>。</li>
+            <li><strong>后果三 · 为保住预算而追求「按计划完成」，不是「交付价值」。</strong>
+              项目的成功判据是范围、进度、预算三者达标，
+              于是重构、补测试、修技术债这类<strong>不体现在交付清单上的工作被系统性推迟</strong> ——
+              做了不加分，晚了要扣分。结项报告写着「100% 按计划完成」，
+              而系统的变更前置时间在这一年里变长了。</li>
+          </ul>
+          <p>
+            三个后果指向同一件事：<strong>项目制资金奖励的是「按原计划做完」，
+            而 DevOps 要的是「持续改进」和「依据反馈快速改变方向」</strong>。
+            这两套激励是正面冲突的，冲突点不在工程实践里，在预算流程里。
+          </p>
+          <p class="mb-0 muted"><small>以上三个场景（支付网关、批量导入、结项报告）均为<strong>本站构造的教学示例</strong>，
+            人数与耗时用于说明机制，非真实调研数据。
+            「项目制资金的三个后果」这一归纳为<strong>本站教学整理</strong>，官方未以此形式列举。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">持续资金</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>项目制拨款 <span class="en">project funding</span></strong></td>
+                  <td>出资给<strong>长期存在的团队</strong>，团队寿命长于任何一次交付</td>
+                  <td>出资给<strong>一次性的项目</strong>，团队寿命等于项目寿命</td>
+                </tr>
+                <tr>
+                  <td><strong>年度预算 <span class="en">annual budgeting</span></strong></td>
+                  <td>是<strong>拨款对象与节奏</strong>的问题：给谁、分几次给</td>
+                  <td>是<strong>财务周期</strong>的问题：一年编一次。年度周期下同样可以做持续资金，只要拨款对象是团队、且允许期内滚动调整</td>
+                </tr>
+                <tr>
+                  <td><strong>增加预算</strong></td>
+                  <td>不改变<strong>总额</strong>，改变的是<strong>钱发给谁、怎么发</strong></td>
+                  <td>只改变数字。给临时项目组更多钱，团队照样在结项时解散</td>
+                </tr>
+                <tr>
+                  <td><strong>团队结构与运营模型</strong></td>
+                  <td>是<strong>前置条件</strong>：资金模式决定团队能不能长期存在</td>
+                  <td>是<strong>结果与设计</strong>：团队怎么划分、谁向谁汇报。展开见 <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>与<a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>，本节不展开</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>持续资金说的是「拨款对象」，不是「拨款金额」，也不是「一直有钱」</strong>。
+            它<strong>没有</strong>取消评审与问责 —— 评审点照常存在，只是评审的结论是「下一段投多少、做什么方向」，
+            而不是「这个团队还留不留」。把持续资金理解成「无限预算」或「不用汇报」是最典型的误读。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出该四组对照；
+            <em>annual budgeting</em>、<em>project funding</em> 均不在 DOFD v3.4 的 66 条术语表内，此处仅作参照对象使用。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一个组织是不是真的在做持续资金，不看预算表，看三个可观察的事实：</p>
+          <ul>
+            <li><strong>问「这套系统三年前是谁写的，他现在还在这支团队吗」。</strong>
+              答案是「在」，说明团队寿命长于交付周期；答案是「他去别的项目了」，说明拨款对象仍然是项目。</li>
+            <li><strong>问「上一次因为学到新信息而改变方向，走了什么流程」。</strong>
+              走的是团队的下一轮排期，是持续资金；走的是变更审批并需要解释为何偏离立项书，是项目制。</li>
+            <li><strong>问「运维与技术债的工作记在谁的账上」。</strong>
+              项目制下这类工作没有归属，因为项目已经结项；持续资金下它天然属于那支还在的团队。</li>
+          </ul>
+          <p>争取资金模式变更时，能拿来说话的是官方给出的收益区间：</p>
+          <ul>
+            <li>整体 IT 成本下降 <strong>15–25%</strong>、变更失败率下降 <strong>50–70%</strong>、
+              供应与部署时间下降最多 <strong>90%</strong>
+              <span class="muted">（DOFD v3.4 Course Description，2022-06）</span>。
+              这些是 <strong>DevOps 整体</strong>的收益区间，<strong>不是持续资金单独的效果</strong> ——
+              引用时必须带版本，也不要把它说成资金模式的功劳。</li>
+          </ul>
+          <p class="mb-0 muted"><small>上述三个判断问题为<strong>本站教学整理</strong>，官方未规定持续资金的评估清单；
+            三个百分比出自 DOFD v3.4 Course Description，v3.6 未重新发布该组数据。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先说清楚边界</strong>：<em>Continuous Funding</em> 是 <strong>v3.4 课程大纲 M4 的官方子项</strong>，
+              但<strong>不在 66 条术语表内</strong>，<strong>官方样题答案键中也没有一条确认落在这个子项上</strong>。
+              这意味着它更可能以<strong>模块子项层面的识别题</strong>出现，而不是需要精确定义的术语题。
+              <span class="muted">（此判断为本站教学整理，官方未公布逐子项的出题数量。）</span></li>
+            <li><strong>最可能的命题角度</strong>：给一段描述 ——「资金持续拨给长期存在的团队而非一次性项目」——
+              问这属于哪种做法；或反过来，问 DevOps 更契合哪种出资方式。
+              <strong>钥匙词是「长期团队 / 产品」对「一次性项目 / 立项」。</strong></li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「增加 IT 预算」</strong>（改的是金额，不是对象）、
+              <strong>「按项目分配资源」</strong>（正是被替代的那一个）、
+              <strong>「年度一次性编制预算并锁定」</strong>（锁定是关键破绽词）、
+              <strong>「取消预算审批」</strong>（走过头了，持续资金并不取消评审与问责）。</li>
+            <li><strong>排除技巧</strong>：先找选项里的<strong>拨款对象</strong>是「项目」还是「团队 / 产品」；
+              再看有没有<strong>「锁定」「一次性」「结项」</strong>这类词 —— 出现即排除；
+              最后警惕<strong>走过头的选项</strong>（无限预算、不必汇报），DOFD 的正确答案不会是取消治理。</li>
+            <li><strong>与相邻考点的连线</strong>：官方样题答案键确认，
+              <strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>
+              <span class="muted">（由 DOFD v3.4 官方样题答案键确认，该条归属<a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>与<a href="../ch08-sharing/index.html">第 8 章（8.4）</a>）</span> ——
+              资金模式属于业务侧决策，这条确认可以用来排除「由工具或技术团队自行决定」方向的选项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            命题角度、钥匙词与排除技巧均为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">钱跟着长期存在的团队走，不跟着一次性的项目走。</p>
+          <p class="mb-0 muted"><small>补一句反向判据：<strong>只要「交付完成」会导致「团队解散」，就还是项目制资金</strong> ——
+            无论预算数字多大、审批多快。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-7-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-7-2</div>
+        <h3 class="kp__title">项目制 vs 产品制：资金模式如何反向决定团队与架构<span class="en">Project Funding vs Product Funding</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">项目制拨款 <span class="en">project funding</span></span>
+            把钱批给一个<strong>有起止的项目</strong>；
+            <span class="term">产品制拨款 <span class="en">product funding</span></span>
+            把钱批给<strong>一支长期存在的产品团队</strong>（这正是持续资金支撑的那一种）。
+            两者的差别不是工作方法，是<strong>钱发给谁</strong>。
+          </p>
+          <p>
+            由此得到一句可复述的判断：<strong>不是「团队怎么设计」决定资金怎么发，
+            而是「资金怎么发」决定团队能不能长期存在</strong>。
+          </p>
+          <p class="mb-0">因果链只有四环，每一环都卡死下一环：</p>
+          <ul class="mb-0">
+            <li><strong>资金模式 → 团队寿命</strong>：按项目拨款，团队寿命就等于项目寿命，这是财务规则，不是管理选择。</li>
+            <li><strong>团队寿命 → 领域知识</strong>：知识需要一个能承载它的容器。容器每 12 个月拆一次，累积就永远回到起点。</li>
+            <li><strong>领域知识 → 端到端责任</strong>：一支不理解系统全貌、且明年不一定还在的团队，无法对生产结果负责，只能对交付清单负责。</li>
+            <li><strong>端到端责任 → 架构与边界</strong>：没人对端到端负责，系统边界就会按临时项目的切法划分，最终固化成交接、转维与 Dev / Ops 分裂。</li>
+          </ul>
+          <div class="src-note">
+            <strong>这条四环因果链是本站的教学整理</strong>，官方 v3.4 课程大纲把 <em>Continuous Funding</em>
+            列为 M4 模块子项，<strong>未以因果链的形式给出该推导</strong>，也未规定组织必须采用哪种资金模式。
+            链条中「资金模式 → 团队寿命」这一环，同样建立在 kp-4-7-1 ① 面那份本站教学整理的定义之上。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这条链要单独讲，是因为转型现场反复出现同一种失败：
+            <strong>技术侧该改的全改完了，效果却在一年后退回原点。</strong>
+          </p>
+          <ul>
+            <li>某企业用一年时间为核心交易系统建成流水线：自动化测试覆盖率达标，
+              部署从 6 小时缩到 11 分钟，变更前置时间从 3 周降到 2 天。
+              <strong>转型项目结项，评估为成功。</strong></li>
+            <li>问题出在结项之后：这套流水线是<strong>「转型项目」的产物</strong>，
+              而转型项目本身也是按项目拨款的。结项即解散，
+              维护流水线的 5 个人被分配到三个新立项，<strong>流水线没有归属团队</strong>。</li>
+            <li>十个月后复查：测试用例因为无人维护而大量失效，团队默认跳过；
+              部署时间回到 40 分钟；<strong>变更前置时间回到 11 天</strong>。
+              没有任何人做错事，只是<strong>没有一支长期存在的团队为这套能力负责</strong>。</li>
+          </ul>
+          <p>
+            这就是所谓<strong>隐形天花板</strong>：工程实践的高度，被资金模式从上面压住。
+            天花板之所以隐形，是因为它<strong>不出现在任何一张技术架构图上</strong>，
+            却决定了那张图能维持多久。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，各项数字用于说明机制，非真实调研数据；
+            「隐形天花板」是本站为描述该现象所用的表述，<strong>不是官方术语</strong>。</small></p>
+        </div>
+
+        <!-- ============ 图 4-7-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 352" role="img" aria-label="项目制资金与持续资金两条因果链：从资金模式到团队寿命、领域知识、架构边界与交付表现">
+              <defs>
+                <marker id="ah-47-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-47-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="450" y="26" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">资金模式 → 团队寿命 → 知识与责任 → 架构边界 → 交付表现</text>
+
+              <!-- 路径 A -->
+              <text x="20" y="54" class="f-5" font-size="15" font-weight="700">路径 A · 项目制拨款</text>
+              <g class="s-5" stroke-width="2" fill="var(--dia-fill-2)">
+                <rect x="20"  y="62" width="156" height="78" rx="10"/>
+                <rect x="196" y="62" width="156" height="78" rx="10"/>
+                <rect x="372" y="62" width="156" height="78" rx="10"/>
+                <rect x="548" y="62" width="156" height="78" rx="10"/>
+                <rect x="724" y="62" width="156" height="78" rx="10"/>
+              </g>
+              <g text-anchor="middle" class="s-ink" font-size="15">
+                <text x="98"  y="90">按项目一次性</text>
+                <text x="98"  y="110">立项拨款</text>
+                <text x="98"  y="130" class="s-muted" font-size="12">预算年初锁定</text>
+
+                <text x="274" y="90">团队随项目</text>
+                <text x="274" y="110">成立与解散</text>
+                <text x="274" y="130" class="s-muted" font-size="12">寿命 = 项目寿命</text>
+
+                <text x="450" y="90">知识随人走</text>
+                <text x="450" y="110">无人担端到端责任</text>
+                <text x="450" y="130" class="s-muted" font-size="12">只对交付清单负责</text>
+
+                <text x="626" y="90">边界按项目切</text>
+                <text x="626" y="110">交接文档 + 转维</text>
+                <text x="626" y="130" class="s-muted" font-size="12">Dev 与 Ops 分裂</text>
+
+                <text x="802" y="90">前置时间拉长</text>
+                <text x="802" y="110">变更失败率上升</text>
+                <text x="802" y="130" class="s-muted" font-size="12">改进无人接续</text>
+              </g>
+              <g class="s-5" stroke-width="2" fill="none">
+                <line x1="176" y1="101" x2="192" y2="101" marker-end="url(#ah-47-2)"/>
+                <line x1="352" y1="101" x2="368" y2="101" marker-end="url(#ah-47-2)"/>
+                <line x1="528" y1="101" x2="544" y2="101" marker-end="url(#ah-47-2)"/>
+                <line x1="704" y1="101" x2="720" y2="101" marker-end="url(#ah-47-2)"/>
+              </g>
+
+              <!-- 隐形天花板 -->
+              <text x="450" y="166" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">隐形天花板：技术实践改完了，预算流程没改 —— 团队仍然每年被打散重组</text>
+              <line x1="20" y1="180" x2="880" y2="180" class="s-stroke" stroke-width="2" stroke-dasharray="10 6"/>
+              <text x="450" y="200" class="s-muted" font-size="12" text-anchor="middle">这条线不出现在任何一张技术架构图上，却决定那张图能维持多久（企业级推广的展开见第 8 章）</text>
+
+              <!-- 路径 B -->
+              <text x="20" y="220" class="f-1" font-size="15" font-weight="700">路径 B · 持续资金</text>
+              <g class="s-1" stroke-width="2" fill="var(--dia-fill-2)">
+                <rect x="20"  y="228" width="156" height="78" rx="10"/>
+                <rect x="196" y="228" width="156" height="78" rx="10"/>
+                <rect x="372" y="228" width="156" height="78" rx="10"/>
+                <rect x="548" y="228" width="156" height="78" rx="10"/>
+                <rect x="724" y="228" width="156" height="78" rx="10"/>
+              </g>
+              <g text-anchor="middle" class="s-ink" font-size="15">
+                <text x="98"  y="256">按长期产品团队</text>
+                <text x="98"  y="276">持续拨款</text>
+                <text x="98"  y="296" class="s-muted" font-size="12">滚动评审调整</text>
+
+                <text x="274" y="256">团队长期存在</text>
+                <text x="274" y="276">跨越多次交付</text>
+                <text x="274" y="296" class="s-muted" font-size="12">寿命长于任一交付</text>
+
+                <text x="450" y="256">领域知识累积</text>
+                <text x="450" y="276">端到端责任有人扛</text>
+                <text x="450" y="296" class="s-muted" font-size="12">对生产结果负责</text>
+
+                <text x="626" y="256">团队边界贴合</text>
+                <text x="626" y="276">产品边界</text>
+                <text x="626" y="296" class="s-muted" font-size="12">建设与运行同一支</text>
+
+                <text x="802" y="256">流动与反馈成立</text>
+                <text x="802" y="276">持续改进可延续</text>
+                <text x="802" y="296" class="s-muted" font-size="12">改进有人接续</text>
+              </g>
+              <g class="s-1" stroke-width="2" fill="none">
+                <line x1="176" y1="267" x2="192" y2="267" marker-end="url(#ah-47-3)"/>
+                <line x1="352" y1="267" x2="368" y2="267" marker-end="url(#ah-47-3)"/>
+                <line x1="528" y1="267" x2="544" y2="267" marker-end="url(#ah-47-3)"/>
+                <line x1="704" y1="267" x2="720" y2="267" marker-end="url(#ah-47-3)"/>
+              </g>
+
+              <text x="450" y="336" class="s-muted" font-size="12" text-anchor="middle">两条链的第一格不同，其余四格是被第一格推出来的 —— 因果方向从左向右，不可倒着修</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-7-2　资金模式反向决定团队边界与架构。</strong>
+            要看懂的是<strong>因果的方向</strong>：两条链只有<strong>第一格</strong>不同，
+            后面四格不是各自独立的选择，而是被第一格推出来的结果。
+            这解释了为什么只改右边四格的转型会退回去 ——
+            <strong>右边的每一格都由左边供养，左边不动，右边迟早回到原样</strong>。
+            中间那条虚线就是隐形天花板：它不在架构图上，却给整张图设了上限。
+            路径 B 最右一格「流动与反馈成立、持续改进可延续」指的就是
+            <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法总览（2.1）</a>那三步能不能持续运转。
+            <br><small class="muted">本因果链图为<strong>本站教学整理</strong>，官方未以此形式给出资金模式与团队、架构之间的推导；
+            「隐形天花板」为本站表述，不是官方术语。团队结构与运营模型的正式展开见
+            <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>，
+            企业级推广见<a href="../ch08-sharing/index.html">第 8 章 企业中的 DevOps（8.1）</a>，本节均不展开。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">看起来像持续资金的做法</th><th style="width:38%">持续资金</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>用 Scrum 的项目组</strong></td>
+                  <td>钱按<strong>长期存在的团队</strong>批，用什么方法交付是另一层问题</td>
+                  <td>方法换了、<strong>拨款没换</strong>：站会、待办列表、迭代评审一样不少，结项那天照样解散</td>
+                </tr>
+                <tr>
+                  <td><strong>长期外包资源池</strong></td>
+                  <td>团队是组织内长期存在的单元，<strong>对产品的生产结果负责</strong></td>
+                  <td>人一直有，但按<strong>合同与工时</strong>计费；合同结束，责任与知识一起离场</td>
+                </tr>
+                <tr>
+                  <td><strong>改名为「产品团队」</strong></td>
+                  <td>预算科目跟着<strong>产品</strong>走，跨越多个交付周期</td>
+                  <td>只改了组织架构图上的<strong>名字</strong>，钱仍按一次次立项批，下一个预算周期照样重组</td>
+                </tr>
+                <tr>
+                  <td><strong>把多个项目打包立项</strong></td>
+                  <td>改变的是<strong>拨款对象</strong>：从项目变成团队</td>
+                  <td>只放大了<strong>拨款颗粒度</strong>：对象仍是一批有起止的项目，包一散，团队照样散</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>这四种做法在日常观感上都很像持续资金，区别只在一个问题上</strong> ——
+            <strong>「这次交付结束后，这支团队还在不在预算表上」</strong>。
+            答案是「在」，才是持续资金；答案取决于下一次立项或下一份合同，就还是项目制。
+            <strong>敏捷方法不等于产品制资金</strong>，这是本节最典型的误判。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出这组辨析；
+            「项目制 / 产品制」「资源池」「项目群」这些说法<strong>都不在 DOFD v3.4 的 66 条术语表内</strong>，
+            此处仅作参照对象使用，官方术语表收录的是 <em>DevOps teams</em>、<em>Organizational considerations</em> 等条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>资金模式不是工程师能改的，但工程师能做三件让这层天花板<strong>被看见</strong>的事：</p>
+          <ul>
+            <li><strong>把「无归属」变成一份清单。</strong>
+              列出当前没有长期团队负责的系统与能力（流水线、监控、共享库、遗留服务），
+              标出每一项的知识来源是否还在。清单比抽象论证更容易推动预算讨论。</li>
+            <li><strong>用可比数字说明退化。</strong>
+              团队解散前后的变更前置时间、变更失败率、平均恢复时间 MTTR 的变化，
+              是资金模式影响交付表现的直接证据（这三个指标的用法见
+              <a href="../ch03-key-practices/3.9-vsm.html">第 3 章 价值流管理（3.9）</a>）。
+              <strong>先有度量，再谈资金</strong>；
+              指标本身的定义见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</li>
+            <li><strong>先争取一支试点团队的持续拨款。</strong>
+              资金流程整体改造不是一次能完成的事。可行的第一步是让<strong>一个产品域</strong>
+              按长期团队拨款，用一到两年的对比数据说话。</li>
+          </ul>
+          <p class="mb-0">
+            边界提醒：<strong>团队怎么划分、设哪些角色、如何组织协作，不是本节内容。</strong>
+            那属于<a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>与
+            <a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>。
+            本节只回答一个问题：<strong>这些团队设计能不能活过两年，取决于钱怎么发。</strong>
+          </p>
+          <div class="src-note">
+            上述三项行动均为<strong>本站教学整理</strong>，官方文件未规定持续资金的落地步骤或试点方式。
+            <em>Change lead time</em>、<em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+            为 DOFD v3.4 官方考纲术语表条目，此处仅作为证据指标引用，其定义见第 7 章。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一 · 归因题</strong>：给一个「转型初期见效、一年后退回原点」的场景，
+              问最可能的原因。方向是<strong>组织与资金层面的因素</strong>，不是工具选型。
+              <span class="muted">（本站教学整理）</span></li>
+            <li><strong>命题角度二 · 概念归属题</strong>：把「按长期团队而非一次性项目拨款」的描述，
+              归到 M4 的哪个子项。答案方向是 <strong>Continuous Funding</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「引入更好的自动化工具」</strong>（把组织问题当技术问题，是最常见的错误方向）、
+              <strong>「加强项目管理与进度跟踪」</strong>（正是造成问题的那一套做法）、
+              <strong>「增加培训预算」</strong>（改金额不改对象）、
+              <strong>「让团队自行决定资金安排」</strong>（越权；与官方样题答案键确认的「由业务战略与目标决定」方向不一致）。</li>
+            <li><strong>两条可直接用作排除依据的官方确认</strong>：
+              <ul>
+                <li>DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>
+                  <span class="muted">（由 DOFD v3.4 官方样题答案键确认，该条归属 8.5）</span> ——
+                  凡是把成功因素归给工具、平台或个别团队努力的选项，可以先划掉。</li>
+                <li>决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>
+                  <span class="muted">（由 DOFD v3.4 官方样题答案键确认，该条归属<a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>与<a href="../ch08-sharing/index.html">第 8 章（8.4）</a>）</span> ——
+                  资金模式属业务侧决策，方向一致。</li>
+              </ul>
+              这两条本身<strong>不是</strong>关于持续资金的题，但它们确定了 DOFD 在「组织 vs 技术」上的一贯答案方向。
+              <span class="muted">（把它们用作本节排除依据，是本站教学整理。）</span></li>
+            <li><strong>排除技巧</strong>：题干只要出现<strong>「团队解散 / 重组 / 人员分流 / 结项」</strong>，
+              答案方向就在组织与资金侧；出现<strong>「工具 / 平台 / 脚本」</strong>的选项优先排除。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            <strong>命题角度、干扰项构造与排除技巧均为本站教学整理，官方未公布逐子项的出题方式</strong>；
+            两条官方确认只陈述结论。本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">资金模式决定团队活多久，团队活多久决定知识和责任留不留得住。</p>
+          <p class="muted"><small>四环口诀：<strong>钱 → 团队寿命 → 知识与责任 → 架构边界</strong>。
+            方向只能从左往右，倒着修修不动。</small></p>
+          <p class="mb-0 muted"><small>一句反问用来自查：<strong>「这次转型做的所有改进，明年由谁维护？那支团队明年还在吗？」</strong>
+            答不上第二问，天花板就还在。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-7-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-7-3</div>
+        <h3 class="kp__title">持续资金在 M4 六个子项里的位置<span class="en">Continuous Funding within Business &amp; Technology Frameworks</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>DOFD v3.4 课程大纲的 M4 <em>Business and Technology Frameworks</em> 共有六个子项</strong>：
+            <em>Agile</em>、<em>ITSM</em>、<em>Lean</em>、<em>Safety Culture</em>、
+            <em>Learning Organizations</em>、<em>Continuous Funding</em>。
+          </p>
+          <p>一句可复述的版本：<strong>前五个回答「事情怎么做、人怎么待」，只有持续资金回答「钱从哪来、发给谁」。</strong></p>
+          <p>另外两条官方事实，考试与阅读时都用得上：</p>
+          <ul>
+            <li><em>Learning Organizations</em> <strong>同时出现在 M2 与 M4 两个模块的官方子项里</strong>
+              （DOFD v3.4 课程大纲），它既是核心原则，也是框架层的一员。</li>
+            <li>PeopleCert DevOps Foundation Blueprint 的 <em>Related Frameworks</em> 用四个短语给出框架层的定位：
+              <em>Agile: Lean Development</em> / <em>ITSM: Processes</em> / <em>Lean: Reduce Waste</em> /
+              <em>Value Stream Management: End-to-End</em>
+              <span class="muted">（Blueprint 原文，未包含 Continuous Funding）</span>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>六子项名单出自 <strong>DOFD v3.4 课程大纲</strong>，四个框架短语出自
+            <strong>PeopleCert DevOps Foundation Blueprint</strong>；
+            v3.6 在框架层<strong>显式加入价值流管理 VSM 与 SRE</strong>
+            <span class="badge badge--new">🆕 v3.6 新增</span>
+            <span class="muted">（来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）</span>。
+            「前五个讲怎么做、第六个讲钱」这一归纳为<strong>本站教学整理</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            要单独给持续资金定位，是因为它在六个子项里<strong>是唯一一个不属于「方法」的</strong>，
+            而备考与落地时最常见的错，恰恰是<strong>把资金问题当成方法问题继续解</strong>。
+          </p>
+          <ul>
+            <li>某公司三年里把 M4 里的方法层全上齐了：研发按 Scrum 排期，
+              运维按 ITSM 走事件与变更流程，价值流上做过一轮精益去浪费，
+              事后复盘也不再追究个人责任。<strong>四件事都做成了。</strong></li>
+            <li>第四年交付表现仍在退化：新功能从提出到上线又回到 6 周。
+              复盘时每个框架的负责人都能拿出自己那一块的达标数据 ——
+              <strong>没有任何一块出问题，问题在没人负责的那一块</strong>。</li>
+            <li>唯一没动过的是第六项：预算仍按一次次立项批，团队每年被重排一次。
+              方法层的改进<strong>每年都要在一支新团队身上重来一遍</strong>。</li>
+          </ul>
+          <p>
+            这就是给六子项分层的用处：<strong>先判断问题落在方法层、文化层还是出资层，再选工具</strong>。
+            出资层的问题，用方法层的手段解不动。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，各项数字用于说明机制，非真实调研数据；
+            「方法层 / 文化层 / 出资层」这一分层为<strong>本站教学整理</strong>，官方只给出六个并列的子项名称，未做分层。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">M4 官方子项</th><th style="width:36%">它回答的问题</th><th>与持续资金的分工</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agile</strong></td>
+                  <td>需求与交付<strong>怎么排、怎么迭代</strong>（Blueprint：<em>Lean Development</em>）</td>
+                  <td>决定团队<strong>怎么干活</strong>；不决定这支团队明年还在不在</td>
+                </tr>
+                <tr>
+                  <td><strong>ITSM</strong></td>
+                  <td>服务运行中的<strong>流程</strong>怎么定（Blueprint：<em>Processes</em>）</td>
+                  <td>决定<strong>事情怎么走流程</strong>；流程的执行者是谁、能存在多久，由资金决定</td>
+                </tr>
+                <tr>
+                  <td><strong>Lean</strong></td>
+                  <td>流程里的<strong>浪费</strong>怎么去掉（Blueprint：<em>Reduce Waste</em>）</td>
+                  <td>改的是<strong>流程中的浪费</strong>；持续资金改的是<strong>预算发放的对象</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Safety Culture</strong></td>
+                  <td>坏消息能不能被安全地说出来</td>
+                  <td>决定信息<strong>敢不敢流动</strong>；不决定团队会不会被解散</td>
+                </tr>
+                <tr>
+                  <td><strong>Learning Organizations</strong></td>
+                  <td>组织怎么把经验变成能力（同时是 M2 子项）</td>
+                  <td>学习需要<strong>一个能留住经验的主体</strong>，而主体能否长期存在由资金决定</td>
+                </tr>
+                <tr>
+                  <td><strong>Continuous Funding</strong></td>
+                  <td><strong>钱发给谁、按什么节奏发</strong></td>
+                  <td>六个子项里唯一处理<strong>出资方式</strong>的一项</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Lean 与持续资金都在讲「别把投入浪费掉」，但改的不是同一样东西</strong>。
+            Lean 去掉的是价值流里的等待、返工、多余交接；
+            持续资金改的是<strong>预算批给谁</strong>。
+            一条价值流可以精益到极致，只要交付完团队就散，下一轮仍要从头再来。</small></p>
+          <p class="mb-0 muted"><small>六子项名单与 Blueprint 的四个框架短语为官方内容；
+            <strong>「它回答的问题」与「与持续资金的分工」两列为本站教学整理</strong>，
+            官方未给出子项之间的分工说明，也未规定六者的先后次序。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把六个子项当成一份<strong>定位清单</strong>：现象出现时，先问它落在哪一格，再决定动谁。</p>
+          <ul>
+            <li><strong>需求方向老是错、返工多</strong> → 先看 Agile 这一格：排期与反馈的节奏。</li>
+            <li><strong>故障处理无章法、变更互相踩</strong> → 先看 ITSM 这一格：事件与变更的流程。</li>
+            <li><strong>流程本身在空转、交接层层等待</strong> → 先看 Lean 这一格：把浪费识别出来。</li>
+            <li><strong>问题没人敢报、复盘变成追责</strong> → 先看 Safety Culture 这一格。</li>
+            <li><strong>同一类事故反复发生、经验不沉淀</strong> → 先看 Learning Organizations 这一格。</li>
+            <li><strong>上面五格都做过，效果一年后仍退回原点</strong> → 到第六格：<strong>看钱是怎么发的</strong>。
+              这一格改不动时，前五格的成果都只有一个预算周期的寿命。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这份定位清单为<strong>本站教学整理</strong>，官方未规定六子项的使用顺序或诊断方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先记题量</strong>：M4 <em>Business &amp; Technology Frameworks</em> <strong>最多 7 题</strong>
+              <span class="muted">（DOFD v3.4 Examination Requirements，2022-05；<strong>v3.6 未公开重新发布权重表</strong>）</span>，
+              与第 3 章并列为题数最多的两个模块。</li>
+            <li><strong>M4 里有官方确认落点的是另外两个子项，不是持续资金</strong>：
+              <ul>
+                <li>对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>
+                  <span class="muted">（由 DOFD v3.4 官方样题答案键确认，该条归属 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>）</span>。</li>
+                <li>面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向<strong>安全文化</strong>
+                  <span class="muted">（由 DOFD v3.4 官方样题答案键确认，该条归属 <a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a>）</span>。</li>
+              </ul>
+              这两条只陈述结论。它们说明 M4 的官方确认集中在 ITSM 与安全文化上，
+              <strong>持续资金更可能以子项名称的识别题出现</strong>。</li>
+            <li><strong>命题角度 · 子项归属题</strong>：给一段组织层面的描述，问它属于 M4 的哪一项。
+              钥匙词分四层：<strong>排期与迭代</strong>→Agile；<strong>流程与服务</strong>→ITSM；
+              <strong>浪费与等待</strong>→Lean；<strong>敢不敢报坏消息</strong>→安全文化；
+              <strong>经验沉淀</strong>→学习型组织；<strong>预算与拨款对象</strong>→持续资金。</li>
+            <li><strong>干扰项长什么样</strong>：把明显属于<strong>出资层</strong>的描述（团队随立项成立解散、预算年初锁定）
+              配上一个<strong>方法层</strong>的选项（引入敏捷、优化流程）——这是最常见的错配；
+              反过来，把流程类描述配成「资金问题」也是同一类构造。</li>
+            <li><strong>排除技巧</strong>：先给题干分层 —— 它在说<strong>怎么做事</strong>、<strong>人怎么相处</strong>，还是<strong>钱怎么发</strong>；
+              层对不上的选项直接划掉，再在同层里选。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            <strong>四层钥匙词、命题角度与排除技巧均为本站教学整理，官方未公布逐子项的出题方式</strong>；
+            两条官方确认只陈述结论。本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">M4 六格：三格讲怎么做事，两格讲人怎么待，一格讲钱怎么发。</p>
+          <p class="mb-0 muted"><small>展开：Agile / ITSM / Lean 讲怎么做事，Safety Culture / Learning Organizations 讲人怎么待，
+            <strong>Continuous Funding 是唯一讲钱的那一格</strong> —— 也是前五格能维持多久的前提。
+            <span class="muted">（分层为本站教学整理，六子项名单为官方。）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>一句话定义</strong>：持续资金 = 钱跟着<strong>长期存在的产品团队</strong>走，不跟着<strong>一次性的项目立项</strong>走</li>
+        <li><strong>换的是对象不是金额</strong>：增加预算 ≠ 持续资金；取消评审 ≠ 持续资金 —— 反向判据：只要「交付完成」会导致「团队解散」，就还是项目制资金</li>
+        <li><strong>项目制的三个后果</strong>：团队随项目解散导致知识流失 · 预算年初锁定无法响应新信息 · 为保预算追求「按计划完成」而非「交付价值」（本站教学整理）</li>
+        <li><strong>四环因果链</strong>：资金模式 → 团队寿命 → 领域知识与端到端责任 → 架构与团队边界（本站教学整理，方向不可逆修）</li>
+        <li><strong>隐形天花板</strong>：技术实践改完、预算流程没改，团队每年仍被打散重组 —— 企业级推广见<a href="../ch08-sharing/index.html">第 8 章</a>（「隐形天花板」为本站表述，非官方术语）</li>
+        <li><strong>M4 六子项分工</strong>：Agile / ITSM / Lean 讲怎么做事 · Safety Culture / Learning Organizations 讲人怎么待 · <strong>Continuous Funding 讲钱怎么发</strong>（六子项名单为官方，分层为本站教学整理）</li>
+        <li><strong>徽章判定</strong>：<em>Continuous Funding</em> 是 v3.4 课程大纲 <strong>M4 官方模块子项</strong>，但<strong>不在 66 条术语表内</strong>，因此标「📘 官方模块子项」而不是「⭐ 考纲核心」</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Continuous Funding</em> 出自 <strong>DOFD v3.4 课程大纲</strong>
+      M4 <em>Business and Technology Frameworks</em> 的官方模块子项（与 Agile、ITSM、Lean、Safety Culture、Learning Organizations 并列）；
+      该词<strong>不在 v3.4 官方考纲术语表（Concept and Terminology List）的 66 条词条内</strong>，故全节按「📘 官方模块子项」标注。
+      本章模块题数上限 7 题，来源 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      三个量化收益（整体 IT 成本下降 15–25%、变更失败率下降 50–70%、供应与部署时间下降最多 90%）出自
+      <strong>DOFD v3.4 Course Description（2022-06）</strong>，是 DevOps 整体收益区间，非持续资金单项效果。
+      M4 的<strong>六个官方子项</strong>（Agile、ITSM、Lean、Safety Culture、Learning Organizations、Continuous Funding）
+      与 <em>Learning Organizations</em> 同时归属 M2 / M4 这一事实，同出 <strong>DOFD v3.4 课程大纲</strong>；
+      <em>Agile: Lean Development</em>、<em>ITSM: Processes</em>、<em>Lean: Reduce Waste</em>、
+      <em>Value Stream Management: End-to-End</em> 出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 的
+      <em>Related Frameworks</em>；框架层显式加入 VSM 与 SRE 属 <strong>v3.6 增量</strong>，
+      来源为 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。
+      <strong>四条官方确认</strong>由 <strong>DOFD v3.4 官方样题答案键</strong>确认：
+      「DevOps 的关键成功因素是管理层对文化变革的承诺」（归属 8.5）、
+      「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」（归属 1.3 / 8.4）、
+      「对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是」（归属 <a href="4.4-itsm-itil.html">4.4</a>）、
+      「面对指责与恐惧文化、大量单点故障、频繁战情室的组织应转向安全文化」（归属 <a href="4.5-safety-culture.html">4.5</a>）；
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <em>Change lead time</em>、<em>Change failure rate</em>、<em>MTTR</em>、<em>DevOps teams</em>、
+      <em>Organizational considerations</em> 为 66 条术语表条目，本节仅引用不展开。
+      <strong>教学整理部分</strong>：项目制资金的三个后果、四环因果链、两张图、四种「伪装态」辨析表、
+      M4 六子项的「方法层 / 文化层 / 出资层」分层与分工表、六格定位清单、
+      三项落地行动、各面的命题角度、干扰项构造与排除技巧、「隐形天花板」这一表述，
+      官方均未以此形式给出，已在对应位置就地标注；
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      官方大纲仅给出 <em>Continuous Funding</em> 子项名称、未附定义句，kp-4-7-1 ① 面的定义表述为本站教学整理，已就地标注；
+      官方考纲术语表同样<strong>只列词条、不附定义</strong>，本节引用到的术语，其中文释义均为本站措辞。
+      官方也未公布命题规律、题型分布与逐题 Bloom 分级，各面的命题角度分析均为本站教学推断。
+      团队结构与运营模型见<a href="../ch05-culture/5.5-operating-models.html">第 5 章（5.5）</a>，
+      企业级推广见<a href="../ch08-sharing/index.html">第 8 章</a>，本节均不展开。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
