@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.10 平台工程 · DevOps Foundation 学习站</title>
+<meta name="description" content="平台工程（Platform Engineering）是 DOFD v3.6 新增内容：构建并运营内部开发者平台，把重复的基础能力产品化供产品团队自助取用。本节讲清它的定义、认知负荷这一成因，以及平台团队与「DevOps 团队」反模式的判据。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.10-platform-engineering"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.10 平台工程</h1>
+      <div class="page-head__en">Platform Engineering</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        平台工程是把交付软件所需的<strong>重复性基础能力做成一个内部产品</strong>，让产品团队自助取用。
+        它有三个缺一不可的要素 —— 产品化 · 自助 · 可选；其中<strong>最容易失守、也最好用的一条判据</strong>是：
+        <strong>平台是可选的自助能力，还是必经的审批关卡</strong>。
+        前者降低认知负荷，后者会把平台自己变成新的约束 —— 同一层组织，两种相反的结果。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>平台工程到底做什么，内部开发者平台 IDP 和黄金路径指的是什么</li>
+        <li>「你构建，你运维」推到极致之后出了什么问题，平台工程是对什么的回应</li>
+        <li>平台团队、传统运维部门、「DevOps 团队」反模式怎么区分 —— 判据是什么</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 480" role="img" aria-label="对比图：没有平台时每个产品团队自带全栈能力，有平台时共性能力下沉为可自助取用的产品">
+          <defs>
+            <marker id="ah-310-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <rect x="16" y="16" width="452" height="448" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+          <rect x="492" y="16" width="452" height="448" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+
+          <!-- 左：无平台 -->
+          <text x="40" y="48" class="f-2" font-size="16" font-weight="700">A · 没有平台：每个团队自带全栈</text>
+          <text x="40" y="70" class="s-muted" font-size="12.5">同样的能力被重复搭建三遍，标准各不相同</text>
+
+          <g text-anchor="middle">
+            <rect x="40"  y="86" width="128" height="30" rx="7" class="s-2" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="104" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 A</text>
+            <rect x="178" y="86" width="128" height="30" rx="7" class="s-2" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="242" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 B</text>
+            <rect x="316" y="86" width="128" height="30" rx="7" class="s-2" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="380" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 C</text>
+
+            <rect x="40"  y="122" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="178" y="122" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="316" y="122" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="104" y="142" class="s-ink" font-size="12.5">产品代码</text>
+            <text x="242" y="142" class="s-ink" font-size="12.5">产品代码</text>
+            <text x="380" y="142" class="s-ink" font-size="12.5">产品代码</text>
+
+            <rect x="40"  y="156" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="178" y="156" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="316" y="156" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="104" y="176" class="s-muted" font-size="12.5">CI/CD 流水线</text>
+            <text x="242" y="176" class="s-muted" font-size="12.5">CI/CD 流水线</text>
+            <text x="380" y="176" class="s-muted" font-size="12.5">CI/CD 流水线</text>
+
+            <rect x="40"  y="190" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="178" y="190" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="316" y="190" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="104" y="210" class="s-muted" font-size="12.5">运行环境 / 编排</text>
+            <text x="242" y="210" class="s-muted" font-size="12.5">运行环境 / 编排</text>
+            <text x="380" y="210" class="s-muted" font-size="12.5">运行环境 / 编排</text>
+
+            <rect x="40"  y="224" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="178" y="224" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="316" y="224" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="104" y="244" class="s-muted" font-size="12.5">可观测性</text>
+            <text x="242" y="244" class="s-muted" font-size="12.5">可观测性</text>
+            <text x="380" y="244" class="s-muted" font-size="12.5">可观测性</text>
+
+            <rect x="40"  y="258" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="178" y="258" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="316" y="258" width="128" height="30" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="104" y="278" class="s-muted" font-size="12.5">合规 / 安全基线</text>
+            <text x="242" y="278" class="s-muted" font-size="12.5">合规 / 安全基线</text>
+            <text x="380" y="278" class="s-muted" font-size="12.5">合规 / 安全基线</text>
+          </g>
+
+          <text x="40" y="320" class="s-ink" font-size="13" font-weight="650">认知负荷</text>
+          <rect x="40" y="330" width="404" height="16" rx="8" class="s-stroke" stroke-width="1.2" fill="var(--dia-fill-2)"/>
+          <rect x="40" y="330" width="382" height="16" rx="8" class="f-2"/>
+          <text x="40" y="370" class="f-2" font-size="13" font-weight="700">已经顶到上限：每个团队要养 5 层能力</text>
+          <text x="40" y="394" class="s-muted" font-size="12">同一件事做三遍，三套标准、三份维护成本</text>
+          <text x="40" y="418" class="s-muted" font-size="12">新人从入职到第一次独立上线，按周计</text>
+          <text x="40" y="442" class="s-muted" font-size="12">真正投在业务领域上的时间被持续挤压</text>
+
+          <!-- 右：有平台 -->
+          <text x="516" y="48" class="f-1" font-size="16" font-weight="700">B · 有平台：共性能力下沉并产品化</text>
+          <text x="516" y="70" class="s-muted" font-size="12.5">搭一次，做成产品，供所有团队自助取用</text>
+
+          <g text-anchor="middle">
+            <rect x="516" y="86" width="128" height="30" rx="7" class="s-1" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="580" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 A</text>
+            <rect x="654" y="86" width="128" height="30" rx="7" class="s-1" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="718" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 B</text>
+            <rect x="792" y="86" width="128" height="30" rx="7" class="s-1" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="856" y="106" class="s-ink" font-size="13.5" font-weight="650">团队 C</text>
+
+            <rect x="516" y="122" width="128" height="58" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="654" y="122" width="128" height="58" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <rect x="792" y="122" width="128" height="58" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="580" y="146" class="s-ink" font-size="12.5">产品代码</text>
+            <text x="718" y="146" class="s-ink" font-size="12.5">产品代码</text>
+            <text x="856" y="146" class="s-ink" font-size="12.5">产品代码</text>
+            <text x="580" y="168" class="s-muted" font-size="12">领域知识</text>
+            <text x="718" y="168" class="s-muted" font-size="12">领域知识</text>
+            <text x="856" y="168" class="s-muted" font-size="12">领域知识</text>
+          </g>
+
+          <path d="M580 182 L580 212" class="s-1" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#ah-310-1)"/>
+          <path d="M718 182 L718 212" class="s-1" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#ah-310-1)"/>
+          <path d="M856 182 L856 212" class="s-1" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#ah-310-1)"/>
+          <text x="612" y="203" class="s-muted" font-size="12">自助取用</text>
+
+          <rect x="516" y="218" width="404" height="98" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="718" y="248" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">内部开发者平台 IDP</text>
+          <text x="718" y="272" class="s-muted" font-size="12.5" text-anchor="middle">流水线模板 · 环境自助 · 可观测性默认接入 · 合规基线内建</text>
+          <text x="718" y="300" class="f-1" font-size="12.5" font-weight="650" text-anchor="middle">黄金路径：默认好走的那条路，不是唯一允许的路</text>
+
+          <text x="516" y="320" class="s-ink" font-size="13" font-weight="650">认知负荷</text>
+          <rect x="516" y="330" width="404" height="16" rx="8" class="s-stroke" stroke-width="1.2" fill="var(--dia-fill-2)"/>
+          <rect x="516" y="330" width="146" height="16" rx="8" class="f-1"/>
+          <text x="516" y="370" class="f-1" font-size="13" font-weight="700">回落到可承受区间：团队只扛最上面一层</text>
+          <text x="516" y="394" class="s-muted" font-size="12">共性能力由平台集中演进，标准一次拉齐</text>
+          <text x="516" y="418" class="s-muted" font-size="12">所有权不转移：线上出问题，仍是产品团队值班</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-10-1　平台工程要解决的是「层数」，不是「能力」。</strong>
+        这张图要看懂的是两边的差别<strong>不在于谁更会用工具，而在于同一批能力被建了几遍、每个团队要同时扛几层</strong>。
+        右边的关键细节有两个：平台块<strong>没有挡在团队和生产之间</strong>，箭头是团队主动向下取用；
+        产品代码那一层<strong>仍然留在团队手里</strong> —— 平台承接的是地基，不是责任。
+        <span class="muted">认知负荷条的长度为示意，不代表任何实测数据。</span>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-10-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-10-1</div>
+        <h3 class="kp__title">平台工程与内部开发者平台<span class="en">Platform Engineering &amp; Internal Developer Platform</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">平台工程 <span class="en">Platform Engineering</span></span>
+            是指<strong>构建并运营一个内部开发者平台，把交付软件所需的重复性基础能力做成产品，
+            让产品团队自助获取</strong>。它是一种<strong>工程实践</strong>，交付物是一个<strong>被内部团队使用的产品</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">三个缺一不可的要素</th><th>含义</th><th style="width:26%">缺了会变成什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>产品化</strong></td>
+                  <td>有明确的内部用户、有路线图与文档、按用户反馈迭代、对使用体验负责</td>
+                  <td>退化成一堆没人维护的脚本与 Wiki 页面</td>
+                </tr>
+                <tr>
+                  <td><strong>自助</strong></td>
+                  <td>产品团队自己就能取到环境、流水线、监控接入，不需要提工单等人处理</td>
+                  <td>退化成换了名字的工单窗口</td>
+                </tr>
+                <tr>
+                  <td><strong>可选</strong></td>
+                  <td>平台是<strong>默认好走的那条路</strong>，团队有正当理由时可以走别的路</td>
+                  <td>退化成必经审批关卡 —— 见 kp-3-10-3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            平台承载的能力通常是这几类：流水线与构建模板、环境与运行时的按需申请、
+            可观测性的默认接入、安全与合规基线、密钥与权限管理、服务脚手架与文档门户。
+          </p>
+          <div class="src-note">
+            <strong>Platform Engineering</strong> 出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>（v3.6 新增），
+            <strong>不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，因此本节不使用「⭐ 考纲核心」徽章。<br>
+            <strong>内部开发者平台 <span class="en">Internal Developer Platform / IDP</span></strong> 与
+            <strong>黄金路径 <span class="en">golden path</span></strong> 是业界通行的说法，
+            <strong>官方文件未使用这两个词</strong>，本站作为<strong>教学补充</strong>引入，用于把「平台」这个抽象名词说清楚。
+            <strong>本站判断</strong>考试不会要求按这两个名称作答（官方未公布 v3.6 样题，此为推断，非官方口径）；
+            作答时把答案落回官方措辞「内部平台 / 自助能力」更稳妥。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点非常具体：<strong>同一件基础工作，在一个组织内部被独立做了 N 遍，而且每一遍都不太一样。</strong>
+          </p>
+          <ul>
+            <li>设想一家零售公司有 9 个产品团队，全面推行「你构建，你运维」。
+              两年后盘点发现：<strong>14 套互不兼容的部署脚本</strong>、4 种日志格式、3 套告警规则命名法。
+              没有一套是错的，但没有任何两套是一样的。</li>
+            <li>后果一是<strong>新人成本</strong>：一名工程师换团队，等于重新学一遍上线方式，
+              从入职到第一次独立上线平均 18 天，其中 15 天花在「这个团队怎么发版」上。</li>
+            <li>后果二是<strong>合规成本</strong>：每次安全审计要逐个团队核对镜像扫描是否启用，
+              9 个团队核 9 遍，每次两周。半年后又漂移回去。</li>
+            <li>后果三是<strong>改进无法复用</strong>：团队 A 花三周做出的零停机部署方案，
+              其他 8 个团队要么不知道，要么各自再花三周做一遍。</li>
+          </ul>
+          <p>
+            平台工程的机制是把这些能力<strong>抽出来做一次、做成产品、让别人自助用</strong>：
+            合规基线内建在模板里，审计从「核对 9 遍」变成「看平台一处」；
+            零停机部署做进平台，9 个团队同时拿到。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，团队数与天数用于说明机制，非真实调研数据。
+            文中「你构建，你运维」<span class="en">You build it, you run it</span> 为业界实践表述
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，
+            <strong>不在 DOFD v3.4 考纲术语表与课程大纲子项内</strong>，完整说明见 kp-3-10-2 ①。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">平台工程</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DevOps 工具链 <span class="en">DevOps toolchain</span></strong><br><small class="muted">见 <a href="../ch06-automation/index.html">第 6 章 工具链架构（6.5）</a></small></td>
+                  <td>回答<strong>「谁把这些工具组装成一个可自助使用的产品，并对使用体验负责」</strong></td>
+                  <td>回答<strong>「链条上需要哪几类工具」</strong> —— 是能力清单，不指定由谁运营</td>
+                </tr>
+                <tr>
+                  <td><strong>基础设施即代码 <span class="en">IaC</span></strong><br><small class="muted">见 <a href="../ch06-automation/index.html">第 6 章 基础设施即代码（6.3）</a></small></td>
+                  <td>是<strong>组织与产品层面</strong>的实践：把能力打包给别人自助用</td>
+                  <td>是<strong>技术手段</strong>：用代码定义基础设施。平台通常大量使用 IaC，但用了 IaC ≠ 做了平台工程</td>
+                </tr>
+                <tr>
+                  <td><strong>持续交付 <span class="en">Continuous delivery</span></strong><br><small class="muted">见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></small></td>
+                  <td>是<strong>能力的提供方式</strong>：让每个团队都更容易具备这种能力</td>
+                  <td>是<strong>能力本身</strong>：任何版本都能按需一键部署到生产</td>
+                </tr>
+                <tr>
+                  <td><strong>共享服务 / 中间件团队</strong><br><small class="muted">传统形态</small></td>
+                  <td>用户可以<strong>不用</strong>；成功指标是<strong>自愿采用率</strong></td>
+                  <td>用户<strong>必须用</strong>且通常要排队；成功指标是<strong>工单处理量与 SLA</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把「上了一套工具」当成「做了平台工程」</strong>。
+            判据不在工具清单，而在三件事 —— 有没有做成产品、能不能自助、是不是可选。
+            三者缺一，剩下的只是换了包装的工单系统。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以对照表形式给出这些区分；表中
+            <em>DevOps toolchain</em> 与 <em>Continuous delivery</em> 本身是 DOFD v3.4 官方术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把平台当产品做，具体是这几个动作：</p>
+          <ul>
+            <li><strong>先做用户访谈，不先选工具</strong>：找 3 个产品团队，问「上一次上线卡在哪一步、等了多久」。
+              第一条黄金路径应该覆盖出现频率最高的那条路，通常是「从空仓库到生产环境跑起来」。</li>
+            <li><strong>定采用率指标，而不是工单量指标</strong>：看有多少服务自愿跑在平台上、
+              新服务从创建到首次上线要多久。工单量上升在平台里是<strong>坏消息</strong>，说明自助没做通。</li>
+            <li><strong>把合规做成默认值而不是检查项</strong>：镜像扫描、密钥托管、审计日志接入
+              直接内建在模板里。团队什么都不做就是合规的，这是平台最有说服力的卖点。</li>
+            <li><strong>留出逃生口</strong>：明确写清「有特殊需求可以不走平台」的条件与代价（自己负责运维与合规举证）。
+              没有逃生口的平台，半年内一定会变成闸门。</li>
+            <li><strong>不接管值班</strong>：平台负责平台自身的可用性，业务服务的线上责任仍在产品团队。
+              一旦平台团队开始替产品团队值班，「你构建，你运维」就被撤销了。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地动作为<strong>本站教学整理</strong>，官方学习目标只提出平台工程这一主题，未规定实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：问平台工程是什么 / 目的是什么。
+              正确方向是<strong>把重复的基础能力产品化，供产品团队自助获取，降低认知负荷</strong>；
+              干扰项常写成「<strong>集中管控所有部署</strong>」「<strong>统一审批变更</strong>」「<strong>由专职团队代替开发团队运维</strong>」。</li>
+            <li><strong>排除技巧</strong>：见到<strong>「强制」「统一审批」「集中控制」「代替产品团队运维」</strong>字样的选项，
+              基本可以先划掉 —— 这几个词描述的是<strong>它的反面</strong>。</li>
+            <li><strong>版本题</strong>：可能问哪些主题属于现行版本的新增内容。
+              平台工程与<strong>价值流管理 VSM</strong>、<strong>监控与可观测性</strong>、
+              <strong>AIOps</strong>、<strong>生成式 AI 用例</strong>同属 v3.6 增量
+              （见 <a href="3.9-vsm.html">3.9 价值流管理</a>、<a href="3.8-observability.html">3.8 监控与可观测性</a>、
+              <a href="../ch06-automation/index.html">第 6 章 VSM 平台与生成式 AI 用例（6.6）</a>、
+              <a href="../ch07-metrics/index.html">第 7 章 AIOps（7.6）</a>）。</li>
+            <li><strong>成功因素题的陷阱</strong>：若题干问的是 DevOps 的<strong>关键成功因素</strong>，
+              答案方向是<strong>管理层对文化变革的承诺</strong> —— 这一条<strong>由 DOFD v3.4 官方样题答案键确认</strong>。
+              不要因为本节在讲平台，就去选「建设一个内部平台」「引入某类工具」这类技术选项。</li>
+          </ul>
+          <p class="mb-0 muted"><small><strong>本 face 的命题角度、正确方向与干扰项长相均为本站基于 v3.6 学习目标所作的推断，
+            官方未公布 v3.6 样题</strong>；题型与 Bloom 层级的对应亦为本站教学推断，官方仅公布整体范围为 Bloom 1–2。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">把地基做成产品，摆在货架上让人自己拿 —— 拿不拿，由用的人决定。</p>
+          <p class="mb-0 muted"><small>三要素连读：<strong>产品化 · 自助 · 可选</strong>。缺产品化是脚本堆，缺自助是工单窗口，缺可选是审批关卡。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-10-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-10-2</div>
+        <h3 class="kp__title">认知负荷：平台工程是对什么的回应<span class="en">Cognitive load &amp; the rise of platform teams</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            平台工程是对一个<strong>副作用</strong>的回应：
+            「<strong>你构建，你运维</strong>」把运行时责任交还给产品团队之后，
+            随着云、容器、微服务、可观测性、安全合规逐层叠加，
+            <strong>单个团队需要同时掌握的技术面超出了可承受范围</strong>。
+          </p>
+          <p class="muted"><small>「你构建，你运维」<span class="en">You build it, you run it</span> 出自业界实践表述
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，
+            <strong>不在 DOFD v3.4 考纲术语表与 v3.4 课程大纲子项内</strong>，本站借它说明责任归属；<strong>本站判断</strong>考试不会以此措辞设问（官方未公布 v3.6 样题，此为推断）。</small></p>
+          <p>
+            这个「超出范围」有个通行说法叫<strong>认知负荷 <span class="en">cognitive load</span></strong>：
+            一个团队能同时握住的系统与技术域数量是有限的，超过之后，
+            表现不是「学得慢」，而是<strong>交付变慢、故障恢复变慢、人员流动时知识断层</strong>。
+          </p>
+          <p>
+            两条曲线同时走到了交点：<strong>单团队要扛的层数在涨</strong>，
+            而<strong>组织里团队的数量也在涨</strong> —— 于是同一层能力被重复建设 N 遍。
+            平台工程同时按住这两条。
+          </p>
+          <p class="mb-0 muted"><small>「平台工程这一提法在 2022 年之后明显升温」是<strong>本站对行业时间线的教学整理</strong>，
+            <strong>官方文件未给出这一因果叙述</strong>。</small></p>
+          <div class="src-note">
+            <strong>「认知负荷」这一概念在团队设计语境下的系统化表述，出自 <em>Team Topologies</em>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span></strong>，
+            <strong>它不在 DOFD v3.4 的 66 条考纲术语表内，也不在 v3.4 课程大纲的模块子项内</strong>，属延伸补充。
+            本站仅借它解释平台工程的成因，<strong>Team Topologies 的团队类型划分不在考纲范围内</strong>。
+            团队结构与组织设计本身归<a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            没有这层解释，组织会把认知负荷问题<strong>误诊成人的问题</strong>，然后往错的方向花钱。
+          </p>
+          <ul>
+            <li>设想一个 6 人产品团队，负责 3 个微服务。清单摊开是：业务代码、
+              流水线、容器与编排配置、日志与指标接入、告警规则、密钥轮换、
+              依赖漏洞修复、成本优化、以及 7×24 值班。<strong>9 类事，6 个人。</strong></li>
+            <li>可观察到的症状：值班的人永远在处理和业务无关的基础设施告警；
+              新需求排期时，一半容量被「平台性杂事」占掉；
+              懂编排配置的只有 1 个人，他休假那周没人敢发版。</li>
+            <li>管理层看到的却是「这个团队交付慢」。<strong>典型的错误处方是加人和培训</strong> ——
+              加人让需要同步的人更多，培训解决不了「9 类事本来就超载」这个结构问题。</li>
+          </ul>
+          <p>
+            机制上，重复建设的成本是<strong>乘法</strong>：<strong>N 个团队 × M 层能力 = N×M 份长期维护</strong>。
+            把 M 层里的共性部分抽出来做一次，成本从 N×M 降到 N×1 + M，
+            这是平台工程唯一的经济学依据 —— <strong>组织里团队越多，它越划算；只有两三个团队时，它通常不划算。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，人数与事项数用于说明机制，非真实调研数据；
+            N×M 的算法是本站为说明规模效应所作的简化，不是官方模型。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">现象</th><th style="width:38%">认知负荷问题</th><th>被误认成的问题</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>团队交付变慢</strong></td>
+                  <td><strong>结构问题</strong>：要同时掌握的技术域太多，注意力被切碎</td>
+                  <td>「<strong>能力不足</strong>」—— 处方是培训。培训完还是 9 类事，症状不变</td>
+                </tr>
+                <tr>
+                  <td><strong>没人能顶上</strong></td>
+                  <td><strong>广度问题</strong>：每层都只有一个人略懂，深度都不够</td>
+                  <td>「<strong>人手不足</strong>」—— 处方是加人。加人后同步成本上升，可能更慢</td>
+                </tr>
+                <tr>
+                  <td><strong>基础设施杂事吃掉容量</strong></td>
+                  <td>共性能力<strong>没有被下沉</strong>，每个团队自己扛</td>
+                  <td>「<strong>团队不够自律</strong>」—— 处方是加流程，等于再加一层负荷</td>
+                </tr>
+                <tr>
+                  <td><strong>解法方向</strong></td>
+                  <td><strong>把共性层下沉为可自助的产品</strong>，团队仍持有服务所有权</td>
+                  <td>「<strong>把运维收回中央</strong>」—— 责任被拿走，反馈回路被切断，退回职能筒仓</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「减少团队要扛的层数」和「把责任拿走」是两回事</strong>。
+            平台工程只下沉<strong>共性能力</strong>，服务的线上责任、值班、SLO 全部留在产品团队 ——
+            所有权一旦转移，就变成了改名的集中运维。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出诊断对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>认知负荷不好直接测，但有几个可观察的代理信号：</p>
+          <ul>
+            <li><strong>数域，不数人</strong>：列出团队需要独立掌握的技术域（构建、编排、网络、
+              数据库、监控、安全…）。超过 5–6 个域，基本可以判定超载。</li>
+            <li><strong>看值班内容构成</strong>：统计一个季度的告警，属于业务逻辑的占几成、
+              属于基础设施的占几成。后者占多数时，下沉这部分能力的收益最直接。</li>
+            <li><strong>量新人首次上线时间</strong>：从入职到独立把一个改动送上生产要几天。
+              这个数字是平台价值<strong>最好的证明</strong>，也是平台上线后最容易看到变化的指标。</li>
+            <li><strong>先别建平台</strong>：团队数少于 3–4 个时，重复建设的乘法效应还没出现，
+              建平台的固定成本高于收益。此时更该做的是模板与文档共享。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上信号、阈值（5–6 个域、3–4 个团队）与判断动作为<strong>本站教学整理</strong>，
+            官方未规定任何认知负荷的度量方式或阈值。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>目的题（最可能的问法）</strong>：问平台工程为什么出现 / 要解决什么。
+              正确方向是<strong>降低产品团队的认知负荷、消除跨团队重复建设、加快自助交付</strong>。</li>
+            <li><strong>干扰项长相</strong>：「<strong>为了减少运维人员编制</strong>」
+              「<strong>为了降低人力成本</strong>」「<strong>为了让开发不再负责运维</strong>」。
+              前两个把它说成裁员工具，第三个把服务的线上责任从产品团队拿走，
+              与官方术语 <em>DevOps teams</em> 强调的跨职能共担责任相悖。</li>
+            <li><strong>排除技巧</strong>：凡是<strong>把责任从产品团队拿走</strong>的选项一律排除。
+              平台工程改变的是<strong>团队要扛多少层</strong>，不是<strong>谁对服务负责</strong>。</li>
+            <li><strong>不要往 Team Topologies 上答</strong>：团队类型划分不在考纲内。
+              题目问团队结构与角色时，答案方向应落在官方术语
+              <em>DevOps teams</em> / <em>DevOps roles</em> / <em>Organizational considerations</em> 上
+              （见<a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>命题角度为本站基于 v3.6 学习目标所作的推断，官方未公布 v3.6 的样题；
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">不是团队变笨了，是要同时扛的层数变多了 —— 减层，不减责任。</p>
+          <p class="mb-0 muted"><small>经济学一句话：<strong>N 个团队 × M 层能力</strong>。团队越多，把 M 里的共性抽出来做一次越划算。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-10-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-10-3</div>
+        <h3 class="kp__title">平台团队 vs 传统运维部门 vs「DevOps 团队」反模式<span class="en">Platform team vs central ops vs the "DevOps team" anti-pattern</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            组织结构图上，这三者可能<strong>长得一模一样</strong>：都是一个横向团队，
+            服务于所有产品团队，都可能挂着「平台」两个字。区分它们的不是名字，是一条判据：
+          </p>
+          <p>
+            <strong>它提供的是可选的、自助的、产品化的能力，还是必经的审批环节？</strong>
+          </p>
+          <p>
+            前者是平台团队。后者无论叫什么名字，都是把工作从产品团队转移出去、
+            并在价值流中插入一道关卡 —— 这正是「DevOps 团队」被称为反模式的原因。
+          </p>
+          <p class="mb-0 muted"><small>「DevOps 团队反模式」是业界对某类组织形态的批评性提法
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，<strong>不是 DOFD 官方术语</strong>；
+            官方术语表收录的是 <em>DevOps teams</em> 与 <em>DevOps roles</em>，
+            <strong>并未把设立 DevOps 团队本身定性为反模式</strong>。本节用此提法只为区分三种形态。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个辨析存在，是因为<strong>退化几乎总是悄悄发生的</strong>，而且每一步看起来都合理。
+          </p>
+          <ul>
+            <li>设想一家银行的平台团队，第一年做得很好：自助流水线，团队从建仓库到上生产 2 小时，
+              自愿采用率 80%，部署频率从每月 2 次涨到每周 6 次。</li>
+            <li>第 7 个月，一次生产事故后，风控要求「所有发布必须经平台团队审核」。
+              听起来只是加一道保险 —— 平台团队没有反对，因为这看起来是对他们能力的认可。</li>
+            <li>第 9 个月：自助入口还在，但每次发布多了一张审核工单。
+              平台团队 5 个人，要审 9 个团队的所有发布，<strong>平均等待从 0 涨到 6 天</strong>。</li>
+            <li>第 12 个月：部署频率回落到每周 1 次，团队开始攒批量 —— 反正都要等审核，不如一次多发点。
+              <strong>批量变大 → 故障定位更难 → 事故更严重 → 审核更严格</strong>，闭环形成。</li>
+          </ul>
+          <p>
+            这里的机制不需要新理论就能解释：<strong>一个所有工作都必须通过、而产能又低于流入速率的环节，
+            就成了整条价值流的约束</strong> —— 本例中 5 个人审 9 个团队的全部发布，正是这种情况。
+            系统的产出被它单独锁死，平台团队再努力也只是把这个瓶颈榨得更满。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，时间线与数字用于说明退化机制，非真实事件。
+            约束的定义与「产出由约束单独决定」的结论见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 400" role="img" aria-label="对照图：同一层组织，作为可选自助平台与作为必经审批闸门时的两种相反结果">
+              <defs>
+                <marker id="ah-310-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-310-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <rect x="16" y="16" width="452" height="368" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+              <rect x="492" y="16" width="452" height="368" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+
+              <!-- 左：自助平台 -->
+              <text x="40" y="48" class="f-1" font-size="17" font-weight="700">形态一 · 自助平台</text>
+              <text x="40" y="70" class="s-muted" font-size="13">可选 · 自助 · 产品化</text>
+
+              <rect x="40" y="92" width="140" height="54" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="110" y="125" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">产品团队</text>
+              <rect x="300" y="92" width="140" height="54" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="370" y="125" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">生产环境</text>
+
+              <path d="M184 119 L294 119" class="s-1" stroke-width="2.5" fill="none" marker-end="url(#ah-310-2)"/>
+              <text x="239" y="107" class="f-1" font-size="13" font-weight="650" text-anchor="middle">自助上线</text>
+
+              <rect x="80" y="212" width="320" height="76" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="240" y="242" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">内部开发者平台</text>
+              <text x="240" y="266" class="s-muted" font-size="12.5" text-anchor="middle">黄金路径 · 模板 · 自助环境</text>
+
+              <path d="M108 150 L128 206" class="s-1" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#ah-310-2)"/>
+              <path d="M362 206 L376 152" class="s-1" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#ah-310-2)"/>
+              <text x="240" y="186" class="s-muted" font-size="12" text-anchor="middle">用它更快；不用它也能上线</text>
+
+              <text x="40" y="322" class="f-1" font-size="13.5" font-weight="700">结果：没有新增排队，前置时间下降</text>
+              <text x="40" y="346" class="s-muted" font-size="12">平台团队的成绩单是「被自愿采用的比例」</text>
+              <text x="40" y="368" class="s-muted" font-size="12">线上责任仍在产品团队，反馈回路完整</text>
+
+              <!-- 右：必经闸门 -->
+              <text x="516" y="48" class="f-2" font-size="17" font-weight="700">形态二 · 必经闸门（反模式）</text>
+              <text x="516" y="70" class="s-muted" font-size="13">强制 · 排队 · 审批</text>
+
+              <rect x="512" y="92" width="118" height="54" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="571" y="125" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">产品团队</text>
+
+              <rect x="660" y="86" width="116" height="66" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="718" y="114" class="s-ink" font-size="14.5" font-weight="700" text-anchor="middle">平台闸门</text>
+              <text x="718" y="136" class="s-muted" font-size="12" text-anchor="middle">工单 / 审批</text>
+
+              <rect x="806" y="92" width="118" height="54" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="865" y="125" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">生产环境</text>
+
+              <path d="M634 119 L654 119" class="s-2" stroke-width="2.5" fill="none" marker-end="url(#ah-310-3)"/>
+              <path d="M780 119 L800 119" class="s-2" stroke-width="2.5" fill="none" marker-end="url(#ah-310-3)"/>
+
+              <rect x="674" y="172" width="16" height="30" rx="3" class="s-2" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <rect x="700" y="172" width="16" height="30" rx="3" class="s-2" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <rect x="726" y="172" width="16" height="30" rx="3" class="s-2" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="718" y="224" class="f-2" font-size="12.5" font-weight="650" text-anchor="middle">在闸门前排队的变更</text>
+              <text x="718" y="250" class="s-muted" font-size="12" text-anchor="middle">每个团队都必须经过，无法绕开</text>
+              <text x="718" y="274" class="s-muted" font-size="12" text-anchor="middle">等待越久，团队越倾向攒大批量</text>
+
+              <text x="516" y="322" class="f-2" font-size="13.5" font-weight="700">结果：平台自己退化成新的约束</text>
+              <text x="516" y="346" class="s-muted" font-size="12">整条价值流的产出被这一环单独锁死</text>
+              <text x="516" y="368" class="s-muted" font-size="12">同一层组织，分水岭在这一条：可选，还是必经</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-10-2　同一层组织的两种命运。</strong>
+            两边的方框数量、汇报关系、团队名称都可以完全相同，
+            差别只在<strong>那条从产品团队到生产的路径上，平台是不是站在中间</strong>。
+            左边平台在<strong>旁边</strong>，是一条更好走的路；右边平台在<strong>路上</strong>，成了必须排队通过的关口。
+            右边的排队方块是关键：一旦所有变更都必须经过一个<strong>产能跟不上流入速率</strong>的环节，
+            这个环节就成了<strong>约束</strong>，整体产出由它单独决定 ——
+            平台团队越努力，也只是把这个瓶颈榨得更满。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead>
+                <tr>
+                  <th style="width:19%">判据</th>
+                  <th style="width:27%">平台团队</th>
+                  <th style="width:27%">传统运维部门</th>
+                  <th>「DevOps 团队」反模式</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>是否必经</strong></td>
+                  <td><strong>可选</strong>：不用平台也能上线，只是要自己扛</td>
+                  <td><strong>必经</strong>：上生产只有这一条路</td>
+                  <td><strong>必经</strong>：所有部署与环境请求都要过它</td>
+                </tr>
+                <tr>
+                  <td><strong>交互方式</strong></td>
+                  <td><strong>自助</strong>：API、模板、门户，随时可取</td>
+                  <td><strong>工单</strong>：提申请，排队，等人处理</td>
+                  <td><strong>工单</strong>：换了名字的申请单</td>
+                </tr>
+                <tr>
+                  <td><strong>线上责任在谁</strong></td>
+                  <td><strong>产品团队</strong>：自己值班，平台只保平台自身</td>
+                  <td><strong>运维部门</strong>：开发交付后责任转移</td>
+                  <td><strong>它自己</strong>：替所有团队做部署与救火</td>
+                </tr>
+                <tr>
+                  <td><strong>成功指标</strong></td>
+                  <td><strong>自愿采用率</strong>、新服务上线耗时</td>
+                  <td>工单量、SLA 达成率、<strong>变更失败率</strong>（官方术语 <em>Change failure rate</em>）</td>
+                  <td>处理了多少发布请求 —— 越忙越像在证明价值</td>
+                </tr>
+                <tr>
+                  <td><strong>对流动的影响</strong></td>
+                  <td>缩短前置时间，<strong>不增加排队</strong></td>
+                  <td>制造交接与等待，是经典的职能筒仓</td>
+                  <td>制造<strong>新的排队</strong>，并把 Dev 与 Ops 的墙挪了个位置</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>三者的名字和组织结构图完全区分不了它们</strong>。
+            很多「平台团队」实质是第三列。唯一可靠的检验是问产品团队一句话：
+            <strong>「你能不走平台把这个改动送上生产吗？」</strong>
+            回答「不能」，那它就是闸门，不管它叫什么。</small></p>
+          <p class="mb-0 muted"><small><em>DevOps teams</em> 与 <em>DevOps roles</em> 是 DOFD v3.4 官方术语表条目；
+            本三列对照表为<strong>本站教学整理</strong>，官方未以此形式给出对比。团队结构与组织设计的完整讨论归
+            <a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>给任何自称平台团队的组织做体检，问这四个问题：</p>
+          <ul>
+            <li><strong>能绕过吗？</strong>找一个产品团队，问上生产是否存在不经平台的合法路径。
+              没有逃生口 = 闸门。</li>
+            <li><strong>成绩单是什么？</strong>看平台团队的季度汇报。写「处理了 1200 张工单」是闸门，
+              写「85% 的服务自愿跑在平台上、新服务首次上线中位数 3 小时」是平台。</li>
+            <li><strong>需求由谁排优先级？</strong>平台的路线图由内部用户的反馈驱动，还是由上级的管控要求驱动。
+              后者会持续把平台推向闸门。</li>
+            <li><strong>凌晨三点谁接电话？</strong>业务服务出故障时值班的若是平台团队，
+              说明所有权已经转移，「你构建，你运维」名存实亡。</li>
+          </ul>
+          <p>
+            已经退化成闸门时，正确动作不是取消审核，而是<strong>把审核内容变成自动化的策略检查内建到平台里</strong> ——
+            合规要求仍然满足，但不再需要人排队。这条思路与
+            <a href="3.1-continuous-testing.html">3.1 持续测试</a> 的左移、以及 <a href="3.5-devsecops.html">3.5 DevSecOps</a> 把安全并入流水线是同一个套路。
+          </p>
+          <p class="mb-0 muted"><small>四个体检问题为<strong>本站教学整理</strong>，官方未给出任何平台团队的评估方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>反模式识别题</strong>：题干描述「设立一个专门团队，负责所有团队的部署与环境」，
+              问这样做的问题。正确方向是<strong>它制造了新的交接与排队，把 Dev 与 Ops 之间的墙换了个位置</strong>，
+              而不是消除了墙。</li>
+            <li><strong>干扰项长相</strong>：<strong>「设立专职 DevOps 团队集中负责发布」</strong>
+              会被写成看似正面的选项 —— 它有「DevOps」三个字，容易被当成正确答案。
+              <strong>排除技巧</strong>：凡是<strong>把部署责任从产品团队集中收走、并因此新增交接与排队</strong>的选项，
+              通常与 DevOps 消除交接的方向相反 —— 但这是<strong>本站的排除思路</strong>，
+              官方未把「DevOps 团队」列为反模式，不要当成铁律。</li>
+            <li><strong>接到约束理论的考法</strong>：题干若描述某个环节所有变更都必须经过、前面排着长队，
+              问应优先关注什么。答案方向是<strong>识别并消除这个约束</strong>，
+              而<strong>约束理论支持三步工作法中的第一步 —— 这一归属由 DOFD v3.4 官方样题答案键确认</strong>，
+              不要误选成第二步或第三步（见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>）。</li>
+            <li><strong>组织类题的兜底方向</strong>：问「什么才是 DevOps 转型的关键成功因素」时，
+              答案方向是<strong>管理层对文化变革的承诺</strong>，<strong>由 DOFD v3.4 官方样题答案键确认</strong>；
+              「成立一个新团队」「上一套平台」都不是。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            「反模式识别题」的具体设问形式为本站推断，官方未公布 v3.6 样题。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">可选的叫平台，必经的叫闸门 —— 名字一样，结果相反。</p>
+          <p class="mb-0 muted"><small>一句检验：<strong>「能不能不走它？」</strong>答不能，它就是新的约束，
+            无论组织结构图上写的是什么。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>平台工程 = <strong>构建并运营内部开发者平台，把重复的基础能力产品化，供产品团队自助获取</strong></li>
+        <li>三要素：<strong>产品化 · 自助 · 可选</strong>。缺产品化是脚本堆，缺自助是工单窗口，<strong>缺可选是审批关卡</strong></li>
+        <li>成因：「你构建，你运维」推到极致后<strong>认知负荷超载</strong> + <strong>N 个团队重复造 M 层轮子</strong></li>
+        <li>最锋利的一条判据：<strong>可选的自助能力，还是必经的审批环节</strong>（三要素中最先失守的一条）
+          —— 一旦必经<strong>且产能跟不上</strong>，平台就退化成新的约束</li>
+        <li><strong>约束理论支持第一步（流动），由 DOFD v3.4 官方样题答案键确认</strong>；闸门造成的是流动问题</li>
+        <li>干扰项关键词：<strong>强制 · 统一审批 · 集中管控 · 代替产品团队运维 · 减少运维编制</strong> —— 见到先划掉</li>
+        <li><strong>Platform Engineering 是 v3.6 新增，不在 v3.4 的 66 条术语表内</strong>；IDP、黄金路径、「你构建，你运维」、「DevOps 团队反模式」这一提法、Team Topologies 均为本站教学补充 / 非考纲</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Platform Engineering</em> 列于
+      <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>（v3.6 新增内容，与
+      Monitoring and Observability、Value Stream Management、AIOps、Generative AI Use Cases 同属增量）；
+      <strong>它不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，故本节未使用「⭐ 考纲核心」徽章。
+      v3.4 Examination Requirements（2022-05）中模块 3「Key DevOps Practices」最多 7 题，仍是目前唯一公开的权重依据，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      <em>DevOps teams</em>、<em>DevOps roles</em>、<em>Constraint</em>、<em>Theory of Constraints</em>、
+      <em>DevOps toolchain</em>、<em>Continuous delivery</em> 为 v3.4 官方术语表条目。<br>
+      <strong>「约束理论支持三步工作法中的第一步」与「DevOps 的关键成功因素是管理层对文化变革的承诺」两条，
+      由 DOFD v3.4 官方样题答案键确认</strong> —— 本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      <strong>教学补充与非考纲内容</strong>：内部开发者平台 IDP、黄金路径 golden path、
+      「你构建，你运维」<span class="en">You build it, you run it</span>、
+      「DevOps 团队反模式」这一批评性提法、认知负荷的团队设计表述
+      （<em>Team Topologies</em>，不在 DOFD 考纲术语表与模块子项内）、「2022 年之后升温」的时间线叙述、
+      三列组织形态对照表、四个体检问题、各项度量信号与阈值，均为本站教学整理或延伸补充，已在对应位置就地标注。
+      本节涉及 v3.6 主题的命题角度、正确方向与干扰项长相均为本站推断，<strong>官方未公布 v3.6 样题</strong>。
+      本节所有案例数字为构造的教学示例，非真实调研数据；本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

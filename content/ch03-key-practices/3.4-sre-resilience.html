@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.4 SRE 与韧性工程 · DevOps Foundation 学习站</title>
+<meta name="description" content="SRE（Site Reliability Engineering）用软件工程的方法解决运维问题；韧性工程（Resilience engineering）承认故障必然发生，追求快速恢复与优雅降级。本节讲清两者的关系、与可靠性工程的根本差别，以及 SPOF 的识别与 MTTR 为何优于 MTBF。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.4-sre-resilience"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.4 SRE 与韧性工程</h1>
+      <div class="page-head__en">Site Reliability &amp; Resilience Engineering</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这一节有<strong>四个官方考纲术语</strong>（SRE、Resilience engineering、SPOF、MTTR）和一个巨大的坑。
+        <strong>SRE 是把运维当软件问题来解决</strong>；
+        <strong>韧性工程承认故障必然发生</strong>，目标从「不出事」改成「出事也能很快回来」。
+      </p>
+      <p class="page-head__lede">
+        坑在于：韧性工程听起来像「更强的可靠性工程」，实际上两者对故障的基本假设正好相反 ——
+        一个赌故障不会发生，一个赌故障一定发生。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>SRE 到底是什么，它和 DevOps 是谁包含谁的关系</li>
+        <li>韧性工程与可靠性工程差在哪一句话上 —— 本节最容易错的地方</li>
+        <li>SPOF 怎么逐条清点出来，为什么现代系统把目标定在 MTTR 而不是 MTBF</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 940 610" role="img" aria-label="两种可靠性范式下，同样一笔预算的投向对比：追求不出故障 vs 承认故障必然发生">
+
+          <text x="470" y="22" class="s-muted" font-size="13" text-anchor="middle">同样 100 单位的可靠性预算，两种范式会投到完全不同的地方</text>
+
+          <!-- 左：范式 A -->
+          <rect x="40" y="40" width="410" height="76" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="60" y="72" class="s-ink" font-size="16" font-weight="700">范式 A · 追求「不出故障」</text>
+          <text x="60" y="98" class="s-muted" font-size="13">假设故障可以被预防，目标是把 MTBF 拉长</text>
+
+          <!-- 右：范式 B -->
+          <rect x="490" y="40" width="410" height="76" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="510" y="72" class="s-ink" font-size="16" font-weight="700">范式 B · 承认「故障必然发生」</text>
+          <text x="510" y="98" class="s-muted" font-size="13">假设故障无法穷举，目标是把 MTTR 压短</text>
+
+          <!-- 左侧条目 -->
+          <g class="s-ink" font-size="13">
+            <text x="40" y="160">冗余硬件与备用容量　35</text>
+            <text x="40" y="216">上线前评审与多级审批　25</text>
+            <text x="40" y="272">集中发布窗口与变更冻结　20</text>
+            <text x="40" y="328">合规文档与流程留痕　15</text>
+            <text x="40" y="384">故障演练与恢复自动化　5</text>
+          </g>
+          <g class="f-4">
+            <rect x="40" y="168" width="210" height="18" rx="4"/>
+            <rect x="40" y="224" width="150" height="18" rx="4"/>
+            <rect x="40" y="280" width="120" height="18" rx="4"/>
+            <rect x="40" y="336" width="90" height="18" rx="4"/>
+            <rect x="40" y="392" width="30" height="18" rx="4"/>
+          </g>
+
+          <!-- 右侧条目 -->
+          <g class="s-ink" font-size="13">
+            <text x="490" y="160">自动化部署与一键回滚　25</text>
+            <text x="490" y="216">遥测、告警与故障定位　25</text>
+            <text x="490" y="272">优雅降级与故障隔离　20</text>
+            <text x="490" y="328">故障演练与无指责复盘　20</text>
+            <text x="490" y="384">冗余硬件与备用容量　10</text>
+          </g>
+          <g class="f-1">
+            <rect x="490" y="168" width="150" height="18" rx="4"/>
+            <rect x="490" y="224" width="150" height="18" rx="4"/>
+            <rect x="490" y="280" width="120" height="18" rx="4"/>
+            <rect x="490" y="336" width="120" height="18" rx="4"/>
+            <rect x="490" y="392" width="60" height="18" rx="4"/>
+          </g>
+
+          <!-- 结果框 -->
+          <rect x="40" y="440" width="410" height="110" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="58" y="470" class="f-4" font-size="14" font-weight="700">结果</text>
+          <g class="s-muted" font-size="13">
+            <text x="58" y="494">故障照样发生 —— 没被设想到的组合永远存在。</text>
+            <text x="58" y="516">恢复流程从没真跑过，首次真故障平均 4 小时收敛。</text>
+            <text x="58" y="538">变更被压成大批量，出事时更难定位。</text>
+          </g>
+
+          <rect x="490" y="440" width="410" height="110" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="508" y="470" class="f-1" font-size="14" font-weight="700">结果</text>
+          <g class="s-muted" font-size="13">
+            <text x="508" y="494">故障次数未必下降，单次影响从小时级降到分钟级。</text>
+            <text x="508" y="516">多数依赖失效被降级挡住，用户只看到功能变少。</text>
+            <text x="508" y="538">回滚每周真跑一次，恢复不依赖某个人在线。</text>
+          </g>
+
+          <text x="470" y="582" class="s-muted" font-size="12" text-anchor="middle">预算比例为本站构造的教学示例，用于说明投向差异，不是调研数据</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-4-1　两种范式下，同一笔钱去了哪里。</strong>
+        这张图要看懂的不是数字，而是<strong>假设决定支出</strong>：
+        只要相信「故障可以被预防」，钱就会自动流向冗余、评审与审批，而演练永远排在最后一格；
+        一旦承认「故障必然发生」，预算的重心就转移到<strong>发现、降级、回滚与演练</strong>上。
+        两边的故障次数可能差不多，差别全部体现在<strong>每次故障持续多久、波及多少用户</strong>。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-4-1</div>
+        <h3 class="kp__title">SRE：用软件工程的方法解决运维问题<span class="en">Site Reliability Engineering</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">站点可靠性工程 <span class="en">Site Reliability Engineering / SRE</span></span>
+            是<strong>用软件工程的方法去解决运维问题</strong>的一套实践：
+            把过去靠人工操作、值班排班和流程文档承担的可靠性责任，改由代码、自动化与工程实践承担。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">它的三个基本主张</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>运维是软件问题</strong></td><td>凡是重复的人工操作，都当作<strong>待修的缺陷</strong>，用程序消灭掉，而不是排更多人去覆盖</td></tr>
+                <tr><td><strong>可靠性是可工程化的特性</strong></td><td>可靠性和功能一样进待办、有优先级、有取舍，不是「有空再做的运维杂活」</td></tr>
+                <tr><td><strong>人力增长与规模脱钩</strong></td><td>服务数量翻十倍，值班人数不该跟着翻十倍。做不到，就说明自动化欠账</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Site Reliability Engineering</strong> 逐字列在 DOFD v3.4 官方考纲术语表中；
+            v3.6 的现行学习目标进一步把 SRE 显式放进框架层（来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一个非常具体的死循环：<strong>系统越大，运维人越多；运维人越多，越没人有时间做改进。</strong>
+          </p>
+          <ul>
+            <li>设想一个支付平台：服务数从 8 个涨到 60 个，值班运维从 6 人扩到 22 人，
+              仍然每周有 3 次半夜人工介入。每次介入都是照着 Wiki 上的手册敲命令 ——
+              而<strong>手册和现实差了两个版本</strong>，第一件事往往是先花 20 分钟确认哪一步已经不适用。</li>
+            <li>更糟的是时间去向：22 个人的工时几乎全部被值班、扩容申请、手工发布和事故复盘会占满，
+              <strong>没有任何一个人有整段时间去消灭这些工作本身</strong>。加人只是把同样的手工操作分摊给更多人。</li>
+          </ul>
+          <p>
+            SRE 的切入点就在这里：把「每周三次半夜执行的那条命令」从排班表里拿出来，变成一段代码或一个自愈动作。
+            工作量不是被分摊，是被<strong>删除</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">对比对象</th><th style="width:40%">SRE</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DevOps</strong></td>
+                  <td>是一种<strong>具体实现方式</strong>：给出可执行的做法（自动化重复操作、可靠性进待办、值班与复盘制度）</td>
+                  <td>是<strong>更大的文化与原则集合</strong>：说明要达成什么（流动、反馈、持续改进），不规定具体职位与做法</td>
+                </tr>
+                <tr>
+                  <td><strong>传统运维 <span class="en">Ops</span></strong></td>
+                  <td>用<strong>写软件</strong>的方式承担可靠性：脚本、自愈、平台化</td>
+                  <td>用<strong>人工与流程</strong>承担可靠性：手册、审批、排班、窗口期</td>
+                </tr>
+                <tr>
+                  <td><strong>韧性工程 <span class="en">Resilience engineering</span></strong><br><small class="muted">见 kp-3-4-2</small></td>
+                  <td>是一套<strong>组织与工作方式</strong>：谁来做、怎么做、工作怎么被消灭</td>
+                  <td>是一种<strong>设计与组织取向</strong>：系统<strong>与团队</strong>在故障中如何表现（吸收、降级、恢复，以及人怎么应对）</td>
+                </tr>
+                <tr>
+                  <td><strong>DevSecOps</strong><br><small class="muted">见 <a href="3.5-devsecops.html">3.5 DevSecOps</a></small></td>
+                  <td>关注<strong>可靠性</strong>被工程化</td>
+                  <td>关注<strong>安全</strong>被并入左移测试。两者结构相似，考点位置不同</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>SRE 不是 DevOps 的竞争者，也不是它的上位概念</strong>。
+            DevOps 说「要达成什么」，SRE 给出「一套具体怎么做」。
+            所以一个组织可以说自己在做 DevOps 而没有 SRE 岗位，但很难说自己在做 SRE 却不认同 DevOps 的方向。</small></p>
+          <div class="src-note">
+            「SRE 可以看作 DevOps 的一种具体实现方式」这一定位是<strong>本站的教学整理</strong>。
+            官方考纲把 <em>Site Reliability Engineering</em> 与 <em>DevOps</em> 分别列为术语，
+            <strong>未规定两者之间的从属关系</strong>。此处的表述用于建立理解框架，不要当成官方定义去背。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把值班手册变成待办清单</strong>：手册里每一条「人工执行」的步骤，按
+              「每周耗时 × 出错概率」排序，从最上面开始一条条变成脚本或自愈动作。
+              手册条目数应当逐月<strong>减少</strong>，而不是逐月增厚。</li>
+            <li><strong>可靠性工作进同一个待办池</strong>：和功能需求排在一起竞争优先级。
+              单独挂一个「技术债 / 稳定性」清单在旁边，等价于永远不做。</li>
+            <li><strong>事后复盘产出修改项，不产出责任人</strong>：每次故障的结论必须是
+              「哪一段代码、哪一个流程、哪一个告警要改」，并有负责人和日期。
+              <span class="term">无指责事后复盘 <span class="en">Blameless postmortem</span></span>
+              这个说法本身不在官方术语表内，但它描述的做法与官方强调的安全文化方向一致（见
+              <a href="../ch04-frameworks/index.html">第 4 章 安全文化（4.5）</a>）。</li>
+            <li><strong>把「只有一个人会做」当缺陷记</strong>：轮值、结对与同行评审的目的之一就是消除人身上的单点，
+              这条与 kp-3-4-3 的 SPOF 是同一件事。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条落地动作为本站教学整理，官方文件只把 <em>Site Reliability Engineering</em> 列为术语，未规定具体实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：直接问 SRE 是什么。
+              正确方向是「<strong>用软件工程的方法解决运维问题</strong>」。
+              干扰项的三种长相：「SRE 是运维团队的新名称」「SRE 是一套监控工具」「SRE 是用来取代 DevOps 的框架」。
+              <strong>排除技巧：凡把 SRE 说成一个职位称谓、一个工具或一个替代 DevOps 的东西，一律划掉</strong> ——
+              它的定义落在<strong>方法</strong>上，不落在人或工具上。</li>
+            <li><strong>归类题</strong>：问「以下哪一项属于 DevOps 相关的实践 / 框架」。
+              v3.6 的现行学习目标已把 SRE 显式列入框架层（来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），据此本站判断含 SRE 的选项方向可保留。
+              <small class="muted">「含 SRE 的选项应当保留」为本站教学推断，官方未公布任何 v3.6 题目构成信息，v3.4 权重表也未重新发布。</small></li>
+            <li><strong>相邻答案不要串</strong>：题干若说的是「把安全测试并入左移测试、消除 Sprint 后的安全评审延迟」，
+              答案是 <strong>DevSecOps</strong> 而不是 SRE —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              判别关键词：谈<strong>安全</strong>就往 DevSecOps 走，谈<strong>可靠性与运维自动化</strong>才往 SRE 走。</li>
+            <li><strong>不在考纲范围内的部分</strong>：SLO / SLI / 错误预算、具体厂商的 SRE 工具、值班轮换的具体制度。
+              <small class="muted">这几项既不在 66 条考纲术语表内，也不在 v3.4 课程大纲子项里；「因此不必花时间背」为本站推断，官方未公布任何题目构成信息。</small></li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">SRE = 让软件工程师去接运维的活，然后用写软件的方式把这些活彻底删掉。</p>
+          <p class="mb-0 muted"><small>一句话关系：<strong>DevOps 是方向，SRE 是其中一条走得很具体的路</strong>（此关系为本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <div class="callout callout--ext">
+      <div class="callout__title">🧭 SLO / SLI / 错误预算 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      <p>
+        工程实践中，SRE 常配一套量化语言：<strong>SLI</strong>（选一个可测的服务指标）、
+        <strong>SLO</strong>（给这个指标定一个目标值）、
+        <strong>错误预算</strong>（100% 减去 SLO 剩下的那一点不可用额度，用完就停下新功能先修稳定性）。
+        它让「可靠性和交付速度怎么取舍」变成一个有数字的谈判，而不是靠嗓门。
+      </p>
+      <p class="mb-0">
+        这三个词<strong>不在考纲范围内</strong>：既不在 DOFD v3.4 的 66 条考纲术语表内，
+        也不在 v3.4 课程大纲的模块子项里，因此<strong>本站将其作为理解用的教学补充</strong>处理。
+        写在这里只是为了让上文「可靠性可以被工程化取舍」这句话有个落点。
+        <small class="muted">「不在考纲范围内因此不需要背、不会作为正确答案出现」为本站推断，官方未公布任何题目构成信息。</small>
+      </p>
+    </div>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-4-2</div>
+        <h3 class="kp__title">韧性工程：承认故障必然发生<span class="en">Resilience Engineering</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">韧性工程 <span class="en">Resilience engineering</span></span>
+            是一种设计取向：<strong>承认故障必然发生</strong>，因此把系统与组织设计成
+            <strong>能吸收冲击、能在受损状态下继续提供有价值的服务、并能快速回到正常</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">三个动作</th><th>具体表现</th></tr></thead>
+              <tbody>
+                <tr><td><strong>吸收</strong></td><td>某个依赖变慢或失效时，故障被隔离在一处，不沿着调用链扩散成整体不可用</td></tr>
+                <tr><td><strong>优雅降级</strong></td><td>核心流程保住，非核心能力自动关掉。用户看到的是「功能变少」，不是「打不开」</td></tr>
+                <tr><td><strong>快速恢复</strong></td><td>恢复路径被自动化并<strong>定期真跑过</strong>；没演练过的恢复流程等于不存在</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Resilience engineering</strong> 逐字列在 DOFD v3.4 官方考纲术语表中。
+            统一译法为「韧性工程」，不译作「弹性工程」。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一个反复出现的失败模式：<strong>把所有钱都投在「不让故障发生」上，故障还是发生了，而且这一次谁都不会处理。</strong>
+          </p>
+          <ul>
+            <li>设想一个在线教育平台，在大促前做了 6 周「可靠性加固」：双活机房、关键组件三重冗余、
+              评审从两级加到四级、上线前变更冻结两周。所有可预见的部件失效都被覆盖了。</li>
+            <li>大促当天真正发生的是：<strong>第三方短信网关没有宕机，只是超时率涨到 40%</strong>。
+              登录接口同步等待短信回执，线程池在 90 秒内被慢请求占满，
+              健康检查随之失败，网关把健康实例摘除 —— <strong>整站不可用 47 分钟</strong>。</li>
+            <li>冗余一点忙没帮上，因为坏掉的不是某个部件，而是<strong>一个从没被设想过的组合</strong>：
+              「依赖变慢」+「同步等待」+「共享线程池」+「健康检查连锁」。
+              而恢复用了 47 分钟，是因为降级开关当时还只是一份设计文档。</li>
+          </ul>
+          <p>
+            由此推出韧性工程的三条前提：<strong>故障模式无法穷举</strong>；
+            所以目标从「不发生」改成「<strong>发生时不扩散、能降级、能快速恢复</strong>」；
+            而恢复能力<strong>必须被演练</strong>才算数。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字与故障链路用于说明机制，非真实事故记录。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:39%">韧性工程 Resilience engineering</th><th>可靠性工程 Reliability engineering</th></tr></thead>
+              <tbody>
+                <tr><td><strong>对故障的假设</strong></td><td>故障是系统的<strong>常态输入</strong>，一定会以没被想到的方式出现</td><td>故障是<strong>要被消灭的异常</strong>，只要设计足够周密就能避免</td></tr>
+                <tr><td><strong>主要目标</strong></td><td>缩短 <strong>MTTR</strong>，缩小影响范围</td><td>拉长 <strong>MTBF</strong>，压低故障发生率</td></tr>
+                <tr><td><strong>典型投入</strong></td><td>降级开关、熔断与隔离、一键回滚、遥测、故障演练</td><td>冗余部件、多级评审、变更审批、合规留痕</td></tr>
+                <tr><td><strong>与变更的关系</strong></td><td><strong>允许更频繁的变更</strong>：每次影响小且可快速撤销</td><td><strong>倾向减少变更</strong>：变更是故障之源，于是发布越攒越大</td></tr>
+                <tr><td><strong>成功的样子</strong></td><td>故障照常发生，但用户几乎无感，或只感到功能变少</td><td>长时间平安无事 —— 直到第一次真故障，无人演练过恢复</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">另一组易混</th><th style="width:39%">韧性工程</th><th>混沌工程 Chaos Engineering</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>角色</strong></td>
+                  <td>是<strong>目标与设计取向</strong>：系统应当具备哪些抗故障能力</td>
+                  <td>是<strong>验证手段</strong>：主动注入故障，检验这些能力是否真的存在<br><small class="muted">完整内容见 <a href="../ch02-core-principles/2.6-chaos-engineering.html">第 2 章 混沌工程（2.6）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>没有对方会怎样</strong></td>
+                  <td>只有目标没有验证：降级开关写在文档里，真出事时没人敢按</td>
+                  <td>只注入不设计：把故障演出来，却没有降级路径可以接住</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>两者的名字都在说「让系统更靠得住」，但对故障的基本假设正好相反</strong>。
+            这个差别有一个可直接判卷的推论 —— 可靠性工程做到极致会<strong>减少变更频率</strong>，
+            韧性工程反而<strong>支持更高的变更频率</strong>。方向相反，所以不可能是同一个东西的两种说法。</small></p>
+          <p class="mb-0 muted"><small>「混沌工程是韧性工程的验证手段」这一定位为本站教学整理。
+            官方术语表列有 <em>Resilience engineering</em> 与 <em>Simian Army/Chaos Monkey</em>，
+            <em>Chaos Engineering</em> 是 v3.4 课程大纲 M2 的模块子项，但官方未以「目标—手段」的形式表述两者关系。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>给每个外部依赖判一次刑</strong>：逐个问「它整体失效时，核心流程能不能降级完成」。
+              答不能，就只有两条路 —— 补一条降级路径，或者<strong>正式承认它是一个 SPOF</strong> 并记录在案。</li>
+            <li><strong>防「慢」比防「挂」更重要</strong>：设超时上限、限制重试次数、加熔断、按依赖拆分线程池与连接池。
+              上面那个 47 分钟案例的根因不是宕机，是<strong>一个慢依赖吃光了共享资源</strong>。</li>
+            <li><strong>把优雅降级写成产品需求</strong>：短信不可用时登录切密码或邮箱；
+              推荐服务不可用时返回热门榜单而不是 500 页面。降级行为需要产品经理签字，不是上线前临时决定的技术细节。</li>
+            <li><strong>恢复路径必须定期真跑</strong>：回滚、主从切换、降级开关，安排固定节奏在真实环境执行一次。
+              只写在文档里的恢复流程，在真故障的压力下等于不存在。</li>
+            <li><strong>用混沌工程验证</strong>：把上面所有假设变成可证伪的实验（详见
+              <a href="../ch02-core-principles/2.6-chaos-engineering.html">第 2 章 混沌工程（2.6）</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地动作为本站教学整理，官方文件只把 <em>Resilience engineering</em> 列为术语，未规定具体实施清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：问韧性工程的核心思想。
+              正确方向是「<strong>承认故障不可避免，重点放在快速恢复与在故障中继续提供服务</strong>」。
+              最常见的干扰项是<strong>把可靠性工程的说法贴在它头上</strong>：
+              「通过冗余与严格评审杜绝故障发生」「让系统达到零故障」「把所有组件换成高可用硬件」。</li>
+            <li><strong>一眼排除法</strong>：选项里出现<strong>「杜绝」「防止一切」「零故障」「不允许发生」</strong>，
+              一律不是 Resilience engineering。它的定义里<strong>包含</strong>故障，不排斥故障。</li>
+            <li><strong>反向干扰项</strong>：也会出现「故障发生后追究责任并加严审批流程」。
+              这既不是韧性工程，方向上还与安全文化冲突，可直接划掉。</li>
+            <li><strong>场景题要小心一个陷阱</strong>：题干描述一个充满指责与恐惧、存在大量单点故障、频繁召集战情室的组织，
+              问它应该转向什么。答案方向是<strong>安全文化</strong>，<strong>这一条由 DOFD v3.4 官方样题答案键确认</strong>。
+              <small class="muted">本站补充的排除方向：「引入冗余」「引入韧性工程工具」这类技术选项在此类题干下都不是答案方向 —— 此排除法为本站教学整理，官方答案键只给出正确选项本身。</small>
+              <strong>题干里出现 SPOF，不代表答案就是技术方案</strong>（安全文化见
+              <a href="../ch04-frameworks/index.html">第 4 章 安全文化（4.5）</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">可靠性工程赌故障不发生，韧性工程赌故障一定发生 —— 赌注不同，钱就花在不同的地方。</p>
+          <p class="mb-0 muted"><small>一句话推论：<strong>凡是说「杜绝故障」的，都不是韧性工程</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-4-3</div>
+        <h3 class="kp__title">单点故障与平均恢复时间<span class="en">Single Point of Failure (SPOF) &amp; Mean Time to Repair/Recover (MTTR)</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">术语</th><th>一句话定义</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>单点故障<br><span class="en">Single Point of Failure / SPOF</span></strong></td>
+                  <td>链路上<strong>一旦失效就会导致整体不可用</strong>的那一个环节。它回答的是<strong>空间</strong>问题：哪里会让全部停下来</td>
+                </tr>
+                <tr>
+                  <td><strong>平均恢复时间<br><span class="en">Mean Time to Repair/Recover / MTTR</span></strong></td>
+                  <td>从故障发生（或被发现）到服务<strong>恢复正常</strong>所用时间的平均值。它回答的是<strong>时间</strong>问题：停了多久才回来</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Single Point of Failure (SPOF)</strong> 与
+            <strong>Mean Time to Repair/Recover (MTTR)</strong> 均逐字列在 DOFD v3.4 官方考纲术语表中。
+            下文用于对照的 <strong>MTBF</strong>（Mean Time Between Failures，平均故障间隔）
+            <strong>不在这 66 条术语表内</strong>，本站引入它只是为了把 MTTR 的取向讲清楚。</small></p>
+        </div>
+
+        <!-- ============ 图 3-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 480" role="img" aria-label="同一条核心链路消除单点故障前后的对比，以及单点故障的识别方法">
+              <defs>
+                <marker id="ah-34-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="40" y="28" class="s-ink" font-size="15" font-weight="700">消除前 · 同一条核心链路上藏着三个 SPOF</text>
+
+              <!-- 第一行 -->
+              <rect x="40"  y="60" width="150" height="70" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="220" y="60" width="150" height="70" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <rect x="400" y="60" width="150" height="70" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <rect x="580" y="60" width="150" height="70" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="760" y="60" width="150" height="70" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+                <text x="115" y="90">用户入口</text>
+                <text x="295" y="90">API 网关</text>
+                <text x="475" y="90">认证服务</text>
+                <text x="655" y="90">订单服务</text>
+                <text x="835" y="90">订单数据库</text>
+              </g>
+              <g text-anchor="middle" class="s-muted" font-size="12">
+                <text x="115" y="114">浏览器与 App</text>
+                <text x="295" y="114">单实例</text>
+                <text x="475" y="114">单实例</text>
+                <text x="655" y="114">3 副本</text>
+                <text x="835" y="114">单主 · 手工切换</text>
+              </g>
+              <g text-anchor="middle" class="f-2" font-size="13" font-weight="700">
+                <text x="295" y="152">SPOF</text>
+                <text x="475" y="152">SPOF</text>
+                <text x="835" y="152">SPOF</text>
+              </g>
+
+              <path d="M190 95 L214 95" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M370 95 L394 95" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M550 95 L574 95" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M730 95 L754 95" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+
+              <text x="40" y="182" class="s-muted" font-size="13">串联链路：三个 SPOF 中任意一个失效，核心流程即中断 —— 订单服务的 3 副本救不了它。</text>
+
+              <text x="40" y="222" class="s-ink" font-size="15" font-weight="700">消除后 · 每个环节都允许少一个</text>
+
+              <!-- 第二行 -->
+              <rect x="40"  y="250" width="150" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="220" y="250" width="150" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="400" y="250" width="150" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="580" y="250" width="150" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="760" y="250" width="150" height="70" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+                <text x="115" y="280">用户入口</text>
+                <text x="295" y="280">API 网关</text>
+                <text x="475" y="280">认证服务</text>
+                <text x="655" y="280">订单服务</text>
+                <text x="835" y="280">订单数据库</text>
+              </g>
+              <g text-anchor="middle" class="s-muted" font-size="12">
+                <text x="115" y="304">多接入点</text>
+                <text x="295" y="304">×2 跨可用区</text>
+                <text x="475" y="304">×3 · 无状态</text>
+                <text x="655" y="304">3 副本</text>
+                <text x="835" y="304">主从 · 自动切换</text>
+              </g>
+
+              <path d="M190 285 L214 285" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M370 285 L394 285" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M550 285 L574 285" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+              <path d="M730 285 L754 285" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-34-1)"/>
+
+              <text x="40" y="352" class="s-muted" font-size="13">消除不等于「全部做冗余」：按「影响面 × 恢复时间」排序，先动会让核心流程整体停摆的那几个。</text>
+
+              <rect x="40" y="382" width="870" height="72" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="62" y="412" class="f-3" font-size="15" font-weight="700">识别方法（一句话）</text>
+              <text x="62" y="438" class="s-ink" font-size="13">把这个框从图上拔掉 —— 用户还能完成核心流程吗？不能，它就是 SPOF；能，它不是。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-4-2　SPOF 是清点出来的，不是看出来的。</strong>
+            这张图要看懂的是：<strong>SPOF 不体现在逻辑架构图上</strong>。
+            上下两行的方框名字完全一样，差别全在方框下面那行小字（几个实例、能不能自动切换）。
+            所以识别 SPOF 必须看<strong>部署视角</strong>，并逐个执行「拔掉它试试」这个动作 ——
+            靠盯着架构图想，永远发现不了「认证服务其实只有一个实例」。
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>这两个词各自解决一个非常具体的失败场景。</p>
+          <ul>
+            <li><strong>SPOF 解决「事故复盘只留下教训，不留下清单」</strong>：
+              设想一个零售系统，核心链路 12 个环节，其中 3 个只有单实例 ——
+              而<strong>架构图上完全看不出来</strong>，因为架构图画的是逻辑组件，不是部署实例。
+              一次机房交换机例行维护，认证服务所在宿主重启，全站登录失败 38 分钟；
+              同一时刻订单服务的 3 个副本毫发无损。
+              SPOF 这个词的价值，就是把「哪一个环节会让全部停掉」从直觉变成<strong>可以逐条清点、逐条销账的清单</strong>。</li>
+            <li><strong>MTTR 解决「指标达成了，用户体验反而更差」</strong>：
+              另一个团队把年度目标定成「重大故障次数下降 50%」，做法是把发布从每周一次改成每月一次。
+              故障次数确实降下来了，但<strong>单次故障的定位时间从 40 分钟涨到 3 小时</strong> ——
+              每次上线的变更量变成原来的四倍，出问题时根本不知道是哪一个改动引起的。
+              把目标换成 MTTR，这条路直接被堵死：攒大批量会让 MTTR 变差，不会变好。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上两个案例均为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:39%">MTTR（官方术语）</th><th>MTBF（本站引入的对照项，非考纲术语）</th></tr></thead>
+              <tbody>
+                <tr><td><strong>量的是哪一段</strong></td><td>故障发生 → 恢复正常，<strong>单次故障的持续时间</strong></td><td>一次故障发生 → 下一次故障发生，<strong>包含修复时长在内的完整间隔</strong>（MTBF = MTTF + MTTR）</td></tr>
+                <tr><td><strong>优化手段</strong></td><td>可观测性、一键回滚、降级开关、演练、小批量变更</td><td>更贵的硬件、更严的评审、<strong>更少的变更</strong></td></tr>
+                <tr><td><strong>对变更节奏的影响</strong></td><td>与 DevOps <strong>同向</strong>：小批量、高频发布同时改善 MTTR</td><td>与 DevOps <strong>反向</strong>：最省事的做法就是少发布</td></tr>
+                <tr><td><strong>在分布式系统中的可控性</strong></td><td><strong>几乎完全可控</strong>：发现多快、回滚多快、降级挡不挡得住，都由自己的自动化决定</td><td><strong>越来越不可控</strong>：几十上百个组件、云可用区、第三方 API，多数不由你运维</td></tr>
+                <tr><td><strong>「达标却更差」的可能</strong></td><td>低：MTTR 变短很难通过牺牲用户体验换来</td><td>高：拉长发布间隔就能刷好看，代价是每次故障更难收拾</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">另一组易混</th><th style="width:39%">单点故障 SPOF</th><th>约束 Constraint</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>它在时系统会怎样</strong></td>
+                  <td>平时看不出异常，<strong>一旦它失效，整体停</strong></td>
+                  <td>平时就在拖慢整体，<strong>它在，系统慢</strong><br><small class="muted">见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>关心的属性</strong></td>
+                  <td><strong>可用性</strong></td>
+                  <td><strong>产出速度</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>MTBF 与 MTTR 都是「越好看越好」的可靠性数字，但两者的优化方向是敌对的</strong>。
+            提高 MTBF 最省力的办法是减少变更，而减少变更会让批量变大、定位变难，于是 MTTR 变长。
+            现代分布式系统选 MTTR 作目标，理由不是它更重要，而是<strong>它是这两个数字里你还能控制的那一个</strong>。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理。官方术语表列有 <em>Mean Time to Repair/Recover (MTTR)</em>、
+            <em>Single Point of Failure (SPOF)</em> 与 <em>Constraint</em>，
+            但<strong>未列入 MTBF</strong>，也未以对照表形式给出上述区分。</small></p>
+        </div>
+
+        <!-- ============ 图 3-4-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 540" role="img" aria-label="同一条时间轴上 MTBF 与 MTTR 各自度量的区间，以及分布式系统更看重 MTTR 的原因">
+              <defs>
+                <marker id="ah-34-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="60" y="30" class="s-ink" font-size="15" font-weight="700">同一条时间轴，两个指标量的是完全不同的两段</text>
+
+              <!-- MTBF 区间 -->
+              <path d="M210 92 L480 92" class="s-1" stroke-width="2" fill="none" marker-start="url(#ah-34-2)" marker-end="url(#ah-34-2)"/>
+              <path d="M480 92 L730 92" class="s-1" stroke-width="2" fill="none" marker-start="url(#ah-34-2)" marker-end="url(#ah-34-2)"/>
+              <text x="345" y="80" class="f-1" font-size="13" font-weight="700" text-anchor="middle">MTBF</text>
+              <text x="605" y="80" class="f-1" font-size="13" font-weight="700" text-anchor="middle">MTBF</text>
+
+              <!-- 时间轴 -->
+              <line x1="60" y1="150" x2="900" y2="150" class="s-stroke" stroke-width="2"/>
+              <g class="f-2">
+                <rect x="210" y="118" width="34" height="32" rx="3"/>
+                <rect x="480" y="118" width="26" height="32" rx="3"/>
+                <rect x="730" y="118" width="40" height="32" rx="3"/>
+              </g>
+              <g class="f-2" font-size="12" font-weight="700" text-anchor="middle">
+                <text x="227" y="170">MTTR</text>
+                <text x="493" y="170">MTTR</text>
+                <text x="750" y="170">MTTR</text>
+              </g>
+              <text x="60" y="196" class="s-muted" font-size="13">色块 = 单次故障从发生到恢复的时长（MTTR）；MTBF 从一次故障的起点量到下一次故障的起点，含修复时长。</text>
+
+              <!-- 左框 -->
+              <rect x="60" y="222" width="400" height="126" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="82" y="252" class="s-ink" font-size="15" font-weight="700">盯 MTBF：目标是「别出故障」</text>
+              <g class="s-muted" font-size="13">
+                <text x="82" y="280">最直接的手段：减少变更、拉长发布间隔、加严审批。</text>
+                <text x="82" y="304">副作用：批量变大，出事时更难定位、更难回滚。</text>
+                <text x="82" y="328">MTBF 不在官方 66 条术语表内，此处仅作对照。</text>
+              </g>
+
+              <!-- 右框 -->
+              <rect x="500" y="222" width="400" height="126" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="522" y="252" class="s-ink" font-size="15" font-weight="700">盯 MTTR：目标是「回来得快」</text>
+              <g class="s-muted" font-size="13">
+                <text x="522" y="280">手段：可观测性、一键回滚、降级开关、定期演练。</text>
+                <text x="522" y="304">前提：必须先接受「故障一定会发生」。</text>
+                <text x="522" y="328">MTTR 是官方术语，固定译名「平均恢复时间」。</text>
+              </g>
+
+              <!-- 底部说明 -->
+              <rect x="60" y="378" width="840" height="126" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="82" y="408" class="f-3" font-size="15" font-weight="700">为什么分布式系统更看 MTTR</text>
+              <g class="s-ink" font-size="13">
+                <text x="82" y="436">组件数从个位数涨到几十上百：微服务、容器编排、云可用区、第三方 API，每一个都会失败。</text>
+                <text x="82" y="462">其中大部分不由你运维 —— MTBF 里你能控制的比例越来越小。</text>
+                <text x="82" y="488">而发现有多快、回滚有多快、降级挡不挡得住，几乎完全由你的自动化与演练决定。</text>
+              </g>
+
+              <text x="470" y="528" class="s-muted" font-size="12" text-anchor="middle">本图为本站教学整理，用于说明两个指标的关注点差异</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-4-3　MTBF 量间隔，MTTR 量宽度。</strong>
+            这张图要看懂的是<strong>两个指标在同一条时间轴上量的根本不是同一段</strong>：
+            MTBF 量的是相邻两次故障起点之间的完整跨度，MTTR 量的是块本身的宽度。
+            由此推出选择的理由 —— 组件越多、越依赖别人运维的东西，故障之间那段跨度就越不由你说了算；
+            而块的宽度，<strong>从头到尾都由你的自动化和演练决定</strong>。
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>清点 SPOF：</strong></p>
+          <ul>
+            <li><strong>画部署视角的拓扑，而不是逻辑架构图</strong>：每个框标上实例数、是否跨可用区、能不能自动切换。
+              然后逐个执行图 3-4-2 的那句话：拔掉它，核心流程还能不能完成。</li>
+            <li><strong>别只在机器上找</strong>：只有一个人能审批发布、只有一个人懂那段代码、
+              只有一份从没被验证过的备份、一个没有备选的第三方 API ——
+              <strong>人和流程上的 SPOF 比机器上的更常见，也更难被看见</strong>
+              （与 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>中的「对少数专家的依赖」是同一批对象）。</li>
+            <li><strong>排序而不是全消</strong>：按「影响面 × 恢复时间」排序，先处理会让核心流程整体停摆的那几个。
+              把每个 SPOF 都做成冗余，成本会失控，而且冗余本身也会带来新的失效模式。</li>
+          </ul>
+          <p><strong>压缩 MTTR，只有四个杠杆：</strong></p>
+          <ul>
+            <li><strong>发现</strong> —— 告警与遥测覆盖到用户可感知的指标上（监控与可观测性详见 <a href="3.8-observability.html">3.8 监控与可观测性</a>）。</li>
+            <li><strong>定位</strong> —— 小批量变更 + 变更事件与告警的时间线关联。批量越小，嫌疑人越少。</li>
+            <li><strong>恢复</strong> —— <strong>先回到已知正常状态，再查根因</strong>：一键回滚、降级开关优先于「就地修好它」。</li>
+            <li><strong>演练</strong> —— 上述路径定期真跑，让它不依赖某个特定的人当天在线。</li>
+          </ul>
+          <p class="mb-0 muted"><small>记录 MTTR 时必须写清<strong>起点</strong>是「故障发生」「被监控发现」还是「被受理」——
+            起点不同的数字不能横向比较。这条与上面的四个杠杆均为本站教学整理，官方仅将 MTTR 列为术语，未规定统计口径；
+            指标的完整体系与统计方法见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>MTTR 定义题（本站判断偏 Bloom 1）</strong>：正确方向是
+              「<strong>把服务恢复正常所需时间的平均值，越短越好</strong>」。
+              两种经典干扰项：写成「<strong>两次故障之间的平均间隔</strong>」（那是 MTBF），
+              或写成「平均响应时间 / 平均处理时长」（那是性能指标）。
+              <strong>排除技巧：认关键词 Repair / Recover，看到 Between Failures 立刻划掉。</strong></li>
+            <li><strong>把「减少变更」包装成改进措施的干扰项</strong>：
+              「延长发布间隔以降低故障率」「增加审批层级以减少事故」——
+              这类选项在 DevOps 语境下方向就是错的，见到可以直接排除，不必细读。</li>
+            <li><strong>SPOF 场景题的最大陷阱</strong>：题干描述指责与恐惧的文化、大量单点故障、频繁召集战情室，
+              问该组织应转向什么。答案方向是<strong>安全文化</strong>，
+              <strong>由 DOFD v3.4 官方样题答案键确认</strong>。看到 SPOF 就去选技术冗余方案，是这里最常见的失分点。</li>
+            <li><strong>与 ITSM 相关的一条</strong>：问哪些 ITSM 流程对 DevOps 最关键时，
+              <strong>官方样题答案键确认的方向是「组织变革管理、服务连续性管理、事件管理三者皆是」</strong>。
+              其中<strong>事件管理</strong>正是 MTTR 的直接归口，见到这类「以下哪一个最关键」的问法，
+              包含全部三者的选项是被确认的方向（详见 <a href="../ch04-frameworks/index.html">第 4 章 ITSM（4.4）</a>）。
+              <small class="muted">「事件管理是 MTTR 的直接归口」为本站教学整理，官方样题答案键只确认三者皆是这一结论，未涉及与 MTTR 的对应关系。</small></li>
+            <li><strong>SPOF 与约束不要串</strong>：题干说<strong>慢、排队、等待</strong> → 约束；
+              题干说<strong>挂了、整体不可用</strong> → SPOF。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">SPOF 问「哪一个坏了会全停」，MTTR 问「停了多久才回来」—— 一个是空间，一个是时间。</p>
+          <p class="mb-0 muted"><small>配套一句：<strong>MTBF 靠少变更刷好看，MTTR 靠强自动化才变好</strong> —— DevOps 站后者。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>SRE = 用软件工程的方法解决运维问题</strong>；它可看作 DevOps 的一种具体实现方式（后半句为本站教学整理，官方未规定从属关系）</li>
+        <li><strong>韧性工程承认故障必然发生</strong>，目标是快速恢复与优雅降级；<strong>可靠性工程追求不出故障</strong> —— 本节最大的坑</li>
+        <li>一眼排除：选项里出现<strong>「杜绝故障」「零故障」</strong>，就不是 Resilience engineering</li>
+        <li><strong>SPOF = 失效即导致整体不可用的那一个环节</strong>；识别靠部署视角逐个问「拔掉它，核心流程还能完成吗」</li>
+        <li><strong>MTTR 比 MTBF 更适合作现代分布式系统的目标</strong>：MTBF 靠减少变更刷好看（与 DevOps 反向），MTTR 靠自动化与演练（与 DevOps 同向）</li>
+        <li>题干出现<strong>指责文化 + 大量单点故障 + 频繁战情室</strong> → 答案方向是<strong>安全文化</strong>，由 <strong>DOFD v3.4 官方样题答案键</strong>确认；<strong>事件管理</strong>等三项 ITSM 流程「皆是」对 DevOps 最关键者，同为官方样题答案键确认</li>
+        <li><strong>SLO / SLI / 错误预算不在 66 条考纲术语表与 v3.4 模块子项内</strong>（本站据此判断不需要背）；混沌工程见 <a href="../ch02-core-principles/2.6-chaos-engineering.html">第 2 章 混沌工程（2.6）</a>，指标完整体系见 <a href="../ch07-metrics/index.html">第 7 章</a>，可观测性见 <a href="3.8-observability.html">3.8 监控与可观测性</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Site Reliability Engineering</em>、<em>Resilience engineering</em>、
+      <em>Single Point of Failure (SPOF)</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+      四条均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Site Reliability &amp; Resilience Engineering</em> 是 v3.4 课程大纲（2022-05）M3 模块的子项，
+      v3.6 现行学习目标进一步把 SRE 显式列入框架层（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。<br>
+      <strong>由 DOFD v3.4 官方样题答案键确认的两条</strong>：面对指责与恐惧文化、大量单点故障、频繁战情室的组织应转向<strong>安全文化</strong>；
+      对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>。
+      另引用一条用于区分相邻答案：把安全测试并入左移测试所需的实践是 <strong>DevSecOps</strong>。
+      本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      <strong>教学整理与延伸部分</strong>：「SRE 是 DevOps 的一种具体实现方式」这一定位、
+      「混沌工程是韧性工程的验证手段」这一关系、SPOF 清点方法与 MTTR 四个杠杆、
+      两张对照表，均为本站教学整理，官方未以此形式给出，已分别在对应位置就地标注。
+      <strong>MTBF</strong> 与 <strong>SLO / SLI / 错误预算</strong>不在 66 条官方术语表内，
+      本站分别作为对照项与延伸内容，已标注为非考纲。本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

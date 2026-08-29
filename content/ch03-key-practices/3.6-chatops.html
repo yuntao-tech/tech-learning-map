@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.6 ChatOps · DevOps Foundation 学习站</title>
+<meta name="description" content="ChatOps 把运维与交付的操作放进团队的聊天环境中执行，让对话、上下文与动作发生在同一个地方。本节讲清它解决的四类痛点、与「在群里聊天」的本质区别，以及共享上下文 / 可执行 / 可旁观学习 / 天然审计四类价值。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.6-chatops"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.6 ChatOps</h1>
+      <div class="page-head__en">ChatOps</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        ChatOps 把运维与交付的<strong>操作</strong>搬进团队的聊天环境里执行，
+        让<strong>对话、上下文与动作发生在同一个地方</strong>。
+        它的关键词不是「聊天」，而是<strong>可执行</strong>与<strong>共享上下文</strong> ——
+        换一个聊天软件不会得到 ChatOps，把命令搬进频道才会。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>ChatOps 到底把什么东西搬到了一起，为什么这件事值得单独成为一项实践</li>
+        <li>它和「团队在群里聊天」的分界线在哪 —— 这是本节最容易被答错的一点</li>
+        <li>共享上下文 / 可执行 / 可旁观学习 / 天然审计，这四类价值分别对应什么痛点</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="故障处理时上下文散落在多个工具中，与 ChatOps 下上下文集中在同一个频道中的对比图">
+          <defs>
+            <marker id="ah-36-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+          </defs>
+
+          <!-- ===== 左：上下文散落 ===== -->
+          <text x="26" y="38" class="f-4" font-size="16" font-weight="700">故障处理中：上下文散落在多个工具里</text>
+          <rect x="14" y="54" width="452" height="390" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+
+          <!-- 五个工具 -->
+          <g text-anchor="middle" font-size="14">
+            <rect x="165" y="80"  width="150" height="40" rx="8" stroke="var(--border-strong)" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="240" y="105" class="s-ink">监控告警平台</text>
+
+            <rect x="312" y="182" width="150" height="40" rx="8" stroke="var(--border-strong)" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="387" y="207" class="s-ink">部署流水线页面</text>
+
+            <rect x="18"  y="182" width="150" height="40" rx="8" stroke="var(--border-strong)" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="93"  y="207" class="s-ink">工单 / 服务台</text>
+
+            <rect x="74"  y="355" width="150" height="40" rx="8" stroke="var(--border-strong)" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="149" y="380" class="s-ink">终端与跳板机</text>
+
+            <rect x="256" y="355" width="150" height="40" rx="8" stroke="var(--border-strong)" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="331" y="380" class="s-ink">电话与私聊</text>
+          </g>
+
+          <!-- 中心：值班工程师 -->
+          <circle cx="240" cy="250" r="50" class="s-4" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="240" y="246" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">值班工程师</text>
+          <text x="240" y="268" class="s-muted" font-size="12" text-anchor="middle">反复切换</text>
+
+          <!-- 切换连线（双向） -->
+          <g class="s-4" stroke-width="1.8" fill="none" stroke-dasharray="5 5"
+             marker-start="url(#ah-36-4)" marker-end="url(#ah-36-4)">
+            <line x1="240" y1="194" x2="240" y2="124"/>
+            <line x1="293" y1="234" x2="326" y2="222"/>
+            <line x1="187" y1="234" x2="168" y2="227"/>
+            <line x1="207" y1="295" x2="164" y2="355"/>
+            <line x1="273" y1="295" x2="316" y2="355"/>
+          </g>
+
+          <text x="240" y="428" class="s-muted" font-size="13" text-anchor="middle">上下文留在 5 个地方，接手的人要从头拼一遍</text>
+
+          <!-- ===== 右：上下文集中 ===== -->
+          <text x="506" y="38" class="f-1" font-size="16" font-weight="700">ChatOps：对话、上下文与动作在同一处</text>
+          <rect x="494" y="54" width="452" height="390" rx="14" class="s-stroke" stroke-width="1.5" fill="none"/>
+
+          <rect x="514" y="76" width="412" height="352" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="534" y="106" class="s-ink" font-size="15" font-weight="650">#incident-支付网关-0821</text>
+          <line x1="514" y1="120" x2="926" y2="120" class="s-stroke" stroke-width="1.2"/>
+
+          <g font-size="13" class="s-ink">
+            <rect x="520" y="137" width="4" height="16" rx="2" class="f-2"/>
+            <text x="536" y="150">08:02　监控机器人：错误率 12%，已投递本频道</text>
+
+            <rect x="520" y="173" width="4" height="16" rx="2" class="f-1"/>
+            <text x="536" y="186">08:03　lin：/status pay-gateway</text>
+
+            <rect x="520" y="209" width="4" height="16" rx="2" class="f-2"/>
+            <text x="536" y="222">08:03　机器人：14 分钟前有一次部署 v482</text>
+
+            <rect x="520" y="245" width="4" height="16" rx="2" class="f-1"/>
+            <text x="536" y="258">08:05　lin：/rollback pay-gateway v481</text>
+
+            <rect x="520" y="281" width="4" height="16" rx="2" class="f-2"/>
+            <text x="536" y="294">08:05　机器人：已回滚，耗时 38s，执行人 lin</text>
+
+            <rect x="520" y="317" width="4" height="16" rx="2" class="f-3"/>
+            <text x="536" y="330">08:07　may（新人）：全程旁观，不必打断任何人</text>
+          </g>
+
+          <line x1="514" y1="352" x2="926" y2="352" class="s-stroke" stroke-width="1.2"/>
+          <text x="534" y="378" class="f-1" font-size="13" font-weight="650">同一条时间线 = 事件记录 = 复盘素材 = 审计痕迹</text>
+          <text x="534" y="404" class="s-muted" font-size="12">任何人打开频道即可看到完整经过，无需再问「刚才发生了什么」</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-6-1　上下文散落 vs 上下文集中。</strong>
+        要看懂的是<strong>差别不在沟通效率，而在上下文的位置</strong>：
+        左边每一次工具切换都在生产一段只有当事人知道的上下文，事后必须靠人脑把四五份记录拼回一条时间线；
+        右边这条时间线是<strong>被顺手生成的</strong> —— 因为动作本身就发生在对话里。
+        <span class="muted">本图的频道内容为本站构造的教学示例，不指向任何具体产品或真实事件。</span>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-6-1</div>
+        <h3 class="kp__title">ChatOps 是什么</h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>ChatOps</strong> 是把<strong>运维与交付的操作放进团队的聊天环境中执行</strong>的实践 ——
+            让<strong>对话、上下文与动作发生在同一个地方</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">构成</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>对话发生地</strong></td><td>团队日常讨论所在的频道，本身就是工作现场，而不是另开的一个「通知窗口」</td></tr>
+                <tr><td><strong>可执行</strong></td><td>查询状态、触发构建、回滚版本等动作<strong>在频道里发起</strong>，结果也回到频道里 —— 这是 ChatOps 与普通群聊的分水岭</td></tr>
+                <tr><td><strong>共享上下文</strong></td><td>谁发起、依据什么、结果如何，全部落在<strong>同一条时间线</strong>上，对频道里所有人同时可见</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>ChatOps</strong> 逐字列于 DOFD v3.4 官方考纲术语表，
+            同时是 v3.4 课程大纲 M3「Key DevOps Practices」的模块子项 —— <strong>官方证实的只有这两条</strong>。
+            上面的定义措辞与本表的三项构成为<strong>本站教学整理</strong>，官方未公布 ChatOps 的定义原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它针对的是一个非常具体的场景：<strong>故障发生时，处理过程本身没有留在任何一个地方。</strong>
+          </p>
+          <ul>
+            <li>设想一个分布在三个时区的支付团队，凌晨告警。值班工程师在告警平台看曲线、
+              在跳板机敲命令、在流水线页面查最近一次部署、在私聊里问上游同事、最后在工单系统补一段记录。
+              <strong>五个工具，五段上下文，没有一段是完整的。</strong></li>
+            <li>四十分钟后交接给下一个时区的同事，对方问的第一句永远是「刚才都做了什么」。
+              重建现场平均要 20 分钟 —— <strong>这段时间里故障还在继续</strong>。</li>
+            <li>三天后复盘，时间线要从告警平台、跳板机历史、流水线记录、两个人的私聊里拼。
+              私聊那段谁也拿不出来，于是复盘结论建立在回忆之上。</li>
+            <li>团队新人全程不知道发生过这件事。他没有任何途径旁观一次真实故障是怎么被处理的，
+              只能等到自己值班时第一次面对。</li>
+          </ul>
+          <p>
+            这四条痛点指向同一个根因：<strong>动作发生的地方，和讨论、记录、观看的地方是分开的。</strong>
+            ChatOps 的做法不是增加一个协作工具，而是<strong>把动作挪到讨论发生的位置</strong>，
+            让上下文、记录与可旁观性变成操作的副产品，而不是额外的工作。
+          </p>
+          <p class="mb-0 muted"><small>以上支付团队场景与其中的时间数字为<strong>本站构造的教学示例</strong>，
+            用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">ChatOps</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>在群里聊天<br><small class="muted">用即时通讯工具沟通</small></strong></td>
+                  <td>频道里<strong>能执行操作并拿到结果</strong>，上下文与动作绑定在一起</td>
+                  <td>频道只承载<strong>文字</strong>。换一个更好用的聊天软件，仍然是聊天，不是 ChatOps</td>
+                </tr>
+                <tr>
+                  <td><strong>把告警推送到群里</strong></td>
+                  <td>信息进来<strong>之后可以就地处置</strong>，处置结果继续留在同一条时间线上</td>
+                  <td>只是把通知换了个落地点，处置仍然要跳去别的系统，上下文照旧断开</td>
+                </tr>
+                <tr>
+                  <td><strong>服务台 / 事件管理系统</strong></td>
+                  <td>是<strong>操作与协作发生的现场</strong>，记录是顺手产生的副产品</td>
+                  <td>是<strong>流程与工单的载体</strong>，记录靠人事后补录<br><small class="muted">事件管理流程本身见 <a href="../ch04-frameworks/index.html">第 4 章 ITSM（4.4）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 工具链 <span class="en">DevOps toolchain</span></strong></td>
+                  <td>是一项<strong>实践</strong>：规定操作在哪里发起、上下文落在哪里</td>
+                  <td>是<strong>工具的集合与串接</strong>：规定用什么来完成各段工作<br><small class="muted">工具链构成见 <a href="../ch06-automation/index.html">第 6 章 DevOps 工具链（6.5）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>可观测性 <span class="en">Observability</span></strong><br><small class="muted">见 <a href="3.8-observability.html">3.8 监控与可观测性</a></small></td>
+                  <td>解决「<strong>知道之后在哪里动手、动手过程谁能看见</strong>」</td>
+                  <td>解决「<strong>系统内部发生了什么能不能被知道</strong>」，是信息来源而非操作现场</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+          <p class="muted"><small>最容易混的一点：<strong>ChatOps 不是「选哪个聊天工具」的问题</strong>。
+            判据只有两条 —— <strong>能不能在频道里执行、上下文是不是共享的</strong>。
+            两条都不满足，即使全公司都在同一个群里，也只是沟通渠道的选择。</small></p>
+          <p class="mb-0 muted"><small>其中第三、四行涉及的一条官方硬结论是：<strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>
+            （由 <strong>DOFD v3.4 官方样题答案键</strong>确认）；本表其余各行的划分为本站教学整理。
+            本站只陈述结论，不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>落地判断集中在「哪些动作该搬进频道、搬进去之后怎么约束」：</p>
+          <ul>
+            <li><strong>先搬只读查询</strong>：服务状态、最近一次部署是什么时候、当前版本号、错误率。
+              这类命令没有破坏性，收益却最直接 —— 它把「我去查一下」变成频道里所有人都看得到的一行。</li>
+            <li><strong>写操作要带约束</strong>：回滚、重启、扩容这类动作放进频道时，
+              必须配<strong>权限判定与二次确认</strong>，并把执行人、参数、结果一并回帖。
+              没有这层约束，共享上下文会变成共享风险。</li>
+            <li><strong>一次事件一个频道</strong>：事件开始时建专用频道，处置全过程在里面完成。
+              这条时间线直接成为复盘素材，不需要事后从多个系统拼。</li>
+            <li><strong>频道默认公开</strong>：私有频道会让「可旁观学习」这一项归零。
+              新人能围观真实处置过程，是 ChatOps 最容易被忽略的收益。</li>
+            <li><strong>不要用它替代文档</strong>：频道适合承载<strong>过程</strong>，不适合承载<strong>结论</strong>。
+              可复用的结论仍然要沉淀到文档或知识库。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地判断为<strong>本站教学整理</strong>，官方考纲只把 ChatOps 列为术语与模块子项，
+            未规定实施步骤。具体的聊天平台与机器人实现方式不在本节范围内，本站也不推荐特定产品。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：ChatOps 逐字在官方术语表内，最可能被直接问定义。
+              正确方向<strong>一般会同时点出</strong>「<strong>在聊天环境中执行操作</strong>」与「<strong>共享上下文</strong>」；
+              这是本站推断，官方未公布 ChatOps 题的判分口径。</li>
+            <li><strong>干扰项长什么样</strong>：三种最常见的写法 ——
+              ①「团队使用即时通讯工具进行沟通协作」（只剩沟通，丢了可执行）；
+              ②「用聊天记录替代文档与工单」（把它写成替代品）；
+              ③「一类聊天软件 / 一种通讯工具」（把实践降级成工具）。
+              <strong>排除技巧：选项里如果没有「执行 / 命令 / 自动化操作」这层意思，基本可判错。</strong></li>
+            <li><strong>场景归类题（本站判断偏 Bloom 2）</strong>：题干描述某团队在频道里触发部署、查询状态、
+              所有人可见处置过程，问这属于哪项实践。答案方向是 ChatOps，
+              不要选成<strong>持续部署</strong>（那说的是每个通过测试的版本自动部署到生产，见
+              <a href="3.3-delivery-vs-deployment.html">3.3</a>）或<strong>可观测性</strong>（那说的是信息来源，见 <a href="3.8-observability.html">3.8 监控与可观测性</a>）。</li>
+            <li><strong>易错点</strong>：ChatOps 会和<strong>服务台事件管理系统</strong>放进同一组选项。
+              记住<strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong> ——
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认，可以直接用来排除。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">说的地方就是做的地方，也是被记下来的地方。</p>
+          <p class="mb-0 muted"><small>反过来用最快：<strong>频道里不能执行任何操作 → 那不是 ChatOps，只是群聊。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-6-2</div>
+        <h3 class="kp__title">ChatOps 的四类价值与它服务的工作法<span class="en">Why ChatOps pays off</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            ChatOps 的收益可以拆成四项：<strong>共享上下文、可执行、可旁观学习、天然审计</strong>。
+            前两项是<strong>构成要件</strong>，缺任何一项这项实践就不成立；
+            后两项是前两项同时成立后<strong>自动产生的副产品</strong>，不需要额外投入。
+          </p>
+          <div class="src-note">
+            这套「两项要件 + 两项副产品」的四分法是<strong>本站为便于理解所做的教学整理</strong>，
+            官方考纲把 <em>ChatOps</em> 列为术语与 M3 模块子项，但<strong>未以此形式给出价值分类</strong>。
+            考试不会要求按这四项作答。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这套拆分解决的是一个很常见的失败：<strong>机器人装好了，半年后没人用。</strong>
+          </p>
+          <ul>
+            <li>设想某团队引入 ChatOps，为了安全把命令权限只开给两名管理员，
+              频道设为私有仅限运维组。<strong>结果四项价值里只有②完整、①缩到运维组内部，③归零、④要单独申请导出才能用</strong> ——
+              开发看不到，新人进不来，复盘时频道记录还要单独申请导出。</li>
+            <li>半年后统计：命令月均调用 11 次，两名管理员觉得「不如直接开终端快」。
+              项目被判定为「ChatOps 不适合我们」而下线。
+              <strong>真正失败的不是这项实践，是把它当成了一个终端的替代品。</strong></li>
+          </ul>
+          <p class="mb-0">
+            把四项价值拆开的作用是给出验收标准：<strong>上线后要逐项检查哪一项被自己的配置掐掉了</strong>，
+            而不是只看命令调用次数。
+          </p>
+          <p class="mb-0 muted"><small>本案例与其中的数字为<strong>本站构造的教学示例</strong>，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 430" role="img" aria-label="ChatOps 四类价值的关系图：共享上下文与可执行是构成要件，可旁观学习与天然审计是副产品">
+              <defs>
+                <marker id="ah-36-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-36-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 构成要件 · 左上 -->
+              <rect x="40" y="40" width="240" height="92" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="60" y="70" class="f-1" font-size="16" font-weight="700">① 共享上下文</text>
+              <text x="60" y="94" class="s-ink" font-size="13">同一条时间线，人人可见</text>
+              <text x="60" y="114" class="s-muted" font-size="12">解决「刚才都做了什么」</text>
+
+              <!-- 构成要件 · 右上 -->
+              <rect x="620" y="40" width="240" height="92" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="640" y="70" class="f-1" font-size="16" font-weight="700">② 可执行</text>
+              <text x="640" y="94" class="s-ink" font-size="13">命令在频道里发起并回帖</text>
+              <text x="640" y="114" class="s-muted" font-size="12">解决「上下文与动作分家」</text>
+
+              <!-- 中心 -->
+              <rect x="330" y="170" width="240" height="82" rx="14" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="450" y="202" class="s-ink" font-size="19" font-weight="700" text-anchor="middle">ChatOps</text>
+              <text x="450" y="228" class="s-muted" font-size="13" text-anchor="middle">对话 · 上下文 · 动作 同处一地</text>
+
+              <!-- 副产品 · 左下 -->
+              <rect x="40" y="300" width="240" height="92" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="60" y="330" class="f-3" font-size="16" font-weight="700">③ 可旁观学习</text>
+              <text x="60" y="354" class="s-ink" font-size="13">新人围观真实处置过程</text>
+              <text x="60" y="374" class="s-muted" font-size="12">解决「只能等自己值班才学」</text>
+
+              <!-- 副产品 · 右下 -->
+              <rect x="620" y="300" width="240" height="92" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="640" y="330" class="f-3" font-size="16" font-weight="700">④ 天然审计</text>
+              <text x="640" y="354" class="s-ink" font-size="13">谁、何时、做了什么、结果</text>
+              <text x="640" y="374" class="s-muted" font-size="12">解决「记录靠事后回忆补」</text>
+
+              <!-- 箭头：要件 → ChatOps -->
+              <path d="M282 112 Q 320 150 334 182" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-36-5)"/>
+              <path d="M618 112 Q 580 150 566 182" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-36-5)"/>
+              <text x="450" y="120" class="f-1" font-size="13" font-weight="650" text-anchor="middle">两者同时成立才叫 ChatOps</text>
+
+              <!-- 箭头：ChatOps → 副产品 -->
+              <path d="M336 246 Q 310 300 288 322" class="s-3" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-36-6)"/>
+              <path d="M564 246 Q 590 300 612 322" class="s-3" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-36-6)"/>
+              <text x="450" y="300" class="f-3" font-size="13" font-weight="650" text-anchor="middle">不需额外投入，自动产生</text>
+
+              <text x="450" y="418" class="s-muted" font-size="13" text-anchor="middle">缺 ② 就只是群聊；把频道设为私有，③ 归零、④ 退化成要事后申请导出</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-6-2　四类价值不是并列的四条好处。</strong>
+            要看懂的是<strong>它们之间的因果层级</strong>：①② 是必须自己去建的，③④ 是建成之后白拿的。
+            这解释了为什么「把权限收紧、把频道设为私有」看起来只是安全加固，
+            实际上直接砍掉了可旁观学习，并把天然审计从随手可查降级成事后取证。
+            <span class="muted">本图的四分法为本站教学整理，官方未以此形式表述。</span>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <p>ChatOps 常与第二步 · 反馈里的其他实践被并排放在选项中，分界线如下：</p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">ChatOps</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>监控与告警</strong></td>
+                  <td>是反馈<strong>被消费与被处置的场所</strong></td>
+                  <td>是反馈的<strong>来源</strong>：负责让问题被发现，不负责让处置过程被看见</td>
+                </tr>
+                <tr>
+                  <td><strong>同行评审 <span class="en">Peer review</span></strong></td>
+                  <td>作用在<strong>问题发生时</strong>：缩短处置过程中的信息重建时间</td>
+                  <td>作用在<strong>变更上线前</strong>：拦截问题<br><small class="muted">生产变更的同行评审属于第二步，见 <a href="../ch02-core-principles/2.4-second-way-feedback.html">第 2 章 第二步 · 反馈（2.4）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>无指责事后复盘</strong></td>
+                  <td>产出的是复盘所需的<strong>原始时间线</strong></td>
+                  <td>是<strong>事后</strong>改变组织行为的机制，属于第三步 · 持续改进</td>
+                </tr>
+                <tr>
+                  <td><strong>事件管理流程</strong></td>
+                  <td>规定操作<strong>在哪里发生、被谁看见</strong></td>
+                  <td>规定事件<strong>按什么流程被受理、升级与关闭</strong><br><small class="muted">见 <a href="../ch04-frameworks/index.html">第 4 章 ITSM（4.4）</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>ChatOps 不产生反馈，它改变反馈被处理的地点。</strong>
+            题干里出现「发现问题」「检测到异常」时答案方向是监控与可观测性；
+            出现「所有人可见地就地处置并留下过程」时才是 ChatOps。</small></p>
+          <div class="src-note">
+            <strong>本站把 ChatOps 归入第二步 · 反馈，属于教学归类</strong>：
+            它让反馈的处置与共享发生在同一处，缩短了从「知道」到「动手」再到「所有人都知道」的路径。
+            官方考纲只把 <em>ChatOps</em> 列为 M3 的实践与术语，<strong>未声明它归属于三步工作法中的哪一步</strong>。
+            本表中唯一由 <strong>DOFD v3.4 官方样题答案键</strong>确认的归属是：
+            <strong>对生产变更进行同行评审属于第二步</strong> —— 该结论用于锚定「第二步包含什么」，
+            不能反推 ChatOps 的官方归属。本站只陈述结论，不复制官方样题的题干与选项原文。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把四项价值当验收清单，上线后逐项体检：</p>
+          <ul>
+            <li><strong>查①共享上下文</strong>：随便挑上周一次处置，问「不在场的人能否只看频道就还原经过」。
+              如果还需要去别的系统补，说明关键动作没有搬进来。</li>
+            <li><strong>查②可执行</strong>：统计频道里<strong>发起的动作数</strong>，而不是消息数。
+              消息很多、动作为零，说明它退化成了通知群。</li>
+            <li><strong>查③可旁观学习</strong>：新人入职一个月内旁观过几次真实处置。
+              这项为零，通常是因为频道权限收得太紧。</li>
+            <li><strong>查④天然审计</strong>：抽一条生产变更，看能否直接答出<strong>谁执行、何时、参数是什么、结果如何</strong>。
+              答不出说明命令回帖没带执行人或结果。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这份四项体检清单为<strong>本站教学整理</strong>，官方文件未规定 ChatOps 的评估方式。
+            具体机器人实现与平台配置不在本节范围内。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>收益题（本站推断）</strong>：问采用 ChatOps 能带来什么。正确方向落在
+              <strong>共享上下文 / 透明可见 / 协作与沟通</strong>这一类表述上。
+              干扰项常写成「<strong>减少会议数量</strong>」「<strong>提升员工满意度</strong>」「<strong>降低工具采购成本</strong>」——
+              这些是可能的间接效果，不是它的定义性收益。
+              <strong>排除技巧：凡是与「上下文 / 可见性 / 就地执行」无关的收益，一律先划掉。</strong></li>
+            <li><strong>归属题要小心</strong>：如果题目问 ChatOps 属于三步工作法的哪一步，
+              按<strong>反馈</strong>方向作答最稳妥；但要清楚这是本站与业界的通行归类，
+              <strong>官方并未就 ChatOps 的归属给出确认</strong>。
+              官方确认过归属的是<strong>对生产变更进行同行评审属于第二步</strong>（由 <strong>DOFD v3.4 官方样题答案键</strong>确认），
+              两者不要混为一谈。</li>
+            <li><strong>反向题（本站推断）</strong>：问下列哪一项<strong>不是</strong> ChatOps 的特征。
+              「操作需要离开聊天环境到专用控制台完成」这类描述通常就是要选的那一项 —— 它直接否定了「可执行」这一要件。</li>
+            <li><strong>易错点</strong>：ChatOps 与 <span class="en">Collaboration and communication</span>
+              都在官方术语表里，会被放在一起。后者是<strong>更宽的能力项</strong>，
+              前者是<strong>一项具体实践</strong>；题干若强调「在频道里执行操作」，答案只能是 ChatOps。</li>
+          </ul>
+          <p class="mb-0 muted"><small><strong>本面的题型判断与答案方向均为本站教学推断</strong> ——
+            DOFD v3.4 官方样题答案键中没有 ChatOps 相关条目；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干或选项原文；
+            练习环节出现的题目均为<strong>仿真题，非官方真题</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">两件事要自己建：看得见、动得了；两件事白拿：学得到、查得着。</p>
+          <p class="mb-0 muted"><small>两条要件里最先被掐掉的通常是「动得了」——频道里不能执行，一定不是 ChatOps；
+            但只有执行、上下文不共享（私聊里跑命令），同样不算。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>ChatOps</strong> 逐字列于 DOFD v3.4 官方考纲术语表，同时是 M3「Key DevOps Practices」的模块子项</li>
+        <li>一句话定义：<strong>把运维与交付的操作放进聊天环境中执行，让对话、上下文与动作发生在同一个地方</strong></li>
+        <li>与群聊的分界线只有两条：<strong>能不能在频道里执行</strong>、<strong>上下文是不是共享的</strong>。换聊天软件不等于 ChatOps</li>
+        <li>四类价值：<strong>共享上下文 · 可执行</strong>（构成要件）+ <strong>可旁观学习 · 天然审计</strong>（自动产生的副产品，教学整理）</li>
+        <li>它解决的四类痛点：<strong>上下文散落在多个工具 · 交接时要重建现场 · 复盘只能靠回忆拼时间线 · 新人无法旁观真实处置</strong>（本站教学整理）</li>
+        <li>归属：本站归入<strong>第二步 · 反馈</strong>（教学归类，官方未声明）；官方确认过的是<strong>同行评审属于第二步</strong>（见 <a href="../ch02-core-principles/2.4-second-way-feedback.html">第 2 章 第二步 · 反馈（2.4）</a>）</li>
+        <li>排除利器：<strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>，由官方样题答案键确认</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>ChatOps</em> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List），
+      并出现在 DOFD v3.4 课程大纲（2022-05）M3「Key DevOps Practices」的模块子项中；
+      <em>Collaboration and communication</em> 与 <em>DevOps toolchain</em> 亦为官方术语表条目。
+      <strong>「服务台事件管理系统不属于典型 DevOps 工具链要素」</strong>与
+      <strong>「对生产变更进行同行评审属于第二步」</strong>两条判断，由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+      本站只陈述结论，不复制官方样题的题干与选项原文。
+      <strong>ChatOps 的定义措辞与三项构成、四类痛点的归纳、四类价值的两要件 / 两副产品分法、
+      ChatOps 归入第二步 · 反馈的归类、各对照表的行划分、四项体检清单与各面中的落地判断和命题推断，
+      均为本站教学整理</strong>，官方未以此形式给出，已分别在对应位置就地标注。
+      本节的支付团队故障场景、私有频道失败案例与图中频道内容均为<strong>本站构造的教学示例</strong>，非真实数据。
+      具体聊天平台与机器人实现不在本节范围内；事件管理流程见第 4 章。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

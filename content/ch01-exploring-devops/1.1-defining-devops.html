@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 定义 DevOps · DevOps Foundation 学习站</title>
+<meta name="description" content="DevOps 的定义要点、名称由来与 CALMS 五个价值维度，以及最容易考、也最容易做错的一节：DevOps 不是什么。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch01", sec:"1.1-defining-devops"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 1 章 · 认识 DevOps</div>
+      <h1 class="page-head__title">1.1 定义 DevOps</h1>
+      <div class="page-head__en">Defining DevOps</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        DevOps 这个词被用得太随意，以至于它几乎可以指任何东西 ——
+        一个岗位、一个部门、一堆流水线脚本。而官方 Blueprint 写下的那句定义里，
+        <strong>主语是「人」，谓语是「协同工作」</strong>，工具一个字都没提。
+        这一节要做的事只有两件：把那句官方定义拆开，再把六个最贵的误解逐个排除掉。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>这一节要拆的那句定义到底说了什么：谁、做什么、要同时达成哪几个结果</li>
+        <li>CALMS 五个字母各自代表什么，为什么它是定义的展开而不是另一套理论</li>
+        <li>DevOps <strong>不是</strong>什么 —— 六个误解各自从哪来，以及它们分别让组织付出了什么代价</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 920 470" role="img" aria-label="DevOps 定义的四个支撑面共同托起定义目标的结构图">
+          <defs>
+            <marker id="ah-11-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <!-- 顶部：定义要达成的结果 -->
+          <rect x="46" y="18" width="814" height="112" rx="14" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="453" y="64" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">人协同 → 工作快速流到生产 → 六个结果目标同时达成</text>
+          <text x="453" y="98" class="s-muted" font-size="13" text-anchor="middle">浓缩自 PeopleCert Blueprint 官方定义句</text>
+
+          <!-- 四根支撑柱 -->
+          <path d="M141 204 L141 140" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-11-1)"/>
+          <path d="M349 204 L349 140" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-11-1)"/>
+          <path d="M557 204 L557 140" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-11-1)"/>
+          <path d="M765 204 L765 140" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-11-1)"/>
+
+          <rect x="46"  y="212" width="190" height="124" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="254" y="212" width="190" height="124" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="462" y="212" width="190" height="124" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="670" y="212" width="190" height="124" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="141" y="244" class="s-ink" font-size="16" font-weight="700">人与文化</text>
+            <text x="141" y="272" class="s-muted" font-size="13">Organizational culture</text>
+            <text x="141" y="294" class="s-muted" font-size="13">协作与沟通 · 目标一致</text>
+            <text x="141" y="322" class="f-1" font-size="13" font-weight="650">CALMS：C · S</text>
+
+            <text x="349" y="244" class="s-ink" font-size="16" font-weight="700">流程与实践</text>
+            <text x="349" y="272" class="s-muted" font-size="13">价值流 · 小批量</text>
+            <text x="349" y="294" class="s-muted" font-size="13">消除浪费 · 缩短等待</text>
+            <text x="349" y="322" class="f-1" font-size="13" font-weight="650">CALMS：L</text>
+
+            <text x="557" y="244" class="s-ink" font-size="16" font-weight="700">技术与自动化</text>
+            <text x="557" y="272" class="s-muted" font-size="13">部署流水线 · 工具链</text>
+            <text x="557" y="294" class="s-muted" font-size="13">把重复劳动移出人手</text>
+            <text x="557" y="322" class="f-1" font-size="13" font-weight="650">CALMS：A</text>
+
+            <text x="765" y="244" class="s-ink" font-size="16" font-weight="700">度量与反馈</text>
+            <text x="765" y="272" class="s-muted" font-size="13">速度 · 质量 · 稳定性</text>
+            <text x="765" y="294" class="s-muted" font-size="13">用数据判断是否奏效</text>
+            <text x="765" y="322" class="f-1" font-size="13" font-weight="650">CALMS：M</text>
+          </g>
+
+          <line x1="141" y1="338" x2="141" y2="370" class="s-stroke" stroke-width="1.5"/>
+          <line x1="349" y1="338" x2="349" y2="370" class="s-stroke" stroke-width="1.5"/>
+          <line x1="557" y1="338" x2="557" y2="370" class="s-stroke" stroke-width="1.5"/>
+          <line x1="765" y1="338" x2="765" y2="370" class="s-stroke" stroke-width="1.5"/>
+
+          <!-- 地基 -->
+          <rect x="46" y="372" width="814" height="68" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="453" y="402" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">地基：IT 组织中的人协同工作</text>
+          <text x="453" y="426" class="s-muted" font-size="13" text-anchor="middle">Collaboration and communication —— 这句概括的主语在这里，不在工具上</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 1-1-1　定义的四个支撑面。</strong>
+        这张图要看懂的是「<strong>支撑</strong>」和「<strong>并列</strong>」的区别：四个面不是可以挑着做的清单，
+        而是四根共同托住同一块顶板的柱子 —— 只把「技术与自动化」那根加粗，顶板依然是斜的。
+        更关键的是最底下那条：所有柱子都立在「人协同工作」这块地基上，
+        <strong>官方定义句的主语是人，不是流水线</strong>。
+        本图顶板那句浓缩、四支撑面的划分与 CALMS 字母的对应位置均为<strong>本站教学整理</strong>：
+        官方 Blueprint 在正文给出定义句原文，并以六个色块给出 CALMS 五值、The Three Ways、Organization、
+        Principles &amp; Practices、Related Frameworks、Benefits，但<strong>未以此四支撑面的结构作图</strong>。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-1-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-1-1</div>
+        <h3 class="kp__title">DevOps 的定义与名称由来<span class="en">Defining DevOps</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>DOFD 的官方 DevOps 定义</strong>写在 PeopleCert《DevOps Foundation® Blueprint》正文里，逐字原文是：
+          </p>
+          <p>
+            <em>With DevOps, people across the IT organization, working together, enable fast flow,
+            feedback and continuous improvement of planned work into production, while achieving
+            quality, stability, reliability, availability, security and team satisfaction.</em>
+          </p>
+          <p>
+            本站译文：<strong>借助 DevOps，IT 组织中的各方协同工作，使计划中的工作能够快速流动、
+            获得反馈并持续改进，直至进入生产环境，同时达成质量、稳定性、可靠性、可用性、
+            安全与团队满意度。</strong>
+          </p>
+          <div class="src-note">
+            <strong>来源级别</strong>：上面的英文句为<strong>官方原文</strong>，出自
+            PeopleCert《DevOps Foundation® Blueprint》正文，<strong>可直接引为官方定义</strong>；
+            同一份 Blueprint 还以六个色块给出 CALMS 五值、The Three Ways、Organization、
+            Principles &amp; Practices、Related Frameworks、Benefits。
+            <em>DevOps</em> 一词逐字列于 DOFD v3.4 官方考纲术语表。
+            <strong>中文为本站译文</strong>；下文对这句定义的拆解、推论与判题建议属于本站教学整理，已就地标注。
+          </div>
+          <p>这句定义看着长，拆成三段就只剩三个词：<strong>谁 → 做什么 → 同时守住什么</strong>。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">定义的三段</th><th style="width:34%">官方定义句里的对应部分</th><th>为什么这一段不能删</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>谁</strong></td>
+                  <td>IT 组织中的<strong>人协同工作</strong><br><span class="en">people working together</span></td>
+                  <td>主语是人不是工具。删掉这一段，DevOps 就退化成一次采购</td>
+                </tr>
+                <tr>
+                  <td><strong>做什么</strong></td>
+                  <td><strong>计划中的工作</strong>快速<strong>流动</strong>、获得<strong>反馈</strong>、<strong>持续改进</strong>，直至<strong>进入生产</strong></td>
+                  <td>终点是「进入生产」而不是「开发完成」。这一段划定了范围，也正好是三步工作法的三个动词</td>
+                </tr>
+                <tr>
+                  <td><strong>同时守住什么</strong></td>
+                  <td>质量 · 稳定性 · 可靠性 · 可用性 · <strong>安全</strong> · <strong>团队满意度</strong></td>
+                  <td>「同时」两个字是定义的重心：只快不稳不叫 DevOps。注意结果里包含<strong>人的满意度</strong>。
+                    这六项的展开见 <a href="1.4-values-goals-stakeholders.html">1.4 价值、目标与干系人</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            名称本身是合成词：<strong>Dev</strong>elopment ＋ <strong>Op</strong>eration<strong>s</strong>。
+            两个原本被组织分开考核的职能被写进同一个词里 —— 这个构词法本身就是定义的缩写版。
+          </p>
+          <p class="mb-0 muted"><small><strong>DevOps</strong> 一词逐字列于 DOFD v3.4 官方考纲术语表；
+            上表对「三段」的切分与「为什么不能删」的解释为<strong>本站教学整理</strong>。
+            「Development + Operations 合成词」这一构词说明同属本站教学补充，官方文件未对名称构成作专门定义。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个定义要解决的痛点非常具体：<strong>两个部门被同一个组织用互相冲突的指标考核，
+            于是理性地做出互相伤害的行为。</strong>
+          </p>
+          <ul>
+            <li>某保险公司的保单系统，开发团队按「季度上线功能点数」考核，运维团队按「可用性 99.95%」考核。
+              开发想多上线，运维想少变更 —— 两边都在完成自己的 KPI。</li>
+            <li>结果是发布窗口被压到每季度一次，每次上线 200 多个变更、6 小时窗口、周六夜里执行。
+              批量大到没人能说清是哪个变更引起的故障，回滚只能整包回滚。</li>
+            <li>故障之后进入第二阶段：<strong>互相举证</strong>。运维出具「代码未通过压力测试」的证据，
+              开发出具「环境配置与测试环境不一致」的证据。会开了三次，
+              <strong>没有任何一条改进项落在两个部门的中间地带</strong> —— 因为那块地没有主人。</li>
+            <li>第三阶段是自我强化：既然上线这么痛，业务方就把需求攒起来一次提，批量进一步变大，
+              下一次发布更痛。<strong>这是一个会自己加速的循环。</strong></li>
+          </ul>
+          <p>
+            官方定义句里的「<strong>IT 组织中的人协同工作</strong>」，针对的正是「没有主人的中间地带」；
+            而「<strong>同时</strong>达成质量、稳定性与安全」，针对的是「用速度换稳定或用稳定换速度」这种二选一的假设。
+            DevOps 的主张是：这两件事在同一套工作方式下可以一起变好，而不是零和。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，用于说明冲突考核如何自我强化，数字非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">DevOps（官方定义句）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>三步工作法</strong><br><small class="muted">见 <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 核心原则（2.1 三步工作法总览）</a></small></td>
+                  <td>回答「<strong>是什么、要达成什么</strong>」：一句话说清工作方式与结果目标</td>
+                  <td>回答「<strong>按什么顺序改</strong>」：流动 → 反馈 → 持续改进，是 DevOps 的原则集</td>
+                </tr>
+                <tr>
+                  <td><strong>CALMS</strong></td>
+                  <td>是<strong>一句定义</strong>，浓缩、不可操作</td>
+                  <td>是定义的<strong>五个展开维度</strong>，可以逐条体检（见本节 <a href="#kp-1-1-2">kp-1-1-2</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>IT service management（ITSM）</strong><br><small class="muted">见 <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></small></td>
+                  <td>以<strong>端到端价值流</strong>为中心：一个变更从想法到生产要多久、可靠不可靠</td>
+                  <td>以<strong>服务与流程</strong>为中心：变更、事件、连续性等流程如何规范地运转</td>
+                </tr>
+                <tr>
+                  <td><strong>站点可靠性工程 <span class="en">Site Reliability Engineering / SRE</span></strong><br><small class="muted">见 <a href="../ch03-key-practices/3.4-sre-resilience.html">第 3 章 SRE 与韧性工程（3.4）</a></small></td>
+                  <td>是<strong>整个组织的工作方式</strong>，不规定任何岗位或组织结构</td>
+                  <td>是把可靠性工程化的<strong>一套具体实践与岗位模型</strong>，属于实现 DevOps 目标的路径之一</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>DevOps 与 ITSM 常被摆成对立面</strong>（「有了 DevOps 就不需要变更管理了」）。
+            这是错的方向 —— 两者关注的是同一条价值流的不同侧面。</small></p>
+          <p class="muted"><small>本对照表为<strong>本站教学整理</strong>，官方未给出 DevOps 与三步工作法 / CALMS / ITSM / SRE 的逐项对照；
+            表中「DevOps（官方定义句）」一列依据的是 Blueprint 正文的官方定义，对照结论本身是本站判断。</small></p>
+          <p class="mb-0 muted"><small>与上表分开的一条官方事实 —— 官方样题答案键确认：对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>
+            —— 即 ITSM 是 DevOps 的配合面而非替代对象。该结论由 <strong>DOFD v3.4 官方样题答案键</strong>确认，展开见第 4 章；
+            本站只陈述结论，不复制题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把这句官方定义当成<strong>验收标准</strong>用：任何一份写着「DevOps 改造」的方案，逐条对照三个问题。</p>
+          <ul>
+            <li><strong>动的是人的协同方式吗？</strong> 看方案里有没有改变交接方式、责任边界或考核口径。
+              如果通篇只有采购清单和岗位任命，那它动的不是定义里的主语。</li>
+            <li><strong>终点是不是「进入生产」？</strong> 一个只覆盖到「测试通过」的流水线，
+              不缩短从想法到生产的总时间。用一个真实变更做端到端计时，比看流水线报表可靠。</li>
+            <li><strong>六个结果目标是不是被同时衡量？</strong> 只报「部署频率涨了 5 倍」而不报变更失败率与恢复时间，
+              等于把官方定义里的「同时」删掉了。度量的完整口径见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</li>
+            <li><strong>团队满意度算不算数？</strong> 定义把它写进了结果目标。
+              如果部署频率靠加班和夜间发布堆出来，按定义那不算达成。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四个检查动作为本站教学整理：官方给出了定义句，但未规定任何验收方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：直接问 DevOps 的定义或目标。
+              <strong>本站判断</strong>：正确选项通常同时含两个要素 —— <strong>人的协同</strong>与<strong>「快速」和「质量／稳定性」并存</strong>；
+              少了任何一个，都与官方定义句对不上。</li>
+            <li><strong>干扰项长什么样 · 之一：只留速度。</strong>
+              写成「尽可能快地把变更推到生产」——听起来完全正确，但删掉了「同时达成质量、稳定性、可靠性、可用性、安全」。
+              <strong>凡是只谈速度的选项一律先划掉。</strong></li>
+            <li><strong>干扰项长什么样 · 之二：换主语。</strong>
+              把主语从「人」换成「一套工具」「一个自动化平台」「一个团队」。
+              排除技巧（<strong>本站判断</strong>）：<strong>看主语</strong> —— 官方定义句的主语是 IT 组织中的<strong>人</strong>。</li>
+            <li><strong>干扰项长什么样 · 之三：缩短终点。</strong>
+              把「直至进入生产」写成「直至开发完成」或「直至通过测试」。
+              这类选项通常是给 Agile 的定义换了个标签。</li>
+            <li><strong>范围题</strong>：问 DevOps 覆盖到哪里。<strong>本站判断</strong>：答案方向是<strong>到生产</strong>（官方定义句逐字写的是 into production），
+              而不是到某个内部里程碑。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2。
+            以上只描述命题角度与干扰项构造方式，不复制官方样题的题干与选项原文；
+            本面引号内的题干句式与选项示例均为<strong>本站自造</strong>，非官方样题选项原文。本章练习题均为<strong>仿真题，非官方真题</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">人协同 → 让计划中的工作快速流到生产 → 同时守住质量、稳定、可靠、可用、安全，还有人的满意度。</p>
+          <p class="mb-0 muted"><small>只记一个字也行：<strong>「同时」</strong>。DevOps 的全部难度都在这两个字上 —— 单要快或单要稳，早就有成熟做法了。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-1-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-1-2</div>
+        <h3 class="kp__title">CALMS：定义的五个展开维度<span class="en">Culture · Automation · Lean · Measurement · Sharing</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">CALMS</span> 是 DevOps 的五个价值维度，
+            官方 Blueprint 逐字给出：<strong>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</strong>。
+            本站把它当作前面那句官方定义的五个<strong>可以分别检查</strong>的面来用。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:12%">字母</th><th style="width:22%">官方英文</th><th style="width:30%">在官方定义句里对应哪一部分</th><th>相关考纲术语（本站挂靠）</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>C</strong></td><td><span class="term">Culture</span></td>
+                  <td>「IT 组织中的人协同工作」—— 定义的主语</td>
+                  <td><strong>Organizational culture</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                </tr>
+                <tr>
+                  <td><strong>A</strong></td><td><span class="term">Automation</span></td>
+                  <td>让工作「快速流动」的手段之一</td>
+                  <td>DevOps toolchain · Continuous integration</td>
+                </tr>
+                <tr>
+                  <td><strong>L</strong></td><td><span class="term">Lean</span></td>
+                  <td>「快速流动」的另一半：去掉不产生价值的等待与交接</td>
+                  <td>Lean thinking · Waste · Value stream mapping</td>
+                </tr>
+                <tr>
+                  <td><strong>M</strong></td><td><span class="term">Measurement</span></td>
+                  <td>「获得反馈并持续改进」的依据</td>
+                  <td>DevOps metrics · Change lead time</td>
+                </tr>
+                <tr>
+                  <td><strong>S</strong></td><td><span class="term">Sharing</span></td>
+                  <td>让改进从一个团队扩散到整个组织</td>
+                  <td><strong>Collaboration and communication</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>五个字母及其英文全称出自 PeopleCert DevOps Foundation Blueprint，可引为官方；
+            <strong>CALMS</strong>、<strong>Organizational culture</strong>、<strong>Collaboration and communication</strong>
+            三个词条均逐字列于 DOFD v3.4 官方考纲术语表。
+            右侧两列（「在官方定义句里对应哪一部分」与「相关考纲术语」）<strong>均为本站教学整理</strong>，
+            官方未给出 CALMS 字母与定义要点、与术语表条目之间的归属关系；
+            所列术语本身逐字见于 DOFD v3.4 官方考纲术语表，但把它们挂到某个字母下是本站做法。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            一句定义没法被执行，也没法被检查。CALMS 解决的是一个很实际的问题：
+            <strong>组织总会只挑自己最擅长的那一个字母做，然后宣布转型完成。</strong>
+          </p>
+          <ul>
+            <li>某支付团队推行 DevOps 一年，成果是：单元测试覆盖率 82%、
+              持续集成每次提交 8 分钟出结果、全套容器化。<strong>A 这一项做得几乎无可挑剔。</strong></li>
+            <li>但变更前置时间从 47 天只降到 41 天。原因在别处：上线仍需三级审批，平均排队 26 天（L 没动）；
+              没人统计这 26 天在哪（M 没动）；团队之间互不知道对方踩过的坑，同一个配置错误在三个团队各犯一次（S 没动）。</li>
+            <li>更贵的一项是 C：因为考核没变，运维依然为每次变更承担全部风险，
+              于是审批越审越严 —— <strong>自动化越强，审批越紧，两者互相抵消。</strong></li>
+          </ul>
+          <p>
+            CALMS 的作用就是把这种「单点突进」变成可见的：五个格子摆在一起，
+            <strong>空着的那几格一目了然</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明「单字母突进」的失效机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">CALMS</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>三步工作法</strong><br><small class="muted">见 <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 核心原则（2.1 三步工作法总览）</a></small></td>
+                  <td><strong>价值观</strong>：组织应当重视<strong>什么</strong>，五个维度并列、无先后</td>
+                  <td><strong>原则</strong>：价值流应当具备什么能力，三步之间<strong>有顺序依赖</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>本节那句官方定义</strong></td>
+                  <td>是定义的<strong>展开</strong>，五个可检查的面</td>
+                  <td>是<strong>浓缩</strong>，一句话，用于判断「这算不算 DevOps」</td>
+                </tr>
+                <tr>
+                  <td><strong>Agile Manifesto</strong><br><small class="muted">见 <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></small></td>
+                  <td>五个名词，覆盖到<strong>生产运行</strong>，包含度量与分享</td>
+                  <td>四组「胜过」的取舍陈述，重心在<strong>交付软件的过程</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 工具链</strong><br><small class="muted">见 <a href="../ch06-automation/index.html">第 6 章 自动化与工具链架构</a></small></td>
+                  <td>五分之一是 A；另外四格与工具无关</td>
+                  <td>是 A 这一个字母的<strong>具体实现物</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>CALMS 与三步工作法都被称作「DevOps 核心」，但一个讲「重视什么」、一个讲「按什么顺序改」。</strong>
+            本站的判题建议：题干强调<strong>五个并列维度</strong>时指向 CALMS，强调<strong>流动 → 反馈 → 持续改进的顺序</strong>时指向三步工作法
+            （<strong>本站教学推断，非官方命题规则</strong>）。</small></p>
+          <p class="mb-0 muted"><small>本对照表及「价值观 / 原则」的分类为本站教学整理，官方未以这两个词区分 CALMS 与 The Three Ways。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>当五格体检表用，每格问一个不能靠感觉回答的问题：</p>
+          <ul>
+            <li><strong>C</strong>：上一次线上故障的复盘记录里，写的是「谁操作的」还是「哪个环节让这个操作变得容易出错」？</li>
+            <li><strong>A</strong>：从代码提交到可部署产物，中间还有几个需要人手动点的步骤？数出来，不要估。</li>
+            <li><strong>L</strong>：一个变更的总时长里，实际动手时间占几成？其余的等待发生在哪一环？</li>
+            <li><strong>M</strong>：变更前置时间、部署频率、变更失败率、平均恢复时间 MTTR，这四个数现在能不能立刻报出来？</li>
+            <li><strong>S</strong>：另一个团队上周踩的坑，这个团队知道吗？知道的渠道是什么 —— 文档、演练，还是口口相传？</li>
+          </ul>
+          <p class="mb-0 muted"><small>五个体检问题为本站教学整理，官方只给出 CALMS 五个字母及其英文全称，未规定评估方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>字母展开题（本站判断偏 Bloom 1）</strong>：问 CALMS 每个字母代表什么。这是送分题，
+              但<strong>干扰项全部是近义词替换</strong>，必须逐字记官方英文。</li>
+            <li><strong>三个高危替换</strong>：<strong>L 是 Lean 不是 Learning</strong>；
+              <strong>M 是 Measurement 不是 Monitoring / Metrics</strong>；
+              <strong>S 是 Sharing 不是 Security / Sourcing</strong>。
+              这三个替换词在 DevOps 语境里都成立，所以特别难排除 —— 只能靠死记官方原词。</li>
+            <li><strong>归类题</strong>：给一个做法，问属于 CALMS 哪一维度。
+              排除技巧：<strong>先判断这个做法有没有涉及工具</strong>，没有工具的一律不是 A；
+              涉及「跨团队传播经验」的是 S 不是 C。</li>
+            <li><strong>M 的边界题</strong>：度量的目的是改进系统，不是评价人。
+              官方样题答案键确认：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>
+              —— 该结论由 <strong>DOFD v3.4 官方样题答案键</strong>确认，凡是把度量写成「考核个人绩效」的选项都可以直接排除。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级对应为本站教学推断。以上只描述命题角度与干扰项构造方式，
+            不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">C 文化 · A 自动化 · L 精益 · M 度量 · S 分享 —— L 是 Lean 不是 Learning，S 是 Sharing 不是 Security。</p>
+          <p class="mb-0 muted"><small>结构记法：<strong>C 是主语，A 与 L 是让工作变快的两条路，M 提供依据，S 让改进离开单个团队。</strong>
+            五格里空得最久的那一格，通常就是转型卡住的地方。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-1-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-1-3</div>
+        <h3 class="kp__title">DevOps 不是什么：六个误解<span class="en">What DevOps is not</span></h3>
+        <div class="badge-row"><span class="badge badge--note">📝 教学整理</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            前面那句官方定义用正面说法划出了 DevOps 的范围，但真正让组织走弯路的是<strong>它的反面</strong>。
+            六条否定式表述：DevOps <strong>不是</strong>一套工具、<strong>不是</strong>一个岗位、
+            <strong>不是</strong>一个新部门、<strong>不是</strong> NoOps、
+            <strong>不等于</strong>自动化、<strong>不等于</strong> Agile。
+          </p>
+          <p>
+            这六条有一个共同结构：<strong>都在把「协同方式的改变」偷换成一件可以采购、可以任命、可以宣布完成的东西。</strong>
+            协同方式改起来慢、看不见、无法在季度汇报里展示 —— 所以每个误解都比真相更有吸引力。
+          </p>
+          <p class="mb-0 muted"><small>「六个误解」的归纳与分类为<strong>本站教学整理</strong>，
+            官方 Blueprint 给出的是定义句与六个色块的正面表述，未以「DevOps 不是什么」的形式列出清单。
+            其中 <strong>NoOps</strong> 一词不在 DOFD v3.4 官方考纲的 66 条术语表内
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，此处仅作为需要澄清的行业说法出现。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这些误解不是学术分歧，每一条都有明确的账单。三个典型走法：
+          </p>
+          <ul>
+            <li><strong>成立「DevOps 部门」。</strong> 某零售企业从开发和运维各抽三人组建 12 人的 DevOps 部，
+              负责流水线与发布。半年后的实际效果是：原来开发与运维之间有一堵墙，
+              现在变成<strong>两堵</strong> —— 开发把活扔给 DevOps 部，DevOps 部再扔给运维，
+              而且新增了一次排队。<strong>设部门解决的是「归谁管」，而定义要解决的是「谁和谁一起干」。</strong></li>
+            <li><strong>招「DevOps 工程师」。</strong> 岗位描述写的是流水线、容器、脚本。
+              入职三个月后此人成为全公司唯一懂发布流程的人 —— 一个新的单点故障。
+              考核口径没变、责任边界没变，唯一的变化是把跨部门协作压缩成了一个人的待办清单。</li>
+            <li><strong>上工具链。</strong> 采购完成，看板、流水线、监控大屏齐备，
+              变更前置时间从 47 天变成 44 天。因为占大头的 26 天审批排队不在任何一个工具的范围内 ——
+              <strong>工具能压缩「动手时间」，压缩不了「等人批准的时间」。</strong></li>
+          </ul>
+          <p>
+            这三笔账的共同点是：钱都花在了<strong>看得见的那一半</strong>，
+            而官方定义里的「人协同工作」始终没有被触碰。
+          </p>
+          <p class="mb-0 muted"><small>三个案例均为<strong>本站构造的教学示例</strong>，用于说明误解的代价机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 600" role="img" aria-label="DevOps 不是什么：六个常见误解环绕在真正定义之外的排除关系图">
+
+              <!-- 中心：真正的定义 -->
+              <rect x="320" y="206" width="300" height="148" rx="14" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="470" y="240" class="f-1" font-size="17" font-weight="700" text-anchor="middle">DevOps 是</text>
+              <text x="470" y="276" class="s-ink" font-size="15" text-anchor="middle">人协同工作的方式</text>
+              <text x="470" y="308" class="s-muted" font-size="13" text-anchor="middle">是工作方式，不是可交付物</text>
+
+              <!-- 连线 -->
+              <line x1="272" y1="74"  x2="330" y2="212" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="668" y1="74"  x2="610" y2="212" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="272" y1="288" x2="316" y2="278" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="668" y1="288" x2="624" y2="278" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="272" y1="494" x2="334" y2="350" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="668" y1="494" x2="606" y2="350" class="s-5" stroke-width="2" stroke-dasharray="6 5"/>
+
+              <g class="f-5" font-size="16" font-weight="700" text-anchor="middle">
+                <text x="296" y="148">≠</text>
+                <text x="644" y="148">≠</text>
+                <text x="294" y="268">≠</text>
+                <text x="646" y="268">≠</text>
+                <text x="298" y="428">≠</text>
+                <text x="642" y="428">≠</text>
+              </g>
+
+              <!-- 六个误解 -->
+              <rect x="20"  y="30"  width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="34" y="62" class="s-ink" font-size="15" font-weight="700">误解 1：一套工具</text>
+              <text x="34" y="86" class="s-muted" font-size="13">工具最容易采购、最容易展示</text>
+
+              <rect x="668" y="30"  width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="682" y="62" class="s-ink" font-size="15" font-weight="700">误解 2：一个岗位</text>
+              <text x="682" y="86" class="s-muted" font-size="13">招聘市场把它写成了职位名</text>
+
+              <rect x="20"  y="250" width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="34" y="282" class="s-ink" font-size="15" font-weight="700">误解 3：一个新部门</text>
+              <text x="34" y="306" class="s-muted" font-size="13">组织习惯用设部门解决问题</text>
+
+              <rect x="668" y="250" width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="682" y="282" class="s-ink" font-size="15" font-weight="700">误解 4：NoOps</text>
+              <text x="682" y="306" class="s-muted" font-size="13">把运维不再背锅读成运维消失</text>
+
+              <rect x="20"  y="460" width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="34" y="492" class="s-ink" font-size="15" font-weight="700">误解 5：等于自动化</text>
+              <text x="34" y="516" class="s-muted" font-size="13">自动化只是 CALMS 里的一格</text>
+
+              <rect x="668" y="460" width="252" height="76" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="682" y="492" class="s-ink" font-size="15" font-weight="700">误解 6：等于 Agile</text>
+              <text x="682" y="516" class="s-muted" font-size="13">都强调快速交付，容易画等号</text>
+
+              <text x="470" y="574" class="f-1" font-size="14" font-weight="700" text-anchor="middle">六个误解的共同点：把「协同方式的改变」换成一件可以采购或任命的东西</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 1-1-2　六个误解与真正的定义。</strong>
+            这张图要看懂的是<strong>位置关系</strong>：六个说法全都在圈外，且每一条都指着中心却不等于中心。
+            它们不是「不完整的 DevOps」，而是<strong>用一件可交付物替换掉了定义的主语</strong> ——
+            工具可以买、岗位可以招、部门可以设，唯独「人怎么一起工作」买不到也任命不了。
+            六条误解的归纳与图示结构均为<strong>本站教学整理</strong>，官方未以此形式列出。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">被拿来替代 DevOps 的说法</th><th style="width:34%">这个误解为什么会产生</th><th>实际是什么 · 与 DevOps 的边界在哪</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>不是一套工具</strong></td>
+                  <td>工具是唯一可以立刻采购、立刻演示、立刻写进汇报的部分；厂商也乐于把产品称作「DevOps 平台」</td>
+                  <td>工具属于 CALMS 的 <strong>A</strong>，是<strong>五分之一</strong>。官方定义句里没有出现任何工具</td>
+                </tr>
+                <tr>
+                  <td><strong>不是一个岗位</strong></td>
+                  <td>招聘网站需要一个可检索的职位名；「DevOps 工程师」比「改变协作方式的人」好写得多</td>
+                  <td>DevOps 是<strong>整个组织的工作方式</strong>。把它压给一个岗位，等于制造新的单点故障。
+                      角色的三个切面见本章 <a href="1.4-values-goals-stakeholders.html">1.4 价值、目标与干系人</a>，
+                      组织设计见 <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></td>
+                </tr>
+                <tr>
+                  <td><strong>不是一个新部门</strong></td>
+                  <td>组织解决跨部门问题的默认手段就是再设一个部门，并给它一个负责人</td>
+                  <td>新部门<strong>增加一堵墙和一次交接</strong>，与「让工作快速流动」的目标直接相反</td>
+                </tr>
+                <tr>
+                  <td><strong>不是 NoOps</strong> <span class="badge badge--ext">🧭 延伸 · 非考纲</span><br><small class="muted">不在 DOFD v3.4 的 66 条术语表内</small></td>
+                  <td>「开发能自助上线」被读成「不再需要运维」；云与托管服务加深了这个印象</td>
+                  <td>运维工作没有消失，只是<strong>形态改变</strong>：从手工执行变成建平台、定标准、保障可靠性</td>
+                </tr>
+                <tr>
+                  <td><strong>不等于自动化</strong></td>
+                  <td>自动化见效快、可量化，是转型里最容易证明自己在推进的事</td>
+                  <td>自动化<strong>放大现有流程</strong>：流程是对的，它让好结果更快；流程是错的，它让错误更快、更多</td>
+                </tr>
+                <tr>
+                  <td><strong>不等于 Agile</strong></td>
+                  <td>两者都讲小批量、快速交付、迭代反馈，词汇高度重叠</td>
+                  <td>范围不同：Agile 的重心在<strong>把软件做出来</strong>，DevOps 的终点是<strong>进入生产并稳定运行</strong>。
+                      <em>Agile Manifesto</em> 逐字列于 DOFD v3.4 官方考纲术语表；相关内容见 <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「DevOps 等于自动化」</strong>。
+            它比其他五条更难识破，因为自动化<strong>确实</strong>是 DevOps 的组成部分 ——
+            错的不是内容，是<strong>「等于」</strong>。判据很简单：
+            自动化只覆盖 CALMS 的 A，一个把审批排队、考核冲突原封不动保留下来的组织，
+            自动化做得再好，官方定义里的六个结果目标也不会同时改善。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以「误解 — 成因 — 实际」的形式给出对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>拿到一份 DevOps 转型方案时，用四个动作快速判断它踩了哪条误解：</p>
+          <ul>
+            <li><strong>数交接次数。</strong> 方案实施后，一个变更从提交到生产要经过几次「换人接手」？
+              次数不减反增，说明加的是部门或岗位，不是协同。</li>
+            <li><strong>翻考核表。</strong> 开发与运维的考核指标有没有出现<strong>共同项</strong>？
+              一条都没有，那么无论上多少工具，两边的行为动机仍然相反。</li>
+            <li><strong>问排队时间归谁。</strong> 变更前置时间里占比最大的那段等待，
+              方案里有没有明确的责任人？没有，就是典型的「买工具绕开难题」。</li>
+            <li><strong>看谁按下上线按钮。</strong> 如果全公司只有一两个人能完成发布，
+              那不是 DevOps，是把跨部门风险浓缩到了个人身上。</li>
+          </ul>
+          <p class="mb-0 muted"><small>四个判断动作为本站教学整理，官方未规定此类评估清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>反向题（最常见）</strong>：「以下哪一项<strong>不属于</strong> DevOps / 不是 DevOps 的目标」。
+              排除技巧：<strong>先找那个把 DevOps 缩成一件具体交付物的选项</strong> ——
+              一个工具、一个岗位、一个团队、一次自动化改造，通常就是答案。</li>
+            <li><strong>干扰项长什么样 · 之一：正确但不完整。</strong>
+              「DevOps 是一组自动化实践」——内容没错，范围塌了。
+              凡是把 DevOps 限定在 CALMS 单个字母上的选项都要排除。</li>
+            <li><strong>干扰项长什么样 · 之二：组织结构式答案。</strong>
+              「建立一个专职 DevOps 团队」这类选项在成功因素题、领导力题里反复出现，
+              读起来像标准答案，但方向是错的。</li>
+            <li><strong>成功因素题</strong>：官方样题答案键确认，
+              DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>
+              —— 该结论由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这一条直接否掉了「买工具 / 设部门 / 招人」三类选项：<strong>看到「文化」和「管理层承诺」优先考虑。</strong></li>
+            <li><strong>选择依据题</strong>：官方样题答案键确认，
+              决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>
+              —— 该结论由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              换言之不存在一份人人照抄的工具清单；这条的展开见本章
+              <a href="1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型判断为本站教学推断；以上只陈述官方答案键确认的结论与命题角度，
+            不复制任何官方样题的题干与选项原文。<strong>本面引号内的题干句式与选项示例均为本站自造</strong>，
+            用于演示干扰项的构造方式，非官方样题选项原文。本章练习题均为<strong>仿真题，非官方真题</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">工具能买、岗位能招、部门能设 —— 唯独协同方式必须改，改不动的那部分才是 DevOps。</p>
+          <p class="mb-0 muted"><small>考场用的一句话：<strong>凡是把 DevOps 说成「一个东西」的选项，先划掉。</strong>
+            它是一种工作方式，不是一件可交付物。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>主语是<strong>人协同工作</strong>，终点是<strong>进入生产</strong>，
+          <strong>六个结果目标必须同时达成</strong>（PeopleCert Blueprint 官方定义句；六项展开见
+          <a href="1.4-values-goals-stakeholders.html">1.4</a>）</li>
+        <li>名称是 <strong>Development + Operations</strong> 的合成词 —— 两个被分开考核的职能被写进同一个词</li>
+        <li>CALMS 逐字：<strong>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</strong>；
+          <strong>L 是 Lean 不是 Learning，S 是 Sharing 不是 Security</strong></li>
+        <li>六条否定：不是工具、不是岗位、不是部门、不是 NoOps、不等于自动化、不等于 Agile（本站教学整理，官方未以「DevOps 不是什么」的形式列出清单）</li>
+        <li>只谈速度、只谈自动化、把主语换成工具或团队 —— 这三类选项一律先排除（本站判题建议，非官方命题规则）</li>
+        <li>关键成功因素是<strong>管理层对文化变革的承诺</strong>；
+          决定采用哪些原则与实践的是<strong>业务战略与目标</strong>（均由 DOFD v3.4 官方样题答案键确认）</li>
+        <li>度量的目的是改进系统，<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（DOFD v3.4 官方样题答案键确认）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本节的 DevOps 定义句为<strong>官方原文</strong>，出自
+      PeopleCert《DevOps Foundation® Blueprint》正文（英文逐字原文见 kp-1-1-1 ①，中文为本站译文）；
+      CALMS 五个字母（<em>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</em>）
+      同出自该 Blueprint —— 它在正文定义句之外，还以六个色块给出 CALMS 五值、The Three Ways、
+      Organization、Principles &amp; Practices、Related Frameworks、Benefits。
+      <em>Defining DevOps</em> 是 DOFD v3.4 课程大纲 M1 Exploring DevOps 的模块子项；
+      「DevOps」「CALMS」「Organizational culture」「Collaboration and communication」「Lean thinking」
+      「Waste」「DevOps metrics」「DevOps toolchain」「Site Reliability Engineering」「IT service management」
+      等术语均列于 DOFD v3.4 官方考纲术语表。<br>
+      四条判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认：对 DevOps 最关键的 ITSM 流程为组织变革管理、
+      服务连续性管理与事件管理三者皆是；DevOps 的关键成功因素是管理层对文化变革的承诺；
+      用指标控制和评价员工不属于 DevOps 领导力的目标；以及决定采用哪些原则与实践的是业务战略与目标。
+      本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      「定义句的中文译文」「定义的四个支撑面」「CALMS 与定义要点、与术语表条目的挂靠」
+      「CALMS 与三步工作法的价值观 / 原则分类」「DevOps 与三步工作法 / CALMS / ITSM / SRE 的逐项对照」
+      「六个误解的归纳与成因对照」「各面的判断动作与题型 Bloom 归类」
+      均为<strong>本站教学整理或推断</strong>，已在相应内容下方就地标注；<strong>NoOps</strong> 不在官方术语表内，
+      仅作为需要澄清的行业说法出现。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

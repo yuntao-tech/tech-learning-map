@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.5 DevSecOps · DevOps Foundation 学习站</title>
+<meta name="description" content="DevSecOps 把安全变成共同责任并把安全活动嵌入部署流水线：本节讲清安全评审为什么成为瓶颈、安全左移的四种形态，以及官方样题确认的结论 —— 把安全测试并入左移测试所需的实践是 DevSecOps。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.5-devsecops"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.5 DevSecOps</h1>
+      <div class="page-head__en">DevSecOps</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        很多组织把开发和运维都改造完了，唯独安全还留在末端：迭代做完，交给安全团队评审，等结论。
+        本节要记牢的一条官方结论是：<strong>要把安全测试并入「左移」的测试方法、消除迭代后安全评审造成的延迟，需要的实践是 DevSecOps</strong> —— 不是持续测试。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>DevSecOps 到底改了什么 —— 它和「买一套安全扫描工具」差在哪</li>
+        <li>安全评审为什么几乎必然排队 —— 以及为什么给安全团队加人通常解决不了（本站教学整理）</li>
+        <li>官方样题确认的那道题：为什么答案是 DevSecOps 而不是持续测试</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-5-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 520" role="img" aria-label="安全评审集中在末端时的排队情况，与安全能力左移之后的对比">
+          <defs>
+            <marker id="ah-35-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-35-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <!-- ① 末端评审 -->
+          <text x="24" y="30" class="f-2" font-size="17" font-weight="700">① 安全评审集中在迭代末端 —— 它成了整条价值流的约束</text>
+          <text x="24" y="52" class="s-muted" font-size="13">开发提速了、测试自动化了，唯独安全评审还是每两周开一次的人工关卡</text>
+
+          <rect x="24"  y="80"  width="140" height="72" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="180" y="80"  width="140" height="72" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="336" y="80"  width="150" height="72" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="596" y="104" width="152" height="26" rx="8"  class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <rect x="790" y="80"  width="146" height="72" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+            <text x="94"  y="118">需求 / 设计</text>
+            <text x="250" y="118">编码</text>
+            <text x="411" y="118">构建与测试</text>
+            <text x="863" y="118">发布</text>
+          </g>
+          <g text-anchor="middle" class="s-muted" font-size="12">
+            <text x="94"  y="140">两周一个迭代</text>
+            <text x="250" y="140">每日多次提交</text>
+            <text x="411" y="140">流水线自动跑</text>
+            <text x="863" y="140">在等评审结论</text>
+          </g>
+
+          <!-- 排队 -->
+          <text x="540" y="74" class="f-2" font-size="12" font-weight="650" text-anchor="middle">排队的发布</text>
+          <rect x="502" y="86"  width="76" height="12" rx="3" class="f-2"/>
+          <rect x="502" y="104" width="76" height="12" rx="3" class="f-2"/>
+          <rect x="502" y="122" width="76" height="12" rx="3" class="f-2"/>
+          <rect x="502" y="140" width="76" height="12" rx="3" class="f-2"/>
+
+          <text x="672" y="98"  class="f-2" font-size="15" font-weight="700" text-anchor="middle">安全评审</text>
+          <text x="672" y="148" class="s-muted" font-size="12" text-anchor="middle">3 人 · 每两周一次窗口</text>
+
+          <path d="M166 116 L176 116" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M322 116 L332 116" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M488 116 L498 116" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M580 116 L592 116" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-35-2)"/>
+          <path d="M750 117 L786 117" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-35-2)"/>
+
+          <text x="24" y="182" class="s-muted" font-size="13">判据：评审<tspan font-weight="700">前面排着队</tspan>、发布环节<tspan font-weight="700">在后面等它</tspan> —— 这两条同时成立，才叫约束</text>
+          <text x="24" y="204" class="f-2" font-size="13" font-weight="700">结果：迭代 2 周就做完，发布平均等 8 天；一旦命中高危项要返工，就再排一轮</text>
+
+          <path d="M24 226 L936 226" class="s-stroke" stroke-width="1.5" stroke-dasharray="7 6"/>
+
+          <!-- ② 左移后 -->
+          <text x="24" y="258" class="f-1" font-size="17" font-weight="700">② 安全能力左移 —— 约束被打开</text>
+          <text x="24" y="280" class="s-muted" font-size="13">同样的检查项被拆进各阶段自动执行，末端只留下少量需要人判断的高风险项</text>
+
+          <rect x="24"  y="300" width="140" height="76" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="180" y="300" width="140" height="76" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="336" y="300" width="150" height="76" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="502" y="300" width="190" height="76" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <rect x="790" y="300" width="146" height="76" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+            <text x="94"  y="332">需求 / 设计</text>
+            <text x="250" y="332">编码</text>
+            <text x="411" y="332">构建与测试</text>
+            <text x="597" y="332">安全评审（人工）</text>
+            <text x="863" y="332">发布 / 运行</text>
+          </g>
+          <g text-anchor="middle" font-size="12">
+            <text x="94"  y="356" class="f-3">＋ 威胁建模</text>
+            <text x="250" y="356" class="f-3">＋ 静态代码扫描</text>
+            <text x="411" y="356" class="f-3">＋ 依赖检查 · 动态测试</text>
+            <text x="597" y="356" class="s-muted">只看剩余的少量高风险项</text>
+            <text x="863" y="354" class="f-2">策略即代码</text>
+            <text x="863" y="370" class="f-2">（运行期，不算左移）</text>
+          </g>
+
+          <path d="M166 338 L176 338" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M322 338 L332 338" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M488 338 L498 338" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+          <path d="M694 338 L786 338" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-1)"/>
+
+          <text x="24" y="404" class="f-1" font-size="13" font-weight="700">安全活动的总量反而增加了，但绝大多数由流水线自动完成，不再需要人排队</text>
+          <text x="24" y="424" class="s-muted" font-size="13">人工评审的输入量下降，它不再是唯一入口 —— 约束会转移到别处，所以要重新测量</text>
+
+          <text x="24" y="470" class="s-ink" font-size="13" font-weight="700">一个发布等待安全评审的时间</text>
+          <text x="252" y="469" class="s-muted" font-size="12" text-anchor="end">左移前</text>
+          <rect x="264" y="456" width="420" height="16" rx="3" class="f-2"/>
+          <text x="694" y="469" class="f-2" font-size="12" font-weight="700">8 天</text>
+          <text x="252" y="497" class="s-muted" font-size="12" text-anchor="end">左移后</text>
+          <rect x="264" y="484" width="26" height="16" rx="3" class="f-1"/>
+          <text x="300" y="497" class="f-1" font-size="12" font-weight="700">0.5 天</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-5-1　安全评审从末端关卡变成全流程内建。</strong>
+        这张图要看懂的是<strong>约束的位置发生了什么变化</strong>，而不是「安全工作变少了」。
+        上半部分里，安全评审前面排着队、后面的发布在等它，符合约束的两条判据，所以它单独锁死了整条价值流的产出。
+        下半部分的安全检查项<strong>总量并没有减少，反而更多</strong>，但它们被拆散到各阶段自动执行，
+        只有少量真正需要人判断的高风险项才进人工评审 —— 队列消失，约束随之转移。
+        图中的人数、天数为示意，用于说明机制，与 kp-3-5-1、kp-3-5-2 的保险公司示例为同一组数字。
+        <strong>把安全评审识别为约束，是本站套用约束理论（见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 2.3</a>）所作的教学整理，官方文件未给出这一结论。</strong>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-5-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-5-1</div>
+        <h3 class="kp__title">DevSecOps 是什么</h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevSecOps <span class="en">DevSecOps</span></span>
+            是把<strong>安全作为所有人的共同责任</strong>、并把安全活动<strong>嵌入 DevOps 全流程与部署流水线</strong>的实践，
+            而不是在交付末端加一道人工审批。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个支点</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>安全是共同责任</strong></td><td>安全不再由某个部门独占。写代码的人对自己引入的风险负责，安全团队负责让这件事变得容易做对</td></tr>
+                <tr><td><strong>安全内建到流水线</strong></td><td>安全检查是<span class="term">部署流水线 <span class="en">Deployment pipeline</span></span>里的自动步骤，和单元测试一样跟着每次提交跑，而不是一次性的阶段</td></tr>
+                <tr><td><strong>安全能力左移</strong></td><td>把安全测试并入<span class="term">左移 <span class="en">Shift left</span></span>的测试方法：在需求、编码、构建阶段就发现问题，而不是等到发布前</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>DevSecOps</strong> 与 <strong>Shift left</strong> 均列于 DOFD v3.4 官方考纲术语表；
+            v3.4 课程大纲 M3 模块（Key DevOps Practices）把 <em>DevSecOps</em> 列为子项。
+            上表把它拆成三个支点是本站的教学整理，官方未以此形式分条表述。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点非常具体：<strong>敏捷把开发周期压到了两周，安全评审却还是按季度节奏运转，于是发布被评审卡住。</strong>
+          </p>
+          <ul>
+            <li>设想一家保险公司：12 个团队跑两周迭代，代码开发和自动化测试都已到位。
+              但按内部规定，任何面向客户的变更上线前必须通过安全评审 —— 安全团队 3 个人，
+              评审窗口每两周开一次。<strong>一个两周做完的功能，平均要再等 8 天才拿到评审结论。</strong></li>
+            <li>更糟的是命中问题之后的代价：评审发现鉴权设计有缺陷，改动涉及数据模型，
+              开发返工两周，然后<strong>重新排队等下一次评审窗口</strong>。名义上的两周迭代，
+              实际交付节奏退化到 6 周以上。</li>
+            <li>团队的典型应对是绕过去：把变更拆小到「不算面向客户」以规避评审，
+              或者赶在窗口前突击提交。<strong>结果是安全评审的实际覆盖率下降，安全反而变差了。</strong></li>
+          </ul>
+          <p>
+            这三条合起来说明一件事：<strong>把安全放在末端，既拖慢交付，又拿不到安全</strong>。
+            DevSecOps 的答案不是取消评审，而是把评审里能自动化的部分挪到前面去，
+            让末端只处理真正需要人判断的少数项。
+          </p>
+          <p class="mb-0 muted"><small>以上保险公司案例为<strong>本站构造的教学示例</strong>，人数与天数用于说明机制，非真实调研数据。
+            官方文件只给出 DevSecOps 这一术语，未提供案例。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">DevSecOps</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>持续测试 <span class="en">Continuous testing</span></strong><br><small class="muted">见 <a href="3.1-continuous-testing.html">3.1 持续测试</a></small></td>
+                  <td>回答<strong>「测什么」</strong>：把<strong>安全</strong>这项能力并入左移的测试方法，并让安全成为共同责任</td>
+                  <td>回答<strong>「什么时候测、测多频繁」</strong>：测试是贯穿流水线的持续活动。它强调的是测试的节奏与覆盖，<strong>不特指安全这一维度</strong>；考题正是拿它作 DevSecOps 的主干扰项</td>
+                </tr>
+                <tr>
+                  <td><strong>ChatOps</strong><br><small class="muted">见 <a href="3.6-chatops.html">3.6 ChatOps</a></small></td>
+                  <td>改变的是<strong>安全活动发生在流程的哪个位置</strong></td>
+                  <td>改变的是<strong>协作与操作发生在哪个界面</strong>：把工具操作与对话放进同一个聊天频道。与安全评审的时机无关</td>
+                </tr>
+                <tr>
+                  <td><strong>漏洞扫描 / 安全告警工具</strong></td>
+                  <td>是一套<strong>实践与责任模型</strong>：谁负责、在哪个阶段做、结果回到谁手上</td>
+                  <td>是<strong>工具</strong>。买了工具但报告仍然堆在安全团队的看板上、仍然只在发布前跑一次，约束原地不动</td>
+                </tr>
+                <tr>
+                  <td><strong>安全文化 <span class="en">Safety culture</span></strong><br><small class="muted">见 <a href="../ch04-frameworks/index.html">第 4 章 安全文化（4.5）</a></small></td>
+                  <td>讲的是<strong>信息安全</strong>：漏洞、攻击面、合规</td>
+                  <td>讲的是<strong>可以安全地说出坏消息</strong>的组织氛围，与信息安全无关。中文译名相近，是最典型的翻译陷阱</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>DevSecOps 和持续测试都在说「早点测、一直测」，考题正是用这一点设干扰项</strong>。
+            分界线是「缺的那项能力是什么」——
+            题干强调<strong>安全评审、安全测试、安全团队</strong>时，缺的是安全能力，答案是 DevSecOps；
+            题干强调<strong>测试太晚、只在末端测一次</strong>而不提安全，答案才是持续测试。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分；
+            表中「安全文化不是信息安全」的提醒依据的是官方术语 <em>Safety culture</em> 的含义。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一个组织是不是真在做 DevSecOps，看四个可观察的事实，而不是看有没有买工具：</p>
+          <ul>
+            <li><strong>安全结论回到谁手上</strong>：扫描结果是直接出现在提交者的流水线输出里，
+              还是汇总成月报交给安全团队？<strong>回到作者手上才算左移。</strong></li>
+            <li><strong>安全检查是否与提交同频</strong>：跟着每次提交跑，还是发布前跑一次？
+              后者只是把人工评审换成了工具评审，位置没变。</li>
+            <li><strong>门禁分级是否明确</strong>：哪些问题<strong>阻断构建</strong>（如引入了已知高危漏洞的依赖），
+              哪些<strong>只记录不阻断</strong>。全部阻断会让流水线天天红，团队很快学会跳过；全部不阻断则等于没做。</li>
+            <li><strong>安全需求是否进入待办</strong>：威胁建模的产出是否变成可排期的需求条目，
+              还是停留在一份没人认领的评审意见文档。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条判断动作为本站教学整理，官方文件只给出 <em>DevSecOps</em> 这一术语，未规定实施步骤或检查清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方确认的核心考点</strong>：官方样题答案键确认 ——
+              <strong>把安全测试并入左移的测试方法、消除迭代后安全评审造成的延迟，所需要的实践是 DevSecOps</strong>。
+              命题角度是给出一个安全评审滞后于迭代节奏的场景，问应采用哪项实践。
+              这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。</li>
+            <li><strong>最主要的干扰项是持续测试</strong>。它听起来完全合理 —— 题干确实在说测试和左移。
+              <strong>排除技巧：持续测试解决的是「测得不够勤、太靠后」，它不提供安全能力。</strong>
+              题干里出现「安全评审」「安全测试」这类限定词时，缺的是<strong>安全</strong>这一维度，
+              只有 DevSecOps 同时覆盖「安全」与「并入流水线」两件事。</li>
+            <li><strong>第二类干扰项是 ChatOps</strong>：它属于同一模块的相邻实践，容易被顺手选中。
+              判据很干脆：ChatOps 改的是<strong>协作界面</strong>，与安全活动在流程中的位置无关。</li>
+            <li><strong>第三类干扰项是「部署漏洞告警 / 上安全监控工具」</strong>。
+              这类选项的共同特征是<strong>把安全活动留在原位、只是加了个工具</strong>，
+              而题干要求的是把安全测试<strong>移到左边</strong>。凡是不改变时机、只增加工具的选项，先划掉。</li>
+            <li><strong>另一种问法</strong>：直接问 DevSecOps 的核心主张。正确方向是
+              「<strong>安全是所有人的共同责任，并内建到流程中</strong>」；
+              干扰项常写成「由专门的安全团队负责全部安全事务」「在发布前集中做一次安全审计」——
+              这两条恰好是 DevSecOps 要取代的做法。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项的具体长相为本站教学推断，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">题干出现「安全评审 / 安全测试」→ DevSecOps；只说「测得太晚」不提安全 → 持续测试；说的是「敢不敢报坏消息」→ 安全文化，三者都别混。</p>
+          <p class="muted"><small>本条为本站应试口诀，官方未作此表述。</small></p>
+          <p class="mb-0 muted"><small>三个支点连读：<strong>共同责任 · 内建流水线 · 安全左移</strong>。缺任何一个都只是「买了扫描工具」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-5-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-5-2</div>
+        <h3 class="kp__title">安全为什么天然成为约束<span class="en">Security review as the constraint</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            安全环节成为<span class="term">约束 <span class="en">Constraint</span></span>不是偶然，而是三个结构性事实叠加的结果。
+            这三条与团队是否努力无关：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">结构性事实</th><th>为什么它把安全推向约束位置</th></tr></thead>
+              <tbody>
+                <tr><td><strong>安全团队人少</strong></td><td>安全人员与开发人员的比例通常是数量级上的悬殊。一个集中的小团队要服务全部产品线，任何走它这条路的工作都要排队</td></tr>
+                <tr><td><strong>评审集中在末端</strong></td><td>安全评审传统上放在「即将上线前」，正好是价值流最窄的出口。此处一堵，前面所有加速全部作废</td></tr>
+                <tr><td><strong>审计与合规要求</strong></td><td>需要留下书面证据、需要独立方签字。这类要求天然倾向「集中、人工、一次性」，与流水线的高频节奏相反</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            套用<span class="term">约束理论 <span class="en">Theory of Constraints / ToC</span></span>的判据就很清楚：
+            安全评审<strong>前面排着队、后面的发布在等它</strong> —— 两条同时成立，它就是约束。
+          </p>
+          <div class="src-note">
+            「把安全评审识别为约束」是本站把<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>套用到安全流程上的<strong>教学整理</strong>。
+            <em>Constraint</em>、<em>Theory of Constraints</em>、<em>DevSecOps</em> 三个术语都在 DOFD v3.4 官方术语表内，
+            但<strong>官方未把「安全是典型约束」写成结论</strong>，考试不会按这个说法设问。
+            本卡的价值在于解释 DevSecOps 为什么必须存在，而不是提供一个需要背诵的官方论断。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            用约束视角看安全，解决的是一个非常昂贵的误诊：<strong>钱花在了安全环节之外，或者花在了给安全团队加人上，交付速度纹丝不动。</strong>
+          </p>
+          <ul>
+            <li><strong>误诊一：投在非约束环节。</strong> 还是上面那家保险公司，发现发布慢，
+              于是把构建时间从 18 分钟优化到 4 分钟，还给每个团队配了代码生成工具。
+              <span class="term">变更前置时间 <span class="en">Change lead time</span></span>从 26 天降到 25 天 ——
+              <strong>省下的 14 分钟，淹没在等安全评审的 8 天里。</strong></li>
+            <li><strong>误诊二：直接给约束加人。</strong> 同一家企业随后把安全团队从 3 人扩到 6 人。
+              评审吞吐确实翻倍，但排队时间只从 8 天降到 5 天，因为<strong>评审窗口仍然是每两周一次</strong>，
+              而且新人需要三个月才能独立评审。花了双倍人力成本，买到 3 天。</li>
+            <li><strong>真正有效的第一步是不花钱的：</strong> 把评审清单里 70% 的检查项
+              （依赖是否含已知高危漏洞、是否有硬编码凭据、传输是否加密）改成流水线里的自动检查，
+              人工评审只看剩下的设计类风险。<strong>输入量降下来，窗口频率不变也不再排队。</strong></li>
+          </ul>
+          <p>
+            这正是<strong>五步聚焦法</strong>的顺序：<strong>先挖尽（把现有产能用满、把不该占用它的工作挪走），再谈扩容。</strong>
+            DevSecOps 的「左移」在经济上就是「挖尽」这一步的具体做法。
+          </p>
+          <p><span class="badge badge--ext">🧭 延伸 · 非考纲</span><br>
+            <small class="muted">五步聚焦法出自 Goldratt 约束理论原著，不在 DOFD v3.4 的 66 条术语表内，
+            详见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</small></p>
+          <p class="mb-0 muted"><small>以上仍是同一个保险公司示例，为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据；
+            「左移 ≈ 挖尽」这一类比为本站教学整理，官方未作此对应。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比</th><th style="width:38%">安全评审作为约束</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>约束 vs 单点故障 <span class="en">SPOF</span></strong></td>
+                  <td>关注<strong>速度</strong>：它在，发布慢，工作在它面前排队</td>
+                  <td>关注<strong>可用性</strong>：它挂，系统停。安全评审慢不会让线上服务宕机，所以它是约束不是 SPOF</td>
+                </tr>
+                <tr>
+                  <td><strong>约束 vs 能力不足</strong></td>
+                  <td>是<strong>结构问题</strong>：评审的位置、频率、输入量决定的</td>
+                  <td>不是「安全团队不努力」。换一批人、加一倍人，位置和窗口不变，排队照旧</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">安全团队的角色</th><th style="width:38%">赋能者（DevSecOps 期望的形态）</th><th>守门人（传统做法）</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>怎么产出价值</strong></td>
+                  <td>产出<strong>可复用的能力</strong>：安全默认模板、自助扫描、依赖白名单、威胁建模指导，让别人自己做对</td>
+                  <td>亲自<strong>逐个审批</strong>。每增加一个团队，队列就长一截 —— 这个模型无法随组织规模扩展</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「安全团队人手不足」听起来是资源问题，其实是模型问题</strong>。
+            守门人模型下，安全团队的工作量随团队数<strong>线性增长</strong>；赋能者模型下，
+            安全团队做的是一次性的能力建设，工作量与团队数<strong>基本脱钩</strong>。加人只是把线性曲线整体抬高，斜率不变。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理。<em>Single Point of Failure (SPOF)</em> 与 <em>Constraint</em> 是官方术语，
+            但「守门人 / 赋能者」这组说法是本站为解释角色转变所用的表述，不是官方用词。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>步骤一：确认安全确实是约束，而不是凭印象。</strong></p>
+          <ul>
+            <li>取最近 20 个发布，记录「代码就绪」到「上线」之间的时间，把等安全评审的那一段单独拆出来。
+              占比过半才动它 —— 否则改了也不提升产出。</li>
+            <li>看队列，不看忙碌度。安全团队一定说自己很忙，但<strong>忙碌不是约束的证据，前面有队列才是</strong>。</li>
+          </ul>
+          <p><strong>步骤二：先做不花钱的「挖尽」（五步聚焦法用语，非考纲）。</strong></p>
+          <ul>
+            <li>把评审清单逐条分类：<strong>能被工具确定性判断的</strong>（依赖漏洞、凭据泄露、加密配置）挪进流水线；
+              <strong>必须由人判断的</strong>（鉴权设计、数据分级、业务滥用场景）留给人工。</li>
+            <li>取消「所有变更一律评审」，改为<strong>按风险分级</strong>：改文案和改鉴权逻辑不该走同一条路径。</li>
+            <li>不让安全团队做本可自助完成的事（开权限、答重复问题、跑扫描）—— 这些占用的是约束的产能。</li>
+          </ul>
+          <p><strong>步骤三：把角色从守门人换成赋能者。</strong>这是让效果持久的关键：</p>
+          <ul>
+            <li>安全团队交付<strong>可复用的默认安全能力</strong>：带安全配置的项目脚手架、经过审核的依赖版本清单、
+              开箱即用的流水线安全阶段。团队用默认路径就自动合规。</li>
+            <li>安全团队从「审批者」变成<strong>威胁建模的引导者与工具的提供者</strong>，
+              把判断标准写成文档和检查项，让开发能自己做出 80% 的判断。</li>
+            <li>保留否决权，但只用在少数高风险变更上。<strong>赋能不等于放弃把关，而是把把关的对象从「每个变更」缩小到「少数高风险变更」。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上三步为本站把约束理论的处理顺序套用到安全流程上的<strong>教学整理</strong>，
+            官方文件未规定 DevSecOps 的实施步骤，也未使用「守门人 / 赋能者」这组表述。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>不会直接考「安全是约束」这个说法</strong>（本站判断）。它不在官方术语表，
+              也不是官方结论。真正会考的是<strong>它的后果</strong>：安全评审拖慢发布时该用哪个实践 —— 答案是 DevSecOps。</li>
+            <li><strong>场景题的典型长相</strong>：题干描述某处安全环节排着队、发布在等它，问优先该做什么。
+              <strong>排除技巧：先划掉所有「给安全团队增加人手 / 采购更多安全工具 / 提高其他环节效率」的选项。</strong>
+              前两个跳过了不花钱的步骤，第三个把资源投在了队列之外。</li>
+            <li><strong>角色转变的问法</strong>：问 DevSecOps 中安全团队应扮演什么角色。
+              正确方向是<strong>提供能力、让开发自己做对</strong>；干扰项写成
+              「作为独立第三方对每个变更行使否决权」「负责全部安全测试的执行」——
+              这两条描述的正是守门人模型。</li>
+            <li><strong>易错点</strong>：安全评审属于<strong>约束</strong>，不是<strong>单点故障 SPOF</strong>。
+              题干说「慢、排队」选约束，说「它挂了整个系统停」才选 SPOF。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面除「安全评审拖慢发布 → DevSecOps」一条外（该条由 DOFD v3.4 官方样题答案键确认），
+            其余命题角度与干扰项长相均为本站教学推断；不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">安全评审前面排着队、后面等着发布，它就是约束；给它加人是抬高曲线，把工作挪走才是改变斜率。</p>
+          <p class="mb-0 muted"><small>一句话记角色转变：<strong>安全团队的产品不是审批意见，是让别人不需要审批意见的能力。</strong>
+            这句话是本站表述，不是官方原文。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-5-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-5-3</div>
+        <h3 class="kp__title">安全场景下的左移<span class="en">Shift left in security</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            本卡讲<span class="term">左移 <span class="en">Shift left</span></span>在安全场景下的具体形态（「安全左移」为本站用语，不是官方术语）。
+            <span class="term">左移 <span class="en">Shift left</span></span>的官方含义是
+            <strong>通过早期与持续的测试，把质量内建到开发过程中</strong>
+            —— 这一含义由 <strong>DOFD v3.4 官方样题答案键</strong>确认（详见 <a href="3.1-continuous-testing.html">3.1 持续测试</a>）。
+          </p>
+          <p>
+            <strong>安全左移</strong>就是把「测试」这一项换成「安全测试」：
+            安全活动从发布前的一次性评审，前移到需求、编码、构建、预发布各阶段，并跟着流水线持续运行。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">阶段</th><th style="width:34%">典型安全活动</th><th>它回答什么问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>需求 / 设计</strong></td><td>威胁建模</td><td>这个功能会被怎么滥用？攻击面和信任边界在哪？<strong>在写第一行代码前问</strong></td></tr>
+                <tr><td><strong>编码 / 提交</strong></td><td>静态代码扫描（SAST）</td><td>源码里有没有危险写法、硬编码凭据？结果直接回到提交者</td></tr>
+                <tr><td><strong>构建 / 集成</strong></td><td>依赖与组件检查（SCA）</td><td>引入的第三方库有没有已知高危漏洞？命中则构建失败</td></tr>
+                <tr><td><strong>测试 / 预发布</strong></td><td>动态安全测试（DAST）</td><td>运行起来之后能不能被打穿？跑在流水线里，不用另约排期</td></tr>
+                <tr><td><strong>运行 / 生产</strong></td><td>策略即代码 <span class="en">Policy as Code</span></td><td>线上配置是否偏离了安全基线？<strong>这一项属于运行期，不算左移</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            官方术语表里与本卡相关的条目只有 <em>DevSecOps</em> 与 <em>Shift left</em> 两条。
+            <strong>威胁建模、SAST、SCA、DAST、策略即代码都是工程实践名称，不在 DOFD v3.4 的 66 条术语表内</strong>，
+            本站列出它们是为了说明「左移」在安全上的具体样子。
+            <strong>本站据 DOFD v3.4 的 66 条术语表范围推断：不会要求按缩写作答（推断，非官方声明）。</strong>
+            表格中的阶段划分为本站教学整理。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            安全左移解决的痛点，是<strong>同一个缺陷在不同阶段被发现，代价相差一个数量级以上</strong>。
+          </p>
+          <ul>
+            <li>设想一个订单系统：权限校验被设计成「前端隐藏入口 + 后端不复查」。
+              如果这个问题在<strong>威胁建模</strong>时被发现，代价是改一张时序图，半天。</li>
+            <li>同一个问题拖到<strong>发布前的渗透测试</strong>才发现，就是另一回事了：
+              后端要加校验、数据模型要补归属字段、已经写好的三个前端页面要跟着改、
+              三个团队要重新排期。<strong>半天变成三周，并且这次发布必然延期。</strong></li>
+            <li>拖到<strong>生产环境被利用</strong>才发现，还要加上应急响应、数据影响评估、
+              对外披露和监管报告 —— 这部分成本已经和工程量无关了。</li>
+          </ul>
+          <p>
+            左移不是「把工作量提前」，而是<strong>把发现问题的位置往前挪，从而让每个问题的修复代价落在最低点。</strong>
+            这也是为什么左移之后安全活动的总量会增加、总成本反而下降。
+          </p>
+          <p class="mb-0 muted"><small>订单系统案例为<strong>本站构造的教学示例</strong>，用于说明成本随阶段上升的机制；
+            「半天 / 三周」为示意量级，非实测数据。</small></p>
+        </div>
+
+        <!-- ============ 图 3-5-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 440" role="img" aria-label="安全活动在部署流水线各阶段的分布，标出哪些属于左移、哪些属于运行期">
+              <defs>
+                <marker id="ah-35-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="24" y="34" class="f-1" font-size="15" font-weight="700">左移区间 —— 生产之前完成、结果直接回到写代码的人手上的安全活动</text>
+              <text x="936" y="34" class="f-2" font-size="15" font-weight="700" text-anchor="end">运行期 · 不属于左移</text>
+
+              <rect x="14" y="48" width="736" height="272" rx="14" class="s-1" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+
+              <!-- 阶段条 -->
+              <rect x="24"  y="62" width="170" height="44" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="208" y="62" width="170" height="44" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="392" y="62" width="170" height="44" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="576" y="62" width="170" height="44" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="760" y="62" width="170" height="44" rx="9" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+                <text x="109" y="90">需求与设计</text>
+                <text x="293" y="90">编码与提交</text>
+                <text x="477" y="90">构建与集成</text>
+                <text x="661" y="90">测试与预发布</text>
+                <text x="845" y="90">运行与生产</text>
+              </g>
+
+              <path d="M196 84 L206 84" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-3)"/>
+              <path d="M380 84 L390 84" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-3)"/>
+              <path d="M564 84 L574 84" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-3)"/>
+              <path d="M752 84 L758 84" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-35-3)"/>
+
+              <!-- 活动卡 -->
+              <rect x="24"  y="124" width="170" height="182" rx="10" class="s-stroke" stroke-width="1.5"/>
+              <rect x="208" y="124" width="170" height="182" rx="10" class="s-stroke" stroke-width="1.5"/>
+              <rect x="392" y="124" width="170" height="182" rx="10" class="s-stroke" stroke-width="1.5"/>
+              <rect x="576" y="124" width="170" height="182" rx="10" class="s-stroke" stroke-width="1.5"/>
+              <rect x="760" y="124" width="170" height="182" rx="10" class="s-stroke" stroke-width="1.5"/>
+
+              <g text-anchor="middle" class="s-ink" font-size="15" font-weight="700">
+                <text x="109" y="156">威胁建模</text>
+                <text x="293" y="156">静态代码扫描</text>
+                <text x="477" y="156">依赖与组件检查</text>
+                <text x="661" y="156">动态安全测试</text>
+                <text x="845" y="156">策略即代码</text>
+              </g>
+              <g text-anchor="middle" class="s-muted" font-size="12">
+                <text x="109" y="178">Threat Modeling</text>
+                <text x="293" y="178">SAST</text>
+                <text x="477" y="178">SCA</text>
+                <text x="661" y="178">DAST</text>
+                <text x="845" y="178">Policy as Code</text>
+              </g>
+              <g text-anchor="middle" class="s-ink" font-size="12">
+                <text x="109" y="212">画出攻击面</text>
+                <text x="109" y="234">与信任边界</text>
+                <text x="293" y="212">扫源码里的</text>
+                <text x="293" y="234">危险写法</text>
+                <text x="477" y="212">查第三方库的</text>
+                <text x="477" y="234">已知漏洞</text>
+                <text x="661" y="212">对运行中的</text>
+                <text x="661" y="234">应用做探测</text>
+                <text x="845" y="212">把安全规则写成</text>
+                <text x="845" y="234">可执行的策略</text>
+              </g>
+              <g text-anchor="middle" class="s-muted" font-size="12">
+                <text x="109" y="264">在写第一行代码前</text>
+                <text x="293" y="264">结果回到提交者</text>
+                <text x="477" y="264">命中高危即失败</text>
+                <text x="661" y="264">不必单独约排期</text>
+                <text x="845" y="264">配置偏离自动拦截</text>
+              </g>
+              <g text-anchor="middle" font-size="13" font-weight="700">
+                <text x="109" y="292" class="f-1">属于左移</text>
+                <text x="293" y="292" class="f-1">属于左移</text>
+                <text x="477" y="292" class="f-1">属于左移</text>
+                <text x="661" y="292" class="f-1">属于左移</text>
+                <text x="845" y="292" class="f-2">运行期</text>
+              </g>
+
+              <text x="24" y="352" class="s-ink" font-size="13" font-weight="700">判断一个安全活动算不算左移，只看两件事：它是否发生在生产之前，结果是否直接回到写代码的人手上。</text>
+              <text x="24" y="382" class="s-muted" font-size="12">与本图相关的官方术语只有 DevSecOps 与 Shift left 两条。威胁建模、SAST、SCA、DAST、策略即代码均为工程实践名称，</text>
+              <text x="24" y="404" class="s-muted" font-size="12">不在 DOFD v3.4 的 66 条术语表内，本站列出仅为说明「左移」的具体样子。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-5-2　安全活动在部署流水线上的分布。</strong>
+            这张图要看懂的不是缩写，而是<strong>「左移」的边界划在哪里</strong>：
+            虚线框内的四类活动都发生在生产之前、都跟着流水线跑、结果都直接回到作者手上，所以都属于左移；
+            框外的策略即代码是运行期的持续守护，价值很高，但它<strong>不是左移</strong>。
+            与本卡相关的官方术语只有 DevSecOps 与 Shift left 两条，框里的缩写是理解用的脚手架，不必背。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比</th><th style="width:38%">安全左移</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>左移 vs 运行期安全</strong></td>
+                  <td>发生在<strong>生产之前</strong>：威胁建模、静态扫描、依赖检查、动态测试</td>
+                  <td>发生在<strong>生产之后</strong>：策略即代码、运行期监测、漏洞告警。两者都要做，但只有前者叫左移</td>
+                </tr>
+                <tr>
+                  <td><strong>左移 vs「流水线里加了扫描步骤」</strong></td>
+                  <td>判据是<strong>时机 + 反馈对象</strong>：早于生产，且结果直接回到写代码的人手上</td>
+                  <td>只搬了位置没搬反馈：扫描跑在流水线里，报告却汇总给安全团队周会。<strong>作者当天看不到，就没有左移</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>安全左移 vs 测试左移</strong><br><small class="muted">见 <a href="3.1-continuous-testing.html">3.1 持续测试</a></small></td>
+                  <td>左移的<strong>内容</strong>是安全，需要的实践叫 <strong>DevSecOps</strong></td>
+                  <td>左移的<strong>内容</strong>是功能与质量测试，对应的实践是持续测试。两者用的是同一个 <em>Shift left</em> 概念</td>
+                </tr>
+                <tr>
+                  <td><strong>左移 vs 提前一周做评审</strong></td>
+                  <td>改的是<strong>活动的形态</strong>：拆成自动化的、高频的、嵌在流程里的小检查</td>
+                  <td>只改了<strong>日期</strong>：仍然是一次性人工评审，队列还在，只是提前了一周排队</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「在流水线里加了安全扫描」不等于安全左移</strong>。
+            很多组织卡在这里 —— 工具确实跑了，但结果不回到作者、不阻断构建、每月由安全团队汇总一次。
+            那只是把人工评审换成了工具评审，位置和队列都没变。<strong>判据是反馈回到谁手上，不是工具装在哪。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>按阶段落地，每一步都给出可验收的动作：</p>
+          <ul>
+            <li><strong>需求 / 设计</strong>：对涉及鉴权、支付、个人数据的新功能，在设计评审里加一段威胁建模，
+              产出<strong>可排期的需求条目</strong>而不是一份评审意见。没进待办的结论等于没做。</li>
+            <li><strong>编码 / 提交</strong>：静态扫描跟着提交跑，结果出现在开发者本次流水线的输出里。
+              <strong>只对新增代码的新增问题设门禁</strong> —— 存量问题一次性全部阻断会让团队立刻学会绕过。</li>
+            <li><strong>构建 / 集成</strong>：依赖检查作为构建的一个阶段，
+              引入含已知高危漏洞的库<strong>直接构建失败</strong>；中低危记录并进待办，不阻断。</li>
+            <li><strong>测试 / 预发布</strong>：动态安全测试跑在流水线的预发环境里，与其他自动化测试同批执行，
+              <strong>不再需要单独约安全团队排期</strong>。这一条是消除评审排队最直接的杠杆。</li>
+            <li><strong>运行 / 生产</strong>：策略即代码把安全基线写成可执行规则，配置偏离自动拦截。
+              这是右侧的持续守护，与左移互补，不能相互替代。</li>
+          </ul>
+          <p>
+            门禁设计上只有一条原则：<strong>阻断的必须是确定性的、作者当场能修的问题</strong>。
+            凡是需要跨团队协调才能修的，一律记录进待办，不阻断流水线。
+          </p>
+          <p class="muted"><small>以上落地动作与门禁原则为本站教学整理，官方文件未规定 DevSecOps 的具体实施方式，也不涉及任何具体工具。</small></p>
+          <p class="mb-0"><span class="badge badge--ext">🧭 延伸 · 非考纲</span><br>
+            <small class="muted">软件<strong>供应链安全</strong>、<strong>SBOM</strong>（软件物料清单）、<strong>SLSA</strong> 等主题是依赖检查的延伸方向，
+            <strong>不在 DOFD 考纲内</strong>，本站归入延伸章，此处仅点名，不展开。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>Shift left 的定义题</strong>：正确方向是
+              「<strong>通过早期与持续的测试把质量内建到开发过程中</strong>」——
+              这一含义由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              干扰项常写成「把测试推迟到部署之后」（方向反了）、
+              「让运维更早参与规划」（那是协作，不是测试左移）、
+              「把测试工作交给专门的测试团队」（那是把责任推出去，正好相反）。</li>
+            <li><strong>与 DevSecOps 的联动题</strong>：题干说要把<strong>安全测试并入左移的测试方法</strong>，
+              问需要什么实践 —— 答案是 <strong>DevSecOps</strong>，同样由官方样题答案键确认。
+              <strong>排除技巧：Shift left 是「怎么做」的描述，DevSecOps 才是「实践名称」。</strong>
+              题目问「需要哪个实践」时，不要把 Shift left 当成答案填进去。</li>
+            <li><strong>哪些算左移的判断题</strong>（本站判断的命题方向）：给出几项安全活动，问哪一项<strong>不属于</strong>左移。
+              方向是<strong>发生在生产之后的活动不算</strong>，如运行期告警、线上策略拦截。</li>
+            <li><strong>不会考的部分</strong>：SAST / SCA / DAST 这些缩写不在 DOFD v3.4 的 66 条术语表内，
+              本站判断不会作为答案选项的正确项出现。看到题目里出现具体工具类别，
+              先回到「这是不是把安全测试并入了左移的测试方法」这个层次去判断。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「不会考缩写」为本站基于 DOFD v3.4 的 66 条术语表范围所作的推断，非官方声明；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">左移不是把评审提前一周，而是把一次人工大检查拆成流水线里的一串自动小检查，结果当天回到作者手上。</p>
+          <p class="mb-0 muted"><small>四步顺读（教学补充，不必背英文）：<strong>设计想坏事 · 提交扫代码 · 构建查依赖 · 预发做探测</strong>；
+            生产上的策略即代码在右边，属于守护，不属于左移。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>要把安全测试并入左移的测试方法、消除迭代后安全评审的延迟，答案是 DevSecOps</strong> ——
+          由 DOFD v3.4 官方样题答案键确认，不是持续测试、不是 ChatOps、不是漏洞告警工具</li>
+        <li>区分 DevSecOps 与<a href="3.1-continuous-testing.html">持续测试（3.1）</a>：
+          持续测试管<strong>测试的节奏</strong>，DevSecOps 管<strong>安全这项能力</strong>。
+          题干点名<strong>安全评审 / 安全测试</strong>并要求把它并入左移时选 DevSecOps；只说「测得太晚」不提安全，才是持续测试（本站应试口诀）</li>
+        <li><strong>Shift left 的官方含义</strong>：通过早期与持续的测试把质量内建到开发过程中（同样由官方样题答案键确认）。
+          它是「怎么做」，DevSecOps 才是「实践名称」</li>
+        <li>DevSecOps 三个支点：<strong>安全是共同责任 · 安全内建到部署流水线 · 安全能力左移</strong></li>
+        <li>安全评审成为约束的三个结构性原因（本站教学整理）：<strong>人少 · 评审集中在末端 · 审计要求集中人工</strong>；
+          判据是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论（2.3）</a>的老规矩 —— 前面有队列、后面在等它</li>
+        <li>角色转变：安全团队从<strong>守门人</strong>（逐个审批，工作量随团队数线性增长）变成<strong>赋能者</strong>（提供默认安全能力）</li>
+        <li><strong>归属</strong>：本站把 DevSecOps 与<a href="3.1-continuous-testing.html">持续测试（3.1）</a>一并归入
+          <strong>第二步 · 反馈</strong>（教学归类，官方未声明）—— 安全问题被更早、更频繁地回流给写代码的人；
+          它同时通过消除评审队列服务于<strong>第一步 · 流动</strong>。
+          官方样题答案键确认过归属的只有「约束理论支持第一步」与「对生产变更进行同行评审属于第二步」两条</li>
+        <li>左移四种形态：<strong>威胁建模 · 静态扫描 · 依赖检查 · 动态测试</strong>；
+          运行期的策略即代码<strong>不算左移</strong>。这些缩写不在 DOFD v3.4 的 66 条术语表内，不必背</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevSecOps</em>、<em>Shift left</em>、<em>Constraint</em>、<em>Theory of Constraints</em>、
+      <em>Continuous testing</em>、<em>ChatOps</em>、<em>Deployment pipeline</em>、<em>Single Point of Failure (SPOF)</em>
+      均列于 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong> 的考纲术语表（66 条）；
+      v3.4 课程大纲 M3 模块 <em>Key DevOps Practices</em> 将 <em>DevSecOps</em> 列为子项。
+      <strong>「要把安全测试并入左移的测试方法、消除敏捷迭代后安全评审造成的延迟，所需要的实践是 DevSecOps」</strong>
+      与<strong>「Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中」</strong>
+      两条结论均由 <strong>DOFD v3.4 官方样题答案键</strong>确认；本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      「安全评审是典型约束」的三条结构性原因、「守门人 → 赋能者」这组表述、
+      安全活动的阶段划分与门禁原则，均为<strong>本站教学整理</strong>，官方未以此形式给出，已分别在 kp-3-5-2、kp-3-5-3 与图 3-5-1、图 3-5-2 内就地标注。
+      <strong>五步聚焦法</strong>出自 Goldratt 约束理论原著，不在官方术语表内，属延伸内容，已在 kp-3-5-2 就地标注。
+      <strong>威胁建模、SAST、SCA、DAST、策略即代码</strong>为工程实践名称，
+      <strong>供应链安全 / SBOM / SLSA</strong> 属延伸主题，均<strong>不在官方 66 条术语表内</strong>，已就地标注为教学补充或延伸内容。
+      图 3-5-1、图 3-5-2 与各面中的保险公司、订单系统案例为本站构造的教学示例，数字为示意量级，非实测数据。
+      本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

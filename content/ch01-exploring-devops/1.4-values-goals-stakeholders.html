@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.4 价值、目标与干系人 · DevOps Foundation 学习站</title>
+<meta name="description" content="本站归纳的六项结果目标：质量、稳定性、可靠性、可用性、安全与团队满意度。本节讲清六项之间的关系、DevOps stakeholders / teams / roles 三条考纲术语的区别，以及为什么团队满意度不是软性福利。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch01", sec:"1.4-values-goals-stakeholders"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 1 章 · 认识 DevOps</div>
+      <h1 class="page-head__title">1.4 价值、目标与干系人</h1>
+      <div class="page-head__en">Values, Goals and Stakeholders</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--note">📝 教学整理</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        DevOps 不是「更快地发布」这一件事。本站沿用 <a href="1.1-defining-devops.html">1.1 节</a>那句教学表述里的
+        六项结果目标：<strong>质量、稳定性、可靠性、可用性、安全、团队满意度</strong>。
+        最后一项最常被当成陪衬删掉 —— 而它恰恰是前五项能否持续的前提。
+        这一节把目标、收益与「谁在其中」三者对齐。
+      </p>
+      <p class="page-head__lede" style="margin-top:var(--sp-3)">
+        <small>徽章说明：本节只有 <span class="en">DevOps stakeholders</span> / <span class="en">DevOps teams</span> /
+        <span class="en">DevOps roles</span>、<span class="en">Change fatigue</span>、<span class="en">eNPS</span>
+        等条目逐字列于 DOFD v3.4 官方考纲术语表（⭐）；
+        <strong>Goals / Benefits 这份六项清单及其分层、分组，均为本站教学整理（📝）</strong>，官方未以此形式给出。</small>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>DevOps 的目标与 Benefits 到底有哪几项，哪些「听起来很像」的说法不在其中</li>
+        <li><span class="en">DevOps stakeholders</span> / <span class="en">DevOps teams</span> / <span class="en">DevOps roles</span> 三个官方术语差在哪，考题怎么用它们互相当干扰项</li>
+        <li>为什么团队满意度是目标而不是福利，它和 <span class="en">Change fatigue</span> 是什么关系</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 920 450" role="img" aria-label="DevOps 目标的两类方向与作为地基的团队满意度">
+          <defs>
+            <marker id="ah-14-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-14-5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <text x="460" y="28" class="s-muted" font-size="13" text-anchor="middle">左＝Benefits 独有　右＝两张清单重叠　·　分组为本站教学整理</text>
+
+          <!-- 左：仅 Benefits -->
+          <rect x="30" y="52" width="340" height="186" rx="14" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="200" y="80" class="f-1" font-size="17" font-weight="700" text-anchor="middle">仅出现在 Benefits 里</text>
+          <text x="200" y="101" class="s-muted" font-size="13" text-anchor="middle">Cadence · Speed · Throughput · Efficiency</text>
+          <g class="s-ink" font-size="15">
+            <text x="56" y="130">· 发布节奏　Release cadence</text>
+            <text x="56" y="152">· 速度　　　Speed</text>
+            <text x="56" y="174">· 吞吐　　　Throughput</text>
+            <text x="56" y="196">· 效率　　　Efficiency</text>
+          </g>
+          <text x="200" y="222" class="f-1" font-size="12" text-anchor="middle">考题常拿这四个词冒充 Goals</text>
+
+          <!-- 右：两张清单重叠的六项 -->
+          <rect x="550" y="52" width="340" height="186" rx="14" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="720" y="80" class="f-2" font-size="17" font-weight="700" text-anchor="middle">Goals 与 Benefits 都有的六项</text>
+          <text x="720" y="101" class="s-muted" font-size="13" text-anchor="middle">第六项团队满意度画在下方地基</text>
+          <g class="s-ink" font-size="15">
+            <text x="576" y="130">· 质量　　　Quality</text>
+            <text x="576" y="152">· 稳定性　　Stability</text>
+            <text x="576" y="174">· 可靠性　　Reliability</text>
+            <text x="576" y="196">· 可用性　　Availability</text>
+            <text x="576" y="218">· 安全　　　Security</text>
+          </g>
+
+          <!-- 中间：非零和 -->
+          <text x="460" y="104" class="s-muted" font-size="13" text-anchor="middle">常被当成取舍</text>
+          <text x="460" y="130" class="f-3" font-size="16" font-weight="700" text-anchor="middle">并非零和</text>
+          <path d="M382 152 L538 152" class="s-3" stroke-width="2.5" fill="none" marker-start="url(#ah-14-3)" marker-end="url(#ah-14-3)"/>
+          <text x="460" y="180" class="s-muted" font-size="13" text-anchor="middle">小批量 · 自动化</text>
+          <text x="460" y="200" class="s-muted" font-size="13" text-anchor="middle">让两者同向改善</text>
+          <text x="460" y="222" class="s-muted" font-size="12" text-anchor="middle">「非零和」为本站教学整理</text>
+
+          <!-- 地基：团队满意度 -->
+          <path d="M200 308 L200 244" class="s-5" stroke-width="2.5" fill="none" marker-end="url(#ah-14-5)"/>
+          <path d="M720 308 L720 244" class="s-5" stroke-width="2.5" fill="none" marker-end="url(#ah-14-5)"/>
+          <text x="460" y="282" class="f-5" font-size="13" font-weight="650" text-anchor="middle">两类目标都靠人持续供能</text>
+
+          <rect x="30" y="310" width="860" height="112" rx="14" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="460" y="346" class="f-5" font-size="17" font-weight="700" text-anchor="middle">团队满意度　Team satisfaction</text>
+          <text x="460" y="374" class="s-ink" font-size="14" text-anchor="middle">两张清单重叠的第六项，也是最常在转型中被漏掉的一个</text>
+          <text x="460" y="400" class="s-muted" font-size="13" text-anchor="middle">人被 Change fatigue 消耗之后，上面两类目标都失去持续性</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 1-4-1　两张清单的重叠部分，加一层地基。</strong>
+        这张图要看懂三件事：一是<strong>左栏那四项只出现在 Benefits 里，不属于 Goals 清单</strong> ——
+        这正是本节最主要的干扰点；二是<strong>速度与稳定性不是此消彼长</strong> ——
+        缩小批量与自动化会让两边同时变好，把它当取舍是转型最常见的误设前提
+        （机制展开见 <a href="1.2-why-it-matters.html">1.2 高绩效组织：差距为什么会扩大</a>）；
+        三是<strong>团队满意度画成地基而不是并列的第七个方框</strong> ——
+        它一旦塌掉，上面两类结果的改进都无法维持。
+        <strong>这份清单、左右分组、以及「速度与稳定性非零和」这一判断，均为本站教学整理</strong>：
+        六项结果目标沿用 <a href="1.1-defining-devops.html">1.1 节</a>的本站教学表述，
+        DOFD v3.4 考纲术语表与课程大纲未以此形式给出，官方也未就速度与稳定性的关系表态。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-1-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-4-1</div>
+        <h3 class="kp__title">DevOps 的目标与 Benefits<span class="en">Goals and Benefits of DevOps</span></h3>
+        <div class="badge-row"><span class="badge badge--note">📝 教学整理</span><span class="badge badge--hot">📌 高频</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            DevOps 的目标是一组<strong>并列的、必须同时成立的结果</strong>，不是可以互相交换的选项。
+            本站把它拆成两层来记：<strong>Goals（要达成什么）</strong>与 <strong>Benefits（做到之后组织得到什么改善）</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">层次</th><th style="width:40%">内容</th><th>一句话读法</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Goals<br>目标</strong></td>
+                  <td>质量 <span class="en">Quality</span>　·　稳定性 <span class="en">Stability</span>　·　可靠性 <span class="en">Reliability</span>　·　可用性 <span class="en">Availability</span>　·　安全 <span class="en">Security</span>　·　<strong>团队满意度 <span class="en">Team satisfaction</span></strong></td>
+                  <td>系统要变得可信，<strong>并且做这件事的人不能被耗干</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Benefits<br>收益</strong></td>
+                  <td>改善<strong>发布节奏 <span class="en">release cadence</span></strong>、<strong>速度 <span class="en">speed</span></strong>、<strong>吞吐 <span class="en">throughput</span></strong>、<strong>效率与稳定性</strong>、<strong>质量</strong>、<strong>安全</strong>与<strong>团队满意度</strong></td>
+                  <td>目标兑现之后，在交付能力上看得见的改善</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            注意两张清单<strong>都以团队满意度收尾</strong>。它不是补充说明，是并列项。
+          </p>
+          <div class="src-note">
+            <strong>本表的目标与 Benefits 清单及其两层拆分，均为本站教学整理</strong>：
+            六项结果目标沿用 <a href="1.1-defining-devops.html">1.1 节</a>那句<strong>本站教学表述</strong>（非官方定义原文），
+            DOFD v3.4 考纲术语表与课程大纲均未以此形式给出这份清单。
+            可对照的官方事实只有一条：PeopleCert《DevOps Foundation® Blueprint》这张一页概览海报的六个色块之一名为
+            <em>Benefits</em>，本页「Benefits」这个层名据此；<strong>色块内的具体条目、右栏读法与两层对照，仍是本站教学整理</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这份清单要挡住的是一个很具体的失败模式：
+            <strong>把 DevOps 的成功定义裁剪成一个维度，然后朝那个维度极化。</strong>
+          </p>
+          <ul>
+            <li>某保险公司把「DevOps 做成了」定义为两个数字：流水线覆盖率和部署频率。
+              18 个月后部署频率从每月 2 次涨到每周 11 次，看板全绿。</li>
+            <li>没有被写进定义的维度同时崩了：变更失败率从 8% 升到 26%；
+              值班工程师月均被叫醒 9 次；两名最懂生产环境的运维在半年内离职，
+              走之前没人问过他们为什么。</li>
+            <li>机制不复杂 —— <strong>只要目标里少一项，那一项就变成免费的成本来源</strong>。
+              团队为了把被度量的数字做上去，会自动把代价转嫁给没被度量的地方，
+              而人和稳定性是最容易被转嫁的两个。</li>
+          </ul>
+          <p>
+            本站把六项并列写出来，作用就是取消这种交换的合法性：
+            <strong>用稳定性换速度不算达成目标，用人的耗竭换发布频率也不算。</strong>
+          </p>
+          <p class="mb-0 muted"><small>上述案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">DevOps 的目标 Goals</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Benefits 收益</strong></td>
+                  <td>要<strong>达成的状态</strong>：质量、稳定性、可靠性、可用性、安全、团队满意度</td>
+                  <td>达成之后<strong>可观察到的改善</strong>：发布节奏、速度、吞吐、效率与稳定性变好。目标是因，收益是果</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps metrics<br>度量指标</strong></td>
+                  <td>说明<strong>要什么</strong>，本身不是数字</td>
+                  <td>说明<strong>做到了多少</strong>：部署频率、变更前置时间、变更失败率、平均恢复时间 MTTR 等（详见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>CALMS</strong></td>
+                  <td>是<strong>目标</strong>：组织想要的结果</td>
+                  <td>五个字母的官方展开是 <em>Culture / Automation / Lean / Measurement / Sharing</em>（见 <a href="1.1-defining-devops.html#kp-1-1-2">1.1 kp-1-1-2</a>）；本站把它读作「<strong>组织应当重视什么</strong>」，此定性为教学整理</td>
+                </tr>
+                <tr>
+                  <td><strong>业务战略与目标</strong></td>
+                  <td>是 DevOps 自身要交付的结果</td>
+                  <td>是<strong>上位输入</strong>：决定哪些 DevOps 原则与实践对本组织最有益的，是业务战略与目标，不是工具或框架的流行度（展开见 <a href="1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Goals 与 Benefits 有大量重叠词（质量、安全、稳定性、团队满意度都出现两次），
+            但「发布节奏 / 速度 / 吞吐 / 效率」只出现在 Benefits 里</strong>。
+            考题拿这几个词构造「哪一项属于目标」的选项时，看的就是你有没有把两张清单分开记。</small></p>
+          <p class="mb-0 muted"><small>表中最后一行「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」这一判断，
+            由 <strong>DOFD v3.4 官方样题答案键</strong>确认（本站只陈述结论，不复制题干与选项原文）。
+            其余各行 —— 包括 Goals 与 Benefits 的清单内容、两者的因果读法、以及把 CALMS 定性为「价值观」——
+            <strong>均为本站教学整理</strong>；官方可引的只有 CALMS 五个字母的展开本身。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把六项目标当成<strong>转型体检表</strong>，每个季度对每一项要求给出一条证据。判断动作：</p>
+          <ul>
+            <li><strong>先看哪一栏是空的</strong>。绝大多数组织的速度类有一堆数字，安全类有合规报告，
+              团队满意度那一栏什么都没有 —— 空的那一栏就是正在被免费消耗的东西。</li>
+            <li><strong>成对检查，不单独看</strong>。部署频率上升要同时看变更失败率；
+              吞吐上升要同时看值班次数与加班时长。任何一项单独上升都不算改善。</li>
+            <li><strong>用业务战略校准优先级</strong>。同样是这六项，做支付清算的组织把可靠性与安全排在前面，
+              做增长实验的组织把发布节奏排在前面。<strong>顺序由业务战略与目标决定</strong>，不由框架决定。</li>
+            <li><strong>不要把「降本」偷偷塞进目标</strong>。降低成本可能是它的副产品，但它不在这份目标清单里；
+              一旦把降本写进目标，前面六项会立刻被拿去交换。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「体检表」这一用法与上述四条判断动作为本站教学整理；这份六项清单本身同样是本站教学整理，官方未以此形式给出，更未规定使用方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>清单归属题（本站判断偏 Bloom 1）</strong>：问 DevOps 的目标 / 收益<strong>包含</strong>或<strong>不包含</strong>哪一项。
+              正确项都在那两张清单内；<strong>干扰项的长相非常固定</strong> ——
+              「降低 IT 成本」「减少人员编制」「取消运维团队」「用统一工具替换所有遗留系统」。
+              这些听起来都像好事，但一条也不在那两张清单里。</li>
+            <li><strong>排除技巧</strong>：这六项结果目标全部指向<strong>系统变得更可信、人变得更可持续</strong>。
+              凡是指向<strong>省钱、裁人、把人管得更紧</strong>的选项，一律先划掉。
+              「用指标控制和评价员工」<strong>不属于</strong> DevOps 领导力的目标 ——
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。</li>
+            <li><strong>优先级题（本站判断偏 Bloom 2）</strong>：题干给一个组织的背景，问由什么来决定采用哪些 DevOps 原则与实践。
+              答案方向是<strong>业务战略与目标</strong> —— 这一条同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              干扰项会写成「行业最佳实践」「工具供应商推荐」「竞争对手在用什么」「成熟度模型的等级」。</li>
+            <li><strong>最容易漏的一项</strong>：选项里出现「团队满意度 / 员工满意度」时，很多人以为它是软性的干扰项而排除掉。
+              它在<strong>本站归纳的目标与 Benefits 两张清单里都出现</strong>，见到不要划。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            本面除两处标明「官方样题答案键确认」的判断外，其余命题角度、干扰项长相与排除技巧均为本站教学推断，
+            所依据的 Goals / Benefits 清单亦为本站教学整理；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">质量、稳定、可靠、可用、安全 —— 再加一条「做这件事的人还愿意继续做」。</p>
+          <p class="mb-0 muted"><small>反向锚点：清单里<strong>没有</strong>降本、没有裁人、没有「消灭运维」。见到这三类，直接排除。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-1-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-4-2</div>
+        <h3 class="kp__title">干系人 · 团队 · 角色：三个不同的切面<span class="en">DevOps stakeholders / DevOps teams / DevOps roles</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            这三条都列于 DOFD v3.4 官方考纲术语表，但<strong>官方只给术语名、未公布定义</strong>。
+            下表是本站为区分三者所作的解释 —— 把它们看成<strong>同一张组织图上的三个不同切面</strong>，范围由大到小：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">术语</th><th style="width:34%">指什么</th><th>范围与单位</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DevOps stakeholders</strong><br><small class="muted">干系人</small></td>
+                  <td>所有<strong>会被 DevOps 影响、或能影响 DevOps 成败</strong>的人与群体</td>
+                  <td><strong>范围最大</strong>，跨越组织边界：开发、运维、测试、安全、业务、领导层，也包括<strong>客户与供应商</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps teams</strong><br><small class="muted">团队</small></td>
+                  <td>实际<strong>承担端到端交付</strong>的团队实体</td>
+                  <td><strong>组织单位</strong>，有边界、有归属、有对某条价值流的责任</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps roles</strong><br><small class="muted">角色</small></td>
+                  <td>团队内外<strong>被承担的职责</strong></td>
+                  <td><strong>职责名，不是编制名</strong>。一个人可以同时承担多个角色，一个角色也可以由多人共担</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            记法：<strong>stakeholders 回答「谁被牵连」，teams 回答「谁来交付」，roles 回答「谁负责哪件事」。</strong>
+          </p>
+          <p class="mb-0 muted"><small><strong>DevOps stakeholders</strong>、<strong>DevOps teams</strong>、<strong>DevOps roles</strong>
+            三条均列于 DOFD v3.4 官方考纲术语表。<strong>上表「指什么」「范围与单位」两列内容与「范围由大到小」的排列均为本站教学整理</strong> ——
+            官方并列列出这三条，既未给定义，也未说明三者的包含关系。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            把三者混成一个词，会导致两种代价很高、也很常见的做法。
+          </p>
+          <ul>
+            <li><strong>把 roles 当成 teams</strong>：把「需要有人负责流水线与自动化」这项<strong>职责</strong>
+              直接落成一个新设的「DevOps 部门」，结果是在开发与运维之间多加一堵墙和一次交接。
+              这条误解的完整代价账见 <a href="1.1-defining-devops.html#kp-1-1-3">1.1 kp-1-1-3「DevOps 不是什么」</a>；
+              本节只强调一点：<strong>那是把 roles 读成了 teams。</strong></li>
+            <li><strong>把 teams 当成 stakeholders 全集</strong>：转型的设计会只叫了开发和运维。
+              安全在上线前一周才第一次看到架构，提了 14 条阻塞项；
+              业务方发现新的发布节奏和他们的季度市场计划对不上；
+              客服团队在功能上线当天才知道界面变了。<strong>没被请进设计的人，会在最贵的时刻出现。</strong></li>
+          </ul>
+          <p>
+            三个词分开，是为了在转型的第一步就能问对三个不同的问题：
+            <strong>谁必须被纳入沟通、谁对交付负责、谁承担哪项职责。</strong>
+          </p>
+          <p class="mb-0 muted"><small>上述两个案例为本站构造的教学示例，用于说明混淆三者的后果，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 1-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 555" role="img" aria-label="七类 DevOps 干系人各自的诉求与从 DevOps 得到的收益">
+              <defs>
+                <marker id="ah-14-6" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+                <marker id="ah-14-7" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <text x="125" y="34" class="f-1" font-size="15" font-weight="700" text-anchor="middle">干系人 Stakeholder</text>
+              <text x="455" y="34" class="f-2" font-size="15" font-weight="700" text-anchor="middle">他最在意什么（诉求）</text>
+              <text x="810" y="34" class="f-3" font-size="15" font-weight="700" text-anchor="middle">DevOps 给他什么（收益）</text>
+
+              <!-- 行 1 · 开发 -->
+              <rect x="20" y="52" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="79" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">开发</text>
+              <text x="125" y="99" class="s-muted" font-size="12" text-anchor="middle">Dev</text>
+              <rect x="290" y="52" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="78" class="s-ink" font-size="13">改动能快点上线、少被打断</text>
+              <text x="306" y="98" class="s-ink" font-size="13">不想为环境和部署反复救火</text>
+              <rect x="680" y="52" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="78" class="s-ink" font-size="13">流水线与自动化测试</text>
+              <text x="694" y="98" class="s-ink" font-size="13">改完当场就能验证</text>
+              <path d="M232 83 L286 83" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 83 L676 83" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 2 · 运维 -->
+              <rect x="20" y="122" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="149" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">运维</text>
+              <text x="125" y="169" class="s-muted" font-size="12" text-anchor="middle">Ops</text>
+              <rect x="290" y="122" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="148" class="s-ink" font-size="13">系统稳定、告警可控</text>
+              <text x="306" y="168" class="s-ink" font-size="13">不在半夜替别人的变更收尾</text>
+              <rect x="680" y="122" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="148" class="s-ink" font-size="13">可重复部署 + 小批量变更</text>
+              <text x="694" y="168" class="s-ink" font-size="13">故障面和回滚成本变小</text>
+              <path d="M232 153 L286 153" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 153 L676 153" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 3 · 测试 QA -->
+              <rect x="20" y="192" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="219" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">测试 / QA</text>
+              <text x="125" y="239" class="s-muted" font-size="12" text-anchor="middle">Testing / QA</text>
+              <rect x="290" y="192" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="218" class="s-ink" font-size="13">早点拿到可测的东西</text>
+              <text x="306" y="238" class="s-ink" font-size="13">不在发布前被压缩时间</text>
+              <rect x="680" y="192" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="218" class="s-ink" font-size="13">左移与持续测试</text>
+              <text x="694" y="238" class="s-ink" font-size="13">质量责任摊给全员</text>
+              <path d="M232 223 L286 223" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 223 L676 223" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 4 · 安全 -->
+              <rect x="20" y="262" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="289" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">安全</text>
+              <text x="125" y="309" class="s-muted" font-size="12" text-anchor="middle">Security</text>
+              <rect x="290" y="262" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="288" class="s-ink" font-size="13">别到上线前一天才被叫来</text>
+              <text x="306" y="308" class="s-ink" font-size="13">合规证据能自动留痕</text>
+              <rect x="680" y="262" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="288" class="s-ink" font-size="13">DevSecOps：检查进流水线</text>
+              <text x="694" y="308" class="s-ink" font-size="13">从守门人变能力提供者</text>
+              <path d="M232 293 L286 293" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 293 L676 293" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 5 · 业务 -->
+              <rect x="20" y="332" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="359" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">业务</text>
+              <text x="125" y="379" class="s-muted" font-size="12" text-anchor="middle">Business</text>
+              <rect x="290" y="332" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="358" class="s-ink" font-size="13">想法能快速上线验证</text>
+              <text x="306" y="378" class="s-ink" font-size="13">预算花下去看得见结果</text>
+              <rect x="680" y="332" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="358" class="s-ink" font-size="13">更短的变更前置时间</text>
+              <text x="694" y="378" class="s-ink" font-size="13">试错成本下降</text>
+              <path d="M232 363 L286 363" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 363 L676 363" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 6 · 客户 -->
+              <rect x="20" y="402" width="210" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="125" y="429" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">客户</text>
+              <text x="125" y="449" class="s-muted" font-size="12" text-anchor="middle">Customer</text>
+              <rect x="290" y="402" width="330" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="306" y="428" class="s-ink" font-size="13">功能可用、出问题恢复快</text>
+              <text x="306" y="448" class="s-ink" font-size="13">数据与隐私不出事</text>
+              <rect x="680" y="402" width="260" height="62" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="694" y="428" class="s-ink" font-size="13">更高可用性 · 更短 MTTR</text>
+              <text x="694" y="448" class="s-ink" font-size="13">修复不用等下个季度</text>
+              <path d="M232 433 L286 433" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 433 L676 433" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+
+              <!-- 行 7 · 领导层 -->
+              <rect x="20" y="472" width="210" height="62" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="125" y="499" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">领导层</text>
+              <text x="125" y="519" class="s-muted" font-size="12" text-anchor="middle">Leadership</text>
+              <rect x="290" y="472" width="330" height="62" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="306" y="498" class="s-ink" font-size="13">交付可预期、风险看得见</text>
+              <text x="306" y="518" class="s-ink" font-size="13">投入能说清换回了什么</text>
+              <rect x="680" y="472" width="260" height="62" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="694" y="498" class="s-ink" font-size="13">可度量的交付能力</text>
+              <text x="694" y="518" class="s-ink" font-size="13">决策依据从汇报变数据</text>
+              <path d="M232 503 L286 503" class="s-2" stroke-width="1.8" fill="none" marker-end="url(#ah-14-6)"/>
+              <path d="M622 503 L676 503" class="s-3" stroke-width="1.8" fill="none" marker-end="url(#ah-14-7)"/>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 1-4-2　七类干系人的诉求与收益。</strong>
+            这张图要看懂的是：<strong>每一行的收益，都必须先兑现同一行的诉求才成立</strong> ——
+            DevOps 不是让某一方赢，而是让七方各自的痛点同时被处理，所以它才需要七方一起参与设计。
+            最后一行（领导层）用重色标出，因为「管理层对文化变革的承诺是 DevOps 的关键成功因素」这一判断由
+            <strong>DOFD v3.4 官方样题答案键</strong>确认。
+            图中没有画出「各方需要付出什么」，那部分见下面的 ④ 面对照表。
+            <strong>本图的干系人分类与诉求 / 收益内容为本站教学整理</strong>，
+            官方将 <em>DevOps stakeholders</em> 列为术语，但未给出这份清单。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">切面</th><th style="width:26%">回答的问题</th><th style="width:27%">典型内容</th><th>被误用时会发生什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>stakeholders</strong></td>
+                  <td><strong>谁被牵连</strong> · 谁需要沟通与买入</td>
+                  <td>开发、运维、测试、安全、业务、客户、领导层、供应商</td>
+                  <td>范围划小了 → 安全和业务在最后一刻出现，带着阻塞项</td>
+                </tr>
+                <tr>
+                  <td><strong>teams</strong></td>
+                  <td><strong>谁来交付</strong> · 谁对价值流端到端负责</td>
+                  <td>承担某条价值流从需求到运行的团队实体</td>
+                  <td>被当成一个新部门去成立 → 变成开发与运维之间的第三道墙</td>
+                </tr>
+                <tr>
+                  <td><strong>roles</strong></td>
+                  <td><strong>谁负责哪件事</strong> · 职责如何分配</td>
+                  <td>可由不同人承担的职责，一人可兼多个</td>
+                  <td>被当成岗位编制 → 招一个「DevOps 工程师」，然后把所有自动化压给他一个人</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>roles 是职责，不是编制</strong>。
+            市面上的「DevOps 工程师」是一个招聘岗位名称，不是官方定义的 role；
+            把 role 落成一个人的岗位，等于把跨职能协作重新收敛回一个单点。</small></p>
+          <p class="mb-0 muted"><small>本对照表与第四列「被误用时会发生什么」为本站教学整理，
+            官方只把三条列为术语，未给出误用后果的对照。
+            <strong>具体的组织设计与团队结构</strong>见 <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进（8.2 角色与团队）</a>，
+            <strong>运营模型</strong>见 <a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型（5.5）</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>转型启动时按三个切面各拉一张清单，顺序不能颠倒 —— <strong>先划范围，再定边界，最后分职责</strong>。</p>
+          <ul>
+            <li><strong>干系人清单</strong>：把「谁能否决这件事」和「谁的日常会被改变」两类人都列进去。
+              安全与合规几乎总是第一类，客服与运营几乎总是第二类，两类都最容易被漏。</li>
+            <li><strong>团队边界</strong>：对每条价值流问一句「出了事谁负责到底」。
+              如果答案是「要看是哪个阶段」，说明端到端责任还没有落到任何一个团队身上。</li>
+            <li><strong>角色职责</strong>：把流水线维护、生产可靠性、安全检查、发布决策这几项分别指认到人，
+              并<strong>明确允许一人多职</strong>。不要为每项职责新建一个岗位。</li>
+          </ul>
+          <p>收益已经画在上方图 1-4-2 里，这里只补另一半 —— <strong>只讲收益的转型会在第一次代价出现时失去支持</strong>：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">干系人</th><th>各方需要付出什么（收益见上方图 1-4-2）</th></tr></thead>
+              <tbody>
+                <tr><td><strong>开发</strong></td><td>为自己的代码在生产上的表现负责，参与值班与故障处理</td></tr>
+                <tr><td><strong>运维</strong></td><td>把手工掌控的环境与发布交出去，改为提供自助能力</td></tr>
+                <tr><td><strong>测试 / QA</strong></td><td>从手工执行转向设计自动化测试与测试策略，技能要换</td></tr>
+                <tr><td><strong>安全</strong></td><td>放弃「上线前一票否决」的把关方式，改为提供可自动执行的规则</td></tr>
+                <tr><td><strong>业务</strong></td><td>接受更小的交付批量与更频繁的优先级对齐，不能再一次性冻结半年需求</td></tr>
+                <tr><td><strong>客户</strong></td><td>接受更频繁的变更节奏，需要相应的沟通与预期管理</td></tr>
+                <tr><td><strong>领导层</strong></td><td>持续的资金与时间承诺，容忍实验失败，不用指标去考核个人</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            上表的「付出」一列为本站教学整理，官方将 <em>DevOps stakeholders</em>、<em>DevOps teams</em>、
+            <em>DevOps roles</em> 列为考纲术语，但<strong>未以此形式给出各干系人的收益与代价清单</strong>。
+            考试不会要求按此表选择。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>三个词互为干扰项（最常见）</strong>：<span class="en">stakeholders</span> /
+              <span class="en">teams</span> / <span class="en">roles</span> 会同时出现在同一组选项里。
+              <strong>排除技巧：看题干的动词。</strong>
+              「受影响 / 需要沟通 / 需要买入 / 需要被纳入」→ <strong>stakeholders</strong>；
+              「谁交付 / 谁对价值流负责」→ <strong>teams</strong>；
+              「谁负责哪项职责」→ <strong>roles</strong>。</li>
+            <li><strong>范围题</strong>：问哪些人属于 DevOps 干系人。
+              正确方向是<strong>范围尽可能大</strong>，包括组织外的客户与供应商
+              （<strong>本站教学推断，非官方样题答案键确认</strong>）。
+              干扰项会把范围收窄成「开发与运维两方」 —— 这是把 DevOps 读成字面拼词的典型错误。</li>
+            <li><strong>「更具体的选项更像答案」这个陷阱</strong>：teams 听起来比 stakeholders 具体，
+              于是在问「谁应被纳入转型设计」时容易被误选。记住 <strong>stakeholders 的范围最大，纳入类的题选它</strong>。</li>
+            <li><strong>领导层为什么必须在清单里</strong>：DevOps 的关键成功因素是
+              <strong>管理层对文化变革的承诺</strong> —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              题干若描述「转型缺乏推进力」，答案方向指向领导层承诺，而不是「增加自动化投入」或「引入新工具」。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「看动词」的排除技巧与题型判断为本站教学整理；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">谁被牵连 = stakeholders；谁来交付 = teams；谁负责哪件事 = roles。</p>
+          <p class="mb-0 muted"><small>范围口诀：<strong>stakeholders 最大，越过组织边界；roles 最小，落在职责上而不是编制上。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-1-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-4-3</div>
+        <h3 class="kp__title">团队满意度为什么是目标：Change fatigue<span class="en">Team satisfaction &amp; Change fatigue</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>团队满意度 <span class="en">Team satisfaction</span></strong>是本站归纳的六项结果目标之一，
+            也同时出现在 Benefits 清单里。
+          </p>
+          <p>
+            <span class="term">变革疲劳 <span class="en">Change fatigue</span></span>
+            列于 DOFD v3.4 官方考纲术语表（<strong>官方只给术语名称，未公布定义</strong>）。
+            本站解释为：组织在<strong>持续、频繁、缺少解释与收尾</strong>的变革中，
+            成员逐渐产生的耗竭与抵触。它的外在表现不是反对，而是<strong>沉默的服从</strong> ——
+            照做，但不再投入，也不再主动说出坏消息。
+          </p>
+          <p class="mb-0 muted"><small>以上定义、成因与「沉默的服从」这一表现描述为本站教学整理，官方未给出术语定义。</small></p>
+          <p class="mb-0 muted"><small><strong>Change fatigue</strong> 与 <strong>Kubler-Ross Change Curve</strong>
+            均列于 DOFD v3.4 官方考纲术语表；变革曲线本身的展开见
+            <a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型</a>。
+            「团队满意度是目标之一」这一说法沿用 <a href="1.1-defining-devops.html">1.1 节</a>的本站教学表述，
+            <em>Team satisfaction</em> 不在 66 条术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            把团队满意度写进目标，要挡住的是一个自我强化的负环 ——
+            <strong>它不会一次性爆发，而是让所有其他目标慢慢失效。</strong>
+          </p>
+          <ul>
+            <li>某公司 14 个月内换了三套工具链、做了两次团队重组、改了一次 KPI 口径。
+              每一次都以「这是 DevOps 转型的一部分」宣布，<strong>没有一次做过收尾说明</strong> ——
+              没人知道上一次到底成了还是没成。</li>
+            <li>第 15 个月推行无指责事后复盘。工程师照常参会，平均 9 分钟结束，
+              没有人提出根因假设。管理层的判断是「大家不配合」，实际是
+              <strong>「不再相信这次会不一样」</strong>。</li>
+          </ul>
+          <p>负环的链条很短，但每一环都在削弱前面章节讲过的能力：</p>
+          <ul>
+            <li>满意度下降 → <strong>主动上报坏消息的意愿下降</strong>；</li>
+            <li>坏消息不上报 → <strong>反馈失真</strong>，故障发现变慢（第二步 · 反馈失效）；</li>
+            <li>故障发现慢 → 值班压力与救火时长上升 → <strong>满意度进一步下降</strong>；</li>
+            <li>同时，最有经验的人先离开 → 知识流失 → 变更风险上升。</li>
+          </ul>
+          <p>
+            这就是团队满意度不是软性福利的原因：
+            <strong>它是反馈质量的前置条件</strong>。人不愿意开口，遥测再全也补不回来。
+          </p>
+          <p class="mb-0 muted"><small>上述案例为本站构造的教学示例，非真实调研数据；
+            「满意度 → 反馈失真 → 故障发现变慢」这条因果链为本站教学整理，官方将
+            <em>Change fatigue</em> 与团队满意度分别列出，未给出此链条。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">团队满意度 Team satisfaction</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>员工福利与团建</strong></td>
+                  <td>是<strong>目标</strong>：衡量人是否还能持续地把工作做好</td>
+                  <td>是<strong>手段之一，且通常无效</strong>：它改变不了值班频率、返工量和被追责的风险</td>
+                </tr>
+                <tr>
+                  <td><strong>eNPS<br><span class="en">employee Net Promoter Score</span></strong></td>
+                  <td>是<strong>目标本身</strong>（要什么）</td>
+                  <td>是<strong>度量该目标的指标</strong>（做到了多少）。指标体系见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></td>
+                </tr>
+                <tr>
+                  <td><strong>安全文化<br><span class="en">Safety culture</span></strong></td>
+                  <td>是<strong>结果</strong>：人愿意留下来并投入</td>
+                  <td>是<strong>达成它的文化条件</strong>：可以安全地说出坏消息而不被追责。见 <a href="../ch04-frameworks/index.html">第 4 章 安全文化（4.5）</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Change fatigue<br>变革疲劳</strong></td>
+                  <td>是<strong>目标</strong>：正向的状态</td>
+                  <td>是<strong>目标失守时的具体病症</strong>：由变革本身的频率与不收尾造成，不是由「员工抗拒改变」造成</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 Change fatigue 当成「员工不愿意改变」</strong>。
+            <strong>本站解读：成因指向变革的组织方式而非员工态度</strong> ——
+            典型成因是并行变革太多、每次都不宣布结束、上一次的代价还没消化就开始下一次。
+            <strong>此因果判断为教学整理</strong>，官方只把该术语列于术语表，未给出定义与成因。</small></p>
+          <p class="mb-0 muted"><small><strong>Change fatigue</strong>、<strong>eNPS</strong>、
+            <strong>Organizational culture</strong> 列于 DOFD v3.4 官方考纲术语表；
+            <em>Safety Culture</em> 是 v3.4 课程大纲 M4 的模块子项
+            <span class="badge badge--plain">📘 官方模块子项</span>，不在 66 条术语表内。
+            本对照表为本站教学整理，官方未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>先判断团队是否已经进入变革疲劳。可观察的信号，按可信度排序：</p>
+          <ul>
+            <li><strong>复盘会变短、变空</strong>。没人提根因假设，只有时间线复述 —— 这是最早、最可靠的信号。</li>
+            <li><strong>坏消息只在事后出现</strong>。风险不是在评审时提出的，是在故障发生后才被说「其实我早就觉得」。</li>
+            <li><strong>对新倡议的第一反应是问「这次能撑多久」</strong>，而不是问它要解决什么。</li>
+            <li><strong>并行进行中的「转型倡议」超过三项</strong>，且没有一项宣布过结束。</li>
+          </ul>
+          <p>能动手的地方，按代价从低到高：</p>
+          <ul>
+            <li><strong>给变革收尾</strong>。每一次变更工具、流程或组织，都要明确宣布「这一项结束了，结果是什么」。
+              不收尾的变革会在人的账上一直挂着。</li>
+            <li><strong>给并行变革设上限</strong>。这本质上是把限制在制品用在组织层面 ——
+              同时进行的变革越多，每一项的完成率越低，疲劳积累越快。</li>
+            <li><strong>把值班负担计入容量</strong>，而不是算作额外付出。值班时长不进排期，就等于默认它是免费的。</li>
+            <li><strong>复盘不追责</strong>。这一条是前三条的前提；只要还有追责，前面做什么都换不来真话。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上信号与四条做法为本站教学整理，官方将 <em>Change fatigue</em> 列为术语，
+            未规定识别信号或缓解步骤。度量部分（eNPS 等）不在本节展开，见
+            <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>文化场景题</strong>：题干描述一个存在<strong>指责与恐惧文化、大量单点故障、频繁战情室</strong>的组织，
+              问它应当转向什么。答案方向是<strong>安全文化</strong> ——
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              干扰项会写成「加强变更管控」「增加审批层级」「引入更严格的度量」，
+              都是「管得更紧」方向，全部排除。</li>
+            <li><strong>领导力反向题</strong>：问什么<strong>不属于</strong> DevOps 领导力的目标。
+              答案方向是<strong>用指标控制和评价员工</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条同时也是本节的价值观分界线：<strong>度量用于改进系统，不用于评价人</strong>。</li>
+            <li><strong>成功因素题</strong>：问 DevOps 的关键成功因素。答案方向是
+              <strong>管理层对文化变革的承诺</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              干扰项常写成「选对工具链」「先招到有经验的 DevOps 工程师」「先建立完整的度量体系」。</li>
+            <li><strong>团队满意度的干扰项长相</strong>：被改写成「员工福利」「团队建设活动」「办公环境改善」。
+              这些是手段的替身，不是目标本身。<strong>排除技巧：这项目标说的是「人能否持续地把工作做好」，
+              不是「人过得舒不舒服」。</strong></li>
+            <li><strong>Change fatigue 的问法</strong>：给一段描述（连续多次变革、员工被动配合、新倡议无人响应），
+              问这是什么现象。答案方向是<strong>变革疲劳</strong>，不要选成「抵制变革」或「技能不足」——
+              题干强调的是<strong>次数与频率</strong>，不是<strong>意愿或能力</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">人不愿意开口，遥测再全也没用 —— 团队满意度是反馈的前置条件，不是福利。</p>
+          <p class="mb-0 muted"><small>Change fatigue 的方向记牢：<strong>是组织改得太频繁又不收尾，不是员工不想改</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本站归纳的结果目标六项：<strong>质量 · 稳定性 · 可靠性 · 可用性 · 安全 · 团队满意度</strong>；
+          Benefits 另加<strong>发布节奏 · 速度 · 吞吐 · 效率</strong>（这四项只在 Benefits 里，不属于 Goals）</li>
+        <li>清单里<strong>没有</strong>降本、裁人、「消灭运维」、「用指标评价员工」—— 见到即排除</li>
+        <li>三条官方术语（官方只给名称，下面的区分是本站解释）：<strong>stakeholders 谁被牵连（范围最大，含客户与供应商）· teams 谁来交付 · roles 谁负责哪件事（是职责不是编制）</strong></li>
+        <li>各方都有收益也都有付出：开发要为生产负责，运维要交出手工掌控，安全要放弃一票否决，业务要接受小批量</li>
+        <li><strong>团队满意度是目标不是福利</strong>：它是反馈质量的前置条件，塌了之后速度与稳定性都无法持续</li>
+        <li><strong>Change fatigue</strong> 逐字列于官方术语表（官方未给定义）；
+          <strong>本站解读：成因指向变革的组织方式而非员工态度 —— 变革太频繁且不收尾，不是「员工抗拒改变」；此因果判断为教学整理</strong></li>
+        <li>官方样题答案键确认的三条：<strong>决定采用哪些原则与实践的是业务战略与目标</strong>；
+          <strong>关键成功因素是管理层对文化变革的承诺</strong>；<strong>用指标控制和评价员工不属于 DevOps 领导力目标</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：PeopleCert《DevOps Foundation® Blueprint》是一页概览海报，
+      六个色块之一名为 <em>Benefits</em>，本页「Benefits」这个层名据此；
+      <strong>该海报没有 Goals 色块，也没有本页这两份具体条目清单</strong>。
+      <em>DevOps stakeholders</em>、<em>DevOps teams</em>、<em>DevOps roles</em>、<em>Change fatigue</em>、
+      <em>employee Net Promoter Score (eNPS)</em>、<em>Organizational culture</em>、
+      <em>Kubler-Ross Change Curve</em>、<em>DevOps metrics</em>、<em>Organizational considerations</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Safety Culture</em> 为 v3.4 课程大纲（2022-05）M4 模块子项，不在 66 条术语表内，已就地标注。<br>
+      <strong>由 DOFD v3.4 官方样题答案键确认的三条</strong>：
+      ① 决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>；
+      ② DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>；
+      ③ <strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标；
+      另引用④ 面对指责与恐惧文化、大量单点故障、频繁战情室的组织应转向<strong>安全文化</strong>。
+      本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      <strong>本站教学整理部分</strong>：<strong>六项结果目标（质量、稳定性、可靠性、可用性、安全、团队满意度）
+      与 Benefits 条目清单（发布节奏、速度、吞吐、效率等）及其「Goals / Benefits 两层」拆分</strong> ——
+      六项沿用 <a href="1.1-defining-devops.html">1.1 节</a>那句本站教学表述，
+      不在 DOFD v3.4 Examination Requirements、课程大纲与 66 条术语表之内；
+      <strong>三个术语（stakeholders / teams / roles）与 Change fatigue 的定义、成因和区分</strong> ——
+      官方术语表只给名称、不给定义；
+      图 1-4-1 的左右分组与「速度与稳定性非零和」的判断、图 1-4-2 的干系人—诉求—收益清单、
+      三个术语的「范围由大到小」排列与误用后果对照、各干系人的「需要付出」清单、
+      把 CALMS 定性为「价值观」、「满意度 → 反馈失真 → 故障发现变慢」因果链、
+      变革疲劳的识别信号与缓解做法，官方均未以此形式给出，已分别在对应位置就地标注。
+      组织设计与团队结构见 <a href="../ch08-sharing/index.html">第 8 章（8.2）</a>，
+      运营模型见 <a href="../ch05-culture/index.html">第 5 章（5.5）</a>，
+      eNPS 等度量见 <a href="../ch07-metrics/index.html">第 7 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

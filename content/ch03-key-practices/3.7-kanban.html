@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.7 看板方法 · DevOps Foundation 学习站</title>
+<meta name="description" content="看板方法（Kanban）用可视化、限制在制品 WIP 与拉动来管理工作流动。本节讲清六条核心实践、限制在制品为什么反直觉却有效，以及看板与 Scrum 的分界线。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"3.7-kanban"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.7 看板方法</h1>
+      <div class="page-head__en">Kanban</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        看板不是「一块贴满便利贴的白板」。它由两件事构成：
+        <strong>把看不见的工作变成看得见的卡片</strong>，然后<strong>给「同时在做多少件」加一个硬上限</strong>。
+        第二件事才是它真正起作用的地方 —— 上限一旦生效，开工就需要许可，
+        团队被迫先把手上的活推完，而不是不停地开新的。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>看板的六条核心实践分别约束了什么行为，为什么只做「可视化」等于没做</li>
+        <li>限制在制品这种「少做几件事」的规则，为什么反而让交付变快</li>
+        <li>看板与 Scrum 的分界线在哪，能不能同时用；<span class="en">Velocity</span> 属于哪一边</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-7-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 520" role="img" aria-label="看板列与价值流阶段的对应关系图，标出积压最厚的列与其下游的约束位置">
+          <defs>
+            <marker id="ah-37-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="30" y="24" class="s-muted" font-size="13">上排：价值流真实经过的阶段　　下排：板上的列（列必须照抄现状，不能照抄理想流程）</text>
+
+          <!-- 价值流带 -->
+          <rect x="30"  y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="180" y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="330" y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 5"/>
+          <rect x="480" y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="630" y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 5"/>
+          <rect x="780" y="36" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="100" y="62" class="s-ink" font-size="15" font-weight="650">需求 / 规划</text>
+            <text x="100" y="81" class="s-muted" font-size="12">工作阶段</text>
+            <text x="250" y="62" class="s-ink" font-size="15" font-weight="650">开发</text>
+            <text x="250" y="81" class="s-muted" font-size="12">工作阶段</text>
+            <text x="400" y="62" class="s-muted" font-size="15" font-weight="650">交接等待</text>
+            <text x="400" y="81" class="s-muted" font-size="12">队列 · 不是工作阶段</text>
+            <text x="550" y="62" class="s-ink" font-size="15" font-weight="650">测试</text>
+            <text x="550" y="81" class="s-muted" font-size="12">工作阶段</text>
+            <text x="700" y="62" class="s-muted" font-size="15" font-weight="650">交接等待</text>
+            <text x="700" y="81" class="s-muted" font-size="12">队列 · 不是工作阶段</text>
+            <text x="850" y="62" class="s-ink" font-size="15" font-weight="650">部署 / 运维</text>
+            <text x="850" y="81" class="s-muted" font-size="12">工作阶段</text>
+          </g>
+
+          <!-- 对应短线 -->
+          <path d="M100 92 L100 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+          <path d="M250 92 L250 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+          <path d="M400 92 L400 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+          <path d="M550 92 L550 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+          <path d="M700 92 L700 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+          <path d="M850 92 L850 114" class="s-1" stroke-width="1.8" fill="none" marker-end="url(#ah-37-1)"/>
+
+          <!-- 看板列 -->
+          <rect x="30"  y="118" width="140" height="310" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+          <rect x="180" y="118" width="140" height="310" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+          <rect x="330" y="118" width="140" height="310" rx="10" class="s-2" stroke-width="1.8" stroke-dasharray="7 5" fill="var(--dia-fill)"/>
+          <rect x="480" y="118" width="140" height="310" rx="10" class="s-2" stroke-width="3" fill="var(--dia-fill-2)"/>
+          <rect x="630" y="118" width="140" height="310" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+          <rect x="780" y="118" width="140" height="310" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+
+          <g text-anchor="middle">
+            <text x="100" y="142" class="s-ink" font-size="15" font-weight="700">需求池</text>
+            <text x="100" y="162" class="s-muted" font-size="12">不设上限</text>
+            <text x="250" y="142" class="s-ink" font-size="15" font-weight="700">开发中</text>
+            <text x="250" y="162" class="s-muted" font-size="12">WIP 上限 3</text>
+            <text x="400" y="142" class="f-2" font-size="15" font-weight="700">待测试</text>
+            <text x="400" y="162" class="f-2" font-size="12">未设上限 · 实际 8</text>
+            <text x="550" y="142" class="s-ink" font-size="15" font-weight="700">测试中</text>
+            <text x="550" y="162" class="f-2" font-size="12">上限 2 · 已满</text>
+            <text x="700" y="142" class="s-ink" font-size="15" font-weight="700">待部署</text>
+            <text x="700" y="162" class="s-muted" font-size="12">上限 2 · 实际 1</text>
+            <text x="850" y="142" class="s-ink" font-size="15" font-weight="700">已上线</text>
+            <text x="850" y="162" class="s-muted" font-size="12">本周 3 张</text>
+          </g>
+
+          <!-- 卡片：需求池 4 -->
+          <g class="s-stroke" stroke-width="1.2">
+            <rect x="46"  y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="46"  y="204" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="46"  y="230" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="46"  y="256" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="196" y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="196" y="204" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="196" y="230" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="646" y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="796" y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="796" y="204" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="796" y="230" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+          </g>
+
+          <!-- 卡片：待测试 8（积压） -->
+          <g class="s-2" stroke-width="1.4">
+            <rect x="346" y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="204" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="230" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="256" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="282" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="308" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="334" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="346" y="360" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="496" y="178" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+            <rect x="496" y="204" width="108" height="20" rx="4" fill="var(--dia-fill-2)"/>
+          </g>
+
+          <text x="400" y="400" class="f-2" font-size="13" font-weight="700" text-anchor="middle">积压 × 8</text>
+          <text x="550" y="400" class="f-2" font-size="13" font-weight="700" text-anchor="middle">约束在这里</text>
+
+          <!-- 底部判据 -->
+          <text x="30" y="458" class="f-2" font-size="15" font-weight="700">判据：积压最厚的那一列，它的下游就是约束。</text>
+          <text x="30" y="482" class="s-muted" font-size="13">「待测试」这一列还没设上限，堆了 8 张 —— 说明测试吃不下上游的产出。约束是「测试中」，不是开发；加开发人手只会让这一堆更厚。</text>
+          <text x="30" y="504" class="s-muted" font-size="13">灰色虚线的两列是队列，不是工作阶段。把它们单独画出来，交接等待才会被看见；藏进「开发中」，等待就消失了。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-7-1　看板列与价值流阶段的对应。</strong>
+        要看懂两件事。第一，<strong>列必须照抄工作真实经过的阶段，包括那些没人干活的队列列</strong> ——
+        队列列画出来，等待才有位置存在；不画，等待就被算进「开发中」，从数据上凭空消失。
+        第二，<strong>卡片堆得最厚的列，指认的不是它自己，而是它的下游</strong>：
+        「待测试」堆成山，是因为「测试中」吃不下，约束在测试。这条判据把找瓶颈从争论变成了看板面上数卡片。
+        注意「待测试」是图里唯一还没设上限的列 —— 队列一旦不封顶，上游就会一直往里推，
+        这也正是<strong>第一个在制品上限应该设在哪里</strong>的答案。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-3-7-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-7-1</div>
+        <h3 class="kp__title">看板方法与它的六条核心实践<span class="en">Kanban</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">看板 <span class="en">Kanban</span></span>是一种管理工作流动的方法：
+            <strong>把价值流的每个阶段画成一列，把每项工作画成一张卡片，给列上的卡片数量设硬上限，
+            工作只能在有空位时被拉入。</strong>
+            词源是精益生产中的信号卡 —— 下游有空位，才向上游发出「可以送料」的信号。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">核心实践</th><th>它约束了什么行为</th></tr></thead>
+              <tbody>
+                <tr><td><strong>可视化工作</strong></td><td>禁止「只在某人脑子里」的工作。没上板的任务不存在，也不占产能</td></tr>
+                <tr><td><strong>限制在制品 <span class="en">WIP</span></strong></td><td>禁止无限开工。列满了就不能拉新卡，只能去帮忙把已有的卡推完。<strong>上限即空位，空位即拉动信号</strong> —— 拉动不是第七条实践，它是上限生效后的结果</td></tr>
+                <tr><td><strong>管理流动</strong></td><td>关注对象从「人忙不忙」换成「卡片走得快不快」：量前置时间、看队列在哪变厚</td></tr>
+                <tr><td><strong>显式化流程规则</strong></td><td>禁止隐性标准。每列的进入 / 离开条件写在列头上，包括<span class="term">完成的定义 <span class="en">Definition of Done / DoD</span></span></td></tr>
+                <tr><td><strong>实施反馈循环</strong></td><td>禁止「只运转不复盘」。板子必须配一个固定的检视时点，用流动数据回答「这段时间变好了没有」</td></tr>
+                <tr><td><strong>协作式改进 / 演进式改进</strong></td><td>禁止一次性大改。上限、列、规则都按数据小步调整，由团队共同决定，而不是自上而下重排流程</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>Kanban</strong> 逐字列于 DOFD v3.4 官方考纲术语表，同时是 v3.4 课程大纲 M3
+            <em>Key DevOps Practices</em> 的模块子项，属于官方考纲覆盖范围。
+            但<strong>上表这六条实践的清单本身不是官方文件给出的</strong>，它出自看板方法的通行实践总结，
+            本站作为教学整理列出，用于说明 Kanban 这个术语具体约束了哪些行为。
+            <strong>本站据此推断</strong>：考试不会要求按名称背诵这六条。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它解决的第一个问题非常朴素：<strong>没有人能说清此刻团队到底同时在做多少件事。</strong></p>
+          <ul>
+            <li>设想一个 8 人的支付团队：需求在 Jira 里，线上问题在值班群里，
+              兄弟团队的请求靠私聊，合规整改靠邮件。四个入口互不可见，
+              <strong>任何一个人都可以从任意入口给团队加活，且不需要任何人批准</strong>。</li>
+            <li>后果一：插队没有成本。谁嗓门大谁的需求先做，因为没有一张图能证明「已经有 14 件在做了」。</li>
+            <li>后果二：状态失真。周会上每个人都说「快做完了」，这句话已经连续说了三周 ——
+              卡片没有列，就没有「卡在哪一步」这个概念，只有「做了多少」这种自我感觉。</li>
+            <li>后果三：等待被藏起来。一个变更从提交到上线 21 天，其中 15 天在等测试环境和等评审，
+              但工时系统里只记录了动手的 6 天，<strong>于是所有改进都投向「让人干得更快」，而真正的时间在队列里</strong>。</li>
+          </ul>
+          <p>
+            看板先用可视化把这三件事变成可见事实，再用在制品上限把「随便开工」变成需要空位。
+            前者提供证据，后者才产生行为改变。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">看板 <span class="en">Kanban</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>普通任务板 / 白板</strong></td>
+                  <td>有<strong>在制品上限</strong>、有显式规则、用流动指标驱动改进。上限让「开工」需要许可</td>
+                  <td>只是把卡片贴出来。没有上限就没有拉动，工作照样无限涌入，板子只是更好看的待办清单</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong></td>
+                  <td><strong>日常运行机制</strong>：实时反映此刻每一列有多少卡、堵在哪</td>
+                  <td><strong>一次性分析活动</strong>：产出一张现状图与改进机会清单<br><small class="muted">完整方法见 <a href="../ch04-frameworks/index.html">第 4 章（4.6 价值流映射）</a>；它与价值流管理的分界见 <a href="3.9-vsm.html">3.9 价值流管理</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>约束理论 <span class="en">ToC</span></strong><br><small class="muted">见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a></small></td>
+                  <td>提供<strong>发现约束的日常仪表</strong>：哪一列积压最厚，一眼可见</td>
+                  <td>提供<strong>处理约束的方法论</strong>：找到之后按什么顺序动手</td>
+                </tr>
+                <tr>
+                  <td><strong>部署流水线 <span class="en">Deployment pipeline</span></strong><br><small class="muted">见 <a href="3.2-continuous-integration.html">3.2 持续集成</a></small></td>
+                  <td>管的是<strong>人的工作</strong>如何在阶段间流动，对象是卡片</td>
+                  <td>管的是<strong>代码构件</strong>如何自动流经构建与测试，对象是版本</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把白板当看板</strong>。判据只有一个 ——
+            <strong>板上有没有一个会真正拦住人的在制品上限</strong>。
+            没有上限的板子解决的是「看不见」，解决不了「开太多」，而后者才是交付慢的直接原因。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>建板子的顺序，比板子长什么样重要：</p>
+          <ul>
+            <li><strong>先画现状，不画理想</strong>：列取自工作真实经过的阶段。
+              如果现实中变更要等两级审批，就老实画一列「等审批」，不要为了好看合并掉。</li>
+            <li><strong>队列列必须单独画</strong>：「待测试」「待部署」「等审批」不是工作阶段，是等待。
+              独立成列，等待时间才能被单独计量，否则它会被算进上游的「开发中」。</li>
+            <li><strong>卡片粒度要能单张流动</strong>：<span class="term">Epics</span>
+              这类大颗粒需求不能直接上板 —— 一张卡在「开发中」躺六周，板子就失去了状态信息。
+              拆到「几天内能走完全程」的条目再上板。</li>
+            <li><strong>规则写在列头</strong>：每列的进入条件与离开条件用一句话写死，
+              例如「离开『开发中』的条件：单元测试通过 + 已完成同行评审」。规则不显式，上限就会被悄悄绕过。</li>
+            <li><strong>站会顺着板从右往左走</strong>：先处理最接近交付的卡，再看阻塞卡，最后才谈新卡。
+              汇报「每个人昨天做了什么」是任务板的开法，不是看板的开法。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上建板顺序与站会方式为本站教学整理，官方文件只把 <em>Kanban</em> 列为术语与模块子项，未规定具体操作步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>识别题（本站判断偏 Bloom 1–2）</strong>：题干描述一种做法 ——
+              把工作可视化、给同时进行的工作设上限、由下游拉动 —— 问这是什么实践。
+              答案方向是 <strong>Kanban</strong>。干扰项常填入 <em>Scrum</em>、<em>持续交付</em>、<em>价值流映射</em>。
+              <strong>排除技巧：题干出现「可视化」「在制品上限」「拉动」三个词中的任意两个，基本可锁定 Kanban</strong>；
+              出现「Sprint」「时间盒」「<span class="en">Velocity</span>」则应转向 Scrum。</li>
+            <li><strong>归属题</strong>：问看板服务于三步工作法的哪一步。答案方向是
+              <strong>第一步 · 流动</strong>（<strong>本站教学归类，官方未声明看板的归属</strong>；
+              见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>）——
+              看板处理的是工作从左到右的通过速度，不处理信息回流。<br>
+              需要区分开的一条硬事实：<strong>约束理论支持三步工作法中的第一步</strong>，这一归属
+              <strong>由 DOFD v3.4 官方样题答案键确认</strong> —— <strong>官方确认的只是约束理论的归属，不包括看板的归属</strong>。
+              两者在同一步里配合：看板负责把约束显示出来，约束理论负责处理它。</li>
+            <li><strong>干扰项另一种长相</strong>：把看板描述成「一种敏捷框架，规定了角色与固定长度的迭代」。
+              这是把 Scrum 的属性安到看板头上，<strong>看板不规定角色，也没有迭代边界</strong>，见到即可判错。</li>
+            <li><strong>不必背的部分</strong>：六条核心实践的名称清单不在官方术语表内，本站推断不会被要求按名称选择。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先让工作看得见，再让开工需要许可 —— 少了后半句，那只是一块白板。</p>
+          <p class="mb-0 muted"><small>六条实践的顺序也是依赖顺序：<strong>看得见 → 限得住 → 量得出 → 说得清 → 有反馈 → 常改进</strong>。
+            后两条最常被漏掉：板子运转起来之后没人复盘，看板就只剩一个更贵的待办清单。（该助记为本站教学整理）</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-3-7-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-7-2</div>
+        <h3 class="kp__title">流动<span class="en">Flow</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">流动 <span class="en">Flow</span></span>指工作从开始到交付持续、平稳地前进，
+            中途不长时间停在队列里。<strong>限制在制品</strong>是达成流动的主要手段：
+            给每一列（或整块板）同时进行的卡片数设一个硬上限，达到上限就<strong>不许再开新卡</strong>，
+            只能去把已经开了的卡推完。
+          </p>
+          <p>
+            一句可复述的表述：<strong>在制品上限不是效率目标，是一条投料闸门</strong> ——
+            它控制的是「同时开几件」，不是「每件做多快」。
+          </p>
+          <div class="src-note">
+            <strong>Flow</strong> 与 <strong>Kanban</strong> 均逐字列于 DOFD v3.4 官方考纲术语表，
+            本知识点的 ⭐ 考纲核心徽章针对的是 <em>Flow</em> 这一条目。
+            <strong>「限制在制品 WIP」这个短语本身、以及下文用到的利特尔法则，都不在 66 条术语表内</strong>，
+            属本站教学补充 —— 前者是看板的通行实践，后者是排队论中的公式，官方文件未提及其名称。
+            <strong>本站推断</strong>考试不会按名称考它们；「限制在制品的目的与效果」这个方向属本站预判，官方未公布题目分布。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点场景一句话就能描述：<strong>一支团队同时开着 10 件事，每件都「快好了」，第一件却要到第 17 天才交付。</strong>
+            这不是不努力，是三条机制在同时起作用：
+          </p>
+          <ul>
+            <li><strong>上下文切换税</strong>：并行的事越多，每天花在「回想上次做到哪」「重新搭环境」
+              「回复关于另外三件事的追问」上的时间占比越高。人没变慢，可用于推进的时间变少了。</li>
+            <li><strong>队列把等待放大</strong>：一张卡的前置时间 ≈ 在制品数量 ÷ 吞吐量。
+              吞吐量由团队能力决定，短期不会变；<strong>在制品翻倍，每张卡的等待就翻倍</strong>。
+              10 件同时在做、吞吐量约每天 0.58 件，一张卡从开工到走完就是 10 ÷ 0.58 ≈ 17 天；
+              同样的吞吐量下把同时在做的压到 3 件，走完一张只需 3 ÷ 0.58 ≈ 5 天。</li>
+            <li><strong>阻塞被掩盖</strong>：一张卡卡住时，如果手边还有别的活可做，没人有动力去解决阻塞 ——
+              「反正我没闲着」。<strong>只有上限撞满、无卡可开，阻塞才会变成全组的事。</strong></li>
+          </ul>
+          <p>
+            下面这张图就是这组数字的展开：同一支团队、同样 10 张卡、同样的总工作量，
+            把同时在做的从 10 张压到 3 张之后，<strong>平均前置时间从约 17 天降到约 11 天，
+            第一批交付从第 17 天提前到第 5 天</strong>，而全部做完的时点仍然是第 18 天。
+            <strong>总工作量没变，人也没换，变的只是同时开着几件。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「前置时间 ≈ 在制品 ÷ 吞吐量」是利特尔法则的直觉版，该法则不在 DOFD 考纲术语表内，属教学补充。
+            两个口径要分清：<strong>上板之后走完一张约 5 天</strong>（法则算出的在板时间），
+            <strong>从第 0 天提出算起平均约 11 天</strong>（图 3-7-2 的口径，包含还没轮到上板的排队时间）。</small></p>
+        </div>
+
+        <!-- ============ 图 3-7-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 530" role="img" aria-label="同一团队在无在制品限制与限制为三时的卡片流动与交付时间对比甘特图">
+              <defs>
+                <marker id="ah-37-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)"/>
+                </marker>
+              </defs>
+
+              <!-- 上面板 -->
+              <rect x="10" y="30" width="940" height="215" rx="12" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="24" y="54" class="f-2" font-size="16" font-weight="700">无 WIP 限制</text>
+              <text x="24" y="78" class="s-ink" font-size="13">10 张卡同时开工</text>
+              <text x="24" y="100" class="s-muted" font-size="13">切换成本高 · 队列变长</text>
+              <text x="24" y="126" class="f-2" font-size="13" font-weight="700">平均前置时间 ≈ 17 天</text>
+              <text x="24" y="148" class="s-muted" font-size="12">第一张交付：第 17 天</text>
+              <text x="940" y="54" class="s-muted" font-size="12" text-anchor="end">十张卡全部挤在同一时间段里推进</text>
+
+              <g class="f-2">
+                <rect x="200" y="70"  width="590" height="11" rx="3"/>
+                <rect x="200" y="87"  width="594" height="11" rx="3"/>
+                <rect x="200" y="104" width="598" height="11" rx="3"/>
+                <rect x="200" y="121" width="602" height="11" rx="3"/>
+                <rect x="200" y="138" width="606" height="11" rx="3"/>
+                <rect x="200" y="155" width="610" height="11" rx="3"/>
+                <rect x="200" y="172" width="614" height="11" rx="3"/>
+                <rect x="200" y="189" width="618" height="11" rx="3"/>
+                <rect x="200" y="206" width="622" height="11" rx="3"/>
+                <rect x="200" y="223" width="626" height="11" rx="3"/>
+              </g>
+
+              <!-- 下面板 -->
+              <rect x="10" y="270" width="940" height="215" rx="12" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="24" y="294" class="f-1" font-size="16" font-weight="700">WIP 限制 = 3</text>
+              <text x="24" y="318" class="s-ink" font-size="13">一次只做三张</text>
+              <text x="24" y="340" class="s-muted" font-size="13">做完才拉下一张</text>
+              <text x="24" y="366" class="f-1" font-size="13" font-weight="700">平均前置时间 ≈ 11 天</text>
+              <text x="24" y="388" class="s-muted" font-size="12">第一批交付：第 5 天</text>
+              <text x="940" y="294" class="s-muted" font-size="12" text-anchor="end">同样的人 · 同样的总工作量 · 同样在第 18 天全部做完</text>
+
+              <path d="M375 305 L375 478" class="s-stroke" stroke-width="1.4" stroke-dasharray="5 5"/>
+              <path d="M550 305 L550 478" class="s-stroke" stroke-width="1.4" stroke-dasharray="5 5"/>
+              <path d="M725 305 L725 478" class="s-stroke" stroke-width="1.4" stroke-dasharray="5 5"/>
+
+              <g class="f-1">
+                <rect x="200" y="310" width="175" height="11" rx="3"/>
+                <rect x="200" y="327" width="175" height="11" rx="3"/>
+                <rect x="200" y="344" width="175" height="11" rx="3"/>
+                <rect x="375" y="361" width="175" height="11" rx="3"/>
+                <rect x="375" y="378" width="175" height="11" rx="3"/>
+                <rect x="375" y="395" width="175" height="11" rx="3"/>
+                <rect x="550" y="412" width="175" height="11" rx="3"/>
+                <rect x="550" y="429" width="175" height="11" rx="3"/>
+                <rect x="550" y="446" width="175" height="11" rx="3"/>
+                <rect x="725" y="463" width="105" height="11" rx="3"/>
+              </g>
+
+              <!-- 时间轴 -->
+              <path d="M200 496 L916 496" class="s-stroke" stroke-width="1.6" marker-end="url(#ah-37-2)"/>
+              <g class="s-stroke" stroke-width="1.4">
+                <path d="M200 492 L200 500"/><path d="M375 492 L375 500"/>
+                <path d="M550 492 L550 500"/><path d="M725 492 L725 500"/>
+                <path d="M900 492 L900 500"/>
+              </g>
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="200" y="518">第 0 天</text>
+                <text x="375" y="518">第 5 天</text>
+                <text x="550" y="518">第 10 天</text>
+                <text x="725" y="518">第 15 天</text>
+                <text x="900" y="518">第 20 天</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 3-7-2　同一支团队，只改「同时开几张」。</strong>
+            两块面板的人、总工作量、全部完成的时间点几乎相同，
+            <strong>差别只在卡片是并排铺开还是排队通过</strong>。
+            上面板每张卡都从第 0 天开始，于是每张卡都要到第 17 天之后才陆续结束，平均前置时间被拉到约 17 天；
+            下面板前三张在第 5 天就交付，<strong>价值提前 12 天开始产生</strong>（第 17 天 → 第 5 天），平均前置时间降到约 11 天。
+            这就是「少做几件反而交付更多」的全部机制：<strong>缩短的不是干活的时间，是排队的时间</strong>。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">限制在制品 <span class="en">WIP limit</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>缩小批量 <span class="en">Batch size</span></strong></td>
+                  <td>限制<strong>同时在做几件</strong>（并发数）。10 件并行压到 3 件并行</td>
+                  <td>限制<strong>一件有多大</strong>（单件尺寸）。一次发 200 个需求改成一次发 5 个</td>
+                </tr>
+                <tr>
+                  <td><strong>提高利用率</strong></td>
+                  <td>会<strong>故意制造空闲</strong>：撞上限时无卡可开，空出的人去帮忙推完已有的卡或解阻塞</td>
+                  <td>追求人人满负荷。满负荷的产物是在制品，不是交付</td>
+                </tr>
+                <tr>
+                  <td><strong>拉动 <span class="en">Pull</span></strong></td>
+                  <td>是拉动的<strong>执行装置</strong>：有空位才允许拉入，上限就是空位的定义</td>
+                  <td>是<strong>投料原则</strong>本身：由下游需要触发，而非上游计划触发</td>
+                </tr>
+                <tr>
+                  <td><strong>优先级排序</strong></td>
+                  <td>管<strong>数量</strong>：同时能进来几张</td>
+                  <td>管<strong>顺序</strong>：下一张进来的是哪张。两者互不替代，都要有</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>限制在制品与缩小批量都在「变少」，但变少的东西不是一个</strong>。
+            一个减并发，一个减单件尺寸。只缩小批量却同时开 20 件小卡，前置时间照样很长；
+            只限制在制品却每件都是三个月的大活，板子会长期不动。<strong>两条要同时做。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>上限从现状往下设，不从理论往上设</strong>：先数一周内每列实际的卡片数，
+              把上限设成略低于现状（现状 12，先设 8），运行两周再收紧。
+              一上来就设「人数的一半」这类公式值，规则会在第三天被集体破例。</li>
+            <li><strong>第一个上限设在瓶颈的上游队列列</strong>：图 3-7-1 里就是「待测试」。
+              这一列一封顶，上游立刻感受到压力，问题从「测试太慢」变成全组的问题。</li>
+            <li><strong>撞上限时的行为要写成规则</strong>：「不许开新卡，去帮最右边那张卡」。
+              没有这条规则，上限只会被理解为「今天不能干活」，然后被绕开。</li>
+            <li><strong>阻塞卡贴标记并计时</strong>：阻塞天数是比在制品数量更直接的改进线索 ——
+              总是卡在同一个外部审批上，那就是要动的地方。</li>
+            <li><strong>用前置时间的分布而不是平均值验收</strong>：平均值会掩盖「大多数三天、少数六十天」这种形态，
+              而真正伤害可预测性的正是那条长尾。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上上限设定方法与验收方式为本站教学整理，官方文件未规定在制品上限的取值或操作步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>目的与效果题（最常见）</strong>：问限制在制品的作用。
+              正确方向是<strong>缩短前置时间、暴露阻塞与瓶颈、改善流动</strong>；
+              干扰项写成「提高团队成员的利用率」「让团队同时承接更多需求以提升产能」
+              「减少需要交付的工作总量」。<strong>排除技巧：凡把「更忙 / 更多并行 / 更高利用率」当成好处的选项，一律先划掉</strong> ——
+              这与约束理论中「非约束环节会出现合理空闲」的判据完全一致。</li>
+            <li><strong>归属题</strong>：限制在制品本站归入<strong>第一步 · 流动</strong>（教学归类，官方未声明）
+              （见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>）。
+              干扰项会放第二步 —— 记住分界线：<strong>限制在制品改的是工作向右的通过速度，不是信息向左的回流速度</strong>。</li>
+            <li><strong>Flow 作为术语单独出现</strong>：<em>Flow</em> 是 66 条术语表条目。
+              题干若问「什么在描述工作平稳持续地推进」，方向是 Flow，不要选成 <em>Velocity</em>（那是 Scrum 的度量）。</li>
+            <li><strong>本站判断不会考的</strong>：利特尔法则的名称与公式不在术语表内，无需记忆；
+              理解「在制品越多、等待越久」这个方向即可。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与命题概率为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">同时开的越少，交付得越快 —— 缩短的不是干活的时间，是排队的时间。</p>
+          <p class="mb-0 muted"><small>一句口令：<strong>停止开始，开始完成</strong>。撞上限时正确的动作是去帮别人收尾，不是再开一张。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-3-7-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-3-7-3</div>
+        <h3 class="kp__title">看板 vs Scrum<span class="en">Kanban vs Scrum</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            分界线只有一条：<strong>Scrum 是时间盒迭代，看板是持续流动 <span class="en">Continuous Flow</span>。</strong>
+            <span class="term">Scrum</span> 把工作装进固定长度的 Sprint，一批工作在迭代开始时被承诺、在迭代结束时被交付；
+            看板没有迭代边界，卡片单张拉入、单张交付，随时可以调整下一张拉什么。
+          </p>
+          <p>
+            两者不是二选一。看板可以直接盖在正在运行的 Scrum 上：保留 Sprint 的节奏与回顾，
+            用列的在制品上限替代「各自控制手上的活」。
+          </p>
+          <p class="mb-0 muted"><small><strong>Scrum</strong> 与 <strong>Scrum roles, artifacts and events</strong>
+            都是官方术语表条目，其角色、事件、工件的展开属于第 4 章的范围，见
+            <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架（4.2 Agile）</a>。本节只做与看板的对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>这组对照存在，是因为两个方向的误用都很常见，而且代价都不小。</p>
+          <ul>
+            <li><strong>把 Scrum 用在随机到达的工作上</strong>：设想一个平台支撑团队，
+              两周一个 Sprint，但 60% 的工作是随时到达的事件、故障与兄弟团队的临时请求。
+              Sprint 计划会承诺的内容<strong>第三天就作废</strong>，
+              <span class="en">Velocity</span> 在相邻两个 Sprint 之间上下摆动一倍，
+              计划会与评审会退化成走过场。这类工作需要的是流动与在制品上限，不是固定承诺。</li>
+            <li><strong>把看板用成「不用开会的 Scrum」</strong>：另一个新产品团队上了看板，
+              取消了所有固定会议，结果三个月没有一次回顾。板子每天都在动，
+              <strong>但没有任何一个时点被用来问「这三个月流动改善了吗」</strong>，改进彻底停滞
+              —— 恰好丢掉了看板六条核心实践里的<strong>实施反馈循环</strong>与<strong>协作式改进</strong>。</li>
+          </ul>
+          <p>
+            两个失败指向同一个结论：<strong>节奏与投料方式是两件可以分开选的事</strong>。
+            保留 Scrum 的回顾与评审节奏、换掉批量承诺、加上在制品上限，是很常见的组合。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例；「两者可叠加」的组合方式为本站教学整理，
+            官方文件把 <em>Kanban</em> 与 <em>Scrum</em> 分别列为术语，未规定二者的组合形式。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">看板 <span class="en">Kanban</span></th><th>Scrum</th></tr></thead>
+              <tbody>
+                <tr><td><strong>节奏</strong></td><td><strong>持续流动</strong>，没有固定的迭代边界</td><td><strong>时间盒</strong>：固定长度的 Sprint</td></tr>
+                <tr><td><strong>投料方式</strong></td><td><strong>拉动</strong>：有空位才拉入一张</td><td><strong>批量承诺</strong>：计划会一次装入一批</td></tr>
+                <tr><td><strong>数量控制</strong></td><td>每列的<strong>在制品上限</strong></td><td>Sprint 的容量与承诺范围</td></tr>
+                <tr><td><strong>主要度量</strong></td><td><strong>前置时间 · 周期时间 · 吞吐量</strong></td><td><strong><span class="en">Velocity</span></strong>：每个 Sprint 完成的工作量</td></tr>
+                <tr><td><strong>需求粒度</strong></td><td><span class="en">Epics</span> 必须拆到<strong>能单张走完全程</strong>才上板</td><td><span class="en">Epics</span> 拆到<strong>一个 Sprint 内能完成</strong>的条目</td></tr>
+                <tr><td><strong>变更处理</strong></td><td>随时可改下一张拉什么，改动成本低</td><td>Sprint 内尽量不引入新范围</td></tr>
+                <tr><td><strong>角色</strong></td><td><strong>不规定角色</strong>，叠加在现有组织上</td><td>规定角色、事件与工件<br><small class="muted">展开见 <a href="../ch04-frameworks/index.html">第 4 章（4.2 Agile）</a></small></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>看板不是「省掉仪式的 Scrum」</strong>。
+            两者的真正分界不在开不开会，而在<strong>节奏与承诺方式</strong> ——
+            <strong>Scrum 看时钟（迭代到点就发车），看板看空位（有位置才放行）</strong>。</small></p>
+          <p class="mb-0 muted"><small>次一级易混：<strong>把 <span class="en">Velocity</span> 当成看板的指标</strong>。
+            Velocity 度量的是「一个 Sprint 完成了多少」，前提是存在 Sprint；
+            看板没有迭代边界，用的是前置时间与吞吐量。
+            <span class="en">Epics</span> 则两边都用，它描述的是需求粒度，不归属任何一个框架。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选哪个，看三个判据：</p>
+          <ul>
+            <li><strong>工作到达是否可预测</strong>：事件、支持请求、平台工单这类随机到达的工作 → 看板；
+              可以提前一到两周成批规划的产品需求 → Scrum。混合型团队常见的做法是拆成两条泳道分别管理。</li>
+            <li><strong>是否需要对外的固定承诺点</strong>：需要按节奏对干系人演示与承诺 → Sprint 边界有价值；
+              只需要「排在队首的尽快出来」→ 持续流动更合适。</li>
+            <li><strong>已经在跑 Scrum 又想改善流动</strong>：不要先废除 Sprint。
+              先在现有的 Sprint 板上给每列加在制品上限，
+              「所有卡都堆在 Sprint 最后两天的测试列」这个现象会立刻显形，再谈要不要改节奏。</li>
+            <li><strong>叠加时必须保留回顾</strong>：持续流动缺少天然的复盘时点，
+              需要人为设一个固定节奏来做改进，否则板子只会运转，不会变好。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上选择判据与叠加方式为本站教学整理，官方文件未给出两者的选型标准。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语互扰题</strong>：<em>Kanban</em>、<em>Scrum</em>、<em>Velocity</em>、<em>Epics</em>
+              四个词都在 66 条官方术语表内，很适合放在同一组选项里互相干扰。
+              <strong>判据：Velocity 只跟 Sprint 绑定 → Scrum；Epics 描述需求粒度 → 两边都用，不能作为区分依据。</strong></li>
+            <li><strong>场景选实践题</strong>：题干描述「工作随时到达、优先级频繁变化、需要把工作可视化并限制同时进行的数量」，
+              答案方向是 <strong>Kanban</strong>。干扰项常填 <em>Scrum</em>、<em>SAFe</em>、<em>Waterfall</em>。
+              <strong>排除技巧：题干里只要没有出现固定长度的迭代，就不要选 Scrum。</strong></li>
+            <li><strong>互斥类断言</strong>：出现「必须在看板与 Scrum 之间二选一」「看板是 Scrum 的替代品」这类绝对说法，
+              基本可判错 —— 两者可叠加。</li>
+            <li><strong>边界提醒</strong>：<em>Scrum roles, artifacts and events</em> 是独立的术语条目，
+              考的是 Scrum 自身的构成，属于<a href="../ch04-frameworks/index.html">第 4 章（4.2 Agile）</a>的范围，
+              不要在看板题里去找角色名。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干或选项原文；
+            题型判断为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">Scrum 看时钟，到点发车；看板看空位，有位放行。</p>
+          <p class="mb-0 muted"><small>配套一句：<strong>Velocity 是车次的载重，前置时间是乘客的等待</strong> ——
+            前者只在有车次时才存在。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>Kanban</strong> 既在官方 66 条术语表内，也是 v3.4 课程大纲 M3 的模块子项；
+          <strong>Flow</strong>、<strong>Scrum</strong>、<strong>Velocity</strong>、<strong>Epics</strong> 同为官方术语</li>
+        <li>六条核心实践：<strong>可视化工作 · 限制在制品 WIP · 管理流动 · 显式化流程规则 · 实施反馈循环 · 协作式改进</strong>
+          （清单为教学整理；拉动不是单独一条，它是在制品上限生效后的结果）</li>
+        <li><strong>白板 ≠ 看板</strong>：判据是板上有没有一个会真正拦住人的在制品上限</li>
+        <li>限制在制品的效果是<strong>缩短前置时间、暴露阻塞</strong>，不是提高个人利用率 —— 见到「更忙 / 更多并行」的选项先划掉</li>
+        <li>找约束的判据：<strong>积压最厚的那一列，它的下游就是约束</strong>；
+          <strong>约束理论支持第一步，由 DOFD v3.4 官方样题答案键确认</strong>（见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章（2.3 约束理论）</a>）</li>
+        <li>看板<strong>本站归入第一步 · 流动</strong>（教学归类，官方未声明；官方样题答案键确认的只有「约束理论支持第一步」）
+          （见 <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章（2.2 第一步 · 流动）</a>）</li>
+        <li><strong>看板 = 持续流动，Scrum = 时间盒</strong>；Velocity 属 Scrum，看板用前置时间与吞吐量；两者可叠加，不是二选一</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Kanban</em>、<em>Flow</em>、<em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、
+      <em>Velocity</em>、<em>Epics</em>、<em>Cycle time</em>、<em>Constraint</em>、<em>Theory of Constraints</em>、
+      <em>Value stream mapping</em>、<em>Deployment pipeline</em> 均列于
+      DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Kanban</em> 同时列于 DOFD v3.4 课程大纲 M3 <em>Key DevOps Practices</em> 的模块子项（见 v3.4 官方模块构成）。
+      <strong>「约束理论支持第一步」这一归属由 DOFD v3.4 官方样题答案键确认</strong>，本站只陈述结论，不复制题干与选项原文。
+      <strong>看板六条核心实践的清单、「限制在制品 WIP」这一短语、利特尔法则、看板与限制在制品的三步工作法归属、
+      看板与 Scrum 的对照表、各面中的建板顺序与选型判据，均为本站教学整理或教学补充</strong>，官方未以此形式给出，已分别在对应位置就地标注。
+      本节所有「考试会不会考某项」的判断均为<strong>本站推断</strong>，官方未公布题目分布。
+      本节两张图为本站自制，图中数字为构造的教学示例。本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

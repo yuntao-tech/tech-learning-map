@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 商业视角与 IT 视角 · DevOps Foundation 学习站</title>
+<meta name="description" content="业务关心上市时间、收入与客户体验，IT 关心稳定性、可用性与安全。本节讲清两组诉求为什么天然对立、Service 与 IT service management 的视角差异、「IT 是成本中心」的后果，以及为什么决定采用哪些 DevOps 原则与实践的是业务战略与目标。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch01", sec:"1.3-business-it-perspective"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 1 章 · 认识 DevOps</div>
+      <h1 class="page-head__title">1.3 商业视角与 IT 视角</h1>
+      <div class="page-head__en">Business and IT Perspectives</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--note">📝 教学整理</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        业务视角（本节标题中的「商业视角」，下文统一称<strong>业务视角</strong>）要的是
+        <strong>更快上线、更多收入、更好的客户体验</strong>；IT 视角要的是
+        <strong>不出事、不宕机、不被攻破、以后还能维护</strong>。
+        两边都对，却在同一件事（发布）上给出相反的指令 —— 这是 DevOps 出现之前的默认状态。
+        本节讲清这组对立从哪来、靠什么接上，以及一个高价值考点：<strong>谁来决定该采用哪些 DevOps 原则与实践</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>业务视角与 IT 视角各自关心什么，这组诉求为什么是<strong>结构性对立</strong>而不是脾气问题</li>
+        <li><span class="term">服务 <span class="en">Service</span></span>与
+          <span class="term">IT 服务管理 <span class="en">IT service management / ITSM</span></span>
+          如何成为两个视角的交汇点，「IT 是成本中心」这一认知会带来什么后果</li>
+        <li>决定哪些 DevOps 原则与实践对组织最有益的，到底是什么 —— 这一条由官方样题答案键确认</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 940 570" role="img" aria-label="业务诉求与 IT 诉求的张力，以及 DevOps 下如何变成同一组目标">
+          <defs>
+            <marker id="ah-13-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-13-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah-13-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 顶部列标题 -->
+          <text x="145" y="34" class="f-1" font-size="17" font-weight="700" text-anchor="middle">业务视角 Business</text>
+          <text x="795" y="34" class="f-2" font-size="17" font-weight="700" text-anchor="middle">IT 视角 IT / Operations</text>
+          <text x="470" y="34" class="s-muted" font-size="13" text-anchor="middle">传统组织把这两列当成取舍</text>
+
+          <!-- 左：业务诉求 -->
+          <g text-anchor="middle">
+            <rect x="30" y="52"  width="230" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="145" y="72" class="s-ink" font-size="15" font-weight="650">上市时间　Time to Market</text>
+            <text x="145" y="90" class="s-muted" font-size="12">「这个功能下周能上吗」</text>
+
+            <rect x="30" y="108" width="230" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="145" y="128" class="s-ink" font-size="15" font-weight="650">收入与市场份额</text>
+            <text x="145" y="146" class="s-muted" font-size="12">「晚一个季度，份额就没了」</text>
+
+            <rect x="30" y="164" width="230" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="145" y="184" class="s-ink" font-size="15" font-weight="650">客户体验</text>
+            <text x="145" y="202" class="s-muted" font-size="12">「用户多点两下就流失了」</text>
+
+            <rect x="30" y="220" width="230" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="145" y="240" class="s-ink" font-size="15" font-weight="650">竞争响应</text>
+            <text x="145" y="258" class="s-muted" font-size="12">「对手已经发了，我们呢」</text>
+          </g>
+
+          <!-- 右：IT 诉求 -->
+          <g text-anchor="middle">
+            <rect x="680" y="52"  width="230" height="46" rx="9" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="795" y="72" class="s-ink" font-size="15" font-weight="650">稳定性　Stability</text>
+            <text x="795" y="90" class="s-muted" font-size="12">「上次发布搞挂了核心链路」</text>
+
+            <rect x="680" y="108" width="230" height="46" rx="9" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="795" y="128" class="s-ink" font-size="15" font-weight="650">可用性　Availability</text>
+            <text x="795" y="146" class="s-muted" font-size="12">「宕机十分钟要写事故报告」</text>
+
+            <rect x="680" y="164" width="230" height="46" rx="9" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="795" y="184" class="s-ink" font-size="15" font-weight="650">安全　Security</text>
+            <text x="795" y="202" class="s-muted" font-size="12">「没过安全评审不能上线」</text>
+
+            <rect x="680" y="220" width="230" height="46" rx="9" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="795" y="240" class="s-ink" font-size="15" font-weight="650">可维护性　Maintainability</text>
+            <text x="795" y="258" class="s-muted" font-size="12">「半年后没人敢碰这段代码」</text>
+          </g>
+
+          <!-- 中：张力区 -->
+          <rect x="280" y="52" width="380" height="214" rx="14" class="s-stroke" stroke-width="1.8" stroke-dasharray="7 6" fill="var(--dia-fill)"/>
+          <text x="470" y="80" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">同一个决策，两种指令</text>
+
+          <path d="M300 124 L418 124" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-13-1)"/>
+          <path d="M640 124 L522 124" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-13-2)"/>
+          <text x="359" y="114" class="f-1" font-size="12" font-weight="650" text-anchor="middle">越多越好</text>
+          <text x="581" y="114" class="f-2" font-size="12" font-weight="650" text-anchor="middle">越少越好</text>
+          <text x="470" y="129" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">发布频率</text>
+
+          <path d="M300 180 L418 180" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-13-1)"/>
+          <path d="M640 180 L522 180" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-13-2)"/>
+          <text x="359" y="170" class="f-1" font-size="12" font-weight="650" text-anchor="middle">尽快改</text>
+          <text x="581" y="170" class="f-2" font-size="12" font-weight="650" text-anchor="middle">尽量别动</text>
+          <text x="470" y="185" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">变更速度</text>
+
+          <path d="M300 236 L418 236" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-13-1)"/>
+          <path d="M640 236 L522 236" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-13-2)"/>
+          <text x="359" y="226" class="f-1" font-size="12" font-weight="650" text-anchor="middle">机会</text>
+          <text x="581" y="226" class="f-2" font-size="12" font-weight="650" text-anchor="middle">风险</text>
+          <text x="470" y="241" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">「变更」意味着</text>
+
+          <text x="470" y="288" class="s-muted" font-size="13" text-anchor="middle">两边都对 —— 这正是它难解的原因</text>
+
+          <path d="M470 296 L470 328" class="s-3" stroke-width="2.5" fill="none" marker-end="url(#ah-13-3)"/>
+
+          <!-- 底：DevOps 下的同一组目标 -->
+          <rect x="30" y="336" width="880" height="214" rx="14" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="470" y="366" class="f-3" font-size="17" font-weight="700" text-anchor="middle">DevOps 的主张：这不是取舍，而是同一组目标</text>
+
+          <g text-anchor="middle">
+            <rect x="48" y="384" width="200" height="118" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="148" y="412" class="s-ink" font-size="15" font-weight="650">更快即更稳</text>
+            <text x="148" y="436" class="s-muted" font-size="12">小批量 · 频繁发布</text>
+            <text x="148" y="456" class="s-muted" font-size="12">单次变更风险更小</text>
+            <text x="148" y="476" class="s-muted" font-size="12">出事也更容易回退</text>
+
+            <rect x="262" y="384" width="200" height="118" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="362" y="412" class="s-ink" font-size="15" font-weight="650">共同的尺子</text>
+            <text x="362" y="436" class="s-muted" font-size="12">变更前置时间</text>
+            <text x="362" y="456" class="s-muted" font-size="12">变更失败率 · MTTR</text>
+            <text x="362" y="476" class="s-muted" font-size="12">速度与稳定一起看</text>
+
+            <rect x="476" y="384" width="200" height="118" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="576" y="412" class="s-ink" font-size="15" font-weight="650">共同的交付单位</text>
+            <text x="576" y="436" class="s-muted" font-size="12">以 Service 为单位</text>
+            <text x="576" y="456" class="s-muted" font-size="12">业务能感知、能使用</text>
+            <text x="576" y="476" class="s-muted" font-size="12">不是「上了几台机器」</text>
+
+            <rect x="690" y="384" width="200" height="118" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+            <text x="790" y="412" class="s-ink" font-size="15" font-weight="650">共同的优先级来源</text>
+            <text x="790" y="436" class="s-muted" font-size="12">业务战略与目标</text>
+            <text x="790" y="456" class="s-muted" font-size="12">决定先用哪些原则实践</text>
+            <text x="790" y="476" class="s-muted" font-size="12">官方样题答案键确认</text>
+          </g>
+
+          <text x="470" y="530" class="s-muted" font-size="12" text-anchor="middle">两个视角的诉求一条没变，改掉的是「必须二选一」这个前提</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 1-3-1　两个视角的张力，以及它如何被接上。</strong>
+        上半部分要看懂的是：对立<strong>不发生在人身上，而发生在同一个决策上</strong> ——
+        同一次发布，业务读作机会，IT 读作风险敞口，因为两边被不同的尺子考核。
+        下半部分要看懂的是 DevOps 的解法<strong>没有让任何一方让步</strong>：
+        它把「快」和「稳」变成互为因果（小批量既快又安全），再让双方共用一组指标、共用一个交付单位（Service），
+        并且把优先级的决定权交给业务战略与目标。<br>
+        <small class="muted">本图为本站教学整理，用于表达两个视角的关系；官方文件未以此形式给出对照图。
+        图中「优先级来源 = 业务战略与目标」这一条由 DOFD v3.4 官方样题答案键确认。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-1-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-3-1</div>
+        <h3 class="kp__title">业务视角与 IT 视角的诉求差异<span class="en">Business and IT Perspectives</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            业务视角与 IT 视角是同一条价值流上的<strong>两组诉求</strong>：
+            业务看的是这条流<strong>末端产生了什么结果</strong>，IT 看的是这条流<strong>本身能不能持续运行</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">维度</th><th style="width:41%">业务视角关心</th><th>IT 视角关心</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>核心诉求</strong></td>
+                  <td>上市时间 <span class="en">Time to Market</span>、收入与市场份额、客户体验、对竞争对手的响应速度</td>
+                  <td>稳定性 <span class="en">Stability</span>、可用性 <span class="en">Availability</span>、安全 <span class="en">Security</span>、可维护性 <span class="en">Maintainability</span></td>
+                </tr>
+                <tr>
+                  <td><strong>用什么衡量</strong></td>
+                  <td>营收、转化率、客户留存、新功能是否赶上了市场窗口</td>
+                  <td>可用率、事故数与严重级别、漏洞数、平均恢复时间 <span class="en">MTTR</span></td>
+                </tr>
+                <tr>
+                  <td><strong>「失败」长什么样</strong></td>
+                  <td><strong>错过窗口</strong>：功能晚了三个月，对手先发，机会消失</td>
+                  <td><strong>出事故</strong>：一次变更打挂核心链路，通报、复盘、追责</td>
+                </tr>
+                <tr>
+                  <td><strong>默认的行动倾向</strong></td>
+                  <td>多改、快改、先上线再看数据</td>
+                  <td>少改、慢改、改之前先评审到位</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，用于把两个视角摆到同一张表上比较；
+            DOFD v3.4 官方文件未以此形式给出「业务视角 / IT 视角」对照表。
+            表中 <em>MTTR</em> 为官方术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这组对立不是性格差异，而是<strong>考核结构造出来的</strong>。看一个具体场景：
+          </p>
+          <ul>
+            <li>某零售企业要在双十一前上线一个新的优惠券引擎。业务侧的窗口是 <strong>3 周</strong>，
+              晚一天就少一天的销售期。</li>
+            <li>IT 侧的规则是：涉及支付链路的变更须<strong>提前 4 周</strong>提交变更申请，
+              且只能落在<strong>季度发布窗口</strong>内。两条规则叠加，最早可上线日期在双十一之后。</li>
+            <li>业务侧的解法是绕过 IT：找外包在三周内做了一个独立的优惠券系统，直接对接支付网关。
+              <strong>功能按时上了，但 IT 承担了一套自己不知情、无监控、无备份的生产系统。</strong></li>
+            <li>双十一当天该系统超时拖垮了主站结算。事后 IT 的结论是「业务乱来」，
+              业务的结论是「IT 拖后腿」。<strong>两边的结论都符合各自的考核口径，因此谁也说服不了谁。</strong></li>
+          </ul>
+          <p>
+            机制在于：业务被<strong>机会成本</strong>考核，IT 被<strong>事故成本</strong>考核。
+            同一个动作（发布）在一张记分卡上计收益，在另一张记分卡上计风险敞口。
+            只要两张记分卡不合并，加强流程只会把冲突推向地下 —— 变成影子 IT、变成绕过评审、变成瞒报。
+          </p>
+          <p>
+            这条对立与 <a href="1.1-defining-devops.html">1.1</a> 里开发与运维的冲突考核是同一个机制的两层：
+            那里是 IT 内部两个职能被不同指标考核，这里是<strong>业务与整个 IT 之间</strong>的同一种结构。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明机制，非真实事件或调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">听上去的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>视角冲突 vs 性格冲突</strong></td>
+                  <td>「开发喜欢冒进，运维天生保守」</td>
+                  <td>是<strong>结构问题</strong>：两边被不同指标考核。换一批人上来，只要记分卡不变，冲突原样重现</td>
+                </tr>
+                <tr>
+                  <td><strong>视角冲突 vs 沟通不畅</strong></td>
+                  <td>「多开几次对齐会就好了」</td>
+                  <td>沟通只能降低摩擦，不能改变激励。<strong>不合并记分卡，会开得再多也只是把分歧记录下来</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>业务视角 vs 用户视角</strong></td>
+                  <td>两者常被当成一回事</td>
+                  <td>业务视角包含<strong>收入、份额、竞争</strong>这些用户并不关心的东西；客户体验只是其中一项</td>
+                </tr>
+                <tr>
+                  <td><strong>IT 视角 vs 技术偏好</strong></td>
+                  <td>「IT 就是想上新技术」</td>
+                  <td>IT 视角的四项诉求全部指向<strong>系统能不能持续运行</strong>，天然是保守的；追新技术属于个人偏好，不是这个视角的内容</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>把它当成「谁对谁错」的问题</strong>。
+            两个视角的诉求各自都成立，DevOps 从不要求业务放弃速度、也不要求 IT 放弃稳定性；
+            它改的是「速度与稳定必须二选一」这个前提。凡是把答案写成「业务应当服从 IT 的流程」或
+            「IT 应当无条件满足业务」的说法，都偏离了这一点。
+            本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把 IT 的诉求翻译成业务语言</strong>：不说「可用率从 99.9% 掉到 99.5%」，
+              说「多出来的宕机时长按上季度均值折合约 X 小时的结算营收」。<strong>换算之后，稳定性投入才进得了预算会。</strong></li>
+            <li><strong>把业务的诉求翻译成交付语言</strong>：需求评审时要求提出方回答「这条需求服务于哪个业务目标、
+              错过窗口的代价是什么」。没有答案的需求不排期 —— 这不是刁难，是让优先级有依据。</li>
+            <li><strong>让两边共用一块仪表盘</strong>：速度类与稳定类指标放在同一个视图里，
+              避免业务只看功能上线数、IT 只看事故数。指标体系的展开见
+              <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</li>
+            <li><strong>发现影子 IT 时先查动机</strong>：业务绕过 IT，几乎总是因为正规路径的等待时间超过了机会窗口。
+              堵住绕行入口没有用，要缩短正规路径。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条为本站教学整理的落地动作，官方文件只描述两个视角的关注点差异，未规定具体做法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>归类题（本站判断，偏 Bloom 1–2）</strong>：给出一组关注点，问它属于业务视角还是 IT 视角。
+              <strong>排除技巧：看关注点的落点。</strong>落在<strong>客户与市场</strong>（上市时间、收入、体验、竞争）的是业务视角；
+              落在<strong>系统与运行</strong>（稳定、可用、安全、可维护）的是 IT 视角。</li>
+            <li><strong>干扰项长什么样</strong>：把两列的词交叉摆放，例如在「业务视角」的选项里塞进「系统可用性」，
+              或在「IT 视角」的选项里塞进「缩短上市时间」。后者尤其阴险 ——
+              上市时间确实是 DevOps 要改善的，但它<strong>是业务视角提出的诉求</strong>。</li>
+            <li><strong>另一类干扰项</strong>：把 DevOps 的主张写成「以业务优先级覆盖 IT 的稳定性要求」
+              或「以变更管控压住业务的发布诉求」。凡是<strong>要求一方牺牲</strong>的选项基本可判错 ——
+              DevOps 的表述始终是<strong>两者同时改善</strong>。</li>
+            <li><strong>与 1.2 的关系</strong>：本节的对立场景是「DevOps 为什么重要」的直接论据，
+              两节的题面常常互相借用。见 <a href="1.2-why-it-matters.html">1.2 DevOps 为什么重要</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>命题角度与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题方向与干扰项构造方式，不复制任何官方样题的题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">业务量的是错过的机会，IT 量的是出事的半径 —— 两把尺子不合并，谁都没错，事情就是办不成。</p>
+          <p class="mb-0 muted"><small>四对四速记：<strong>上市时间 · 收入 · 客户体验 · 竞争</strong> ↔
+            <strong>稳定性 · 可用性 · 安全 · 可维护性</strong>。左列朝外看市场，右列朝内看系统。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-1-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-3-2</div>
+        <h3 class="kp__title">Service 与 ITSM：两个视角的交汇点<span class="en">Service &amp; IT service management</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">服务 <span class="en">Service</span></span>是 IT 交付给业务的、
+            <strong>业务方能够直接感知并使用</strong>的成果单位 —— 例如「网上开户」「订单结算」，
+            而不是「三台数据库实例」。
+            <span class="term">IT 服务管理 <span class="en">IT service management / ITSM</span></span>
+            是围绕这些服务的<strong>全生命周期管理实践集合</strong>：设计、交付、运行、支持、改进。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">同一件事</th><th style="width:39%">业务视角看到的</th><th>IT 视角看到的</th></tr></thead>
+              <tbody>
+                <tr><td><strong>交付了什么</strong></td><td>一个可用的服务：客户能在线开户</td><td>一批组件：应用、数据库、网关、证书、作业</td></tr>
+                <tr><td><strong>「挂了」指什么</strong></td><td>客户开不了户，无论原因</td><td>某个组件不可用；其他组件仍然正常</td></tr>
+                <tr><td><strong>成功的证据</strong></td><td>开户量、开户耗时、放弃率</td><td>各组件可用率、工单关闭率、资源利用率</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            <strong>Service 之所以关键，是因为它是两个视角唯一天然共享的名词。</strong>
+            组件只有 IT 看得懂，收入只有业务说了算，服务两边都能指着它说话。
+          </p>
+          <p class="mb-0 muted"><small><strong>Service</strong> 与 <strong>IT service management</strong>
+            均逐字列于 DOFD v3.4 官方考纲术语表（66 条）。
+            上面两句定义为本站教学表述 —— 官方术语表在本站可引用的范围内只确认词条收录，未提供定义原文。
+            上表的三行对照同样为本站教学整理，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解决的是一个具体后果：<strong>当 IT 只能用组件语言汇报时，它在组织里就只能被当成成本中心。</strong>
+          </p>
+          <ul>
+            <li>某制造企业的 IT 部门在季度经营会上汇报：服务器资源利用率提升 30%、工单平均关闭时长下降到 4 小时、
+              变更成功率 98%。<strong>会上没有一个业务口的人提问</strong> —— 这三项没有一项能换算成收入、
+              上市时间或客户体验。</li>
+            <li>同一场会议决定：IT 预算下一年度压缩 15%，理由是「不产生收入的部门优先控本」。
+              自动化部署的立项申请被搁置，理由是「现在人工也能发，先扛一扛」。</li>
+            <li>后果链条随之展开：<strong>预算按「省了多少」考核</strong>，于是只有省钱类项目能获批；
+              <strong>IT 被排除在战略讨论之外</strong>，需求以工单形式到达，不带业务上下文，
+              IT 无从判断哪条更重要；<strong>稳定性投入被当成保险费</strong>，出了事才追加，平时永远排在末位。</li>
+          </ul>
+          <p>
+            把交付单位从组件换成 Service，是打破这条链条的第一步：
+            <strong>服务可以直接挂到业务成果上，组件不行。</strong>
+            「开户服务的中位耗时从 5 天降到 1 天」是一句业务方听得懂、也愿意为之付钱的话。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 520" role="img" aria-label="同一个提案在「IT 是成本中心」与「IT 是价值交付引擎」两种认知下的不同走向">
+              <defs>
+                <marker id="ah-13-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-13-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 决策事件 -->
+              <rect x="20" y="210" width="250" height="100" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="145" y="242" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">同一份提案</text>
+              <text x="145" y="268" class="s-ink" font-size="13" text-anchor="middle">2 人 · 3 周</text>
+              <text x="145" y="290" class="s-muted" font-size="12" text-anchor="middle">把手工部署改成自动化流水线</text>
+
+              <!-- 分叉箭头 -->
+              <path d="M275 242 Q 320 176 346 138" class="s-2" stroke-width="2.2" fill="none" marker-end="url(#ah-13-5)"/>
+              <path d="M275 280 Q 320 348 346 386" class="s-1" stroke-width="2.2" fill="none" marker-end="url(#ah-13-4)"/>
+
+              <!-- 上：成本中心 -->
+              <rect x="350" y="60" width="560" height="170" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="368" y="90" class="f-2" font-size="16" font-weight="700">认知 A：IT 是成本中心</text>
+              <text x="368" y="112" class="s-muted" font-size="12">尺子是「省了多少」，IT 支出是需要压缩的成本项</text>
+
+              <g text-anchor="middle">
+                <rect x="368" y="130" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="446" y="156" class="s-ink" font-size="14" font-weight="650">「不创造收入」</text>
+                <text x="446" y="178" class="s-muted" font-size="12">提案被否</text>
+                <text x="446" y="198" class="s-muted" font-size="12">先用加班顶上</text>
+
+                <rect x="554" y="130" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="632" y="156" class="s-ink" font-size="14" font-weight="650">部署仍靠手工</text>
+                <text x="632" y="178" class="s-muted" font-size="12">一次发布 6 小时</text>
+                <text x="632" y="198" class="s-muted" font-size="12">救火成为常态</text>
+
+                <rect x="740" y="130" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="818" y="156" class="s-ink" font-size="14" font-weight="650">越省越慢</text>
+                <text x="818" y="178" class="s-muted" font-size="12">交付慢 → 更受质疑</text>
+                <text x="818" y="198" class="s-muted" font-size="12">预算再度被压</text>
+              </g>
+              <path d="M528 171 L550 171" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-13-5)"/>
+              <path d="M714 171 L736 171" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-13-5)"/>
+
+              <!-- 下：价值交付引擎 -->
+              <rect x="350" y="290" width="560" height="170" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="368" y="320" class="f-1" font-size="16" font-weight="700">认知 B：IT 是价值交付引擎</text>
+              <text x="368" y="342" class="s-muted" font-size="12">尺子是「对业务战略与目标的贡献」，支出是对交付能力的投资</text>
+
+              <g text-anchor="middle">
+                <rect x="368" y="360" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="446" y="386" class="s-ink" font-size="14" font-weight="650">先换算成价值</text>
+                <text x="446" y="408" class="s-muted" font-size="12">上市时间缩短 4 周</text>
+                <text x="446" y="428" class="s-muted" font-size="12">每次发布省 6 小时</text>
+
+                <rect x="554" y="360" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="632" y="386" class="s-ink" font-size="14" font-weight="650">提案获批</text>
+                <text x="632" y="408" class="s-muted" font-size="12">按能力建设立项</text>
+                <text x="632" y="428" class="s-muted" font-size="12">不按省钱项目排</text>
+
+                <rect x="740" y="360" width="156" height="82" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill)"/>
+                <text x="818" y="386" class="s-ink" font-size="14" font-weight="650">越投越快</text>
+                <text x="818" y="408" class="s-muted" font-size="12">发布频率上升</text>
+                <text x="818" y="428" class="s-muted" font-size="12">业务愿意继续投</text>
+              </g>
+              <path d="M528 401 L550 401" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-13-4)"/>
+              <path d="M714 401 L736 401" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-13-4)"/>
+
+              <text x="470" y="494" class="s-muted" font-size="13" text-anchor="middle">差别不在技术方案，而在这笔支出被放在哪把尺子上量</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 1-3-2　两种认知下，同一份提案的两条走向。</strong>
+            要看懂的是：<strong>两条路径的输入完全相同</strong> —— 同样的人、同样的工期、同样的技术方案。
+            分岔只发生在一处：这笔支出被当成<strong>要压缩的成本</strong>，还是当成<strong>对交付能力的投资</strong>。
+            成本中心认知的隐蔽之处在于它会自我印证：砍掉自动化 → 交付更慢 → 「果然 IT 不行」 → 预算再砍。
+            换尺子的前提是 IT 能把产出翻译成业务能算的账，而这正是 Service 这个交付单位的作用。<br>
+            <small class="muted">本图为本站构造的教学示例，用于说明认知差异带来的决策差异，非真实案例。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">Service（官方术语）</th><th>左列那一项</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>组件 / 服务器</strong></td>
+                  <td><strong>业务可感知的成果单位</strong>：客户能用它完成一件事</td>
+                  <td>实现手段。业务不关心它有几台、跑在哪里，只在它导致服务不可用时才被提及</td>
+                </tr>
+                <tr>
+                  <td><strong>微服务 <span class="en">Microservices</span></strong></td>
+                  <td><strong>业务层面</strong>的服务：一个业务能力</td>
+                  <td><strong>架构层面</strong>的拆分方式：把一个应用拆成多个可独立部署的进程。一个 Service 背后可能有几十个 microservice<br><small class="muted">架构展开见 <a href="../ch06-automation/index.html">第 6 章 自动化与工具链架构</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>IT service management</strong></td>
+                  <td>Service 是<strong>管理对象</strong></td>
+                  <td>ITSM 是<strong>管理这些对象的实践集合</strong>：设计、交付、运行、支持、改进<br><small class="muted">ITSM / ITIL 的完整展开见 <a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架（4.4 ITSM）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>价值流 <span class="en">Value Stream</span></strong></td>
+                  <td>是价值流的<strong>产出物</strong>：流的末端交给业务的东西</td>
+                  <td>是<strong>产出它的那条链路</strong>：从需求到客户的全部活动<br><small class="muted">价值流映射的方法细节见 <a href="../ch04-frameworks/index.html">第 4 章（4.6 价值流映射）</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>Service 不是「服务器」，也不是微服务里的那个 service</strong>。
+            本站的判据是：<em>Service</em> 指业务能感知、能直接使用的成果单位
+            （官方术语表只收录了词条，未在本站可引用的事实范围内给出定义文本）；
+            <em>Microservices</em> 是另一条独立的术语，说的是架构拆分。
+            两个词在中文里都叫「服务」，是本节最容易被出题人利用的一处同名歧义。
+            表中 <em>Service</em>、<em>IT service management</em>、<em>Microservices</em>、
+            <em>Value stream mapping</em> 均为 DOFD v3.4 官方术语表条目；四行对照为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>核心动作只有一个：<strong>把 IT 的一切产出，挂到业务能算账的东西上。</strong></p>
+          <ul>
+            <li><strong>按 Service 重组监控与报告</strong>：仪表盘的第一层不是主机列表，而是服务列表 ——
+              「开户」「结算」「对账」。组件指标退到第二层，作为下钻。
+              这样业务方第一眼就能看懂，IT 也不必每次翻译。</li>
+            <li><strong>用价值流做翻译</strong>：把一个业务目标对应的完整链路画出来，
+              IT 的每项活动都能定位到链路上的某一段。<strong>说不清自己在哪一段的活动，
+              大概率就是那笔说不清价值的支出。</strong>价值流映射的具体方法见
+              <a href="../ch04-frameworks/index.html">第 4 章（4.6 价值流映射）</a>。</li>
+            <li><strong>把 ITSM 的三个流程当成接口</strong>：组织变革管理决定人和流程能不能跟上服务的改动，
+              服务连续性管理决定最坏情况的兜底，事件管理决定服务中断多久被发现和恢复 ——
+              这三处是业务感知最强的地方。
+              <strong>注意是组织变革管理 Organizational Change Management，
+              不是 ITIL 里的变更管理 Change Management —— 后者是本条最常见的干扰项。</strong>
+              展开见 <a href="../ch04-frameworks/index.html">第 4 章（4.4 ITSM）</a>。</li>
+            <li><strong>预算表述改写</strong>：把「申请自动化部署预算」改写成
+              「把发布的准备时间从 6 小时降到 20 分钟，使促销类需求的可承诺窗口从 4 周降到 1 周」。
+              资金模式本身的讨论（持续资金）见
+              <a href="../ch04-frameworks/index.html">第 4 章（4.7 持续资金）</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上落地动作为本站教学整理，官方文件将 <em>Service</em> 与
+            <em>IT service management</em> 列为术语，但未规定具体的实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断，官方仅公布整体为 Bloom 1–2）</strong>：<em>Service</em> 与
+              <em>IT service management</em> 都逐字在 66 条官方术语表内，属于必须能复述的名词。
+              本站给出的复述口径是「业务可感知、可使用的成果单位」与「围绕服务全生命周期的管理实践」
+              （词条属官方术语表，定义表述为本站教学整理）。</li>
+            <li><strong>干扰项长什么样</strong>：把 Service 描述成<strong>基础设施组件</strong>
+              （服务器、数据库、中间件），或描述成<strong>架构风格</strong>（微服务）。
+              <strong>排除技巧：问一句「客户能不能直接用它完成一件事」</strong> ——
+              不能的，都是实现手段，不是 Service。</li>
+            <li><strong>ITSM 与 DevOps 的关系题</strong>：对 DevOps 最关键的 ITSM 流程是
+              <strong>组织变革管理、服务连续性管理、事件管理，三者皆是</strong> ——
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这三个流程都是对 DevOps 最关键的，不要在三者之间做取舍式排除。
+              此处只给结论，完整展开见 <a href="../ch04-frameworks/index.html">第 4 章（4.4 ITSM）</a>。</li>
+            <li><strong>成本中心相关的问法</strong>：题干描述 IT 只汇报组件指标、被要求持续压缩预算，
+              问这反映了什么问题。答案方向是<strong>IT 的产出没有与业务价值挂钩</strong>；
+              干扰项常写成「IT 的技术能力不足」「需要更多的工具投入」 ——
+              把结构问题写成能力问题或工具问题，是这类题的固定套路。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「成本中心相关问法」的命题方向，以及「定义题属 Bloom 1」「必须能复述」，
+            均为本站教学推断 —— 官方未逐条给出术语的 Bloom 层级，只公布整份考试为 Bloom 1–2；
+            「三个 ITSM 流程皆是」这一条则由官方样题答案键确认，两者性质不同，已分别标明。
+            以上仅描述命题方向与干扰项构造方式，不复制任何官方样题的题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">业务买的是 Service，不是服务器 —— 说不出对应哪个服务的支出，迟早会被当成成本砍掉。</p>
+          <p class="mb-0 muted"><small>中文陷阱提示：官方术语 <em>Service</em>（业务可用的服务）与
+            <em>Microservices</em>（架构拆分）在中文里同名，考试时先看它是不是<strong>客户能直接用的东西</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-1-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-3-3</div>
+        <h3 class="kp__title">谁决定该采用哪些 DevOps 原则与实践<span class="en">What determines which DevOps principles and practices benefit an organization</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            决定哪些 DevOps 原则与实践对一个组织<strong>最有益</strong>的，是
+            <strong>该组织的业务战略与目标</strong>（business strategy and goals）。
+            判断「有益」的尺子来自组织想达成的结果，而不是来自 IT 内部的现状。
+          </p>
+          <p class="mb-0">
+            它的含义是<strong>方向性的</strong>：DevOps 不是一份从头做到尾的清单，
+            而是一个工具箱。从工具箱里拿什么，取决于组织要去哪里。
+            这条决定的是<strong>选哪些实践</strong>；DevOps 自身要交付的那组结果目标是另一回事，见
+            <a href="1.4-values-goals-stakeholders.html">1.4 价值、目标与干系人</a>。
+          </p>
+          <p class="mb-0 muted"><small>上面第一段的结论由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+            属可标注为官方的硬事实，非本站推断；本站只陈述结论，不复制题干与选项原文。
+            「工具箱」的比喻则是本站教学表述 —— 官方确认的只有「决定因素是业务战略与目标」这一条。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解决的是<strong>转型投错方向</strong>：钱花了、平台上了、指标也涨了，业务却没有任何感知。
+          </p>
+          <ul>
+            <li>某消费金融公司启动 DevOps 转型，选型标准是「业界主流」：引入容器编排、
+              搭建 CI/CD 平台、推行基础设施即代码。<strong>18 个月后部署频率从每月 1 次提升到每周 2 次</strong>，
+              工程侧一片好评。</li>
+            <li>同期业务侧的头号目标是「把新客户开户从 5 天压到 1 天」。
+              而这条链路上真正的耗时是<strong>人工征信复核平均等待 3.5 天</strong> ——
+              这一段既不在流水线里，也没有一行代码。<strong>开户时长 18 个月里从 5 天变成 4.8 天。</strong></li>
+            <li>复盘时才发现：转型的驱动力自始至终来自 IT 内部 ——
+              架构组想上容器、几位热心工程师在推、供应商恰好在做平台推广。
+              <strong>没有任何一个环节问过：这些投入服务于哪个业务目标。</strong></li>
+          </ul>
+          <p>
+            机制很简单：DevOps 的原则与实践各自解决不同的问题。
+            <strong>先确定业务目标，才能知道该改哪条价值流；确定了价值流，才能知道该用哪些实践。</strong>
+            顺序反过来，就变成拿着锤子找钉子。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">对比对象</th><th style="width:34%">它会导致什么</th><th>为什么这样判</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>业务战略与目标</strong></td>
+                  <td>先定目标，再定价值流，最后选实践。投入落在真正影响业务结果的那一段</td>
+                  <td>判断「有益」的尺子必须来自组织想达成的结果，而不是来自实施方 —— 这一结论由 DOFD v3.4 官方样题答案键确认</td>
+                </tr>
+                <tr>
+                  <td><strong>把决定权留在 IT 内部的各类因素</strong><br>
+                    <small class="muted">能力与资源类 / 人员意愿类 / 工具可得性类</small><br>
+                    <span class="badge badge--warn">⚠️ 易混淆</span></td>
+                  <td>优先级随 IT 内部的状况漂移：擅长的地方反复优化，不擅长的地方原样不动；关键推动者一流动，方向就跟着变</td>
+                  <td>它们回答的是<strong>做起来容易不容易、谁来推、用什么实现</strong>，不是<strong>做了对组织有没有益</strong>。约束往往恰好落在 IT 不擅长、也没人主动推的那一段</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>「早期采用者」在另一处确实是官方确认的正确答案</strong> ——
+            推动重大变革时，应当参与规划并担任变革推动者的正是早期采用者，这一条同样由
+            DOFD v3.4 官方样题答案键确认（展开见
+            <a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型</a>与
+            <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>）。
+            但那问的是<strong>「谁来推动」</strong>，本条问的是<strong>「按什么决定优先级」</strong>。
+            同一个名词在两处一个是结论、一个是常见误判方向，出题人非常清楚这一点。
+            <strong>官方确认与本站推断的分界</strong>：官方确认的只有「决定因素是业务战略与目标」与
+            「早期采用者是变革推动者」两条结论，本对照表的归类、措辞与分析均为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把它当成排优先级的固定顺序，三步，不允许跳步：</p>
+          <ul>
+            <li><strong>① 写下未来 12 个月的业务目标</strong>，要可量化。
+              例：「新客户开户从 5 天降到 1 天」「促销功能的可承诺上线窗口从 4 周降到 1 周」。
+              写不出量化目标，说明业务战略本身没对齐，先解决那个。</li>
+            <li><strong>② 找出每个目标依赖哪条价值流</strong>，把这条链路从头到尾摊开，
+              量出每一段的处理时间与等待时间。开户目标对应的是「申请 → 征信 → 审批 → 开户 → 通知」，
+              不是「代码提交 → 构建 → 部署」。</li>
+            <li><strong>③ 在那条价值流的约束上选实践</strong>。
+              征信复核等 3.5 天 → 该做的是自动化决策规则与相应的持续测试；
+              而不是先上容器编排。<strong>约束的判定方法见
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 核心原则（2.3 约束理论）</a>。</strong></li>
+            <li><strong>反向自检</strong>：任何一项 DevOps 投入，都应能回答
+              「它服务于第 ① 步里的哪一条目标」。答不上来的，不是不该做，
+              而是<strong>不该排在前面</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这三步为本站教学整理的落地顺序；官方确认的只是
+            「决定因素是业务战略与目标」这一结论，未规定具体的排序步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>这是一条官方确认的高价值考点</strong>：
+              「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」，
+              由 <strong>DOFD v3.4 官方样题答案键</strong>确认，可以直接记结论。</li>
+            <li><strong>干扰项的共同构造方式</strong>：<strong>把决定权留在 IT 内部</strong> ——
+              按现有技术能力、按内部推动者的意愿、按手上有什么工具。
+              这些方向听上去都很正面，也确实是转型中真实存在的因素，
+              但它们回答的是「怎么做 / 谁来做」，而不是「按什么判断对组织有益」。</li>
+            <li><strong>排除技巧（一句话）</strong>：<strong>凡是把决定权留在 IT 内部的选项，一律先划掉</strong>；
+              答案必须指向<strong>组织层面的方向性输入</strong>。</li>
+            <li><strong>同一判据可以套用到另一条官方确认的题</strong>：DevOps 的关键成功因素是
+              <strong>管理层对文化变革的承诺</strong>（同样由官方样题答案键确认，展开见
+              <a href="../ch08-sharing/index.html">第 8 章</a>）。它也落在组织层面，而不是 IT 内部的工具或技能。
+              <strong>两题共用一个方向感：往上看组织，不要往里看 IT。</strong></li>
+            <li><strong>反向提醒</strong>：不要因为「早期采用者」在别处是正确答案就在这里选它。
+              先看题目问的是<strong>「谁来推动变革」</strong>还是<strong>「按什么决定优先级」</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面中标注「由官方样题答案键确认」的三条结论即为官方事实，
+            其余（干扰项的构造描述、排除技巧、措辞）均为本站教学表述，分界说明见本知识点 ③ 面末尾。
+            以上不复制任何官方样题的题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先问业务要去哪，再问 IT 该练什么 —— 决定权在业务战略与目标，不在 IT 的能力、热情或工具。</p>
+          <p class="mb-0 muted"><small>干扰项的共同长相：<strong>决定权都留在 IT 内部</strong>（能力 / 人 / 工具）。
+            看见这个特征就可以先划掉。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>业务视角四项：<strong>上市时间 · 收入与市场份额 · 客户体验 · 竞争响应</strong>；
+          IT 视角四项：<strong>稳定性 · 可用性 · 安全 · 可维护性</strong></li>
+        <li>两者对立是<strong>结构问题不是性格问题</strong>：业务被机会成本考核，IT 被事故成本考核，
+          同一次发布在两张记分卡上一个记收益一个记风险</li>
+        <li>DevOps 的主张是<strong>两者同时改善</strong>，不是让一方让步 ——
+          凡是「要求某一方牺牲」的选项基本可判错</li>
+        <li><strong>Service</strong> 与 <strong>IT service management</strong> 都在 66 条官方术语表内。
+          Service 是<strong>业务可感知、可直接使用的成果单位</strong>，不是服务器，也不是 Microservices</li>
+        <li>「IT 是成本中心」的后果链：<strong>只批省钱项目 → IT 被排除在战略讨论外 →
+          稳定性投入沦为出事才追加的保险费</strong>。解法是把交付单位换成 Service，让产出能挂到业务成果上</li>
+        <li><strong>决定哪些 DevOps 原则与实践对组织最有益的是「业务战略与目标」</strong> ——
+          由 DOFD v3.4 官方样题答案键确认。干扰项一律把决定权留在 IT 内部</li>
+        <li>「早期采用者」是<strong>推动变革</strong>那题的正确答案，不是<strong>决定优先级</strong>这题的答案 ——
+          先分清题目在问「谁来推」还是「按什么排」</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Service</em>、<em>IT service management</em>、<em>Microservices</em>、
+      <em>Value stream mapping</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+      均逐字列于 DOFD v3.4 官方考纲术语表（66 条）；该术语表在本站可引用的范围内只确认词条收录，
+      本站给出的定义表述一律为教学整理。
+      本节归属 DOFD v3.4 课程大纲的 <em>M1 Exploring DevOps</em> 模块；该模块在课程大纲中列出的官方子项为
+      <em>Defining DevOps</em> 与 <em>Why Does DevOps Matter?</em>，
+      「商业视角与 IT 视角」是本站为覆盖业务视角与 IT 视角所增设的教学小节，不是官方子项标题；
+      本节英文名 <em>Business and IT Perspectives</em> 亦为本站拟定，DOFD v3.4 课程大纲未以此名列出该子项。
+      <strong>「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」</strong>、
+      <strong>「推动重大变革时应参与规划并担任变革推动者的是早期采用者」</strong>、
+      <strong>「对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是」</strong>、
+      <strong>「DevOps 的关键成功因素是管理层对文化变革的承诺」</strong>
+      四条结论均由 <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论，不复制题干与选项原文。
+      「业务视角 / IT 视角」四对四对照、Service 三行视角对照、成本中心后果链、决策依据对照表、
+      两张插图及其中的案例数字，均为本站教学整理或构造的教学示例，官方未以此形式给出，已分别在对应位置就地标注。
+      本节涉及的 ITSM 与 ITIL 展开见第 4 章（4.4），价值流映射方法见第 4 章（4.6），持续资金见第 4 章（4.7）。
+      本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

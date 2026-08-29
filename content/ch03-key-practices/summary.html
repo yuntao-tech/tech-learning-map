@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.11 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 3 章十个关键实践的总结：按三步工作法分组的知识地图、一页纸复习表、十对易混淆概念、官方样题答案键确认的本章 5 条结论、本章官方术语速查与考试权重。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch03", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 3 章 · 关键实践</div>
+      <h1 class="page-head__title">3.11 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章十个实践单独看都不难，难在<strong>它们彼此相邻、命名相似，而考试正是在相邻处设问</strong>。
+        这一页只做三件事：把十个实践挂回三步工作法，把最容易混的十对并排放好，
+        再把<strong>官方样题答案键真正确认过的那几条结论</strong>单独拎出来 —— 那几条是全章唯一不需要推断的硬证据。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>本章十个实践各自在加强三步工作法的哪一步，哪三个是 v3.6 新增</li>
+        <li>哪些结论有官方答案键背书，哪些只是本站的教学归类 —— 两者必须分清</li>
+        <li>考前十分钟应该复查哪十对概念，以及本章在 40 题里占多少</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 3-11-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 600" role="img" aria-label="第 3 章十个关键实践按服务于三步工作法的哪一步分组的知识地图">
+          <defs>
+            <marker id="ah-311-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-311-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah-311-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 标题与图例 -->
+          <text x="20" y="26" class="s-ink" font-size="17" font-weight="700">第 3 章 · 十个关键实践挂回三步工作法</text>
+          <rect x="20" y="41" width="18" height="13" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="44" y="53" class="s-muted" font-size="12.5">v3.4 既有实践</text>
+          <rect x="152" y="41" width="18" height="13" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 3" fill="var(--dia-fill-2)"/>
+          <text x="176" y="53" class="s-muted" font-size="12.5">虚线框 + v3.6 角标 = v3.6 新增</text>
+          <text x="404" y="53" class="s-muted" font-size="12.5">节号带虚线下划 = 可点击跳转该小节</text>
+
+          <!-- ============ 第一步 · 流动 ============ -->
+          <rect x="10" y="72" width="960" height="128" rx="14" class="s-1" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+          <text x="22" y="112" class="f-1" font-size="16" font-weight="700">第一步 · 流动</text>
+          <text x="22" y="132" class="s-muted" font-size="12">Continuous Flow</text>
+          <text x="22" y="154" class="s-muted" font-size="12">工作向右流向客户</text>
+          <line x1="24" y1="174" x2="104" y2="174" class="s-1" stroke-width="2.5" marker-end="url(#ah-311-1)"/>
+
+          <!-- 3.2 持续集成（已建成，可点击） -->
+          <a href="3.2-continuous-integration.html">
+            <rect x="162" y="92" width="146" height="88" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="172" y="112" class="f-1" font-size="12.5" font-weight="700">3.2</text>
+            <line x1="172" y1="117" x2="196" y2="117" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="235" y="141" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">持续集成</text>
+            <text x="235" y="164" class="s-muted" font-size="12" text-anchor="middle">缩小集成批量</text>
+          </a>
+
+          <!-- 3.3 持续交付 vs 持续部署（已建成，可点击） -->
+          <a href="3.3-delivery-vs-deployment.html">
+            <rect x="322" y="92" width="146" height="88" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="332" y="112" class="f-1" font-size="12.5" font-weight="700">3.3</text>
+            <line x1="332" y1="117" x2="356" y2="117" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="395" y="137" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">持续交付</text>
+            <text x="395" y="155" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">vs 持续部署</text>
+            <text x="395" y="173" class="s-muted" font-size="12" text-anchor="middle">让工作走到客户手里</text>
+          </a>
+
+          <!-- 3.7 看板方法（已建成，可点击） -->
+          <a href="3.7-kanban.html">
+            <rect x="482" y="92" width="146" height="88" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="492" y="112" class="f-1" font-size="12.5" font-weight="700">3.7</text>
+            <line x1="492" y1="117" x2="516" y2="117" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="555" y="141" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">看板方法</text>
+            <text x="555" y="164" class="s-muted" font-size="12" text-anchor="middle">可视化 · 限制在制品</text>
+          </a>
+
+          <!-- 3.9 价值流管理（v3.6 新增，已建成，可点击） -->
+          <a href="3.9-vsm.html">
+            <rect x="642" y="92" width="146" height="88" rx="10" class="s-1" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+            <text x="652" y="112" class="f-1" font-size="12.5" font-weight="700">3.9</text>
+            <line x1="652" y1="117" x2="676" y2="117" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="778" y="112" class="f-5" font-size="12" font-weight="700" text-anchor="end">v3.6</text>
+            <text x="715" y="141" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">价值流管理</text>
+            <text x="715" y="164" class="s-muted" font-size="12" text-anchor="middle">端到端流动的度量</text>
+          </a>
+
+          <!-- 3.10 平台工程（v3.6 新增，已建成，可点击） -->
+          <a href="3.10-platform-engineering.html">
+            <rect x="802" y="92" width="146" height="88" rx="10" class="s-1" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+            <text x="812" y="112" class="f-1" font-size="12.5" font-weight="700">3.10</text>
+            <line x1="812" y1="117" x2="842" y2="117" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="938" y="112" class="f-5" font-size="12" font-weight="700" text-anchor="end">v3.6</text>
+            <text x="875" y="141" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">平台工程</text>
+            <text x="875" y="164" class="s-muted" font-size="12" text-anchor="middle">消除自助交付的摩擦</text>
+          </a>
+
+          <!-- ============ 第二步 · 反馈 ============ -->
+          <rect x="10" y="216" width="960" height="128" rx="14" class="s-2" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+          <text x="22" y="256" class="f-2" font-size="16" font-weight="700">第二步 · 反馈</text>
+          <text x="22" y="276" class="s-muted" font-size="12">Feedback</text>
+          <text x="22" y="298" class="s-muted" font-size="12">信息向左回流源头</text>
+          <line x1="104" y1="318" x2="24" y2="318" class="s-2" stroke-width="2.5" marker-end="url(#ah-311-2)"/>
+
+          <!-- 3.1 持续测试（已建成，可点击） -->
+          <a href="3.1-continuous-testing.html">
+            <rect x="162" y="236" width="146" height="88" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="172" y="256" class="f-2" font-size="12.5" font-weight="700">3.1</text>
+            <line x1="172" y1="261" x2="196" y2="261" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="235" y="285" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">持续测试</text>
+            <text x="235" y="308" class="s-muted" font-size="12" text-anchor="middle">左移 · 早而且持续</text>
+          </a>
+
+          <!-- 3.5 DevSecOps（已建成，可点击） -->
+          <a href="3.5-devsecops.html">
+            <rect x="322" y="236" width="146" height="88" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="332" y="256" class="f-2" font-size="12.5" font-weight="700">3.5</text>
+            <line x1="332" y1="261" x2="356" y2="261" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="395" y="285" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">DevSecOps</text>
+            <text x="395" y="308" class="s-muted" font-size="12" text-anchor="middle">安全一起左移</text>
+          </a>
+
+          <!-- 3.6 ChatOps（已建成，可点击） -->
+          <a href="3.6-chatops.html">
+            <rect x="482" y="236" width="146" height="88" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="492" y="256" class="f-2" font-size="12.5" font-weight="700">3.6</text>
+            <line x1="492" y1="261" x2="516" y2="261" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="555" y="285" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">ChatOps</text>
+            <text x="555" y="308" class="s-muted" font-size="12" text-anchor="middle">对话即操作日志</text>
+          </a>
+
+          <!-- 3.8 监控与可观测性（v3.6 新增，已建成，可点击） -->
+          <a href="3.8-observability.html">
+            <rect x="642" y="236" width="146" height="88" rx="10" class="s-2" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+            <text x="652" y="256" class="f-2" font-size="12.5" font-weight="700">3.8</text>
+            <line x1="652" y1="261" x2="676" y2="261" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="778" y="256" class="f-5" font-size="12" font-weight="700" text-anchor="end">v3.6</text>
+            <text x="715" y="285" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">监控与可观测性</text>
+            <text x="715" y="308" class="s-muted" font-size="12" text-anchor="middle">生产真相回流</text>
+          </a>
+
+          <!-- ============ 第三步 · 持续改进 ============ -->
+          <rect x="10" y="360" width="960" height="128" rx="14" class="s-3" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+          <text x="22" y="400" class="f-3" font-size="15" font-weight="700">第三步 · 持续改进</text>
+          <text x="22" y="420" class="s-muted" font-size="12">Continuous</text>
+          <text x="22" y="436" class="s-muted" font-size="12">Improvement</text>
+          <path d="M92 462 A 26 12 0 1 1 66 450" class="s-3" stroke-width="2.5" fill="none" marker-end="url(#ah-311-3)"/>
+
+          <!-- 3.4 SRE 与韧性工程（已建成，可点击） -->
+          <a href="3.4-sre-resilience.html">
+            <rect x="162" y="380" width="146" height="88" rx="10" class="s-3" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="172" y="400" class="f-3" font-size="12.5" font-weight="700">3.4</text>
+            <line x1="172" y1="405" x2="196" y2="405" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="235" y="429" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">SRE 与韧性工程</text>
+            <text x="235" y="452" class="s-muted" font-size="12" text-anchor="middle">从故障中学习</text>
+          </a>
+
+          <text x="332" y="400" class="s-ink" font-size="14" font-weight="650">第三步不是一张实践清单，而是让前两步不断变快的土壤。</text>
+          <text x="332" y="424" class="s-muted" font-size="12.5">本章唯一以「从故障与意外中学习」为主轴的实践就是 3.4：无指责复盘、故障演练、</text>
+          <text x="332" y="446" class="s-muted" font-size="12.5">把可靠性目标写成可讨论的工程约束，都是在把一次事故转换成一次组织级的改进。</text>
+          <text x="332" y="472" class="s-muted" font-size="12.5">3.4 的三步归属是本站推断，3.4 正文未做归属；其 MTTR 等恢复指标同时服务第二步（见 2.1 映射表）。</text>
+
+          <!-- ============ 页脚说明 ============ -->
+          <text x="20" y="522" class="f-3" font-size="13" font-weight="650">跨步补充：3.4 的恢复时间与可靠性信号同时喂给第二步；3.9 的度量结果回流到第三步。一个实践服务多步是常态，图中标的是它的主轴。</text>
+          <text x="20" y="548" class="s-muted" font-size="12.5">「实践 → 三步工作法」的这套归组是本站教学整理，官方文件未以此形式给出对应表；三步的官方名称见第 2 章。</text>
+          <text x="20" y="572" class="s-muted" font-size="12.5">本章 3.1–3.10 均已建成，点击任一卡片即可跳转到该小节。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-11-1　十个关键实践的归位图。</strong>
+        这张图要看懂的是<strong>「本章为什么这么排」</strong>：五个实践在把工作推向客户（第一步），
+        四个实践在把真相送回源头（第二步），只有一个以从故障中学习为主轴（第三步）
+        —— 这一条是十个归位里推断成分最重的一个，3.4 自身正文并未做三步归属。
+        遇到任何一节内容记不清时，先问它在加强哪一步 —— 归位之后，它的目的、指标和易混对象都会跟着确定。
+        虚线框的三个是 v3.6 学习目标新增，也正是三个<strong>不在 66 条官方术语表内</strong>的主题。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查的优先级排</strong>，与后面的易混淆汇总表配合使用。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:13%">小节</th><th style="width:32%">核心结论</th><th style="width:27%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="3.1-continuous-testing.html">3.1 持续测试</a></strong><br><small class="muted">Continuous Testing</small></td>
+            <td>每一次变更在流水线的每个阶段都被<strong>恰当的测试</strong>判过一遍；左移 = 早 + 持续 + 把质量内建进开发过程</td>
+            <td>测试是流水线每一格踩着的地板，不是末端的那道闸门</td>
+            <td>把「有很多自动化用例」当成持续测试；把左移只理解成「测试提前」，漏掉「持续」和「内建质量」</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.2-continuous-integration.html">3.2 持续集成</a></strong><br><small class="muted">Continuous Integration</small></td>
+            <td>主线每天被合入多次，<strong>且每一次合入都被自动化测试判过</strong>；必要前提是自动化的单元、集成与验收测试</td>
+            <td>天天合主线 + 次次自动判，两个条件缺一个就不叫 CI</td>
+            <td>把「装了一台 CI 服务器」当成在做 CI；把 CI 的前提说成「已经有部署流水线」</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></strong><br><small class="muted">Continuous Delivery / Deployment</small></td>
+            <td>持续交付 = 随时<strong>可以</strong>发布，发不发由人决定；持续部署 = 通过全部测试就<strong>自动</strong>上生产</td>
+            <td>最后上生产那一下是谁按的：人按是交付，机器按是部署</td>
+            <td>两者互换；用「有没有部署流水线」当区分依据 —— 两者都有流水线，区别只在人工审批那一步</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></strong><br><small class="muted">Site Reliability Engineering / Resilience Engineering</small></td>
+            <td>SRE 用软件工程的方法承担可靠性责任；韧性工程关注系统与组织<strong>在意外发生之后</strong>还能不能继续工作</td>
+            <td>SRE 管「怎么把可靠性做出来」，韧性工程问「意外来了还撑不撑得住」</td>
+            <td>把 SRE 当成运维改了个名；译名写成「弹性工程」（本站统一译「韧性工程」）</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.5-devsecops.html">3.5 DevSecOps</a></strong><br><small class="muted">DevSecOps</small></td>
+            <td>把<strong>安全测试并入左移的测试链路</strong>，消除把安全评审集中放在 Sprint 之后所造成的延迟</td>
+            <td>安全不是发布前的一道关卡，是跟测试一起左移的日常动作</td>
+            <td>题干一提「安全」就选泛泛的 shift left；把 DevSecOps 当成某一类安全扫描工具</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.6-chatops.html">3.6 ChatOps</a></strong><br><small class="muted">ChatOps</small></td>
+            <td>把交付与运维<strong>操作本身</strong>放进团队聊天环境执行，让指令、上下文与结果对所有人同时可见</td>
+            <td>在聊天室里干活，干活的过程自己就变成了共享的日志</td>
+            <td>把「团队用即时通讯软件沟通」当成 ChatOps —— 关键是操作在对话里被<strong>执行</strong>，不只是被讨论</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.7-kanban.html">3.7 看板方法</a></strong><br><small class="muted">Kanban</small></td>
+            <td>可视化工作、<strong>限制在制品</strong>、管理并度量流动；不规定迭代长度，也不规定角色</td>
+            <td>看见它、限制它、度量它</td>
+            <td>把「墙上贴了卡片」当成 Kanban（少了限制在制品就不是）；把 Scrum 的 Sprint 与角色套到看板上</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.8-observability.html">3.8 监控与可观测性</a></strong> <small class="muted">· v3.6 新增</small><br><small class="muted">Monitoring and Observability</small></td>
+            <td>监控回答「<strong>预先定义</strong>的指标是否越界」，可观测性回答「这个<strong>没预设过</strong>的问题为什么发生」</td>
+            <td>监控盯已知，可观测性查未知</td>
+            <td>误以为 Observability 在 66 条官方术语表内 —— <strong>它不在</strong>，是 v3.6 学习目标新增项</td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.9-vsm.html">3.9 价值流管理</a></strong> <small class="muted">· v3.6 新增</small><br><small class="muted">Value Stream Management / VSM</small></td>
+            <td>对端到端价值流做<strong>持续</strong>的度量、可视化与优化；价值流映射通常是这个环的第一圈，用来建立基线</td>
+            <td>映射是拍一张照片，管理是装一台一直开着的监控</td>
+            <td>与价值流映射混淆：<strong>Value stream mapping 在术语表内，Value Stream Management 不在</strong></td>
+          </tr>
+          <tr>
+            <td><strong><a href="3.10-platform-engineering.html">3.10 平台工程</a></strong> <small class="muted">· v3.6 新增</small><br><small class="muted">Platform Engineering</small></td>
+            <td>把内部平台<strong>当产品运营</strong>，为产品团队提供自助能力，交付责任仍留在产品团队手里</td>
+            <td>平台是产品，开发者是客户，能不能自助是唯一的验收标准</td>
+            <td>与「DevOps 团队」反模式混淆 —— 平台团队一旦接管了产品团队的运维责任，就退回成新的交接方</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>各节的官方术语名称</strong>（Continuous testing / Continuous integration / Continuous delivery / Continuous deployment /
+      Site Reliability Engineering / Resilience engineering / DevSecOps / ChatOps / Kanban 等）均列于 DOFD v3.4 官方考纲术语表；
+      <em>Monitoring and Observability</em>、<em>Value Stream Management</em>、<em>Platform Engineering</em> 出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）。
+      <strong>「记忆锚点」与「最易错点」两列是本站教学整理</strong>，官方未以此形式给出复习表。
+      3.1 / 3.2 / 3.3 / 3.5 四行的核心结论另有 DOFD v3.4 官方样题答案键背书（共 5 条），见下一节；
+      其余各行的核心结论为本站依据官方模块子项所做的教学归纳。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总 · 十对</div>
+
+    <p>
+      这十对是本站判断最容易被相邻选项拖走的地方（本站教学整理，官方未公布命题分布）。看表的方法：<strong>先记「分界线」那一列，再记「诱导你选错的地方」</strong>；
+      能一句话说出分界线，就不会被相邻选项拖走。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:20%">易混的一对</th><th style="width:40%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>持续交付 vs 持续部署</strong><br><small class="muted">3.3</small></td>
+            <td>最后一次上生产是不是<strong>人工点头</strong>：交付要人点头，部署不要</td>
+            <td>选项两边都写着「自动化的流水线」「通过全部测试」，只在末尾一句话上分叉。<strong>官方答案键对这两条各有一次确认</strong>，见下一节</td>
+          </tr>
+          <tr>
+            <td><strong>持续集成 vs 持续交付</strong><br><small class="muted">3.2 / 3.3</small></td>
+            <td>CI 保证的是<strong>主线随时可构建、可测试</strong>；持续交付保证的是<strong>产物随时可发布到生产</strong></td>
+            <td>干扰项把「构建产物可以部署」写进 CI 的定义。CI 的终点在主线的健康，不在生产环境</td>
+          </tr>
+          <tr>
+            <td><strong>持续测试 vs 自动化测试</strong><br><small class="muted">3.1</small></td>
+            <td>自动化测试是<strong>手段</strong>（把用例变成脚本）；持续测试是<strong>编排</strong>（每次变更都被恰当的测试判过）</td>
+            <td>选项写「拥有大量自动化测试用例」「测试全部脚本化」—— 有手段不等于持续，攒一批再一起跑仍然不是持续测试</td>
+          </tr>
+          <tr>
+            <td><strong>监控 vs 可观测性</strong><br><small class="muted">3.8</small></td>
+            <td>监控问「<strong>我预先定义的那些指标</strong>越界了吗」；可观测性问「这个我从没预设过的现象，<strong>为什么</strong>会发生」</td>
+            <td>干扰项把「增加更多仪表盘与告警规则」写成可观测性。仪表盘增多仍然只覆盖已知问题</td>
+          </tr>
+          <tr>
+            <td><strong>价值流映射 vs 价值流管理</strong><br><small class="muted">3.9 / <a href="../ch04-frameworks/index.html">第 4 章</a></small></td>
+            <td>映射是<strong>一次性</strong>画出当前状态、找到约束；管理是对同一条价值流做<strong>长期</strong>的度量与治理</td>
+            <td>两者中文只差两个字，英文缩写都能写成 VSM。另一处陷阱：<strong>Value stream mapping 是官方术语，Value Stream Management 不是</strong></td>
+          </tr>
+          <tr>
+            <td><strong>SRE vs 韧性工程</strong><br><small class="muted">3.4</small></td>
+            <td>SRE 是一套<strong>工程实践</strong>：用软件工程的方法解决运维问题、承担可靠性；<strong>不是一个职位称谓</strong>；韧性工程是一个<strong>视角</strong>：系统与组织在意外下如何继续工作</td>
+            <td>干扰项把两者当同义词互换。记住 SRE 落在「怎么做」，韧性工程落在「坏了之后会怎样」。两个词都在官方术语表内，不能靠「哪个更官方」来排除</td>
+          </tr>
+          <tr>
+            <td><strong>平台团队 vs「DevOps 团队」反模式</strong><br><small class="muted">3.10 · 「反模式」是本站提法 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+            <td>平台团队交付<strong>自助能力</strong>，交付责任留在产品团队；一旦这个团队变成夹在 Dev 与 Ops 之间的<strong>第三个交接方</strong>，就是反模式</td>
+            <td>看到「成立一个专门团队」就判错。判据不是有没有新团队，而是<strong>有没有新增交接与责任上收</strong></td>
+          </tr>
+          <tr>
+            <td><strong>看板 vs Scrum</strong><br><small class="muted">3.7 / <a href="../ch04-frameworks/index.html">第 4 章</a></small></td>
+            <td>看板是<strong>持续流 + 限制在制品</strong>，不规定迭代长度与角色；Scrum 是<strong>固定时长的 Sprint</strong> + 规定的角色、工件与事件</td>
+            <td>干扰项把「用了看板墙」等同于 Kanban 方法，或把限制在制品说成 Scrum 的要素</td>
+          </tr>
+          <tr>
+            <td><strong>部署 vs 发布</strong><br><small class="muted">3.3</small></td>
+            <td>部署是把版本<strong>放进生产环境</strong>；发布是把功能<strong>暴露给用户</strong>。特性开关让两者可以分开
+              （<span class="badge badge--ext">🧭 延伸 · 非考纲</span> 特性开关 <span class="en">Feature toggle</span> 与「发布 <span class="en">Release</span>」均不在 DOFD 考纲术语表内，此处仅用于理解部署与发布的差别）</td>
+            <td>把「上了生产」直接读成「用户已经能用」。持续部署高频上生产，不等于每次都对用户开放新功能</td>
+          </tr>
+          <tr>
+            <td><strong>左移 vs DevSecOps</strong><br><small class="muted">3.1 / 3.5</small></td>
+            <td>左移是<strong>把测试提前且持续</strong>这件事本身；DevSecOps 是把<strong>安全测试</strong>也接进这条左移链路</td>
+            <td>题干强调「安全评审排在 Sprint 之后造成延迟」时，答案要落到 DevSecOps，而不是泛泛的 shift left。<strong>两条都有官方答案键确认</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）
+      与 PeopleCert 现行 DevOps Foundation 产品页公布的 v3.6 学习目标；
+      表中另有若干非考纲词（特性开关、反模式等），已就地标注为延伸。
+      <strong>「分界线」与「诱导你选错的地方」两列是本站教学整理</strong>，用于描述命题角度与干扰项的构造方式，
+      官方未以对照表形式给出这些区分，本站也不复制任何官方样题的题干与选项原文。
+    </div>
+
+    <!-- ============ 官方样题答案键确认的本章考点 ============ -->
+    <div class="divider-label">官方样题答案键确认的本章考点</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这五条不是推断，是官方确认</div>
+      <p>
+        本站绝大多数「考试怎么考」都标注为教学推断。下面五条不同 ——
+        它们来自 <strong>DOFD v3.4 官方样题答案键</strong>，是<strong>关于官方文件的事实陈述</strong>：
+        官方在这些判断上给出了明确的正确答案方向。第 3 章一共占到五条，是全书受官方背书最密集的一章
+        （这一统计为本站按答案键条目的章节归属整理，官方未按章公布分布）。
+      </p>
+      <ul>
+        <li><strong>持续集成的必要前提是自动化的单元、集成与验收测试。</strong>
+          → 见 <a href="3.2-continuous-integration.html">3.2 持续集成</a>。
+          常见误选方向是把『CI 的前置条件』答成与 CI 相关但并非前提的工程条件（例如流水线是否已搭好、代码是否集中管理）
+          —— 判据是：前提必须是<strong>能自动判定每次合入是否安全的测试</strong>。</li>
+        <li><strong>依赖部署流水线实现「按需一键部署」的实践是持续交付。</strong>
+          → 见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>。
+          题面出现「按需」「一键」时落点是<strong>持续交付</strong>，不是持续部署。</li>
+        <li><strong>自动部署每个通过单元、集成、用户验收与非功能测试的版本，属于持续部署。</strong>
+          → 见 <a href="3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>。
+          题面出现「每一个通过测试的版本都自动部署」时落点是<strong>持续部署</strong>，不是持续交付。
+          与上一条正好构成一对，<strong>必须成对记</strong>。</li>
+        <li><strong>Shift left 的含义是通过早期与持续的测试把质量内建到开发过程中。</strong>
+          → 见 <a href="3.1-continuous-testing.html">3.1 持续测试</a>。
+          「早期」与「持续」两个成分缺一不可，落点是<strong>把质量内建进开发</strong>，不是「测试团队提前介入」。</li>
+        <li><strong>要把安全测试并入左移测试、以消除 Sprint 之后安全评审造成的延迟，需要的实践是 DevSecOps。</strong>
+          → 见 <a href="3.5-devsecops.html">3.5 DevSecOps</a>。
+          这一条的落点是一个<strong>具体实践名</strong>，不是「加强左移」这类方向性描述。</li>
+      </ul>
+      <p class="mb-0 muted"><small>本站只陈述这些结论，<strong>不复制官方样题的题干与选项原文</strong>。
+        本页其余所有「命题角度」「干扰项长相」的描述，均为本站教学推断，已在各处标注。</small></p>
+    </div>
+
+    <!-- ============ 图 3-11-2　答案键记忆卡片 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 348" role="img" aria-label="第 3 章五条由官方样题答案键确认的结论记忆卡片">
+          <text x="16" y="26" class="s-ink" font-size="17" font-weight="700">DOFD v3.4 官方样题答案键确认的第 3 章五条结论</text>
+          <text x="16" y="50" class="s-muted" font-size="12.5">这五张卡是全章唯一「官方认为哪个答案对」有硬证据的部分。卡片下半是本站概括的最常见误选方向。</text>
+
+          <!-- 卡片 1 -->
+          <rect x="12" y="70" width="180" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="26" y="96" class="f-1" font-size="14" font-weight="700">#3</text>
+          <text x="178" y="96" class="s-muted" font-size="12" text-anchor="end">见 3.2</text>
+          <line x1="26" y1="108" x2="178" y2="108" class="s-1" stroke-width="1.2"/>
+          <text x="26" y="138" class="s-ink" font-size="12.5">持续集成的必要前提</text>
+          <text x="26" y="158" class="s-ink" font-size="12.5">是自动化的单元、</text>
+          <text x="26" y="178" class="s-ink" font-size="12.5">集成与验收测试</text>
+          <line x1="26" y1="212" x2="178" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="26" y="234" class="f-2" font-size="12">误选方向：把流水线</text>
+          <text x="26" y="252" class="f-2" font-size="12">当成 CI 的前提</text>
+
+          <!-- 卡片 2 -->
+          <rect x="206" y="70" width="180" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="220" y="96" class="f-1" font-size="14" font-weight="700">#4</text>
+          <text x="372" y="96" class="s-muted" font-size="12" text-anchor="end">见 3.3</text>
+          <line x1="220" y1="108" x2="372" y2="108" class="s-1" stroke-width="1.2"/>
+          <text x="220" y="138" class="s-ink" font-size="12.5">依赖部署流水线做到</text>
+          <text x="220" y="158" class="s-ink" font-size="12.5">「按需一键部署」的</text>
+          <text x="220" y="178" class="s-ink" font-size="12.5">实践是持续交付</text>
+          <line x1="220" y1="212" x2="372" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="220" y="234" class="f-2" font-size="12">误选方向：读成持续部署</text>
+          <text x="220" y="252" class="f-2" font-size="12">（关键词：按需）</text>
+
+          <!-- 卡片 3 -->
+          <rect x="400" y="70" width="180" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="414" y="96" class="f-1" font-size="14" font-weight="700">#13</text>
+          <text x="566" y="96" class="s-muted" font-size="12" text-anchor="end">见 3.3</text>
+          <line x1="414" y1="108" x2="566" y2="108" class="s-1" stroke-width="1.2"/>
+          <text x="414" y="138" class="s-ink" font-size="12.5">自动部署每个通过</text>
+          <text x="414" y="158" class="s-ink" font-size="12.5">单元、集成、验收与</text>
+          <text x="414" y="178" class="s-ink" font-size="12.5">非功能测试的版本，</text>
+          <text x="414" y="198" class="s-ink" font-size="12.5">属于持续部署</text>
+          <line x1="414" y1="212" x2="566" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="414" y="234" class="f-2" font-size="12">误选方向：读成持续交付</text>
+          <text x="414" y="252" class="f-2" font-size="12">（关键词：每个都自动）</text>
+
+          <!-- 卡片 4 -->
+          <rect x="594" y="70" width="180" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="608" y="96" class="f-1" font-size="14" font-weight="700">#11</text>
+          <text x="760" y="96" class="s-muted" font-size="12" text-anchor="end">见 3.1</text>
+          <line x1="608" y1="108" x2="760" y2="108" class="s-1" stroke-width="1.2"/>
+          <text x="608" y="138" class="s-ink" font-size="12.5">Shift left 是通过</text>
+          <text x="608" y="158" class="s-ink" font-size="12.5">早期与持续的测试，</text>
+          <text x="608" y="178" class="s-ink" font-size="12.5">把质量内建到</text>
+          <text x="608" y="198" class="s-ink" font-size="12.5">开发过程中</text>
+          <line x1="608" y1="212" x2="760" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="608" y="234" class="f-2" font-size="12">误选方向：只把测试</text>
+          <text x="608" y="252" class="f-2" font-size="12">环节整体前移</text>
+
+          <!-- 卡片 5 -->
+          <rect x="788" y="70" width="180" height="200" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="802" y="96" class="f-1" font-size="14" font-weight="700">#12</text>
+          <text x="954" y="96" class="s-muted" font-size="12" text-anchor="end">见 3.5</text>
+          <line x1="802" y1="108" x2="954" y2="108" class="s-1" stroke-width="1.2"/>
+          <text x="802" y="138" class="s-ink" font-size="12.5">把安全测试并入左移</text>
+          <text x="802" y="158" class="s-ink" font-size="12.5">测试、消除 Sprint 后</text>
+          <text x="802" y="178" class="s-ink" font-size="12.5">安全评审延迟的实践</text>
+          <text x="802" y="198" class="s-ink" font-size="12.5">是 DevSecOps</text>
+          <line x1="802" y1="212" x2="954" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="802" y="234" class="f-2" font-size="12">误选方向：停在泛泛的</text>
+          <text x="802" y="252" class="f-2" font-size="12">shift left</text>
+
+          <!-- 页脚 -->
+          <text x="16" y="300" class="s-muted" font-size="12.5">五条均出自 DOFD v3.4 官方样题答案键，是关于官方文件的事实陈述；本站只陈述结论，不复制任何题干与选项原文。</text>
+          <text x="16" y="324" class="s-muted" font-size="12.5">#3 / #4 / #11 / #12 / #13 为本站对该答案键条目的内部编号，仅用于回查，不是官方题号。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 3-11-2　五条官方确认结论的记忆卡片。</strong>
+        这张图要看懂的是<strong>五条之间的分工</strong>：#3 管「CI 的前提」，#4 与 #13 是一对，靠
+        <strong>「按需 / 每个都自动」</strong>这两个关键词分开交付与部署，#11 定义左移的三个成分，#12 把安全的落点钉在 DevSecOps 上。
+        卡片下半的「误选方向」是本站教学整理，不是官方样题的选项。考前只看这五行也够用。
+      </figcaption>
+    </figure>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 反过来说：本章哪些内容没有官方背书</div>
+      <ul class="mb-0">
+        <li>「实践 → 三步工作法」的归组（图 3-11-1）是本站教学整理，官方未给出这张对应表。</li>
+        <li>本页所有「干扰项长什么样」「排除技巧」都是本站对命题角度的推断，官方只公布考试范围为 Bloom 1–2。</li>
+        <li><strong>监控与可观测性、价值流管理、平台工程</strong>三节的具体命题方式无任何公开依据 ——
+          它们只出现在 PeopleCert 现行产品页的学习目标里，v3.6 未公开重新发布过权重表与术语表。</li>
+      </ul>
+    </div>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章正文真正展开过、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目；
+      本章提到但不在术语表内的名词（<span class="en">Observability</span> / <span class="en">Value Stream Management</span> /
+      <span class="en">Platform Engineering</span>）见下方单独列表。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:30%">官方术语</th><th style="width:20%">固定中文</th><th style="width:12%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Continuous testing</em></td><td>持续测试</td><td>3.1</td><td>每次变更都被恰当的测试判过，不是攒一批再测</td></tr>
+          <tr><td><em>Shift left</em></td><td>左移</td><td>3.1 · 3.5</td><td>早期 + 持续的测试，把质量内建进开发过程</td></tr>
+          <tr><td><em>Testing (unit, acceptance, integration)</em></td><td>测试（单元、验收、集成）</td><td>3.1</td><td>三类测试各自回答不同的问题，也是 CI 前提里点名的三类</td></tr>
+          <tr><td><em>Test driven development</em></td><td>测试驱动开发</td><td>3.1</td><td>先写测试再写实现，是把质量内建的一种具体做法</td></tr>
+          <tr><td><em>Continuous integration</em></td><td>持续集成</td><td>3.2</td><td>频繁合入主线，每次合入都被自动化测试判过</td></tr>
+          <tr><td><em>Code commit</em></td><td>代码提交</td><td>3.2</td><td>触发流水线的最小单位；提交越频繁，集成风险越低</td></tr>
+          <tr><td><em>Deployment pipeline</em></td><td>部署流水线</td><td>3.2 · 3.3</td><td>持续交付与持续部署共用的底座，<strong>不能用它来区分两者</strong></td></tr>
+          <tr><td><em>Continuous delivery</em></td><td>持续交付</td><td>3.3</td><td>随时可发布，发不发由人决定</td></tr>
+          <tr><td><em>Continuous deployment</em></td><td>持续部署</td><td>3.3</td><td>通过全部测试即自动上生产，无人工点头</td></tr>
+          <tr><td><em>Site Reliability Engineering</em></td><td>站点可靠性工程 SRE</td><td>3.4</td><td>用软件工程的方法承担可靠性与运维责任</td></tr>
+          <tr><td><em>Resilience engineering</em></td><td>韧性工程</td><td>3.4</td><td>关注系统与组织在意外之后能否继续工作</td></tr>
+          <tr><td><em>Single Point of Failure (SPOF)</em></td><td>单点故障 SPOF</td><td>3.4</td><td>它挂系统就停；关注可用性，不是关注慢</td></tr>
+          <tr><td><em>Mean Time to Repair/Recover (MTTR)</em></td><td>平均恢复时间 MTTR</td><td>3.4</td><td>量的是「恢复一次故障要多久」，不是交付一个变更要多久</td></tr>
+          <tr><td><em>DevSecOps</em></td><td>DevSecOps</td><td>3.5</td><td>把安全测试并入左移的测试链路</td></tr>
+          <tr><td><em>Constraint</em></td><td>约束</td><td>3.5 · 3.4 · 3.8</td><td>安全评审成为瓶颈时套用的判据：SPOF 关的是「挂没挂」，约束关的是「慢在哪」</td></tr>
+          <tr><td><em>Theory of Constraints</em></td><td>约束理论 ToC</td><td>3.5 · 3.7</td><td>服务第一步，正式讲解见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章（2.3）</a></td></tr>
+          <tr><td><em>ChatOps</em></td><td>ChatOps</td><td>3.6</td><td>操作在聊天环境里被执行，过程对全员可见</td></tr>
+          <tr><td><em>DevOps toolchain</em></td><td>DevOps 工具链</td><td>3.6 · 3.8 · 3.10</td><td>ChatOps 与平台工程接入的对象</td></tr>
+          <tr><td><em>Kanban</em></td><td>看板</td><td>3.7</td><td>可视化、限制在制品、管理流动；不规定迭代与角色</td></tr>
+          <tr><td><em>Flow</em></td><td>流动</td><td>3.7</td><td>看板要管理和度量的对象，也是三步工作法第一步的名字</td></tr>
+          <tr><td><em>Cycle time</em></td><td>周期时间</td><td>3.7 · 3.9</td><td>看板与价值流管理共同使用的流动度量</td></tr>
+          <tr><td><em>Velocity</em></td><td>Velocity</td><td>3.7</td><td>Scrum 的产能度量，看板不用它</td></tr>
+          <tr><td><em>Epics</em></td><td>Epics</td><td>3.7</td><td>看板卡片粒度的上游单位</td></tr>
+          <tr><td><em>Microservices</em></td><td>微服务</td><td>3.8</td><td>可观测性成为刚需的架构前提</td></tr>
+          <tr><td><em>Change lead time</em></td><td>变更前置时间</td><td>3.9</td><td>端到端「从提交到可用」的时间，不是单环节的周期时间</td></tr>
+          <tr><td><em>Deployment frequency</em></td><td>部署频率</td><td>3.9 · 3.3</td><td>流动的频率侧度量</td></tr>
+          <tr><td><em>Change failure rate</em></td><td>变更失败率</td><td>3.9</td><td>稳定性侧度量，别与部署频率同向解读</td></tr>
+          <tr><td><em>Value stream mapping</em></td><td>价值流映射</td><td>3.9<br><small class="muted">正式讲解见<a href="../ch04-frameworks/index.html">第 4 章</a></small></td><td>一次性画出当前状态、找出约束的识别手段</td></tr>
+          <tr><td><em>Scrum</em> / <em>Scrum roles, artifacts and events</em></td><td>Scrum / Scrum 的角色、工件与事件</td><td>3.7<br><small class="muted">正式讲解见<a href="../ch04-frameworks/index.html">第 4 章</a></small></td><td>看板的对照物：固定 Sprint + 规定角色工件事件</td></tr>
+          <tr><td><em>DevOps teams</em></td><td>DevOps 团队</td><td>3.10<br><small class="muted">正式讲解见<a href="../ch08-sharing/index.html">第 8 章（8.2 角色与团队）</a></small></td><td>平台工程的对照概念；「DevOps 团队会变成新的交接方」是本站与业界的常见提法，官方未作此定性 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td></tr>
+          <tr><td><em>DevOps roles</em></td><td>DevOps 角色</td><td>3.10</td><td>平台团队职责边界所对应的官方措辞</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称</strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List），
+      <strong>「一句话定位」一列为本站教学整理</strong>，官方未给出这些定位式说明。
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这三个主题词不在 66 条官方术语表内</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:34%">主题词</th><th style="width:16%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr><td><em>Observability</em> 可观测性</td><td>3.8</td><td>出自 PeopleCert 现行产品页学习目标 <em>Monitoring and Observability</em>（v3.6 新增），<strong>不在 v3.4 的 66 条术语表内</strong></td></tr>
+            <tr><td><em>Value Stream Management</em> 价值流管理</td><td>3.9</td><td>同上，v3.6 新增。<strong>在术语表内的是 <em>Value stream mapping</em>（价值流映射），两者不能互换</strong></td></tr>
+            <tr><td><em>Platform Engineering</em> 平台工程</td><td>3.10</td><td>同上，v3.6 新增。<strong>在术语表内的是 <em>DevOps teams</em></strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>这三节在本站页头标的是 v3.6 新增标记，<strong>不标「⭐ 考纲核心」</strong>。
+        判定依据：DOFD v3.4 官方考纲术语表逐字比对 + PeopleCert 现行产品页学习目标。</small></p>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>以下四项均出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；v3.6 未公开重新发布权重表。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">7</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">≤17.5%</div><div class="stat__k">按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">并列第 1</div><div class="stat__k">与第 4 章同为权重最高</div></div>
+      <div class="stat"><div class="stat__v">5</div><div class="stat__k">官方答案键确认的结论</div></div>
+    </div>
+
+    <p>
+      全卷及格线是 <strong>26 / 40</strong>。本章与第 4 章的题数上限各为 7 题，两章合计最多 14 题 ——
+      上限之和已<strong>超过及格线所需分数的一半</strong>。
+      换算方式：本章若按上限出到 7 题、其中错 3 题，等于把全卷的容错额度用掉了五分之一强。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">模块</th><th style="width:14%">最多题数</th><th>与本章的关系</th></tr></thead>
+        <tbody>
+          <tr><td><strong>3　Key DevOps Practices</strong></td><td class="num"><strong>7</strong></td><td>本章</td></tr>
+          <tr><td>4　Business &amp; Technology Frameworks</td><td class="num">7</td><td>并列最高。Kanban 与 Scrum、价值流映射的正式讲解在那一章</td></tr>
+          <tr><td>5　Culture, Behaviors &amp; Operating Models</td><td class="num">6</td><td>组织文化、行为模型与组织成熟度模型在那一章</td></tr>
+          <tr><td>1　Exploring DevOps</td><td class="num">5</td><td>—</td></tr>
+          <tr><td>6　Automation &amp; Architecting DevOps Toolchains</td><td class="num">5</td><td>部署流水线的工具视角在那一章</td></tr>
+          <tr><td>2　Core DevOps Principles</td><td class="num">4</td><td>三步工作法在那一章，本页的分组图以它为骨架</td></tr>
+          <tr><td>8　Sharing, Shadowing and Evolving</td><td class="num">4</td><td>DevOps 角色与团队结构（3.10 的对照概念）在那一章</td></tr>
+          <tr><td>7　Measurement, Metrics, and Reporting</td><td class="num">2</td><td>MTTR、周期时间等指标的正式讲解在那一章</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题）同源。
+      <strong>v3.6 未公开重新发布权重表</strong>，因此本页仍以 v3.4 的分布作为唯一可引用依据。
+      ≤17.5% 由题数上限 7 ÷ 40 计算得到，是<strong>占比上限</strong>而非实测比重。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>做自测更有效：
+        遮住「分界线」一列，逐对说出分界线，说不出来的那一对就是要回去重读的小节。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文，
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 7 题</strong>，按上限算占全卷 40 题的 <strong>≤17.5%</strong>，与第 4 章并列全卷最高（来源：DOFD v3.4 Examination Requirements；官方给的是每模块题数上限，不是固定配额）</li>
+        <li>十个实践的归位：<strong>3.2 · 3.3 · 3.7 · 3.9 · 3.10 服务第一步 · 流动；3.1 · 3.5 · 3.6 · 3.8 服务第二步 · 反馈；3.4 服务第三步 · 持续改进</strong>（本站教学整理）</li>
+        <li>官方答案键确认的五条：<strong>CI 前提是自动化的单元/集成/验收测试 · 按需一键部署 = 持续交付 · 每个通过测试的版本自动上生产 = 持续部署 · 左移 = 早期与持续的测试把质量内建 · 安全并入左移 = DevSecOps</strong></li>
+        <li>交付与部署的唯一分界：<strong>最后上生产那一下是不是人工点头</strong>；两者都用部署流水线，别拿流水线当区分依据</li>
+        <li><strong>Observability · Value Stream Management · Platform Engineering 三个词不在 66 条官方术语表内</strong>，是 v3.6 学习目标新增；在表内的是 Value stream mapping 与 DevOps teams</li>
+        <li>手段与编排要分开：<strong>自动化测试是手段，持续测试是编排；看板墙是道具，限制在制品才是看板</strong></li>
+        <li>三个「团队」类陷阱的统一判据：<strong>有没有新增交接与责任上收</strong>，而不是有没有成立新团队</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数与考试形式出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      并同时说明 <strong>v3.6 未公开重新发布权重表</strong>；
+      <em>Continuous testing</em>、<em>Shift left</em>、<em>Testing (unit, acceptance, integration)</em>、<em>Test driven development</em>、
+      <em>Continuous integration</em>、<em>Code commit</em>、<em>Deployment pipeline</em>、<em>Continuous delivery</em>、<em>Continuous deployment</em>、
+      <em>Site Reliability Engineering</em>、<em>Resilience engineering</em>、<em>Single Point of Failure (SPOF)</em>、
+      <em>Mean Time to Repair/Recover (MTTR)</em>、<em>DevSecOps</em>、<em>ChatOps</em>、<em>Kanban</em>、<em>Flow</em>、<em>Cycle time</em>、
+      <em>Value stream mapping</em>、<em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、<em>DevOps teams</em>、
+      <em>Constraint</em>、<em>Theory of Constraints</em>、<em>DevOps toolchain</em>、<em>Velocity</em>、<em>Epics</em>、
+      <em>Microservices</em>、<em>Change lead time</em>、<em>Deployment frequency</em>、<em>Change failure rate</em>、<em>DevOps roles</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      v3.4 课程大纲 M3 模块子项为 <em>Continuous Testing, Integration, Delivery, Deployment</em>、
+      <em>Site Reliability &amp; Resilience Engineering</em>、<em>DevSecOps</em>、<em>ChatOps</em>、<em>Kanban</em>。<br>
+      <em>Monitoring and Observability</em>、<em>Value Stream Management</em>、<em>Platform Engineering</em>
+      出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>（v3.6 新增），
+      <strong>均不在 v3.4 的 66 条术语表内</strong>，本页已在术语速查后单独列表说明。<br>
+      本页高亮的<strong>五条结论由 DOFD v3.4 官方样题答案键确认</strong>（对应 3.1 / 3.2 / 3.3 / 3.5 四节），
+      本站只陈述结论，不复制官方样题的题干与选项原文。<br>
+      <strong>本站教学整理部分</strong>：图 3-11-1 的「实践 → 三步工作法」归组、一页纸复习表的「记忆锚点」与「最易错点」两列、
+      易混淆汇总表的「分界线」与「诱导你选错的地方」两列、术语速查表的「一句话定位」列、图 3-11-2 中的「误选方向」、
+      官方未以此形式给出，已在各自下方就地标注。本页不含任何官方样题原文，练习题上线后将标注「仿真题，非官方真题」。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

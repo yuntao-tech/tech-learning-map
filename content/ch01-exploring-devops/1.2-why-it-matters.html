@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 DevOps 为什么重要 · DevOps Foundation 学习站</title>
+<meta name="description" content="新进入者不断出现，产品必须频繁发布。本节讲清 DevOps 的商业动因、Golden Circle 的 why / how / what，以及高绩效组织的差距为何随技术债的累积而扩大。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch01", sec:"1.2-why-it-matters"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 1 章 · 认识 DevOps</div>
+      <h1 class="page-head__title">1.2 DevOps 为什么重要</h1>
+      <div class="page-head__en">Why Does DevOps Matter?</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        DevOps 不是因为技术好玩才出现的。本站把它的动因归纳成一句话：
+        <strong>新进入者不断出现，产品必须频繁发布，而不是一年一两次</strong>。
+        本节把这个商业动因拆成两层 —— 外部的市场节奏与内部的批量风险，
+        再加上一个必须先回答的问题：<strong>这件事的 why 是什么</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>市场发生了什么变化，为什么「一年发两次」在今天是一种结构性劣势</li>
+        <li>「为什么做」与「做成需要什么条件」是两类题，考试怎么把它们的选项写得几乎一样</li>
+        <li>Golden Circle 的 why 到底代表什么，以及高绩效组织的差距为什么会随时间越拉越大</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 940 460" role="img" aria-label="传统一年两次发布与 DevOps 每两周发布的时间线对比，纵向高度表示尚未上线验证的变更累积量">
+          <!-- 传统节奏 -->
+          <text x="20" y="62" class="f-2" font-size="16" font-weight="700">传统发布 · 一年 2 次（4 月 / 10 月）</text>
+          <text x="20" y="84" class="s-muted" font-size="12">纵向高度 = 已完成但尚未上线验证的变更量</text>
+
+          <path d="M40 140 L291 104 L291 176 L721 104 L721 176 L900 146" class="s-2" stroke-width="2.5" fill="none"/>
+          <text x="291" y="96" class="f-2" font-size="13" font-weight="650" text-anchor="middle">发布</text>
+          <text x="721" y="96" class="f-2" font-size="13" font-weight="650" text-anchor="middle">发布</text>
+          <text x="506" y="90" class="f-2" font-size="13" text-anchor="middle">一次发布携带约 180 个未验证变更（6 个月）</text>
+          <text x="44" y="158" class="s-muted" font-size="12">1 月已承接上一周期的积压</text>
+
+          <line x1="40" y1="176" x2="900" y2="176" class="s-stroke" stroke-width="1.5"/>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="76"  y="196">1 月</text>
+            <text x="148" y="196">2 月</text>
+            <text x="219" y="196">3 月</text>
+            <text x="291" y="196">4 月</text>
+            <text x="363" y="196">5 月</text>
+            <text x="435" y="196">6 月</text>
+            <text x="506" y="196">7 月</text>
+            <text x="578" y="196">8 月</text>
+            <text x="650" y="196">9 月</text>
+            <text x="721" y="196">10 月</text>
+            <text x="793" y="196">11 月</text>
+            <text x="865" y="196">12 月</text>
+          </g>
+          <text x="40" y="222" class="s-muted" font-size="13">失败时的定位范围 = 6 个月的改动；回滚一次 = 退回 6 个月的工作</text>
+
+          <!-- DevOps 节奏 -->
+          <text x="20" y="272" class="f-1" font-size="16" font-weight="700">DevOps 发布 · 每两周 1 次</text>
+          <text x="20" y="294" class="s-muted" font-size="12">同样一年，同样多的变更总量</text>
+
+          <polyline points="40,360 73,340 73,360 106,340 106,360 139,340 139,360 172,340 172,360 205,340 205,360 238,340 238,360 271,340 271,360 304,340 304,360 337,340 337,360 370,340 370,360 403,340 403,360 436,340 436,360 469,340 469,360 502,340 502,360 535,340 535,360 568,340 568,360 601,340 601,360 634,340 634,360 667,340 667,360 700,340 700,360 733,340 733,360 766,340 766,360 799,340 799,360 832,340 832,360 865,340 865,360 898,340 898,360"
+                    class="s-1" stroke-width="2" fill="none"/>
+          <text x="470" y="326" class="f-1" font-size="13" font-weight="650" text-anchor="middle">每次只携带 2 周、约 14 个变更</text>
+
+          <line x1="40" y1="360" x2="900" y2="360" class="s-stroke" stroke-width="1.5"/>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="76"  y="380">1 月</text>
+            <text x="219" y="380">3 月</text>
+            <text x="363" y="380">5 月</text>
+            <text x="506" y="380">7 月</text>
+            <text x="650" y="380">9 月</text>
+            <text x="793" y="380">11 月</text>
+          </g>
+
+          <text x="470" y="418" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">批量就是风险的存量</text>
+          <text x="470" y="442" class="s-muted" font-size="13" text-anchor="middle">发布间隔翻倍，单次发布携带的未验证变更翻倍，失败时的排查范围与回滚代价同步翻倍</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 1-2-1　两种发布节奏下的风险分布。</strong>
+        两条线一年内的落差之和是同一个东西 —— 一年内完成的变更总量（纵向为示意，未按比例绘制）。
+        要看懂的是<strong>每次落差的高度</strong>：上面那条把风险堆成两次高落差，下面那条把同样的量摊成 26 次小落差。
+        频繁发布之所以更安全，不是因为写得更小心，而是因为<strong>每次押上去的东西更少、失败时能查的范围更窄</strong>。
+        这一层不是本站的发明，官方 Blueprint 在 <strong>Principles &amp; Practices</strong> 里逐字写着：
+        <em>Frequent small releases using continuous integration, testing, delivery, deployments and
+        monitoring reduce lead time, costs and risks.</em>
+        英文句为<strong>官方原文</strong>，出自 PeopleCert《DevOps Foundation® Blueprint》，可引为官方（中译见 kp-1-2-1 ②）。
+        本图为本站构造的教学示意，图中数字用于说明这句官方表述背后的机制。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-1-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-2-1</div>
+        <h3 class="kp__title">市场压力：为什么必须频繁发布<span class="en">Why Does DevOps Matter?</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <em>Why Does DevOps Matter?</em> 是 DOFD v3.4 课程大纲 M1 模块的正式子项。
+            v3.4 课程大纲只公布了<strong>这个子项标题本身</strong>；官方对「为什么重要」的正面表述见
+            Blueprint 的定义句与 <strong>BENEFITS</strong>、<strong>Principles &amp; Practices</strong>，
+            以及 v3.4 Course Description 的三个收益区间（见本知识点 ②）。
+            下面这三层动因的<strong>归类方式</strong>是本站的教学展开。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">本站归纳的三层动因</th><th style="width:34%">具体内容</th><th>它压住的是哪件事</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>市场压力</strong><br><small class="muted">外部</small></td>
+                  <td><strong>新进入者不断出现</strong>，产品必须<strong>频繁发布</strong>，而不是一年一两次</td>
+                  <td>发布节奏不再由内部流程决定，而由竞争对手的节奏决定</td>
+                </tr>
+                <tr>
+                  <td><strong>批量即风险</strong><br><small class="muted">内部</small></td>
+                  <td>发布间隔越长，单次携带的未验证变更越多，失败时的排查范围与回滚代价同步放大<br>
+                    <small class="muted">对应官方 Blueprint <em>Principles &amp; Practices</em>：频繁的小批量发布降低前置时间、成本与风险</small></td>
+                  <td>「少发布更稳」这个直觉 —— 少发布只是把风险攒起来一次押上</td>
+                </tr>
+                <tr>
+                  <td><strong>学习循环</strong><br><small class="muted">内部</small></td>
+                  <td>一个发布窗口就是一次学习机会；窗口越稀疏，从客户反馈到修正之间的延迟越长</td>
+                  <td>差距不在谁更聪明，而在谁的反馈到修正之间隔得更短</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>上表三层动因的<strong>归类与第三列</strong>为<strong>本站教学整理</strong> ——
+            官方 v3.4 课程大纲 M1 只给出 <em>Why Does DevOps Matter?</em> 这个子项标题，<strong>未逐条给出该子项的讲授要点</strong>。
+            但官方并非对此没有正面表述：PeopleCert《DevOps Foundation® Blueprint》的定义句、
+            <em>BENEFITS</em> 与 <em>Principles &amp; Practices</em> 三段，以及
+            <strong>v3.4 Course Description</strong> 的三个量化收益，都是官方就「为什么重要」发布过的内容，见下一面。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            长发布周期不是懒惰造成的，它是一套<strong>自我强化的机制</strong>。设想一家做企业报销系统的公司：
+          </p>
+          <ul>
+            <li>发布定在每年 4 月和 10 月，一次上线捆绑约 180 个需求。
+              任何客户提出的改动，<strong>最快也要等到下一个窗口</strong>，平均等待 4.5 个月，赶不上窗口就再等半年。</li>
+            <li>因为一次上线 180 个变更，评审必须加码：三级审批、发布评审会、全员待命的通宵窗口。
+              <strong>评审越重，窗口越难开，于是间隔被拉得更长，单次批量更大</strong> —— 这个环自己会转。</li>
+            <li>同期出现的 SaaS 新进入者每两周上线一次。在这家公司等待一个窗口的 4.5 个月里，
+              对手发布了 9 次，其中 6 次是照着客户反馈改的。
+              <strong>差距不在谁更聪明，而在谁的学习循环更短。</strong></li>
+          </ul>
+          <p>
+            这就是本站把「市场压力」列为首要动因的原因：<strong>发布节奏已经变成竞争条件，而不是内部偏好</strong>。
+            往下一层，真正决定风险的不是「发布」这个动作，而是<strong>每次发布携带多少未验证的变更</strong>。
+          </p>
+          <p>
+            上面这条「批量 → 评审 → 更长间隔」的环，是本站对一句官方表述的展开，不是本站独创的论点。
+            PeopleCert《DevOps Foundation® Blueprint》在 <em>Principles &amp; Practices</em> 里逐字写着：
+            <em>Frequent small releases using continuous integration, testing, delivery, deployments and
+            monitoring reduce lead time, costs and risks.</em>
+            —— <strong>频繁的小批量发布降低前置时间、成本与风险</strong>（本站译文，英文逐字原文亦见图 1-2-1 下方）。
+            官方只给出这一句结论，本站补的是它<strong>为什么成立</strong>的机制。
+          </p>
+          <p>
+            那么这个环被打断之后，组织拿到的是什么？官方 Blueprint 在 <em>BENEFITS</em> 一栏逐字给出了答案：
+          </p>
+          <p>
+            <em>Improved release cadence, velocity, throughput, efficiency and stability,
+            quality, security and team satisfaction.</em>
+          </p>
+          <p>
+            本站译文：<strong>发布节奏、速度、吞吐量、效率与稳定性、质量、安全以及团队满意度的全面改善。</strong>
+            这一串就是官方对「DevOps 为什么重要」给出的正面回答 —— 注意它把<strong>快</strong>
+            （cadence / velocity / throughput）与<strong>稳</strong>（stability / quality / security）并列，
+            并且把<strong>团队满意度</strong>也写进了收益里。
+          </p>
+          <div class="src-note">
+            上面的英文句为<strong>官方原文</strong>，出自 PeopleCert《DevOps Foundation® Blueprint》的
+            <em>BENEFITS</em> 一栏，<strong>可引为官方</strong>；中文为本站译文，其后对这串收益的解读属本站教学整理。
+          </div>
+          <p>
+            这套机制被扭转之后能省下多少，官方给过数字。
+            <strong>DOFD v3.4 的 Course Description</strong> 把 DevOps 的商业价值写成
+            cost / quality / agility 三个降幅区间，最终指向<strong>支撑数字化转型的业务目标</strong>：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">收益维度</th><th style="width:32%">官方给出的幅度</th><th>它对应改善的是什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>成本</strong> <span class="en">cost</span></td>
+                  <td><strong>整体 IT 成本下降 15–25%</strong><br><small class="muted">DOFD v3.4 Course Description</small></td>
+                  <td>发布窗口的通宵值守、回滚与善后、为赶窗口产生的加班 —— 这些是重复支出，不是一次性投入</td>
+                </tr>
+                <tr>
+                  <td><strong>质量</strong> <span class="en">quality</span></td>
+                  <td><strong>变更失败率下降 50–70%</strong><br><small class="muted">DOFD v3.4 Course Description</small></td>
+                  <td>单次发布携带的未验证变更量。批量小了，失败面就窄 —— 正是上一段那条自我强化的环被打断</td>
+                </tr>
+                <tr>
+                  <td><strong>敏捷</strong> <span class="en">agility</span></td>
+                  <td><strong>供应与部署时间下降最多 90%</strong><br><small class="muted">DOFD v3.4 Course Description</small></td>
+                  <td>「申请一套可用环境」与「把代码送上生产」这两段等待。它们决定学习循环的长度</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>三个数字出自 <strong>DOFD v3.4 Course Description（2022-06）</strong>，
+            属官方原文，引用时必须带版本 —— <strong>v3.6 未重新发布这组数据</strong>。
+            它们是官方给出的<strong>收益区间</strong>，<strong>不是承诺值</strong>，也不是
+            <strong>DORA / State of DevOps 报告的行业基准数据</strong>，两者不要混
+            （DORA 不在 DOFD 考纲术语表内）。上表第三列的对应说明为本站教学整理，官方原文只给出维度与幅度。<br>
+            上述报销系统案例与其中的数字为<strong>本站构造的教学示例</strong>，
+            用于说明「批量 → 评审 → 更长间隔」的自我强化机制，非真实调研数据。
+            「市场压力是首要动因」这一<strong>排序判断</strong>同为本站教学整理 ——
+            官方<strong>未逐条给出该子项的讲授要点</strong>，但本面引用的 Blueprint <em>BENEFITS</em>、
+            <em>Principles &amp; Practices</em> 与 v3.4 Course Description 三个收益区间均为官方原文。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">本节（DevOps 为什么重要）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>定义 DevOps</strong><br><small class="muted">M1 另一子项，见 <a href="1.1-defining-devops.html">1.1 定义 DevOps</a></small></td>
+                  <td>回答<strong>商业动因</strong>：为什么这件事非做不可</td>
+                  <td>回答<strong>是什么</strong>：DevOps 的构成与边界</td>
+                </tr>
+                <tr>
+                  <td><strong>业务战略与目标</strong><br><small class="muted">展开见 <a href="1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a></small></td>
+                  <td>回答<strong>为什么做</strong>（动因层）</td>
+                  <td>回答<strong>做哪些</strong>：决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</td>
+                </tr>
+                <tr>
+                  <td><strong>关键成功因素</strong><br><small class="muted">见 <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></small></td>
+                  <td>回答<strong>为什么要做</strong></td>
+                  <td>回答<strong>做成需要什么条件</strong>。本节不展开，属第 8 章内容</td>
+                </tr>
+                <tr>
+                  <td><strong>DORA 四大指标</strong> <span class="badge badge--ext">🧭 延伸 · 非考纲</span><br><small class="muted">定义与展开见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告（7.2）</a></small></td>
+                  <td>是<strong>理由</strong>：说明为什么要改</td>
+                  <td>是<strong>验证</strong>：说明改完之后收益有没有真的兑现</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把「做成之后会得到什么」当成「做成需要具备什么」</strong>。
+            本节回答的是<strong>动因</strong>，第 8 章的关键成功因素回答的是<strong>前置条件</strong> ——
+            两类题的选项措辞非常接近，读题时先分清问的是哪一个。</small></p>
+          <p class="mb-0 muted"><small>表中「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」这一判断，
+            由 <strong>DOFD v3.4 官方样题答案键</strong>确认；本站只陈述结论，不复制题干与选项原文。
+            其余对照关系为本站教学整理，官方未以对照表形式给出。
+            <strong>DORA 与 State of DevOps 报告不在 DOFD 考纲术语表内</strong>，本节仅作对照参照；
+            表内的 <em>Change failure rate</em>、<em>Change lead time</em>、<em>Deployment frequency</em>、<em>MTTR</em>
+            本身才是官方术语。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>「为什么重要」在立项会上会立刻变成一个很具体的要求：<strong>把动因翻译成本地可测的基线</strong>。
+            官方那三个降幅可以用来立论，但立项承诺只能挂在自己测出来的分母上：</p>
+          <ul>
+            <li><strong>成本口径</strong>：先算清当前与发布直接相关的人工工时 —— 发布窗口的通宵值守、
+              回滚与善后、为赶窗口产生的加班。没有这个分母，任何「降本多少」都无法验证。</li>
+            <li><strong>质量口径</strong>：统计过去 12 个月「导致回滚、降级或紧急修复的变更数 ÷ 总变更数」。
+              这个比值就是<strong>变更失败率</strong>的本地基线，改善只能相对它来谈。</li>
+            <li><strong>时间口径</strong>：把「供应」和「部署」分开量。
+              供应 = 申请一套可用环境要多久；部署 = 代码合并到在生产可见要多久。
+              两者的瓶颈通常不在同一个团队手里，合在一起量会掩盖真正的约束。</li>
+            <li><strong>不要把 15–25% / 50–70% / 90% 直接写成 KPI</strong>：
+              这是 <strong>DOFD v3.4 Course Description</strong> 给出的收益区间，不是对你所在组织的承诺，
+              也不代表你的起点。本地基线必须自己测出来，否则改进无法证明，第 7 章的度量也接不上。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条落地口径为<strong>本站教学整理</strong>，
+            官方给出的是三个收益区间（<strong>DOFD v3.4 Course Description</strong>），
+            未规定测量方法与基线口径。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>动因题（本站判断偏 Bloom 2）</strong>：问组织为什么需要 DevOps、为什么必须频繁发布。
+              <strong>本站判断的作答方向是市场压力层面的理由</strong>（竞争节奏、发布频次），
+              而不是内部组织安排。干扰项会写成「为了减少运维人员编制」「为了让开发承担运维职责」「为了引入更多自动化工具」
+              —— 这些是手段或副产物，不是动因。
+              <strong>排除技巧：凡是描述内部组织安排或工具的选项，都不是「为什么重要」的答案。</strong>
+              本条为<strong>本站教学推断</strong>，官方样题答案键未覆盖此考点。</li>
+            <li><strong>跨节陷阱</strong>：本节的题问「为什么做」，第 8 章的题问「做成的关键成功因素」。
+              两类题干措辞相近，读题时先确认问的是<strong>动因</strong>还是<strong>条件</strong>。</li>
+            <li><strong>相邻官方结论</strong>：「决定哪些 DevOps 原则与实践对组织最有益」的答案是
+              <strong>业务战略与目标</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+              不要把它答成「行业最佳实践」或「成熟度评估结果」。该点的完整展开在
+              <a href="1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">一年发两次的公司，正在跟一周发两次的公司抢同一批客户。</p>
+          <p class="mb-0 muted"><small>本节可以当官方结论去记的有两条：
+            <strong>成本 15–25% / 质量 50–70% / 敏捷最多 90%</strong>（<strong>DOFD v3.4 Course Description</strong>），
+            以及相邻的<strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>。
+            市场压力这一层则是本站归纳的动因，用来理解「为什么必须频繁发布」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-1-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-2-2</div>
+        <h3 class="kp__title">Golden Circle：why / how / what<span class="en">Golden Circle</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">Golden Circle</span> 是一个由内向外的三层结构：
+            <strong>why → how → what</strong>。它描述的是一个组织<strong>该按什么顺序讲清自己</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:14%">层</th><th style="width:34%">代表什么</th><th>放在 DevOps 语境里</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>why</strong><br><small class="muted">最内层</small></td>
+                  <td><strong>组织的目的、事业与信念</strong><span class="en">purpose / cause / belief</span></td>
+                  <td>组织为什么存在、为谁而存在。它不是收入目标，也不是发布频率</td>
+                </tr>
+                <tr>
+                  <td><strong>how</strong></td>
+                  <td>实现 why 所用的<strong>方法、原则与流程</strong></td>
+                  <td>三步工作法、CALMS、反馈回路、自动化策略</td>
+                </tr>
+                <tr>
+                  <td><strong>what</strong><br><small class="muted">最外层</small></td>
+                  <td>组织<strong>做出来的东西</strong>：产品、服务、可见的产出</td>
+                  <td>部署流水线、容器、看板、监控大屏</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            关键结论只有一句：<strong>大多数组织从外向内讲（先说 what），而有效的变革叙述从内向外讲（先说 why）</strong>。
+          </p>
+          <p class="mb-0 muted"><small><strong>Golden Circle</strong> 逐字列于 DOFD v3.4 官方考纲术语表，属考纲核心。
+            其中「why 代表组织的<strong>目的、事业与信念</strong>」这一判断，
+            由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+            该模型的原始表述出自 Simon Sinek，这一出处说明属本站背景补充，官方考纲只收录术语本身。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一类特别常见的失败：<strong>转型公告写满了工具和考核，却没有一句话说明为什么</strong>。
+            设想一份内部通知：
+          </p>
+          <ul>
+            <li>「本季度起全面推行 CI/CD，所有团队须在 6 月底前接入统一流水线，
+              <strong>接入率纳入团队考核</strong>。」<br>
+              这句话里只有 what（流水线）和 how（接入方式），没有 why。</li>
+            <li>结果一：团队把原本的手工发布脚本原样包一层挂上流水线，
+              <strong>接入率 100%，变更前置时间一天没降</strong>。指标达成，问题未动。</li>
+            <li>结果二：季度末业务压力上来，第一个被砍的就是这条实践 ——
+              <strong>没有 why 支撑的做法，只能靠考核维持，考核一停就回退</strong>。</li>
+          </ul>
+          <p>
+            Golden Circle 的作用是把顺序倒过来：<strong>先说明这件事服务于什么目的，再说方法，最后才是工具</strong>。
+            叙述顺序改变的不是内容，而是<strong>人在压力下会不会主动保留这件事</strong>。
+          </p>
+          <p class="mb-0 muted"><small>上述转型公告及其两种结果为<strong>本站构造的教学示例</strong>，
+            用于说明「只讲 what 的变革叙述为何推不动」，非真实案例。</small></p>
+        </div>
+
+        <!-- ============ 图 1-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 500" role="img" aria-label="Golden Circle 三层同心圆：why 在最内层，how 在中间，what 在最外层，右侧列出 DevOps 语境下三层的填法">
+              <defs>
+                <marker id="ah-12-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 同心圆 -->
+              <circle cx="280" cy="246" r="190" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <circle cx="280" cy="246" r="128" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <circle cx="280" cy="246" r="66"  class="s-2" stroke-width="3" fill="var(--dia-fill-2)"/>
+
+              <text x="280" y="88"  class="f-3" font-size="18" font-weight="700" text-anchor="middle">what</text>
+              <text x="280" y="110" class="s-ink" font-size="13" text-anchor="middle">产品 · 服务 · 可见的产出</text>
+
+              <text x="280" y="148" class="f-1" font-size="18" font-weight="700" text-anchor="middle">how</text>
+              <text x="280" y="170" class="s-ink" font-size="13" text-anchor="middle">方法 · 原则 · 流程</text>
+
+              <text x="280" y="238" class="f-2" font-size="20" font-weight="700" text-anchor="middle">why</text>
+              <text x="280" y="262" class="s-ink" font-size="13" text-anchor="middle">目的 · 事业 · 信念</text>
+
+              <text x="280" y="458" class="f-2" font-size="15" font-weight="700" text-anchor="middle">由内向外讲：why → how → what</text>
+              <path d="M150 478 L410 478" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-12-2)"/>
+
+              <!-- 右侧填法面板 -->
+              <text x="560" y="58" class="s-muted" font-size="13">三层在 DevOps 语境下怎么填</text>
+
+              <rect x="560" y="76" width="330" height="96" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="578" y="104" class="f-2" font-size="15" font-weight="700">why —— 目的 · 事业 · 信念</text>
+              <text x="578" y="128" class="s-muted" font-size="12">官方样题答案键确认的正是这一条</text>
+              <text x="578" y="152" class="s-ink" font-size="13">示范填法：让客户更快、更安全地拿到价值</text>
+
+              <rect x="560" y="192" width="330" height="80" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="578" y="220" class="f-1" font-size="15" font-weight="700">how —— 用什么方法实现</text>
+              <text x="578" y="246" class="s-ink" font-size="13">三步工作法 · CALMS · 反馈回路 · 自动化</text>
+
+              <rect x="560" y="292" width="330" height="80" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="578" y="320" class="f-3" font-size="15" font-weight="700">what —— 产出与工具</text>
+              <text x="578" y="346" class="s-ink" font-size="13">流水线 · 容器 · 看板 · 监控大屏</text>
+
+              <text x="560" y="404" class="s-muted" font-size="13">转型失败的典型顺序：先宣布工具（what），</text>
+              <text x="560" y="426" class="s-muted" font-size="13">再定流程（how），从不解释 why —— 考核一停就回退。</text>
+              <text x="560" y="458" class="s-muted" font-size="12">右栏「示范填法」为本站教学整理，官方未规定填法</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 1-2-2　Golden Circle 的三层与讲述方向。</strong>
+            要看懂的是<strong>方向而不是三个词</strong>：三层的位置固定，变的是从哪一层开始讲。
+            最内层的 why 代表<strong>目的、事业与信念</strong>（这一层的含义由 DOFD v3.4 官方样题答案键确认），
+            右栏三个方框是本站给出的 DevOps 填法示范，用来说明「同一条实践挂在哪一层」——
+            流水线永远是 what，把它说成 why 就是最常见的那个错误。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">容易混的一组</th><th style="width:40%">Golden Circle 的 why</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>why vs how</strong></td>
+                  <td>组织的<strong>目的、事业与信念</strong> —— 说不清但能让人认同的那一层</td>
+                  <td>实现目的所用的<strong>方法与流程</strong>：能写进流程文件的都是 how</td>
+                </tr>
+                <tr>
+                  <td><strong>why vs what</strong></td>
+                  <td>组织<strong>为什么存在</strong></td>
+                  <td>组织<strong>做出了什么</strong>：能写进产品手册和工具清单的都是 what</td>
+                </tr>
+                <tr>
+                  <td><strong>why vs 业务战略与目标</strong><br><small class="muted">展开见 <a href="1.3-business-it-perspective.html">1.3</a></small></td>
+                  <td>是<strong>信念层</strong>：不随季度变化</td>
+                  <td>是<strong>选择依据</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益</strong>的正是它，会随经营周期调整</td>
+                </tr>
+                <tr>
+                  <td><strong>Golden Circle vs CALMS</strong></td>
+                  <td>是<strong>叙述结构</strong>：规定按什么顺序讲</td>
+                  <td>是<strong>价值观清单</strong>：文化 / 自动化 / 精益 / 度量 / 分享，不含顺序含义</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 why 答成一个可度量的目标</strong>。
+            「把部署频率提到每天一次」听上去像目的，实际是 what 层的产出度量；
+            「提升市场份额 20%」是业务目标，不是信念。
+            <strong>why 的判据是「它是否描述组织的目的、事业与信念」</strong>，而不是「它听起来是否重要」。</small></p>
+          <p class="mb-0 muted"><small>表中 why 的含义与「业务战略与目标决定哪些原则实践最有益」两条，
+            均由 <strong>DOFD v3.4 官方样题答案键</strong>确认；本站只陈述结论，不复制题干与选项原文。
+            四组对照的组织方式为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>公告先写 why</strong>：任何推行流水线、评审规则、值班制度的通知，
+              第一段写「客户或业务在等什么、为什么现在必须变」，工具名放到第三段。</li>
+            <li><strong>每条实践对齐一层</strong>：立项时明确写出这条实践服务于哪个 why。
+              对不上的实践直接停掉 —— 它多半是别人做了所以也要做。</li>
+            <li><strong>评审会上的检验问题</strong>：「如果明天砍掉这条实践，客户会有什么感觉？」
+              答不出来，说明它只停在 what 层。</li>
+            <li><strong>新人入职与内部分享用 why 开场</strong>：从工具清单开场的培训，
+              产出是会用工具的人；从 why 开场的培训，产出是在没人盯着时仍然按原则做事的人。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条使用方式为<strong>本站教学整理</strong>，
+            官方考纲只把 Golden Circle 列为术语，未规定它在组织中的应用步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（几乎必考的问法）</strong>：问 Golden Circle 的 <strong>why</strong> 代表什么。
+              正确方向是<strong>组织的目的、事业与信念</strong> ——
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认，可以直接锁定，不需要推理。</li>
+            <li><strong>干扰项长什么样</strong>：三个错项通常分别落在
+              「组织提供什么产品与服务」（那是 what）、
+              「组织用什么流程和方法做事」（那是 how）、
+              「组织的收入目标或市场份额」（那是业务目标，不是信念）。
+              <strong>排除技巧：能写进产品手册的是 what，能写进流程文件的是 how，剩下那个说不清却能让人认同的才是 why。</strong></li>
+            <li><strong>顺序题</strong>：问有效的变革叙述应当从哪一层开始。方向是<strong>从 why 开始，由内向外</strong>；
+              干扰项写成「先明确交付物再谈原因」「先统一工具再谈文化」。</li>
+            <li><strong>相邻考点，别答串</strong>：「决定哪些 DevOps 原则与实践对组织最有益」的答案是
+              <strong>业务战略与目标</strong>，同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              两道题都在问「起点」，但一道问的是<strong>信念</strong>，一道问的是<strong>选择依据</strong>。
+              先看题干问的是「代表什么」还是「决定什么」。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「顺序题」的命题方向为本站教学推断；
+            why 的含义与业务战略与目标两条为官方样题答案键确认的结论。
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">why 是信念，how 是方法，what 是产物 —— 由内向外讲，不是由外向内讲。</p>
+          <p class="mb-0 muted"><small>一句话锁定考点：<strong>why = 目的、事业、信念</strong>（purpose / cause / belief）。
+            凡是能被度量、能被写进工具清单的选项，都不是 why。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-1-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-1-2-3</div>
+        <h3 class="kp__title">高绩效组织：差距为什么会扩大<span class="en">High-performing organizations</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">高绩效组织 <span class="en">High-performing organizations</span></span>
+            逐字列于官方考纲术语表（可标考纲核心），但官方<strong>只给出术语本身、未给定义文本</strong>。
+            本站按 DevOps 通行口径把它理解为：在<strong>交付速度与运行稳定性两方面同时领先</strong>的组织。
+            重点在<strong>「同时」</strong>：只快不稳、只稳不快，都不算。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">差距体现在哪</th><th style="width:34%">高绩效组织的方向</th><th>其他组织的方向</th></tr></thead>
+              <tbody>
+                <tr><td><strong>部署频率</strong></td><td>按天甚至按需发布，发布是常规动作</td><td>按月或按季，发布是一次事件</td></tr>
+                <tr><td><strong>变更前置时间</strong></td><td>从提交到生产以小时计</td><td>以周或月计，其中绝大部分是排队</td></tr>
+                <tr><td><strong>变更失败率</strong></td><td>更低 —— 批量小，失败面窄</td><td>更高 —— 一次上线捆绑大量未验证变更</td></tr>
+                <tr><td><strong>恢复时间</strong></td><td>以分钟计，回滚是常规能力</td><td>以小时或天计，回滚本身就是高风险操作</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            还有一条更要紧的性质：<strong>这个差距不是恒定的，它随时间扩大</strong>。原因是技术债有复利。
+          </p>
+          <div class="src-note">
+            <strong>High-performing organizations</strong> 逐字列于 DOFD v3.4 官方考纲术语表，属考纲核心术语。
+            但<strong>本节对该术语的释义与四类差距的刻画均为本站教学整理</strong>，官方术语表只给出术语本身、未给定义文本；
+            四项指标的定义、计算口径与量化对比属于
+            <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告（7.2）</a>的内容，
+            相关行业量化数据出自 DORA / State of DevOps 报告，二者<strong>均不在 DOFD 考纲术语表内</strong>，本节不引用其数字。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个知识点要回答的是一个更尖锐的问题：<strong>既然道理都懂，为什么落后的组织追不上来？</strong>
+            答案在「以后再还」这四个字上 —— 它从来不会发生。设想一个交易结算系统：
+          </p>
+          <ul>
+            <li><strong>第 1 年</strong>：为赶监管上线期限，跳过自动化测试，
+              在待办里留下一张卡片写着「Q3 补」。当时补它的成本约 2 人周。</li>
+            <li><strong>第 3 年</strong>：因为没有自动化测试，每次发布都要 3 天人工回归，
+              发布周期从 2 周被拉到 6 周。<strong>周期变长意味着单次批量变大，回归更久，于是更不敢改动核心代码。</strong>
+              那张卡片还在，位置比第 1 年更靠后。</li>
+            <li><strong>第 5 年</strong>：需要补测试的代码量翻了 7 倍，成本从 2 人周涨到 15 人周，
+              而且必须暂停功能交付才能做。<strong>周期越长的团队越不敢停 —— 停一次意味着积压更多。</strong>
+              于是这张卡片永远排在功能之后。</li>
+          </ul>
+          <p>累积的机制有三条，缺一条这个故事都不成立：</p>
+          <ul>
+            <li><strong>利息不出现在任何账单上</strong>。它以「每次发布多花的那几天」形式支付，
+              分散在几十次发布里，没有一行财务记录，因此没有人为它立项。</li>
+            <li><strong>还债需要停下来，而周期越长越不敢停</strong>。这是一个正反馈：债务拉长周期，
+              长周期又让还债更难获批。</li>
+            <li><strong>债务让系统变脆</strong>。改动的影响面不可预测，于是变更评审继续加码，
+              周期再次被拉长 —— 回到第一条。</li>
+          </ul>
+          <p class="mb-0">
+            结论一句话：<strong>技术债不是「以后处理的任务」，是「每次发布都在缴的税」</strong>。
+            高绩效组织的领先，很大一部分来自它们没有在缴这笔税。
+          </p>
+          <p class="mb-0 muted"><small>上述交易结算系统案例与其中的数字为<strong>本站构造的教学示例</strong>，
+            用于说明技术债的累积机制，非真实调研数据。
+            <strong>技术债</strong>这一名词<strong>不在 DOFD v3.4 的 66 条考纲术语表内</strong>
+            （表内的是 <em>Cultural debt</em> 文化债），属延伸补充，本节将其作为理解高绩效组织差距扩大的教学补充。</small></p>
+        </div>
+
+        <!-- ============ 图 1-2-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 450" role="img" aria-label="技术债累积曲线：随年份推移，投入新功能的比例下降，投入维护与救火的比例上升，两条曲线在中途交叉">
+              <text x="60" y="42" class="s-ink" font-size="15" font-weight="700">每次发布中，工程投入的去向</text>
+              <text x="60" y="64" class="s-muted" font-size="12">横轴：技术债未偿还的年数　纵轴：投入占比</text>
+
+              <line x1="80" y1="340" x2="856" y2="340" class="s-stroke" stroke-width="1.5"/>
+              <line x1="80" y1="80"  x2="80"  y2="340" class="s-stroke" stroke-width="1.5"/>
+
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="232" y="362">第 1 年</text>
+                <text x="384" y="362">第 2 年</text>
+                <text x="536" y="362">第 3 年</text>
+                <text x="688" y="362">第 4 年</text>
+                <text x="840" y="362">第 5 年</text>
+              </g>
+
+              <path d="M80 110 C 300 150, 520 240, 840 300" class="s-1" stroke-width="3" fill="none"/>
+              <path d="M80 300 C 300 260, 520 170, 840 110" class="s-2" stroke-width="3" fill="none"/>
+
+              <text x="94" y="100" class="f-1" font-size="13" font-weight="650">投入新功能</text>
+              <text x="94" y="322" class="f-2" font-size="13" font-weight="650">维护 · 救火 · 绕开脆弱代码</text>
+              <text x="846" y="322" class="f-1" font-size="12" text-anchor="end">越来越薄</text>
+              <text x="846" y="100" class="f-2" font-size="12" text-anchor="end">越来越厚</text>
+
+              <circle cx="233" cy="265" r="12" class="s-2" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="233" y="270" class="s-ink" font-size="13" font-weight="700" text-anchor="middle">1</text>
+              <circle cx="536" cy="181" r="12" class="s-2" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="536" y="186" class="s-ink" font-size="13" font-weight="700" text-anchor="middle">2</text>
+              <circle cx="774" cy="123" r="12" class="s-2" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="774" y="128" class="s-ink" font-size="13" font-weight="700" text-anchor="middle">3</text>
+
+              <text x="60" y="396" class="s-muted" font-size="13">① 第 1 年：为赶期限跳过自动化测试，记下一张「以后补」的卡片（成本约 2 人周）</text>
+              <text x="60" y="418" class="s-muted" font-size="13">② 第 3 年：每次发布多花 3 天人工回归，发布周期从 2 周被拉到 6 周</text>
+              <text x="60" y="440" class="s-muted" font-size="13">③ 第 5 年：补测试成本涨到约 15 人周，且必须暂停交付才能做，于是永远批不下来</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 1-2-3　技术债的利息以什么形式支付。</strong>
+            要看懂的是<strong>两条曲线的交叉点</strong>：越过它之后，团队的主要产出不再是新功能，而是维持现状。
+            利息从来不以一笔账单出现，它藏在每次发布多花的那几天里，所以没有人会为它立项；
+            而还债的成本随代码量增长，等到有人下决心还的时候，价格已经翻了几倍。
+            本图与三条标注均为<strong>本站构造的教学示意</strong>，曲线形状用于说明机制，非实测数据。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">本知识点</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>技术债 vs 文化债</strong><br><small class="muted"><em>Cultural debt</em> 见 <a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型</a></small></td>
+                  <td><strong>技术债</strong>：代码、架构、测试、环境上的欠账。利息以工时形式支付</td>
+                  <td><strong>文化债 Cultural debt</strong>：行为、信任、心理安全上的欠账。利息以人才流失和坏消息被隐瞒的形式支付。<strong>它在官方术语表内，技术债不在</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>技术债 vs 缺陷</strong></td>
+                  <td>技术债：<strong>现在是对的</strong>，但改起来越来越贵</td>
+                  <td>缺陷 Bug：<strong>现在就是错的</strong>，需要修复而不是偿还</td>
+                </tr>
+                <tr>
+                  <td><strong>高绩效组织 vs 工具用得多的组织</strong></td>
+                  <td>是<strong>结果特征</strong>：速度与稳定性同时领先</td>
+                  <td>是<strong>手段特征</strong>：工具链齐全不等于交付得又快又稳</td>
+                </tr>
+                <tr>
+                  <td><strong>「速度与稳定必须取舍」的旧观念</strong></td>
+                  <td>高绩效组织表现为<strong>两者同时优秀</strong> —— 小批量既提速也降低失败面</td>
+                  <td>旧观念认为发得越快越容易出事，因此靠<strong>拉长审批与减少发布</strong>换稳定</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>题干里出现「debt」时，先分清是哪一种债</strong>。
+            <em>Cultural debt</em> 是官方术语表条目，考试可以直接考；技术债不在术语表内。
+            选项中若出现 <em>Cultural debt</em>，答案方向多半与行为、信任、心理安全有关，而不是代码质量。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以对照表形式给出这些区分；
+            其中只有 <em>High-performing organizations</em> 与 <em>Cultural debt</em> 两个词本身是官方术语。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把债务换算成时间，而不是条数</strong>。不要统计「积压里有多少条技术债」，
+              统计「因为它，每次发布多花了多少小时」。只有换算成时间，它才能和功能需求排在同一张优先级表上。</li>
+            <li><strong>把还债放进常规容量</strong>。固定预留每个迭代 15–20% 的容量，
+              而不是等一次「专项治理」。专项需要审批，永远排在功能之后 —— 这正是第 5 年那张卡片还在的原因。</li>
+            <li><strong>优先还挡住流动的那一笔</strong>。与约束理论一致：只有落在瓶颈上的债务，
+              偿还后才会立刻兑现为交付速度。（见
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 核心原则 · 约束理论（2.3）</a>）</li>
+            <li><strong>用变更失败率和恢复时间当体检指标</strong>。这两项的缓慢恶化，
+              通常出现在重大故障之前，是脆弱性正在累积的早期信号。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条做法为<strong>本站教学整理</strong>，
+            官方考纲只把 <em>High-performing organizations</em> 列为术语，未规定技术债的管理方法；
+            15–20% 是本站给出的经验区间，不是官方数值。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语题（本站判断偏 Bloom 1）</strong>：问什么是高绩效组织。
+              正确方向是<strong>在交付速度与运行稳定性上同时优于其他组织</strong>。
+              干扰项典型写法：「部署最频繁的组织」（只讲速度）、「故障最少的组织」（只讲稳定）、
+              「团队规模最大 / 工具链最完整的组织」（讲的是手段）。
+              <strong>排除技巧：只覆盖一个维度的选项一律先划掉。</strong>
+              该作答方向为<strong>本站教学推断</strong>，官方样题答案键未覆盖此术语。</li>
+            <li><strong>权衡陷阱</strong>：题干或选项若暗示「必须在发布速度和系统稳定之间取舍」，
+              那是干扰方向。DevOps 的立论恰恰是两者可以同时改善。</li>
+            <li><strong>debt 类混淆题</strong>：题干出现「债」时，先分辨是<strong>文化债 Cultural debt</strong>
+              （官方术语，属<a href="../ch05-culture/index.html">第 5 章</a>）还是技术债（非考纲名词）。
+              <strong>排除技巧：题干描述的是「没人敢说坏消息、指责文化」就是文化债；
+              描述的是「改不动、测不动、每次发布都多花几天」才是技术债。</strong></li>
+            <li><strong>指标名不在本节考</strong>：变更失败率、变更前置时间、平均恢复时间 MTTR、部署频率
+              这些术语的定义与计算，属于
+              <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告（7.2）</a>，
+              本节只用它们描述差距的方向。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">技术债的利息，是每次发布都要多付的那几天 —— 它不出现在账单上，所以永远没人还。</p>
+          <p class="mb-0 muted"><small>高绩效组织的判据是<strong>又快又稳</strong>，只快或只稳都不算。
+            差距会扩大，是因为落后一方每次发布都在缴一笔看不见的税。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本站归纳的首要动因是市场压力：<strong>新进入者不断出现，产品必须频繁发布，而不是一年一两次</strong>（本站教学整理；v3.4 课程大纲只列出 <em>Why Does DevOps Matter?</em> 这个子项标题，官方的正面表述见下一条与 Blueprint）</li>
+        <li>官方 Blueprint 的 <em>BENEFITS</em>：<strong>发布节奏、速度、吞吐量、效率与稳定性、质量、安全、团队满意度的改善</strong>；
+          <em>Principles &amp; Practices</em>：<strong>频繁的小批量发布降低前置时间、成本与风险</strong></li>
+        <li>官方给出的三个收益区间：<strong>整体 IT 成本下降 15–25%、变更失败率下降 50–70%、供应与部署时间下降最多 90%</strong>
+          （<strong>DOFD v3.4 Course Description</strong>）</li>
+        <li>Golden Circle 三层：<strong>why / how / what</strong>，由内向外讲；<strong>why = 组织的目的、事业与信念</strong>（官方样题答案键确认）</li>
+        <li>相邻结论：<strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>（官方样题答案键确认，展开见
+          <a href="1.3-business-it-perspective.html">1.3</a>）</li>
+        <li><strong>High-performing organizations = 速度与稳定性同时领先</strong>，只快或只稳都不算；「必须取舍」是干扰方向</li>
+        <li>技术债的利息按<strong>每次发布多花的时间</strong>支付，不出现在账单上；周期越长越不敢停下还债，差距因此随时间扩大</li>
+        <li>出现「债」先分清：<strong>Cultural debt 文化债在官方术语表内（第 5 章），技术债不在</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Why Does DevOps Matter?</em> 是 <strong>v3.4 课程大纲 M1 模块的正式子项</strong> ——
+      v3.4 课程大纲 M1 只列出该子项标题，<strong>官方对其内容的正面表述来自 PeopleCert《DevOps Foundation® Blueprint》
+      （定义句、<em>BENEFITS</em>、<em>Principles &amp; Practices</em>）与 v3.4 Course Description</strong>。<br>
+      <strong>Blueprint 官方原文两条</strong>：<em>BENEFITS：Improved release cadence, velocity, throughput,
+      efficiency and stability, quality, security and team satisfaction.</em> 与
+      <em>Principles &amp; Practices：Frequent small releases using continuous integration, testing, delivery,
+      deployments and monitoring reduce lead time, costs and risks.</em>
+      —— 均出自 <strong>PeopleCert《DevOps Foundation® Blueprint》</strong>，属官方原文（见图 1-2-1 下方与 kp-1-2-1 ②）；
+      两句的中文均为<strong>本站译文</strong>，对它们的机制展开为本站教学整理。<br>
+      <strong>三个量化收益数字</strong>（整体 IT 成本下降 <strong>15–25%</strong>、变更失败率下降 <strong>50–70%</strong>、
+      供应与部署时间下降<strong>最多 90%</strong>）出自 <strong>DOFD v3.4 Course Description（2022-06）</strong>，属官方原文；
+      它们是官方给出的收益区间，不是承诺值，与 DORA / State of DevOps 的行业基准数据无关。<br>
+      <em>Golden Circle</em>、<em>High-performing organizations</em>、<em>Cultural debt</em>、<em>Change failure rate</em>、
+      <em>Change lead time</em>、<em>Deployment frequency</em>、<em>MTTR</em> 均列于 DOFD v3.4 官方考纲术语表。<br>
+      <strong>「Golden Circle 的 why 代表组织的目的、事业与信念」</strong>与
+      <strong>「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」</strong>两条结论，
+      由 <strong>DOFD v3.4 官方样题答案键</strong>确认；本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>，本节不含任何官方样题原文。<br>
+      <strong>教学补充部分</strong>：<strong>「新进入者不断出现、产品必须频繁发布」这一市场动因，
+      以及 kp-1-2-1 归纳的三层动因，均为本站教学整理</strong> —— 官方<strong>未逐条给出该子项的讲授要点</strong>，
+      其正面表述见上述 Blueprint 两条原文与 v3.4 Course Description；
+      报销系统、转型公告、交易结算系统三个案例及其全部数字，均为本站构造的教学示例；
+      三张图为本站自制示意图；高绩效组织四类差距的刻画、Golden Circle 的 DevOps 填法与使用方式、
+      技术债的累积机制与管理做法，均为本站教学整理，官方未以此形式给出，已分别在对应位置就地标注。
+      <strong>技术债</strong>不在 66 条官方术语表内（表内为 <em>Cultural debt</em>），属延伸补充；
+      <strong>DORA 与 State of DevOps 报告同样不在考纲术语表内</strong>，其四大指标的定义与量化对比属第 7 章内容，
+      本节未引用 DORA 的任何数字 —— 上面那三个百分比来自官方 v3.4 Course Description，两者不是一回事。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
