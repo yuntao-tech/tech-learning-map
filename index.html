@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DevOps Foundation (DOFD v3.6) 体系化学习站</title>
+<meta name="description" content="面向 DevOps Institute / PeopleCert DevOps Foundation v3.6 认证的中文体系化学习资料：全局知识地图、八大知识域、易混淆辨析、练习与模拟考试。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/print.css">
+<script>window.SITE_BASE=""; window.PAGE={home:true};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+
+  <main class="main">
+  <div class="page page--wide">
+
+    <section class="hero">
+      <h1 class="hero__title">把 DevOps 学成一张地图，<br>而不是一堆名词</h1>
+      <p class="hero__sub">
+        以 <strong>DevOps Institute / PeopleCert 的 DevOps Foundation® (DOFD) v3.6</strong> 考纲为基准的中文学习资料。
+        每个知识点都回答六个问题：是什么、为什么存在、解决什么问题、与相邻概念的区别、工程中怎么用、考试怎么考。
+      </p>
+      <div class="hero__meta">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">40</div><div class="stat__k">道单选题</div></div>
+      <div class="stat"><div class="stat__v">60</div><div class="stat__k">分钟</div></div>
+      <div class="stat"><div class="stat__v">65%</div><div class="stat__k">及格线（26 / 40）</div></div>
+      <div class="stat"><div class="stat__v">开卷</div><div class="stat__k">仅限官方教材</div></div>
+      <div class="stat"><div class="stat__v">1–2</div><div class="stat__k">Bloom 层级</div></div>
+      <div class="stat"><div class="stat__v">3 年</div><div class="stat__k">证书有效期</div></div>
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 关于「开卷」，先说清楚</div>
+      <p class="mb-0">
+        DOFD 是开卷考试，但<strong>只允许携带官方 Learner Workbook 与 Quick Reference Guide</strong>。
+        本站是理解与训练工具，<strong>不能带进考场</strong>。它的价值在于：把考纲背后的因果关系讲透，让你到考场时不需要翻书。
+      </p>
+    </div>
+
+    <h2 id="map">全局知识地图</h2>
+    <p class="lede">
+      DevOps 的知识点之所以难记，是因为大多数资料把它们平铺成清单。
+      实际上它们有明确的因果层次：<strong>业务压力</strong>催生了<strong>思想来源</strong>，思想被提炼为<strong>核心原则</strong>，
+      原则通过 <strong>CALMS</strong> 变成组织行为，落地为<strong>关键实践</strong>，由<strong>自动化底座</strong>支撑，
+      用<strong>度量</strong>验证，最终改变<strong>文化与组织</strong>——而度量结果又反过来驱动原则中的反馈与学习。
+    </p>
+
+    <div class="kmap" id="kmap">
+      <div class="kmap__band" style="--band: var(--dia-4)">
+        <div class="kmap__tag">第 1 章<span class="kmap__q">5 题</span></div>
+        <div>
+          <div class="kmap__title">① 业务驱动与目标 <em>—— DevOps 是为了解决什么</em></div>
+          <div class="kmap__chips">
+            <span>交付速度</span><span>质量</span><span>稳定性</span><span>安全</span>
+            <span>团队满意度</span><span>业务价值</span><span>数字化转型</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-3)">
+        <div class="kmap__tag">第 4 章<span class="kmap__q">7 题</span></div>
+        <div>
+          <div class="kmap__title">② 思想来源 <em>—— DevOps 站在谁的肩膀上</em></div>
+          <div class="kmap__chips">
+            <span>Agile</span><span>Scrum</span><span>Lean</span><span>七种浪费 DOWNTIME</span>
+            <span>ITSM / ITIL</span><span>安全文化</span><span>学习型组织</span>
+            <span>价值流映射</span><span>持续资金</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-1)" id="band-principles">
+        <div class="kmap__tag">第 2 章<span class="kmap__q">4 题</span></div>
+        <div>
+          <div class="kmap__title">③ 核心原则：三步工作法 <em>—— 全书的因果主轴</em></div>
+          <div class="kmap__chips">
+            <span class="is-key">第一步 · 流动 Flow</span>
+            <span class="is-key">第二步 · 反馈 Feedback</span>
+            <span class="is-key">第三步 · 持续学习与实验</span>
+            <span>约束理论 ToC</span><span>混沌工程</span><span>学习型组织</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-1)">
+        <div class="kmap__tag">贯穿全书<span class="kmap__q">价值观</span></div>
+        <div>
+          <div class="kmap__title">④ CALMS <em>—— 把原则翻译成组织行为</em></div>
+          <div class="kmap__chips">
+            <span class="is-key">C 文化</span><span class="is-key">A 自动化</span>
+            <span class="is-key">L 精益</span><span class="is-key">M 度量</span><span class="is-key">S 分享</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-1)">
+        <div class="kmap__tag">第 3 章<span class="kmap__q">7 题</span></div>
+        <div>
+          <div class="kmap__title">⑤ 关键实践 <em>—— 原则怎么变成每天的工作方式</em></div>
+          <div class="kmap__chips">
+            <span>持续测试</span><span>持续集成</span><span>持续交付</span><span>持续部署</span>
+            <span>SRE</span><span>韧性工程</span><span>DevSecOps</span><span>ChatOps</span><span>看板</span>
+            <span class="is-new">可观测性</span><span class="is-new">价值流管理</span><span class="is-new">平台工程</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-4)">
+        <div class="kmap__tag">第 6 章<span class="kmap__q">5 题</span></div>
+        <div>
+          <div class="kmap__title">⑥ 自动化底座与工具链 <em>—— 让实践跑得起来</em></div>
+          <div class="kmap__chips">
+            <span class="is-key">部署流水线</span><span>基础设施即代码 IaC</span><span>云</span>
+            <span>容器</span><span>微服务</span><span>工具链架构</span>
+            <span class="is-new">VSM 平台</span><span class="is-new">生成式 AI 用例</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-2)" id="band-metrics">
+        <div class="kmap__tag">第 7 章<span class="kmap__q">2 题</span></div>
+        <div>
+          <div class="kmap__title">⑦ 度量 <em>—— 改进必须有依据，否则只是感觉</em></div>
+          <div class="kmap__chips">
+            <span class="is-key">DORA 四大指标</span><span>部署频率</span><span>变更前置时间</span>
+            <span>变更失败率</span><span>MTTR</span><span>速度 / 质量 / 稳定性 / 文化</span>
+            <span class="is-new">AIOps</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__band" style="--band: var(--dia-5)">
+        <div class="kmap__tag">第 5 · 8 章<span class="kmap__q">10 题</span></div>
+        <div>
+          <div class="kmap__title">⑧ 文化与组织演进 <em>—— 大多数转型真正失败的地方</em></div>
+          <div class="kmap__chips">
+            <span>组织文化</span><span>文化债</span><span>行为模型</span><span>成熟度模型</span>
+            <span>运营模型</span><span>DevOps 角色</span><span>领导力</span>
+            <span>如何起步</span><span>关键成功因素</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kmap__loop" id="kmapLoop"></div>
+      <div class="kmap__loop-label" id="kmapLoopLabel">反馈驱动改进</div>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:var(--core-bg);border:1px solid var(--core-line)"></i>考纲核心概念</span>
+      <span><i style="background:var(--new-bg);border:1px solid var(--new-line)"></i>v3.6 新增</span>
+      <span><i style="background:var(--dia-2)"></i>反馈回流：度量结果驱动第二 / 三步工作法</span>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">💡 怎么用这张图</div>
+      <p class="mb-0">
+        遇到任何一个陌生名词，先问它在这八层里的哪一层。
+        <strong>如果它是「实践」，就去问它服务于三步工作法里的哪一步</strong>；
+        如果它是「指标」，就去问它验证的是哪条实践。
+        能把名词挂回这张图，就不需要死记硬背了。
+      </p>
+    </div>
+
+    <h2 id="chapters">八大知识域与考试权重</h2>
+    <p class="lede">
+      下表题数来自 <strong>DOFD v3.4 官方 Examination Requirements（2022-05）</strong>。
+      v3.6 未公开重新发布权重表，但模块结构与 PeopleCert 现行页面的八条学习目标一一对应，因此沿用该分布。
+    </p>
+    <div class="grid grid--2" id="chapterGrid"></div>
+
+    <div class="src-note">
+      题数分布出处：DevOps Institute《DevOps Foundation® Exam Study Guide》v3.4，Examination Requirements 章节，
+      “Exam Topic Areas and Question Weighting” 表。本站所有引用官方数据的位置均标注版本与来源。
+    </div>
+
+    <h2 id="path">三个月学习路径</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>阶段</th><th>周次</th><th>目标</th><th>产出</th></tr></thead>
+        <tbody>
+          <tr><td><strong>建立骨架</strong></td><td>第 1–2 周</td><td>导论 + 第 1 章 + 第 2 章。把三步工作法这条主轴打通。</td><td>能默画全局知识地图</td></tr>
+          <tr><td><strong>实践主体</strong></td><td>第 3–6 周</td><td>第 3 章 + 第 6 章。CI/CD 家族辨析，工具链架构。</td><td>能说清 CD 两个含义的区别</td></tr>
+          <tr><td><strong>框架与文化</strong></td><td>第 7–9 周</td><td>第 4 章 + 第 5 章。权重最高但最容易被跳过的两章。</td><td>能讲清 DevOps 与 Agile/Lean/ITSM 的关系</td></tr>
+          <tr><td><strong>度量与规模化</strong></td><td>第 10–11 周</td><td>第 7 章 + 第 8 章。DORA 与组织演进。</td><td>能用指标解释改进因果</td></tr>
+          <tr><td><strong>冲刺</strong></td><td>第 12 周</td><td>错题复习 + 2 套完整模考 + 术语速记。</td><td>模考稳定 80% 以上</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="discipline">来源与准确性纪律</h2>
+    <p>这套资料对「什么是官方、什么是我的补充」保持严格区分：</p>
+    <ul>
+      <li><strong>官方原文</strong>：标注具体文件与版本（如 <em>DOFD v3.4 Examination Requirements</em>）。</li>
+      <li><strong>v3.6 现行页面</strong>：来自 PeopleCert 官方产品页公布的八条学习目标。</li>
+      <li><strong>推断内容</strong>：明确写出「这是推断」，绝不包装成官方口径。</li>
+      <li><strong>延伸补充</strong>：一律带 <span class="badge badge--ext">🧭 延伸 · 非考纲</span> 徽章，不混入考纲正文。</li>
+      <li><strong>练习题</strong>：全部自主命制，标注「仿真题，非官方真题」。官方样题受版权保护，仅用于校准难度与命题风格，不复制原文。</li>
+    </ul>
+
+    <div class="callout callout--ext no-print">
+      <div class="callout__title">🚧 项目当前状态：P0 骨架已完成</div>
+      <p class="mb-0">
+        设计系统、站点框架、考纲结构与本页知识地图已就绪。
+        侧栏中标注「建设中」的小节将在 P1 阶段按章交付，每完成一章即可阅读。
+      </p>
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="data/syllabus.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/progress.js"></script>
+<script>
+/* 章节卡片 */
+(function () {
+  var host = document.getElementById("chapterGrid");
+  var S = window.SYLLABUS;
+  if (!host || !S) return;
+  var max = Math.max.apply(null, S.examChapters.map(function (c) { return c.questions; }));
+  host.innerHTML = S.examChapters.map(function (c) {
+    var pct = Math.round((c.questions / 40) * 100);
+    return '<a class="ch-card" href="content/' + c.slug + '/index.html">' +
+      '<div class="ch-card__top"><span class="ch-card__num">第 ' + c.num + ' 章</span>' +
+      '<span class="ch-card__q">' + c.questions + ' 题 · ' + pct + '%</span></div>' +
+      '<div class="ch-card__title">' + c.title + '</div>' +
+      '<div class="ch-card__en">' + c.titleEn + '</div>' +
+      '<div class="ch-card__desc">' + c.desc + '</div>' +
+      '<div class="wbar"><div class="wbar__fill" style="width:' + Math.round((c.questions / max) * 100) + '%"></div></div>' +
+      '</a>';
+  }).join("");
+})();
+
+/* 反馈回流通道：从「度量」层顶部拉回到「核心原则」层顶部 */
+(function () {
+  function place() {
+    var wrap = document.getElementById("kmap");
+    var a = document.getElementById("band-principles");
+    var b = document.getElementById("band-metrics");
+    var loop = document.getElementById("kmapLoop");
+    var label = document.getElementById("kmapLoopLabel");
+    if (!wrap || !a || !b || !loop) return;
+    if (getComputedStyle(loop).display === "none") return;
+    var w = wrap.getBoundingClientRect();
+    var top = a.getBoundingClientRect().top - w.top + 14;
+    var bottom = b.getBoundingClientRect().bottom - w.top - 14;
+    loop.style.top = top + "px";
+    loop.style.height = Math.max(40, bottom - top) + "px";
+    loop.style.width = "46px";
+    label.style.top = (top + 12) + "px";
+    label.style.height = Math.max(20, bottom - top - 24) + "px";
+  }
+  window.addEventListener("load", place);
+  window.addEventListener("resize", place);
+  document.addEventListener("nav:ready", place);
+})();
+</script>
+</body>
+</html>

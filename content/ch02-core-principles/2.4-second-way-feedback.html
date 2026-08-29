@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.4 第二步：反馈 · DevOps Foundation 学习站</title>
+<meta name="description" content="第二步（2nd Way: Feedback）要建立从右到左、快速且持续的反馈回路：在源头保证质量、看见问题就蜂拥解决、把知识推到需要它的地方。本节讲清反馈回路的层级、反馈延迟的代价，以及同行评审为什么属于第二步而不是第三步。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.4-second-way-feedback"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.4 第二步：反馈</h1>
+      <div class="page-head__en">The Second Way: Feedback</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        第一步让工作<strong>向右</strong>流向客户，第二步让信息<strong>向左</strong>流回源头。
+        它要回答的问题只有一个：<strong>一个问题从产生到被知道，中间隔了多久？</strong>
+        第二步的<strong>主要做法</strong>——遥测、自动化测试、同行评审、在源头保证质量、蜂拥解决——
+        都是在把这段间隔往回压（本站归纳，官方未给出封闭清单）。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>第二步的目标到底是「多加监控」还是别的什么，为什么方向是「从右到左」</li>
+        <li>「在源头保证质量」和「看见问题就蜂拥解决」是同一件事的两面，它们各自解决什么</li>
+        <li>同行评审为什么归第二步不归第三步 —— 官方样题答案键已确认这一归属，而它恰恰最容易被记反</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 2-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 520" role="img" aria-label="反馈回路的六个层级，从内圈的本地构建到外圈的客户反馈">
+          <defs>
+            <marker id="ah-24-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 第 6 层：客户反馈 -->
+          <rect x="20" y="20" width="860" height="440" rx="16" class="s-5" stroke-width="2" fill="none"/>
+          <text x="38" y="45" class="f-5" font-size="16" font-weight="700">6　客户反馈 · 投诉与流失</text>
+          <text x="862" y="45" class="s-muted" font-size="13" text-anchor="end">天 ~ 周，也可能永远不来</text>
+
+          <!-- 第 5 层：生产遥测 -->
+          <rect x="70" y="58" width="760" height="364" rx="14" class="s-4" stroke-width="2" fill="none"/>
+          <text x="88" y="83" class="f-4" font-size="16" font-weight="700">5　生产遥测 · 监控与告警</text>
+          <text x="812" y="83" class="s-muted" font-size="13" text-anchor="end">须先部署才可能发生</text>
+
+          <!-- 第 4 层：预发 -->
+          <rect x="120" y="96" width="660" height="288" rx="12" class="s-3" stroke-width="2" fill="none"/>
+          <text x="138" y="121" class="f-3" font-size="16" font-weight="700">4　预发环境 · 验收测试</text>
+          <text x="762" y="121" class="s-muted" font-size="13" text-anchor="end">小时 ~ 天</text>
+
+          <!-- 第 3 层：集成测试 -->
+          <rect x="170" y="134" width="560" height="212" rx="12" class="s-2" stroke-width="2" fill="none"/>
+          <text x="188" y="159" class="f-2" font-size="16" font-weight="700">3　集成测试 · CI 流水线</text>
+          <text x="712" y="159" class="s-muted" font-size="13" text-anchor="end">分钟 ~ 小时</text>
+
+          <!-- 第 2 层：单元测试 -->
+          <rect x="220" y="172" width="460" height="136" rx="10" class="s-1" stroke-width="2" fill="none"/>
+          <text x="238" y="197" class="f-1" font-size="16" font-weight="700">2　单元测试 · 静态扫描 · 同行评审</text>
+          <text x="662" y="197" class="s-muted" font-size="13" text-anchor="end">秒 ~ 分钟</text>
+
+          <!-- 第 1 层：本地 -->
+          <rect x="270" y="210" width="360" height="62" rx="10" class="s-stroke" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="288" y="236" class="s-ink" font-size="16" font-weight="700">1　本地构建 · 编辑器即时提示</text>
+          <text x="288" y="258" class="s-muted" font-size="13">秒级 —— 问题还没离开作者的手</text>
+
+          <!-- 底部：方向说明 -->
+          <text x="450" y="490" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">越往外圈，反馈来得越晚，修复代价越高</text>
+          <text x="196" y="511" class="f-1" font-size="13" font-weight="650" text-anchor="end">内圈</text>
+          <line x1="230" y1="506" x2="670" y2="506" class="s-5" stroke-width="2.5" marker-end="url(#ah-24-1)"/>
+          <text x="704" y="511" class="f-5" font-size="13" font-weight="650">外圈</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-4-1　反馈回路的六个层级。</strong>
+        这张图想让你看懂的是：反馈<strong>不是一条回路，而是一组同心的回路</strong>。
+        第二步的工作不是「把外圈的监控做厚」，而是<strong>把每一类问题被发现的位置尽量往内圈推</strong>——
+        这正是「左移 <span class="en">Shift left</span>」的空间含义。
+        右侧时长指的是「从写下这行代码，到这一层能给出反馈」的间隔，
+        属于本站为建立数量级直觉所做的<strong>教学估计，不是考纲数据</strong>，考试不会考具体数字。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-4-1</div>
+        <h3 class="kp__title">第二步：反馈<span class="en">The Second Way: Feedback</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            第二步的官方名称是 <span class="term">2nd Way: Feedback</span>，
+            出自 PeopleCert《DevOps Foundation® Blueprint》，在 v3.4 课程大纲 M2 模块中以「The Second Way」作为独立子项列出。
+            v3.4 术语表 66 条中收录的条目是「The Three Ways」，「The Second Way」本身并未单列，
+            因此本节不使用「⭐ 考纲核心」标记，而标为「官方 · Blueprint 名称与 M2 子项」。
+            本站把它压缩成一句话（教学表述，非官方原文）：
+          </p>
+          <p>
+            <strong>建立从右到左、快速且持续的反馈回路，让问题在离源头最近的地方被发现和解决。</strong>
+          </p>
+          <div class="src-note">DOFD 官方事实包中，Blueprint 只给出名称 <em>2nd Way: Feedback</em>；上面这句定义是本站为便于复述所做的教学表述（概念表述源自《The DevOps Handbook》对第二步的描述），官方文件未以此措辞给出定义。</div>
+          <p>它包含两个不可拆开的要求，缺一条都不算做到第二步：</p>
+          <ul class="mb-0">
+            <li><strong>快</strong>：反馈的间隔要短到「作者还记得自己改了什么」。间隔一长，反馈就退化成考古。</li>
+            <li><strong>持续</strong>：反馈是流程内建的常态，不是季度评审、不是上线前的一次集中检查。</li>
+          </ul>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它出现之前的典型场景，是被「阶段化交付」切断的信息链：</p>
+          <ul>
+            <li>开发 3 月写完模块，代码进入代码库等待集成；QA 6 月才拿到可测的版本。
+              开发被告知「你三个月前那个改动导致了缺陷」时，他手上正做着另一个项目，
+              <strong>连当时为什么那样写都想不起来了</strong>。</li>
+            <li>生产环境的日志、指标、告警只有运维能看。开发交付完代码就「下班」，
+              <strong>永远不知道自己写的查询在真实数据量下要跑 40 秒</strong>。
+              运维只能反复重启、扩容，把结构性问题当成容量问题处理。</li>
+            <li>故障的第一发现人是客户。工单从客服转到一线运维、再转到二线、最后找到开发，
+              光是「找到该由谁看」就花掉几个小时，而<strong>这几个小时全部计入平均恢复时间 MTTR</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            这三个场景的共同点不是「不够努力」，而是<strong>信息回流的路径太长</strong>。
+            第二步要修的就是这条路径本身。反馈延迟带来的代价见图 2-4-2。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">第二步 · 反馈</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>第一步 · 流动</strong><br><small class="muted">见 <a href="2.2-first-way-flow.html">2.2 第一步：流动</a></small></td>
+                  <td>信息<strong>从右到左</strong>回到源头，目标是<strong>缩短「问题被知道」的时间</strong></td>
+                  <td>工作<strong>从左到右</strong>流向客户，目标是缩短<strong>交付</strong>的时间</td>
+                </tr>
+                <tr>
+                  <td><strong>第三步 · 持续改进</strong><br><small class="muted">见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></small></td>
+                  <td>让<strong>这一次</strong>的问题被尽早发现并修掉，作用于<strong>当前这条价值流</strong></td>
+                  <td>让<strong>同类问题下次不再发生</strong>，作用于<strong>组织的行为与知识</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>监控 / 告警</strong></td>
+                  <td>是<strong>回路</strong>：信号回到能改动它的人手里，并触发动作</td>
+                  <td>是<strong>信号源</strong>。只有大屏没人看、告警无人认领，回路并没有闭合</td>
+                </tr>
+                <tr>
+                  <td><strong>状态报告 / 周报评审</strong></td>
+                  <td><strong>自动、即时、面向具体变更</strong>，谁改的谁先收到</td>
+                  <td><strong>人工、周期性、面向汇总</strong>，到达时问题往往已经流到下游</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">表中<strong>四组对照关系</strong>是本站依据三步的官方名称与方向所做的教学整理，DOFD 官方文件未以此形式给出对照表；可引为官方的只有三步本身的名称。</div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>第二步和第三步都「从错误里得到东西」</strong>。分界线是作用对象——第二步改的是这次的<strong>代码/变更</strong>，第三步改的是下次的<strong>做事方式</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把「反馈」当成一个可以被<strong>测量和缩短的时间量</strong>，而不是一句态度：</p>
+          <ul>
+            <li><strong>先量，再改</strong>：对每一类问题问「它平均在图 2-4-1 的第几圈被发现」。
+              如果多数缺陷是在第 4 圈（预发）才暴露，那么补再多生产监控也没用，
+              该补的是第 2、3 圈的自动化测试。</li>
+            <li><strong>给内圈定时间预算</strong>：提交后多久必须知道构建是绿是红。
+              超过这个预算，开发就会在等待期间继续往前写，缺陷继续向下游堆积。</li>
+            <li><strong>让反馈找到人，而不是等人来找</strong>：失败结果直接推送到变更作者，
+              而不是躺在某个只有运维会打开的控制台里。</li>
+          </ul>
+          <p>三类实践是第二步的主力，本节只说它们<strong>如何服务第二步</strong>，展开各有专节：</p>
+          <ul class="mb-0">
+            <li><strong>持续测试 <span class="en">Continuous testing</span></strong> —— 把验证嵌进流水线每一环，缺陷在内圈就被挡下（详见 3.1）</li>
+            <li><strong>可观测性</strong> —— 让生产环境的真实行为可被追问，外圈反馈变得可解释（详见 3.8）</li>
+            <li><strong>DevSecOps</strong> —— 安全检查左移到编码与构建，安全问题也走内圈回路（详见 3.5）</li>
+          </ul>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：给做法判归属（Bloom 2，最常见）。</strong>
+              题干给一个具体做法，问它属于三步中的哪一步。判据是<strong>信息的流动方向</strong>（判据本身见 <a href="2.1-three-ways.html">2.1 三步工作法总览</a>）；
+              本节要补的是第二步内部的细分——问题在图 2-4-1 的哪一圈被发现，决定了它属于内圈反馈还是外圈反馈。</li>
+            <li><strong>命题角度二：问第二步的目标是什么（Bloom 1）。</strong>
+              正确方向必然包含「更快 / 更早地发现问题」「让反馈回到源头」这类意思。</li>
+            <li><strong>干扰项长什么样：</strong>
+              <ul>
+                <li><strong>方向被写反</strong>——把「把信息传递给下游」「加快工作流向客户」这类第一步的表述，挂在第二步名下。
+                  只要出现「向下游 / 向客户」的方向词，基本可以排除。</li>
+                <li><strong>换成第三步的措辞</strong>（见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>）——「从失败中学习」「鼓励实验」「把局部经验推广到全组织」。
+                  这些改变的是<strong>以后</strong>，不是<strong>这一次</strong>。</li>
+                <li><strong>偷换成纯工具</strong>——「部署一套监控平台」被说成「就是第二步」。
+                  工具只是信号源，回路必须闭合到能改动它的人。</li>
+                <li><strong>拿放大的批量当优点</strong>——「集中在发布前统一评审所有变更」。
+                  这是把反馈往外圈推，与第二步相反。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧：</strong>看到「全部选项都对」时先检查有没有混进第一步或第三步的表述；
+              第二步的题里，一旦某个选项谈的是<strong>组织长期行为</strong>，它多半属于第三步。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line mb-0">第二步量的不是「有没有发现」，而是「隔了多久才发现」。</p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-4-2</div>
+        <h3 class="kp__title">在源头保证质量 · 看见问题就蜂拥解决<span class="en">Quality at the Source &amp; Swarming</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>这是第二步最核心的两条工作方式，互为因果：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">做法</th><th style="width:24%">英文</th><th>一句话本质</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>在源头保证质量</strong></td>
+                  <td><span class="term">Quality at the Source</span></td>
+                  <td>质量是<strong>每个环节内建</strong>出来的，不是最后由一个检验环节<strong>检出来</strong>的</td>
+                </tr>
+                <tr>
+                  <td><strong>蜂拥解决</strong></td>
+                  <td><span class="term">Swarming</span></td>
+                  <td>问题一出现就<strong>全员聚焦</strong>把它解决掉，<strong>宁可停线，也不让缺陷流向下游</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            常用的类比是精益生产线上的<strong>「拉绳停线」</strong>：任何一个工位发现异常都有权把整条线停下来，
+            所有人先把这个异常解决掉再恢复生产。
+            <strong>这是帮助理解的类比，不是 DOFD 考纲术语</strong>——考试不会考「拉绳」这个词，
+            但它表达的判断——<strong>停下来解决，优先于带着问题继续往前走</strong>——与第二步方向一致，
+            本站据此推断这是可命题的角度。
+          </p>
+          <div class="src-note">
+            「Quality at the Source」「Swarming」「拉绳停线」<strong>均未出现在 DOFD v3.4 官方考纲术语表的 66 条中</strong>。
+            本站将其作为第二步「反馈」的展开来讲，属教学整理。
+            可以标注为官方的，是第二步本身的名称 <em>2nd Way: Feedback</em>（PeopleCert Blueprint）。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它针对的是「<strong>末端检验</strong>」这种质量模型带来的具体后果：</p>
+          <ul>
+            <li><strong>缺陷被放行给下游。</strong> 开发提交时知道有两个用例是红的，
+              但迭代要收尾，于是先合入、挂个待办。到集成阶段，这两个用例已经和另外五个人的改动缠在一起，
+              <strong>原本 10 分钟的修复变成两天的排查</strong>。</li>
+            <li><strong>返工的成本由下游承担，做决定的人却在上游。</strong>
+              上游放行一个缺陷省下 1 小时，下游为它付出 3 天。
+              只要没人把这笔账合起来算，「先放行」在局部看永远是划算的。</li>
+            <li><strong>检验环节变成瓶颈，也变成挡箭牌。</strong>
+              质量被外包给 QA 之后，开发的心理模型变成「测出来再说」，
+              提交质量持续下滑，QA 队列越排越长——这正好又制造了一个第一步意义上的<strong>约束</strong>（见 <a href="2.3-theory-of-constraints.html">2.3 约束理论</a>）。</li>
+          </ul>
+          <p class="mb-0">
+            蜂拥解决要打破的，是「问题先记着，等有空再说」的默认反应。
+            它让<strong>暴露问题的成本变低、忽略问题的成本变高</strong>。
+          </p>
+        </div>
+
+        <!-- ============ 图 2-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 880 405" role="img" aria-label="缺陷发现阶段与修复成本的关系示意曲线">
+              <defs>
+                <marker id="ah-24-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <text x="90" y="42" class="s-ink" font-size="15" font-weight="650">相对修复成本</text>
+              <text x="845" y="42" class="s-muted" font-size="12" text-anchor="end">示意曲线：只表达趋势，不代表具体倍数</text>
+
+              <!-- 坐标轴 -->
+              <line x1="90" y1="58" x2="90" y2="340" class="s-stroke" stroke-width="1.5"/>
+              <line x1="90" y1="340" x2="845" y2="340" class="s-stroke" stroke-width="1.5"/>
+
+              <text x="78" y="325" class="s-muted" font-size="13" text-anchor="end">低</text>
+              <text x="78" y="205" class="s-muted" font-size="13" text-anchor="end">中</text>
+              <text x="78" y="85"  class="s-muted" font-size="13" text-anchor="end">高</text>
+
+              <!-- 上线前 / 上线后 分界 -->
+              <line x1="737" y1="62" x2="737" y2="340" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 5"/>
+
+              <!-- 成本曲线 -->
+              <path d="M130 322 C 200 320 232 317 265 312 C 322 304 372 302 400 294 C 452 281 506 273 535 258 C 592 231 646 217 670 185 C 716 130 770 100 805 80"
+                    class="s-2" stroke-width="3" fill="none" marker-end="url(#ah-24-2)"/>
+
+              <g class="f-2">
+                <circle cx="130" cy="322" r="5"/>
+                <circle cx="265" cy="312" r="5"/>
+                <circle cx="400" cy="294" r="5"/>
+                <circle cx="535" cy="258" r="5"/>
+                <circle cx="670" cy="185" r="5"/>
+                <circle cx="805" cy="80"  r="5"/>
+              </g>
+
+              <!-- 阶段刻度 -->
+              <g class="s-ink" font-size="15" text-anchor="middle">
+                <text x="130" y="362">需求 / 设计</text>
+                <text x="265" y="362">编码</text>
+                <text x="400" y="362">单元测试</text>
+                <text x="535" y="362">集成测试</text>
+                <text x="670" y="362">验收 / 预发</text>
+                <text x="805" y="362">生产环境</text>
+              </g>
+
+              <!-- 区域标注 -->
+              <text x="410" y="386" class="f-1" font-size="13" font-weight="650" text-anchor="middle">上线前发现 —— 左移要争取的区间</text>
+              <text x="790" y="386" class="f-2" font-size="13" font-weight="650" text-anchor="middle">上线后发现</text>
+
+              <text x="150" y="120" class="s-muted" font-size="13">同一个缺陷，越晚发现，牵连的改动、</text>
+              <text x="150" y="140" class="s-muted" font-size="13">环境、人和沟通就越多</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-4-2　缺陷发现阶段与修复成本。</strong>
+            这张图想让你看懂的是<strong>曲线的形状</strong>：成本不是线性上升，而是越往后越陡。
+            原因不在「修代码本身更难」，而在越晚发现，需要重新拉进来的<strong>人、环境和上下文</strong>越多——
+            还要加上对客户已经造成的影响。这解释了为什么第二步宁可停线也要在源头解决。
+            注意：第二步覆盖上线前与上线后<strong>全部</strong>反馈层，
+            图中那条虚线标的是<strong>修复成本的陡增点</strong>，不是第二步的边界。
+            <strong>本图为示意，纵轴无刻度。</strong>「越晚发现越贵、且差距可达数量级」是软件工程领域<strong>普遍观察到的经验结论</strong>，
+            不是 DOFD 考纲数据，<strong>考试不会考具体倍数</strong>。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比</th><th style="width:38%">在源头保证质量 / 蜂拥解决</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>末端检验</strong><br><span class="en">Inspection at the end</span></td>
+                  <td>质量在<strong>每个环节产生时</strong>就被保证，检验只是确认</td>
+                  <td>质量在<strong>最后一道关口</strong>被筛查。筛出来的缺陷已经带着全部下游成本</td>
+                </tr>
+                <tr>
+                  <td><strong>升级上报</strong><br><span class="en">Escalation</span></td>
+                  <td><strong>横向拉人</strong>：把有能力解决的人拉到问题现场，目标是<strong>此刻解决</strong></td>
+                  <td><strong>纵向上交</strong>：把问题交给更高层级去判断，目标是<strong>转移责任或获得授权</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>事后复盘</strong><br><span class="en">Postmortem</span></td>
+                  <td>发生在问题<strong>正在发生时</strong>，产出是<strong>问题被解决</strong></td>
+                  <td>发生在问题<strong>已经结束后</strong>，产出是<strong>组织行为的改变</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>停止工作去救火</strong></td>
+                  <td>停线是<strong>有边界的</strong>：为了不让缺陷扩散，解决完立即恢复正常节奏</td>
+                  <td>救火是<strong>无边界的</strong>：长期处于中断状态，说明内圈反馈本身失效了</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>蜂拥解决 vs 事后复盘</strong>。两者都是「围着一个故障讨论」，但一个在<strong>止血</strong>，一个在<strong>防止复发</strong>。看发生的时间点就能分开：<strong>故障进行中</strong> vs <strong>故障结束后</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把「红灯」变成硬约束。</strong> 主干构建失败时，禁止在修复前继续合入新变更。
+              规则要写进流水线，而不是写进公约——靠自觉的规则在赶工期时一定会被绕过。</li>
+            <li><strong>不允许「跳过失败用例」成为常规操作。</strong>
+              一旦有人可以给失败用例打忽略标记，内圈就形同虚设，缺陷会平静地流到外圈。</li>
+            <li><strong>用「完成的定义」<span class="en">Definition of Done / DoD</span> 明确源头责任。</strong>
+              把「测试通过、评审通过、可观测埋点已加」写进 DoD，
+              质量责任就留在了产生它的环节，而不是被推给下游。</li>
+            <li><strong>蜂拥要有明确的触发条件和解除条件。</strong>
+              例如「主干红灯超过 N 分钟」触发全员停止合入，「构建恢复绿灯」解除。
+              没有解除条件的停线会变成常态化混乱。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上为工程实践建议，属教学整理，不是考纲规定的操作规程。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度：场景判断。</strong> 题干描述一个团队面对缺陷的反应
+              （继续往前赶 / 记入待办 / 停下来一起解决），问哪种做法符合 DevOps 原则、或体现了哪一步。
+              符合第二步的一定是<strong>「立即、集体、在源头」</strong>那一类。</li>
+            <li><strong>干扰项长什么样：</strong>
+              <ul>
+                <li><strong>包装成「效率」的放行</strong>——「先记录问题以免打断当前迭代」「等测试阶段统一处理」。
+                  措辞听起来专业，实质是把缺陷传给下游，这是第一步和第二步共同<strong>反对</strong>的。</li>
+                <li><strong>把责任集中到一个角色</strong>——「由 QA 团队负责保证质量」「设立专职质量把关人」。
+                  与「每个环节内建质量」正好相反。</li>
+                <li><strong>把蜂拥写成上报</strong>——「立即上报给管理层决策」。
+                  蜂拥是横向拉人解决，不是纵向交出去。</li>
+                <li><strong>把蜂拥写成复盘</strong>——「组织一次无指责事后复盘 <span class="en">Blameless postmortem</span> 找出根因」。
+                  复盘是第三步的动作（见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>），题干问的若是「此刻怎么办」，它就是错的。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧：</strong>凡是让缺陷<strong>继续往下游走</strong>的选项，在三步工作法的题里几乎永远是错的。
+              这一条可以直接砍掉一到两个干扰项。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">停下来解决，好过带着问题往前走。</p>
+          <p class="mb-0 muted"><small>两句配对记：<strong>质量在源头内建（不是末端检出）</strong>；<strong>问题一出现就蜂拥（不是记入待办）</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-4-3</div>
+        <h3 class="kp__title">遥测、同行评审与把知识推到需要它的地方<span class="en">Telemetry, Peer Review &amp; Pushing Knowledge to Where It Is Needed</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>第二步落地时最常出现的三类手段：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">手段</th><th style="width:22%">英文</th><th>它在回路里做什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>遥测</strong></td>
+                  <td><span class="term">Telemetry</span></td>
+                  <td>让系统<strong>主动上报</strong>自己的运行状况（日志、指标、追踪），
+                      使外圈的行为变得<strong>可见</strong>。没有遥测，生产环境对开发是黑箱</td>
+                </tr>
+                <tr>
+                  <td><strong>同行评审</strong></td>
+                  <td><span class="term">Peer Review</span></td>
+                  <td>由同伴在变更<strong>合入 / 上线之前</strong>给出反馈，
+                      是内圈中<strong>少数由人而非机器</strong>提供的反馈</td>
+                </tr>
+                <tr>
+                  <td><strong>把知识推到需要它的地方</strong></td>
+                  <td><span class="term">Pushing knowledge to where it is needed</span></td>
+                  <td>让<strong>需要做决定的人</strong>当场拿到判断所需的信息，
+                      而不是让他去申请、去问、去等</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            第三条最容易被读成口号，它其实很具体：<strong>开发者能直接看到自己这次改动在生产环境的表现</strong>——
+            接口延迟变了没有、错误率有没有抬头、这段代码到底有没有被真实调用。
+            反馈不只是「出事了告诉你」，还包括「<strong>没出事，但你写的东西正在这样运行</strong>」。
+          </p>
+          <div class="src-note">
+            <strong>Telemetry / Peer review 均不在 DOFD v3.4 官方考纲术语表的 66 条中</strong>，
+            「把知识推到需要它的地方」也不是官方术语。
+            本站把它们作为第二步的典型手段来讲解，属教学整理。
+            本站推断可命题的方向是<strong>「这类做法体现三步中的哪一步」</strong>，而不是这些词的定义。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <ul>
+            <li><strong>知识被锁在角色里。</strong> 生产环境的仪表盘只有运维有账号，
+              开发想知道自己接口的 P99 延迟，要发一条消息、等运维截图。
+              一次问询要 20 分钟，于是大多数时候<strong>开发干脆不问</strong>——
+              代码就这样在无人知晓其真实表现的状态下运行了两年。</li>
+            <li><strong>评审退化成盖章。</strong> 一个包含 60 个文件、跨三个模块的合并请求送到评审人面前，
+              他没有能力在半小时内看懂，只能写「LGTM」。
+              <strong>评审的有效性和批量大小成反比</strong>——这也是为什么第二步依赖第一步先把批量降下来。</li>
+            <li><strong>值班的人手上没有上下文。</strong> 凌晨告警响了，值班人看到一条「服务 5xx 升高」，
+              但不知道最近上线了什么、这个服务归谁、上次同样的告警是怎么处理的。
+              信息全都存在，只是<strong>没有被推到他眼前</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            这三件事的共同解法都不是「更努力沟通」，而是<strong>改变信息的默认流向</strong>：
+            默认可见、默认推送、默认附带上下文。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">容易混的一对</th><th style="width:38%">分界线</th><th>归属</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>同行评审 vs 变更审批委员会</strong><br><span class="en">Peer review vs CAB</span></td>
+                  <td>同行评审由<strong>懂这段代码的同伴</strong>做，与变更同步发生；
+                      审批委员会由<strong>远离代码的角色</strong>定期集中审，是排队点</td>
+                  <td>前者加强第二步<br>后者往往是第一步意义上的<strong>约束</strong>（见 <a href="2.3-theory-of-constraints.html">2.3 约束理论</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>遥测 vs 可观测性</strong><br><span class="en">Telemetry vs Observability</span></td>
+                  <td>遥测是<strong>数据的产生与采集</strong>（系统吐出什么）；
+                      可观测性是<strong>系统的一种属性</strong>——能否通过外部输出回答没有预设过的问题</td>
+                  <td>两者都服务第二步；<br>可观测性详见 3.8</td>
+                </tr>
+                <tr>
+                  <td><strong>遥测 vs 告警</strong></td>
+                  <td>遥测是<strong>全量、持续</strong>的运行事实，平时也在看；
+                      告警是遥测之上<strong>设定阈值后</strong>的例外通知</td>
+                  <td>只有告警没有遥测，<br>就只能看见「已经预料到」的问题</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">表中<strong>「同行评审属于第二步」由 DOFD v3.4 官方样题答案键确认</strong>；其余各条的<strong>「归属」</strong>（哪条实践属于三步中的哪一步）是本站依据三步定义所做的教学归类 —— DOFD 官方文件未以对照表形式发布完整的实践—工作法映射。</div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>同行评审 vs 变更审批委员会</strong>。两者都是「变更前先有人看一眼」，但一个由<strong>懂这段代码的同伴</strong>与变更同步做，一个由<strong>远离代码的角色</strong>定期集中审。看<strong>评审人是谁、什么时候看</strong>就能分开——前者压缩反馈间隔，后者制造排队。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>让开发者拿到生产视图的只读权限，并把它做成默认入口。</strong>
+              目标不是「多一个人能看」，而是提交合并请求时就能顺手看到这个服务当前的错误率与延迟。</li>
+            <li><strong>把变更和遥测关联起来。</strong> 部署事件打在指标图的时间轴上，
+              曲线一抬头就能对上是哪次变更，把「谁引起的」从推理题变成读图题。</li>
+            <li><strong>控制评审的批量。</strong> 评审有效性取决于变更大小，
+              与其规定「必须两人评审」，不如先规定「一个合并请求不超过多少改动」。</li>
+            <li><strong>告警里带上下文。</strong> 一条有用的告警应当自带：影响面、最近变更、负责人、上一次同类处理记录。
+              这就是「把知识推到需要它的地方」的最小可执行版本。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上为工程实践建议，属教学整理，非考纲内容。工具选型与埋点方案不在 DOFD 考查范围内。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：把具体实践归到某一步。</strong> 同行评审归<strong>第二步</strong> —— 这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是推断。
+              题目会用「团队在合入前互相检查代码」这类描述来问归属。</li>
+            <li><strong>命题角度二：遥测 / 监控数据的用途。</strong>
+              正确方向是「让问题被更快发现、让信息回到能修它的人手里」，
+              而不是「用于绩效考核」或「用于生成管理报表」。</li>
+            <li><strong>干扰项长什么样：</strong>
+              <ul>
+                <li><strong>把同行评审挂到第三步</strong>——最常见的一个，靠「评审 = 学习」的直觉误导。
+                  排除方法：问它作用在<strong>上线前</strong>还是<strong>事故后</strong>。</li>
+                <li><strong>用「事后复盘」冒充「同行评审」的同义词</strong>放进同一组选项，
+                  制造「两个都对」的错觉。两者时点不同，只能选一个。</li>
+                <li><strong>把遥测说成「为了留存审计证据 / 追责」</strong>。
+                  方向错了——第二步的反馈是给<strong>源头的人</strong>用的，不是给追责用的。</li>
+                <li><strong>把「知识推到需要它的地方」写成「建立完善的文档中心」</strong>。
+                  文档库是「等人来拉」，第二步要的是「主动推到面前」。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧：</strong>凡是选项里出现<strong>考核、追责、审批、集中评审</strong>这类词，
+              基本可以判定它不是第二步想表达的东西。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上为命题角度与干扰项构造方式的归纳，不含任何官方样题原文。官方未公布逐条实践的归属对照，上述归属为本站依据三步定义所做的教学判断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line mb-0">反馈不只是「出事了通知你」，还包括让作者看见自己的代码在生产里怎么活着。</p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>官方名称：<strong>2nd Way: Feedback</strong>（Blueprint）。本站定义（教学表述）：建立<strong>从右到左、快速且持续</strong>的反馈回路，让问题在<strong>离源头最近的地方</strong>被发现和解决</li>
+        <li>方向判据：往客户走 = 第一步；<strong>往源头回 = 第二步</strong>；改变组织习惯 = 第三步</li>
+        <li>两条核心工作方式：<strong>在源头保证质量</strong>（不是末端检出）、<strong>看见问题就蜂拥解决</strong>（宁可停线，不让缺陷流向下游）</li>
+        <li><strong>同行评审属于第二步</strong>，最常被误选成<a href="2.5-third-way-learning.html">第三步（2.5 持续改进）</a>。分界线：<strong>上线前拦截 = 反馈，事后改变组织行为 = 学习</strong></li>
+        <li>遥测的意义不止告警，还包括让开发者<strong>看到自己代码在生产环境的真实表现</strong></li>
+        <li>反馈延迟越长，修复代价越高且非线性上升 —— 这是「停线也要在源头解决」的经济学依据（趋势要记，倍数不考）</li>
+        <li>凡是让缺陷<strong>继续流向下游</strong>的选项，在三步工作法的题里几乎永远是错的</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：第二步的官方名称出自 PeopleCert《DevOps Foundation® Blueprint》—— <em>2nd Way: Feedback</em>；
+      「The Second Way」作为 M2 Core DevOps Principles 的子项列于 DOFD v3.4 课程大纲。
+      本节涉及的官方考纲术语（v3.4 Concept and Terminology List）包括
+      「The Three Ways」「Flow」「Continuous testing」「Testing (unit, acceptance, integration)」「Shift left」
+      「DevSecOps」「Constraint」「MTTR」。
+      <br>
+      <strong>教学补充（非官方）</strong>：「Quality at the Source」「Swarming 蜂拥解决」「Telemetry 遥测」「Peer review 同行评审」
+      「把知识推到需要它的地方」以及「拉绳停线」类比，<strong>均未列入 v3.4 官方术语表 66 条</strong>，
+      本站作为第二步的展开讲解，已在对应位置就地标注。
+      各知识点 ③ 表格中的对照与「归属」列均为本站教学整理，官方未以此形式给出对照表，已在各表下方就地标注。
+      图 2-4-1 的反馈时长为本站教学估计；图 2-4-2 为无刻度示意曲线，
+      「越晚发现越贵」是软件工程领域普遍观察到的经验结论，均非考纲数据。
+      本站不复制官方样题的题干与选项原文，「考试怎么考」各面均为命题角度与干扰项构造方式的归纳。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

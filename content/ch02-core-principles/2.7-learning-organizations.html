@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.7 学习型组织 · DevOps Foundation 学习站</title>
+<meta name="description" content="学习型组织（Learning Organizations）是能持续把自身经验转化为行为改变的组织。本节讲清它的判据、它对安全文化的依赖，以及高绩效组织的特征。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.7-learning-organizations"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.7 学习型组织</h1>
+      <div class="page-head__en">Learning Organizations</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这是本章唯一一个会在第 4 章<strong>原样再出现</strong>的条目：在核心原则里，它是第三步的落地形态；
+        在框架里，它和安全文化并列，是撑住整套 DevOps 的组织能力。
+        而判断一个组织是不是学习型的，只有一条硬标准 ——
+        <strong>同一个坑，第二次还掉不掉进去</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>学习型组织的判据到底是什么 —— 是「知道了」，还是「做法变了」</li>
+        <li>为什么它同时挂在模块 2 和模块 4 下面，这个双重身份怎么理解</li>
+        <li>坏消息上不来的组织，为什么投再多培训预算也学不会</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1（主图） ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 880 540" role="img" aria-label="从个人经验到团队知识再到组织能力的沉淀链路，以及三个断点">
+          <defs>
+            <marker id="ah-27-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+            <marker id="ah-27-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-27-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 阶段 1 -->
+          <rect x="40" y="28" width="300" height="92" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="60" y="60" class="f-1" font-size="16" font-weight="700">① 个人经验</text>
+          <text x="60" y="84" class="s-ink" font-size="13">某个人踩过一次坑，知道怎么办</text>
+          <text x="60" y="105" class="s-muted" font-size="12">只存在于一个人的脑子里</text>
+
+          <!-- 阶段 2 -->
+          <rect x="40" y="180" width="300" height="92" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="60" y="212" class="f-2" font-size="16" font-weight="700">② 团队知识</text>
+          <text x="60" y="236" class="s-ink" font-size="13">团队共同知道，写进复盘记录</text>
+          <text x="60" y="257" class="s-muted" font-size="12">知道的人从 1 个变成一整组</text>
+
+          <!-- 阶段 3 -->
+          <rect x="40" y="332" width="300" height="92" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="60" y="364" class="f-3" font-size="16" font-weight="700">③ 组织能力</text>
+          <text x="60" y="388" class="s-ink" font-size="13">变成流水线检查与默认配置</text>
+          <text x="60" y="409" class="s-muted" font-size="12">不知道的人也不会犯这个错</text>
+
+          <!-- 阶段间箭头 -->
+          <path d="M190 120 L190 174" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-27-1)"/>
+          <path d="M190 272 L190 326" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-27-1)"/>
+          <text x="206" y="140" class="s-ink" font-size="13" font-weight="650">说出来 · 写下来</text>
+          <text x="206" y="292" class="s-ink" font-size="13" font-weight="650">固化 · 自动化</text>
+
+          <!-- 回流虚线 -->
+          <path d="M40 378 L18 378 L18 74 L40 74" class="s-3" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ah-27-2)"/>
+          <text x="32" y="226" class="f-3" font-size="12" text-anchor="middle" transform="rotate(-90 32 226)">④ 回流：新人第一天就继承教训</text>
+
+          <!-- 断点连线 -->
+          <path d="M200 162 L426 162" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#ah-27-3)"/>
+          <path d="M200 314 L426 314" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#ah-27-3)"/>
+          <path d="M190 424 L190 466 L426 466" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#ah-27-3)"/>
+
+          <!-- 断点 1 -->
+          <rect x="430" y="130" width="420" height="64" rx="10" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="var(--dia-fill-2)"/>
+          <text x="448" y="156" class="f-5" font-size="14" font-weight="700">断在这里：说不出口</text>
+          <text x="448" y="180" class="s-ink" font-size="13">人一走，教训归零，新人从头踩同一个坑</text>
+
+          <!-- 断点 2 -->
+          <rect x="430" y="282" width="420" height="64" rx="10" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="var(--dia-fill-2)"/>
+          <text x="448" y="308" class="f-5" font-size="14" font-weight="700">断在这里：只进了文档</text>
+          <text x="448" y="332" class="s-ink" font-size="13">改进项没有负责人和到期日，永远排在功能后面</text>
+
+          <!-- 断点 3 -->
+          <rect x="430" y="434" width="420" height="64" rx="10" class="s-5" stroke-width="1.5" stroke-dasharray="5 4" fill="var(--dia-fill-2)"/>
+          <text x="448" y="460" class="f-5" font-size="14" font-weight="700">断在这里：没有回到人</text>
+          <text x="448" y="484" class="s-ink" font-size="13">有规范但没人理解，一有压力就绕开</text>
+
+          <text x="20" y="528" class="s-muted" font-size="12">本沉淀链路为本站教学整理，DOFD 官方未以此形式给出</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-7-1　经验沉淀链路与它的三个断点。</strong>
+        学习型组织不是「学得多」，而是<strong>链路完整</strong>。
+        任何一环断掉，组织都会重复付同一笔学费 —— <strong>说不出口</strong>，教训跟着人走；
+        <strong>只进了文档</strong>，改进项没有负责人；<strong>没有回到人</strong>，规范存在但没人真的照做。
+        遇到场景题，先判断它断在哪一环。
+        <span class="muted"><small>（三段式链路为本站教学整理，官方未以此形式给出。）</small></span>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-7-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-7-1</div>
+        <h3 class="kp__title">学习型组织<span class="en">Learning Organizations</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">学习型组织 <span class="en">Learning Organizations</span></span>
+            指<strong>能持续从自身经验中学习、并因此改变自己行为</strong>的组织。
+            重点在后半句：不是「知道了」，是「下次的默认做法变了」。
+            经验封存在个人脑子里、或封存在一份没人读的文档里，都不算。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">同一次故障之后</th><th style="width:35%">不是学习型组织</th><th>是学习型组织</th></tr></thead>
+              <tbody>
+                <tr><td>知识落在哪</td><td>值班工程师的笔记本 / 一份 Wiki</td><td>告警文案、流水线检查、模板默认值</td></tr>
+                <tr><td>谁会受益</td><td>当时在场的那几个人</td><td>包括三个月后入职、从没听说这事的人</td></tr>
+                <tr><td>怎么验证</td><td>「我们复盘过了」</td><td>同类输入再来一次，系统自己拦住了</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">本对照表为本站教学整理，官方未以此形式给出学习型组织的判据清单。</div>
+          <p>
+            <strong>它是「原则」与「框架」之间的枢纽。</strong>
+            在 DOFD v3.4 课程大纲里，<em>Learning Organizations</em> 同时列在
+            <strong>模块 2 Core DevOps Principles</strong> 与
+            <strong>模块 4 Business &amp; Technology Frameworks</strong> 之下 ——
+            按 v3.4 课程大纲逐模块比对，这是<strong>唯一</strong>同时出现在两个模块下的条目。
+            <span class="muted"><small>（模块归属出自 DOFD v3.4 Examination Requirements，2022-05。Learning Organizations 是 v3.4 课程大纲的模块子项，<strong>不是 66 条官方考纲术语表中的条目</strong>。）</small></span>
+          </p>
+          <p>
+            在模块 2，它是第三步「持续改进（实验与学习）」（见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>）的<strong>组织形态</strong>：
+            第三步说的是价值流应当具备哪种能力，学习型组织说的是具备这种能力的组织长什么样。
+          </p>
+          <p class="mb-0">
+            在模块 4，它与安全文化并列，作为支撑 DevOps 的<strong>组织框架</strong>出现。
+            同一个概念会从两侧问过来 —— 原则侧问它和第三步的关系，框架侧问它和安全文化的关系；换个问法不要愣住。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            某支付网关团队，一年之内被同一类「重试风暴」打挂四次：
+          </p>
+          <ul>
+            <li><strong>第一次</strong>：值班工程师查了六个小时找到根因，处理完，把过程记在自己的笔记本里。</li>
+            <li><strong>第二次</strong>：换了个值班的人，又查了六个小时 —— 他不知道有人查过。</li>
+            <li><strong>第三次</strong>：团队写了复盘文档，并在群里同步给了所有人 ——
+              但没有在告警里加一句排查提示，也没有加限流。</li>
+            <li><strong>第四次</strong>：半年后同一类输入再次进来，系统仍然照单全收，
+              值班的人还是只能靠「有没有人记得」。</li>
+          </ul>
+          <p class="mb-0">
+            每一次都从零开始，能力一次也没涨。
+            问题不在于这些人不聪明、不负责，也不在于消息没传到 —— 第三次它传到了。
+            问题在于这条经验<strong>始终停在「需要有人记得」的层面</strong>，
+            没有变成系统自己会执行的东西。
+            学习型组织这个概念要解决的就是这件事：把偶发的个人聪明，转成稳定的组织能力。
+            <span class="muted"><small>（横向扩散到别的团队是 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a> kp-2-5-3 的题目；本节问的是：这条经验有没有变成系统自己会执行的东西。）</small></span>
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">学习型组织</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>培训 / 知识库</strong></td>
+                  <td>看<strong>行为是否改变</strong>，改了才算学到</td>
+                  <td>看<strong>内容是否被投放</strong>，课上了、文档写了就算完成</td>
+                </tr>
+                <tr>
+                  <td><strong>安全文化<br><span class="en">Safety Culture</span></strong></td>
+                  <td><strong>学习本身</strong>：经验 → 行为改变</td>
+                  <td><strong>学习的前提</strong>：让坏消息可以被说出来。完整展开见
+                      <a href="../ch04-frameworks/index.html">4.5 安全文化与学习型组织</a></td>
+                </tr>
+                <tr>
+                  <td><strong>第三步 · 持续改进</strong></td>
+                  <td><strong>组织形态</strong>：有学习能力的组织长什么样</td>
+                  <td><strong>原则</strong>：价值流应当具备的第三种能力（见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>组织文化<br><span class="en">Organizational culture</span></strong></td>
+                  <td>一种具体的、可验证的<strong>组织能力</strong></td>
+                  <td>更上位的概念：共享的价值观与行为默认值。定义见
+                      <a href="../ch05-culture/index.html">5.1 什么是组织文化</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">本对照表为本站教学整理；表中 <em>Learning Organizations</em>、<em>Safety Culture</em> 为 DOFD v3.4 课程大纲模块子项，<em>Organizational culture</em> 为 66 条官方考纲术语表条目，但官方未做此对照。</div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>学习型组织 ≠ 学习资源多的组织</strong>。判据是行为改没改，不是培训预算有多少、课程平台上有几门课。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把复盘结论落成「有人会自动看到」的东西</strong>：告警文案里补一句排查提示、
+              流水线里加一条检查、脚手架模板改掉危险默认值、变更清单加一行。
+              落不成，就当作没学。</li>
+            <li><strong>改进项进正常待办队列</strong>，带负责人和到期日，和功能需求排在一起竞争优先级 ——
+              而不是丢进一份「改进事项跟踪表」自生自灭。</li>
+            <li><strong>新人第一周就继承教训</strong>：把过去 12 个月的重大故障做成一次演练或一份 30 分钟导读，
+              而不是让他自己去搜 Wiki。</li>
+            <li><strong>自查动作</strong>：随机挑一次半年前的故障，问团队「同样的输入今天再来一次，会发生什么」。
+              如果答案是「应该……大概会被发现吧」，说明那次没学到。</li>
+          </ul>
+          <div class="callout callout--ext">
+            <div class="callout__title">🧭 教学补充 · 非考纲</div>
+            <p>
+              管理学里描述这件事有两套常被引用的模型：Peter Senge 的<strong>五项修炼</strong>，
+              以及 Argyris &amp; Schön 的<strong>单环学习 / 双环学习</strong>
+              （单环 = 改结果，双环 = 改产生结果的那套假设）。
+              双环学习正好对应上面说的「把结论落进机制」。
+            </p>
+            <p class="mb-0">
+              这两套模型不在 DOFD v3.4 的 66 条考纲术语表与任一模块子项内，
+              <strong>因此不属于考纲范围</strong>，答题时不要按这两套模型的措辞去找选项。
+              它们只是本站为便于理解引入的补充。
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度 · 场景判定</strong>（DOFD 整体为 Bloom 1–2，此类场景题偏应用层，<strong>分级为本站判断</strong>）：
+              给一段组织行为描述，问它体现了什么。
+              抓住唯一判据 —— <strong>经验有没有被转化成组织层面的行为改变</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              一类把「投入」写成「结果」的选项 —— 设立培训预算、建成知识库、定期办分享会，
+              这些描述的是投放了多少资源，不是行为有没有变；
+              另一类把方向写反，用追究责任来避免重复犯错，见到就排除。</li>
+            <li><strong>另一类干扰</strong>：把安全文化的描述（可以安全地说出坏消息、无指责）当成学习型组织的定义。
+              两者是<strong>依赖关系</strong>不是同一件事：题干问「前提 / 使能条件」选安全文化，
+              问「从经验中改变行为」选学习型组织。</li>
+            <li><strong>排除技巧</strong>：凡是只描述「知道了 / 记录了 / 传达了」而没有「改变了」的选项，先排除。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的命题角度、干扰项形态与排除技巧均为<strong>本站教学推断</strong>，官方未公布命题规律。本章练习将提供仿真题；官方样题受版权保护，本站不复制题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line mb-0">学到了不是「知道了」，是「下次默认不会那样做了」。</p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-7-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-7-2</div>
+        <h3 class="kp__title">学习的前提：坏消息能不能上行<span class="en">Safety Culture as the precondition for learning</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            学习型组织的<strong>输入是真实信息</strong>，尤其是坏消息：故障、失败的实验、
+            「这个方案行不通」、「是我改的那行」。
+            <span class="term">安全文化 <span class="en">Safety Culture</span></span>
+            指的就是「<strong>可以安全地说出坏消息</strong>」的文化 —— 注意不是信息安全。
+          </p>
+          <p>
+            两者的关系是<strong>单向依赖</strong>：<strong>没有安全文化，学习链路第一环就断了</strong>；
+            但有了安全文化也不自动等于会学习，信息上来之后还要被转化成行为改变。
+          </p>
+          <p>
+            在 DOFD 里，<em>Safety Culture</em> 列在 <strong>M4 Business &amp; Technology Frameworks</strong> 之下，
+            和 <em>Learning Organizations</em> 并列 —— 它被当作一个<strong>框架层的组织条件</strong>，不是一项具体实践。
+            具体实践是<strong>无指责事后复盘 <span class="en">Blameless postmortem</span></strong>：安全文化是状态，无指责事后复盘是把这个状态固定下来的机制。
+            与<strong>韧性工程 <span class="en">Resilience engineering</span></strong> 的边界也在这里 ——
+            韧性工程处理的是系统在故障下的表现，安全文化处理的是人愿不愿意把故障说出来。
+            <span class="muted"><small>（Safety Culture 是 DOFD v3.4 课程大纲模块 4 的官方子项，<strong>但不是 66 条考纲术语表条目</strong>；Blameless postmortem 同样不在术语表内，Resilience engineering 在表内。）</small></span>
+          </p>
+          <p class="mb-0">
+            安全文化的完整展开（定义、成分、与韧性工程的关系）在
+            <a href="../ch04-frameworks/index.html">4.5 安全文化与学习型组织</a>，
+            本节只处理它与学习之间的这层依赖。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            某团队上线前一天，测试环境出现一次偶发的数据错乱。工程师看了一眼日志，
+            觉得「可能是环境不干净」，没有上报。
+          </p>
+          <p>
+            他不是不负责。原因是<strong>上个季度</strong>另一位同事上报了一个类似的疑点，
+            导致发布延期两周，那位同事在季度评审会上被点名，说「风险评估能力有待加强」。
+            <strong>组织用一次点名，买到了此后所有人的沉默。</strong>
+          </p>
+          <p class="mb-0">
+            三周后，同一个问题在生产环境爆发，影响一整天的对账。
+            事后复盘时人人都说「早有苗头」—— 苗头一直存在，只是没有一条能安全走到决策者面前的路。
+            这类组织并不是不想学，是<strong>把信息源自己掐断了</strong>：
+            没有输入，后面所有的复盘、改进、度量都在处理残缺的事实。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">对比对象</th><th style="width:36%">安全文化 Safety Culture</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>信息安全<br><span class="en">Security</span></strong></td>
+                  <td>说的是「<strong>人敢不敢说出坏消息</strong>」</td>
+                  <td>说的是系统与数据的防护。两者毫无关系 —— 中文都叫「安全」，这是最容易混的一对</td>
+                </tr>
+                <tr>
+                  <td><strong>学习型组织</strong></td>
+                  <td><strong>前提</strong>：信息能上来</td>
+                  <td><strong>结果</strong>：信息被转化成行为改变</td>
+                </tr>
+                <tr>
+                  <td><strong>无指责事后复盘<br><span class="en">Blameless postmortem</span></strong></td>
+                  <td>一种<strong>文化状态</strong>，看不见摸不着，靠行为推断</td>
+                  <td>把这种状态<strong>落地的一个具体机制</strong>，是手段不是目的</td>
+                </tr>
+                <tr>
+                  <td><strong>「心理安全」这个说法</strong></td>
+                  <td>DOFD 语境下的固定术语是 <strong>Safety Culture</strong></td>
+                  <td>常见的近义表述，<strong>不在 DOFD 考纲术语表内</strong>；答题时按 Safety Culture 的口径走</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">Safety / Security 的区分为本站教学整理，官方未以此形式对照给出。</div>
+          <p class="mb-0 muted"><small>最容易混的一点：中文「安全」同时对应 <strong>Safety</strong> 与 <strong>Security</strong>。DOFD 的 Safety Culture 与漏洞、加密、合规无关，那些属于 DevSecOps。</small></p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 360" role="img" aria-label="病态型、官僚型、生成型三类组织对同一条坏消息的不同处理路径">
+              <defs>
+                <marker id="ah-27-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+                </marker>
+                <marker id="ah-27-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-27-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+                <marker id="ah-27-7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <!-- 同一条坏消息 -->
+              <rect x="230" y="16" width="440" height="60" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+              <text x="450" y="42" text-anchor="middle" class="s-ink" font-size="15" font-weight="700">同一条坏消息进入组织</text>
+              <text x="450" y="64" text-anchor="middle" class="s-muted" font-size="13">工程师发现：新版本在预发环境偶发丢数据</text>
+
+              <path d="M450 76 L450 94" class="s-stroke" stroke-width="2" fill="none"/>
+              <path d="M145 94 L755 94" class="s-stroke" stroke-width="2" fill="none"/>
+              <path d="M145 94 L145 104" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-27-4)"/>
+              <path d="M450 94 L450 104" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-27-4)"/>
+              <path d="M755 94 L755 104" class="s-stroke" stroke-width="2" fill="none" marker-end="url(#ah-27-4)"/>
+
+              <!-- ==== 病态型 ==== -->
+              <rect x="20" y="108" width="250" height="54" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="145" y="132" text-anchor="middle" class="f-5" font-size="16" font-weight="700">病态型 Pathological</text>
+              <text x="145" y="152" text-anchor="middle" class="s-muted" font-size="12">信息是权力，坏消息招来追责</text>
+
+              <rect x="20" y="182" width="250" height="62" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+              <text x="145" y="208" text-anchor="middle" class="s-ink" font-size="14" font-weight="650">不上报</text>
+              <text x="145" y="229" text-anchor="middle" class="s-muted" font-size="12">说出来会被算到我头上</text>
+              <path d="M145 244 L145 258" class="s-5" stroke-width="2" fill="none" marker-end="url(#ah-27-5)"/>
+
+              <rect x="20" y="262" width="250" height="68" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="145" y="290" text-anchor="middle" class="f-5" font-size="14" font-weight="700">组织什么也没学到</text>
+              <text x="145" y="312" text-anchor="middle" class="s-muted" font-size="12">问题带进生产，事后找替罪羊</text>
+
+              <!-- ==== 官僚型 ==== -->
+              <rect x="325" y="108" width="250" height="54" rx="9" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="450" y="132" text-anchor="middle" class="f-2" font-size="16" font-weight="700">官僚型 Bureaucratic</text>
+              <text x="450" y="152" text-anchor="middle" class="s-muted" font-size="12">信息按部门边界流动</text>
+
+              <rect x="325" y="182" width="250" height="62" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+              <text x="450" y="208" text-anchor="middle" class="s-ink" font-size="14" font-weight="650">按流程提工单</text>
+              <text x="450" y="229" text-anchor="middle" class="s-muted" font-size="12">先扯清这算谁的问题</text>
+              <path d="M450 244 L450 258" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-27-6)"/>
+
+              <rect x="325" y="262" width="250" height="68" rx="9" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="450" y="290" text-anchor="middle" class="f-2" font-size="14" font-weight="700">学到了，但太慢</text>
+              <text x="450" y="312" text-anchor="middle" class="s-muted" font-size="12">结论归档，改进项没人推动</text>
+
+              <!-- ==== 生成型 ==== -->
+              <rect x="630" y="108" width="250" height="54" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="755" y="132" text-anchor="middle" class="f-1" font-size="16" font-weight="700">生成型 Generative</text>
+              <text x="755" y="152" text-anchor="middle" class="s-muted" font-size="12">信息为了完成任务而流动</text>
+
+              <rect x="630" y="182" width="250" height="62" rx="9" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+              <text x="755" y="208" text-anchor="middle" class="s-ink" font-size="14" font-weight="650">当场公开广播</text>
+              <text x="755" y="229" text-anchor="middle" class="s-muted" font-size="12">谁看到谁说，不问归属</text>
+              <path d="M755 244 L755 258" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-27-7)"/>
+
+              <rect x="630" y="262" width="250" height="68" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="755" y="290" text-anchor="middle" class="f-1" font-size="14" font-weight="700">上线前修掉，且不再发生</text>
+              <text x="755" y="312" text-anchor="middle" class="s-muted" font-size="12">第一个说出来的人被公开感谢</text>
+
+              <text x="20" y="350" class="s-muted" font-size="12">教学补充 · 非考纲：Westrum 组织文化三分类，DOFD 考纲术语表中没有这一条</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-7-2　同一条坏消息，三种组织的三条路。</strong>
+            <strong>差别不在这条消息本身，而在组织怎么对待说出它的人</strong>。
+            病态型让消息死在源头，官僚型让消息死在流程里，生成型让消息直接找到能处理它的人。
+            这三条路径是本站用来读场景描述的工具，认出路径能帮你确定答案方向。
+            <span class="muted"><small>（Westrum 三分类为本站引入的教学补充，不在 DOFD 考纲术语表内，官方未使用这套分类。）</small></span>
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>用一个动作给组织定档</strong>：回想最近一次故障，第一个说出「是我改的那行」的人，
+              后来发生了什么？被感谢、什么也没发生、还是被记了一笔？答案就是你们的文化档位。</li>
+            <li><strong>复盘会上换掉主语</strong>：把「谁做的」换成「<strong>什么条件让这个操作在当时看起来是对的</strong>」。
+              这一句话的替换，比任何文化宣讲都有效。</li>
+            <li><strong>给「未遂事故」开一条无惩罚通道</strong>：没造成故障但差点造成的事，
+              也要有地方说，而且第一个说的人要被公开感谢。学习型组织的信息量主要来自这里，不是来自真故障。</li>
+            <li><strong>管理者自查</strong>：坏消息到达你这里需要多久 —— 这是你能拿到的最有用的组织健康指标，
+              比任何仪表盘都灵敏。</li>
+          </ul>
+          <div class="callout callout--ext">
+            <div class="callout__title">🧭 教学补充 · 非考纲：Westrum 三类组织文化</div>
+            <p>
+              Ron Westrum 按「组织怎么处理信息」把组织分成三类：
+              <strong>病态型 Pathological</strong>（信息是权力，坏消息招来追责）、
+              <strong>官僚型 Bureaucratic</strong>（信息按部门边界流动，规则优先）、
+              <strong>生成型 Generative</strong>（信息为完成任务而流动，坏消息被主动追寻）。
+              上面这张图对比的就是这三条路径。
+            </p>
+            <p class="mb-0">
+              <strong>这套分类不在 DOFD v3.4 考纲术语表（66 条）内，也不是官方模块子项</strong>，
+              是本站为了让场景题更好读而引入的教学工具。
+              考试不会问 Westrum 的分类名称；这套分类<strong>只是本站用来读懂场景题的工具</strong>，
+              不代表官方会按这三类出题。
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度</strong>：给一段组织困境，问「这个组织首先缺什么」或「要让学习发生，前提是什么」。
+              答案指向<strong>安全文化 / 无指责</strong>，而不是更多工具或更多流程。</li>
+            <li><strong>干扰项长什么样（一）</strong>：一类把「查明并明确责任人」当成改进措施的选项 ——
+              形态上是「加强问责以避免重复故障」这个方向，或者把对当事人的绩效处理写成正向动作。
+              DOFD 对安全文化的口径与这个方向明显相反，<strong>见到追责 / 问责 / 惩罚这类措辞先排除</strong>。</li>
+            <li><strong>干扰项长什么样（二）</strong>：把 Security 的内容塞进 Safety Culture 的题里。
+              选项里出现漏洞扫描、加密、合规审计，那是 DevSecOps 的地盘，换轨道。</li>
+            <li><strong>排除技巧</strong>：安全文化的正确选项一定在描述<strong>人愿不愿意说</strong>，
+              绝不会去描述系统变得多安全。</li>
+            <li><strong>范围提醒</strong>：安全文化本身的完整考点（成分、与韧性工程的配合）在模块 4，
+              本节只需要能答出它与学习之间的<strong>依赖方向</strong>：安全文化在前，学习在后。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的命题角度、干扰项形态与排除技巧均为<strong>本站教学推断</strong>，官方未公布命题规律；上文引号内的措辞是本站构造的示例，不是官方样题选项原文。本章练习将提供仿真题；官方样题受版权保护，本站不复制题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">坏消息走得越快，组织学得越快。</p>
+          <p class="mb-0 muted"><small><strong>Safety ≠ Security</strong>：前者是「敢不敢说」，后者是「防不防得住」。中文都叫「安全」，是本科目最经典的一对陷阱。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-7-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-7-3</div>
+        <h3 class="kp__title">高绩效组织<span class="en">High-performing organizations</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">高绩效组织 <span class="en">High-performing organizations</span></span>
+            指在<strong>速度与稳定性上同时领先</strong>，并且这种领先来自<strong>组织能力</strong>
+            而不是个别英雄的组织。
+          </p>
+          <p>
+            这条定义里最反直觉、也最容易被理解反的一点是：<strong>速度与稳定性不是取舍关系</strong>。
+            高绩效组织不是「为了快牺牲了稳」，也不是「为了稳放弃了快」，而是两边一起更好。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">维度</th><th style="width:38%">高绩效组织的表现</th><th>对应的度量方向</th></tr></thead>
+              <tbody>
+                <tr><td><strong>速度</strong></td><td>发布更频繁，一个改动从提交到上线更快</td>
+                    <td>部署频率 <span class="en">Deployment frequency</span> · 变更前置时间 <span class="en">Change lead time</span></td></tr>
+                <tr><td><strong>稳定性</strong></td><td>同时故障更少、恢复更快</td>
+                    <td>变更失败率 <span class="en">Change failure rate</span> · 平均恢复时间 <span class="en">MTTR</span></td></tr>
+                <tr><td><strong>对待失败</strong></td><td>失败被当作<strong>信息</strong>，不是事故责任</td><td>无指责事后复盘的数量与落地率</td></tr>
+                <tr><td><strong>改进方式</strong></td><td>改进是日常工作的一部分，不是专项运动</td><td>改进项进入常规待办队列的比例</td></tr>
+                <tr><td><strong>能力归属</strong></td><td>能力沉淀在系统与流程里，<strong>换人不掉档</strong></td><td>关键人休假两周，多少事会停</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            表格右列前两行出现的 Deployment frequency / Change lead time / Change failure rate / MTTR，
+            以及 <strong>High-performing organizations</strong> 本身，均为 DOFD v3.4 官方考纲术语表（66 条）中的条目，
+            但<strong>官方术语表只给出条目名称</strong>。
+            上文「速度与稳定性同时领先、二者非取舍」这一表述，以及后三行的度量口径
+            （无指责事后复盘的落地率、改进项进入常规待办的比例、关键人缺席影响面）
+            是本站自拟的检查方式，不是官方指标；整张特征清单的归拢方式也是本站教学整理。
+            具体定义以官方 Learner Workbook 为准，考试以官方表述为准。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            长期以来 IT 治理的默认假设是「要快就得冒险，要稳就得慢」。
+            某银行核心系统团队据此把发布窗口压到<strong>一个季度一次</strong>，
+            所有变更必须过变更管理委员会，理由是「降低发布频率就是降低风险」。
+          </p>
+          <p>
+            实际结果是：每次发布累积三个月、上百个变更一起上线；
+            出问题时没人知道是哪一个引起的，回滚意味着把三个月的工作一起撤掉，
+            所以只能带着故障硬查 —— <strong>平均恢复时间从小时级涨到天级</strong>。这条「批量越大 → 定位越难 → 越不敢回滚」的因果链在 <a href="2.2-first-way-flow.html">2.2 第一步：流动</a> kp-2-2-3 已完整展开，这里只用它的结论。
+            用降低速度买到的不是稳定，是更大的爆炸半径和更长的故障时间。
+          </p>
+          <p class="mb-0">
+            「高绩效组织」这个概念存在的意义，就是给这个假设一个反例：
+            <strong>两者可以同时更好，而且通常是同一批做法带来的</strong> ——
+            小批量、自动化测试、快速反馈、从失败中学习。
+            它把「速度 vs 稳定」的伪两难，换成了「组织能力强 vs 弱」的真问题。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">高绩效组织</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>高绩效个人 / 英雄团队</strong></td>
+                  <td>能力沉淀在系统与流程里，<strong>换人不掉档</strong></td>
+                  <td>依赖特定的人，那个人一休假就出事；短期数据可能很好看</td>
+                </tr>
+                <tr>
+                  <td><strong>组织成熟度模型</strong></td>
+                  <td>描述<strong>结果表现</strong>：速度与稳定同时好</td>
+                  <td>描述<strong>能力阶段与演进路径</strong>。见
+                      <a href="../ch05-culture/index.html">5.4 组织成熟度模型</a></td>
+                </tr>
+                <tr>
+                  <td><strong>学习型组织</strong></td>
+                  <td><strong>结果状态</strong>：已经又快又稳</td>
+                  <td><strong>达成并维持它的机制</strong>：持续把经验变成行为改变（原则层见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps metrics</strong></td>
+                  <td>被度量的<strong>对象</strong></td>
+                  <td>度量它的<strong>工具</strong>：速度 / 质量 / 稳定性 / 文化四类指标（见第 7 章）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">本对照表为本站教学整理；<em>High-performing organizations</em>、<em>DevOps metrics</em> 为官方考纲术语表条目，官方未给出彼此的对照定义。</div>
+          <p class="mb-0 muted"><small>最容易混的一点：把「高绩效」理解成「跑得快」。定义里<strong>速度与稳定必须同时成立</strong>，只快不稳、只稳不快都不算。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>汇报数据永远成对给</strong>：部署频率 + 变更失败率、变更前置时间 + 平均恢复时间 MTTR。
+              单给一边一定会诱导出错误决策 —— 只报频率会鼓励乱发，只报失败率会鼓励不发。</li>
+            <li><strong>有人提「为了稳定要减少发布次数」时，用数据反问</strong>：
+              上一次严重故障，是因为发布太频繁，还是因为批量太大导致定位不到原因？
+              绝大多数情况下是后者。</li>
+            <li><strong>做一次英雄依赖体检</strong>：假设团队里最资深的那个人休假两周，
+              列出会停下来的事。那张清单上的每一项，都是还没沉淀成组织能力的东西。</li>
+            <li><strong>不要拿绝对值跨团队排名</strong>。核心账务系统和内部工具的部署频率没有可比性，
+              有意义的是<strong>同一个团队自己的趋势</strong>，以及速度与稳定是否在同向改善。</li>
+          </ul>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一</strong>：直接问高绩效组织的特征，或问速度与稳定性之间的关系。
+              正确方向永远是<strong>两者同时改善</strong>。</li>
+            <li><strong>干扰项长什么样（经典构造）</strong>：把两者写成此消彼长 ——
+              一类把发布频率与稳定性写成反比的选项；
+              一类直接把「速度与稳定之间必须权衡」写成结论；
+              还有一类把「更高的变更失败率」说成高绩效的代价。
+              <strong>凡是把速度与稳定写成跷跷板的选项，直接排除</strong> ——
+              按 DOFD 对高绩效组织的口径，这类选项方向明显相反。</li>
+            <li><strong>干扰项长什么样（二）</strong>：把高绩效等同于「拥有最先进的工具链」
+              或「团队成员能力最强」。DOFD 的口径落在<strong>组织能力与实践</strong>，不是工具或个人天赋。</li>
+            <li><strong>排除技巧</strong>：选项里<strong>同时出现速度类改善与稳定类改善</strong>的，通常就是正确方向；
+              只提一边的多半是干扰项。</li>
+            <li><strong>连考模式</strong>：问「高绩效组织如何<em>保持</em>领先」，
+              答案落在<strong>持续改进与持续学习</strong>（见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>），不是「完成了一次 DevOps 转型项目」。
+              这是本节三个知识点串起来考的典型方式。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的命题角度、干扰项形态与排除技巧均为<strong>本站教学推断</strong>，官方未公布命题规律。本章练习将提供仿真题；官方样题受版权保护，本站不复制题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">又快又稳，而且换个人也照样快、照样稳。</p>
+          <p class="mb-0 muted"><small>「快」和「稳」在 DOFD 里<strong>永远同向</strong>。任何把它们写成取舍的说法，都是干扰项。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>学习型组织的唯一判据是<strong>行为改变</strong> —— 不是知道了、记录了、培训过</li>
+        <li><em>Learning Organizations</em> 同时是 v3.4 <strong>模块 2（核心原则）与模块 4（框架）</strong>的官方子项，是连接原则与框架的枢纽</li>
+        <li>学习的前提是<strong>能安全地说出坏消息</strong>（Safety Culture，完整展开见 4.5）；
+            依赖方向是<strong>安全文化在前、学习在后</strong></li>
+        <li><strong>Safety ≠ Security</strong>：一个是「敢不敢说」，一个是「防不防得住」</li>
+        <li>看到「追责 / 问责 / 惩罚犯错」的选项，在 DOFD 语境里基本是干扰项</li>
+        <li>高绩效组织 <em>High-performing organizations</em> = <strong>速度与稳定性同时更好</strong>；
+            把两者写成取舍的选项直接排除</li>
+        <li>能力沉淀在系统里、不在个人身上 —— <strong>换人不掉档</strong>才算组织能力。
+            Westrum 三分类是<strong>教学补充</strong>，只用来读懂场景题，不是考纲术语</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Learning Organizations</em> 与 <em>Safety Culture</em> 均为 DOFD v3.4 课程大纲的官方模块子项 ——
+      <em>Learning Organizations</em> 同时列于 <strong>M2 Core DevOps Principles</strong> 与
+      <strong>M4 Business &amp; Technology Frameworks</strong>，<em>Safety Culture</em> 列于 M4
+      （出自 <em>DOFD v3.4 Examination Requirements</em>，2022-05；v3.6 未公开重新发布权重表）。
+      两者<strong>都不是 66 条官方考纲术语表中的条目</strong>，模块子项与术语表是两个不同级别的官方性。
+      <em>High-performing organizations</em>、<em>Organizational culture</em>、<em>DevOps metrics</em>、
+      <em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、<em>MTTR</em>
+      列于 DOFD v3.4 官方考纲术语表（66 条）。
+      <br>
+      <strong>教学补充部分</strong>：Westrum 组织文化三分类（病态型 / 官僚型 / 生成型）、Senge 五项修炼、
+      单环与双环学习，<strong>均不在 DOFD 考纲术语表与模块子项内</strong>，本节仅作为理解工具引入，已在正文就地标注。
+      图 2-7-1 的「个人经验 → 团队知识 → 组织能力」三段链路，以及 kp-2-7-3 的高绩效组织特征清单，
+      为本站教学整理，官方未以此形式给出，相应位置已单独标注。
+      本节所有图表均为自制，未复制任何官方样题的题干或选项原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

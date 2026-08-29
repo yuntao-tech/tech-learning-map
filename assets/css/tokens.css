@@ -1,0 +1,164 @@
+/* ============================================================
+   DevOps Foundation 学习站 · 设计令牌
+   所有颜色 / 字阶 / 间距的唯一来源。改这里，全站生效。
+   ============================================================ */
+
+:root {
+  /* ---------- 字体 ---------- */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
+    "Noto Sans CJK SC", sans-serif;
+  --font-serif: "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", Georgia,
+    serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* ---------- 字阶（1.2 倍率，正文 17px 为长时间阅读优化） ---------- */
+  --fs-xs: 0.75rem;    /* 12px 徽章、图注 */
+  --fs-sm: 0.8125rem;  /* 13px 表格、侧栏 */
+  --fs-base: 1.0625rem;/* 17px 正文 */
+  --fs-md: 1.1875rem;  /* 19px 小节引言 */
+  --fs-lg: 1.375rem;   /* 22px h3 */
+  --fs-xl: 1.6875rem;  /* 27px h2 */
+  --fs-2xl: 2.125rem;  /* 34px h1 */
+  --fs-3xl: 2.75rem;   /* 44px 首页主标题 */
+
+  --lh-tight: 1.25;
+  --lh-snug: 1.45;
+  --lh-body: 1.8;      /* 中文长文关键 */
+
+  /* ---------- 间距（4px 基准） ---------- */
+  --sp-1: 0.25rem;  --sp-2: 0.5rem;   --sp-3: 0.75rem;  --sp-4: 1rem;
+  --sp-5: 1.5rem;   --sp-6: 2rem;     --sp-7: 3rem;     --sp-8: 4rem;
+  --sp-9: 6rem;
+
+  /* ---------- 圆角与阴影 ---------- */
+  --r-sm: 4px; --r-md: 8px; --r-lg: 14px; --r-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(23, 20, 16, 0.06);
+  --shadow-md: 0 2px 10px rgba(23, 20, 16, 0.07);
+  --shadow-lg: 0 8px 30px rgba(23, 20, 16, 0.10);
+
+  /* ---------- 布局 ---------- */
+  --sidebar-w: 288px;
+  --reading-w: 74ch;       /* 正文栏宽 */
+  --header-h: 56px;
+
+  /* ---------- 亮色主题（默认 · 暖白纸感） ---------- */
+  --bg: #faf8f5;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f4f1eb;
+  --surface-3: #ece7de;
+  --border: #e3ddd2;
+  --border-strong: #cfc6b7;
+
+  --text: #23201c;
+  --text-strong: #100e0c;
+  --text-muted: #6b645b;
+  --text-faint: #948c81;
+
+  --accent: #0f6f6c;
+  --accent-hover: #0b5a57;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e2f0ef;
+  --accent-line: #9ccecb;
+
+  /* 徽章语义色 */
+  --core-fg: #9a5b06;  --core-bg: #fcf0da;  --core-line: #e8c98c;
+  --new-fg:  #6229c4;  --new-bg:  #eee7fd;  --new-line: #cbb6f5;
+  --ext-fg:  #40566e;  --ext-bg:  #eaf0f6;  --ext-line: #bdcfe0;
+  --warn-fg: #a52c2c;  --warn-bg: #fdeaea;  --warn-line: #f0bcbc;
+  --hot-fg:  #0d6b52;  --hot-bg:  #e0f2ec;  --hot-line: #a3d6c5;
+
+  /* 图表用色（明暗两套都保证对比度） */
+  --dia-1: #0f6f6c;  /* 主 */
+  --dia-2: #946110;  /* 强调（对白底 5.28:1，满足小字号 AA） */
+  --dia-3: #5b47b0;  /* 次强调 */
+  --dia-4: #2a6da4;  /* 信息（对白底 5.49:1） */
+  --dia-5: #a83f52;  /* 警示 */
+  --dia-ink: #3d3830;
+  --dia-fill: #ffffff;
+  --dia-fill-2: #f4f1eb;
+
+  color-scheme: light;
+}
+
+/* ---------- 暗色主题 ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131619;
+    --bg-elevated: #1a1e22;
+    --surface: #1a1e22;
+    --surface-2: #21262b;
+    --surface-3: #2a3036;
+    --border: #2e353b;
+    --border-strong: #454e56;
+
+    --text: #dfdcd6;
+    --text-strong: #f4f2ee;
+    --text-muted: #9aa1a8;
+    --text-faint: #767d84;
+
+    --accent: #4ec9c0;
+    --accent-hover: #6fdad2;
+    --accent-contrast: #10201f;
+    --accent-soft: #14312f;
+    --accent-line: #2f6d68;
+
+    --core-fg: #e0aa5c;  --core-bg: #352915;  --core-line: #6b5325;
+    --new-fg:  #b79cf5;  --new-bg:  #2a2340;    --new-line: #4b3f6e;
+    --ext-fg:  #9db6cd;  --ext-bg:  #1f2731;  --ext-line: #3a4a5a;
+    --warn-fg: #ef9a9a;  --warn-bg: #331f1f;    --warn-line: #5e3535;
+    --hot-fg:  #6ecfae;  --hot-bg:  #14302a;    --hot-line: #2c5f4f;
+
+    --dia-1: #4ec9c0;
+    --dia-2: #dcae5c;
+    --dia-3: #a68ef0;
+    --dia-4: #6bb6e8;
+    --dia-5: #e8899a;
+    --dia-ink: #cfcbc4;
+    --dia-fill: #1a1e22;
+    --dia-fill-2: #21262b;
+
+    color-scheme: dark;
+  }
+}
+
+/* ---------- 手动切换到暗色（优先级最高） ---------- */
+:root[data-theme="dark"] {
+  --bg: #131619;
+  --bg-elevated: #1a1e22;
+  --surface: #1a1e22;
+  --surface-2: #21262b;
+  --surface-3: #2a3036;
+  --border: #2e353b;
+  --border-strong: #454e56;
+
+  --text: #dfdcd6;
+  --text-strong: #f4f2ee;
+  --text-muted: #9aa1a8;
+  --text-faint: #767d84;
+
+  --accent: #4ec9c0;
+  --accent-hover: #6fdad2;
+  --accent-contrast: #10201f;
+  --accent-soft: #14312f;
+  --accent-line: #2f6d68;
+
+  --core-fg: #e0aa5c;  --core-bg: #352915;  --core-line: #6b5325;
+  --new-fg:  #b79cf5;  --new-bg:  #2a2340;  --new-line: #4b3f6e;
+  --ext-fg:  #9db6cd;  --ext-bg:  #1f2731;  --ext-line: #3a4a5a;
+  --warn-fg: #ef9a9a;  --warn-bg: #331f1f;  --warn-line: #5e3535;
+  --hot-fg:  #6ecfae;  --hot-bg:  #14302a;  --hot-line: #2c5f4f;
+
+  --dia-1: #4ec9c0;
+  --dia-2: #dcae5c;
+  --dia-3: #a68ef0;
+  --dia-4: #6bb6e8;
+  --dia-5: #e8899a;
+  --dia-ink: #cfcbc4;
+  --dia-fill: #1a1e22;
+  --dia-fill-2: #21262b;
+
+  color-scheme: dark;
+}

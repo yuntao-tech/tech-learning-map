@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 三步工作法总览 · DevOps Foundation 学习站</title>
+<meta name="description" content="三步工作法（The Three Ways）是 DevOps 的因果主轴：流动、反馈、持续改进。本节讲清三者的定义、顺序依赖，以及与实践和指标的映射。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.1-three-ways"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.1 三步工作法总览</h1>
+      <div class="page-head__en">The Three Ways</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        如果整套 DevOps 知识只能留下一个东西，就是它。三步工作法不是三条并列的口号，
+        而是一条<strong>有严格顺序依赖的因果链</strong>——后面所有的实践、工具和指标，
+        本质上都在回答「我在加强哪一步」。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>三步各自的官方名称与本质是什么，容易记混在哪</li>
+        <li>为什么它们有顺序，跳过第一步直接做第二步会发生什么</li>
+        <li>每一步分别对应哪些实践、哪些指标 —— 这是考试最爱出的对应题</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 430" role="img" aria-label="三步工作法因果环示意图">
+          <defs>
+            <marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 第三步：环绕外框 -->
+          <path d="M470 14 L854 14 Q886 14 886 46 L886 384 Q886 416 854 416 L46 416 Q14 416 14 384 L14 46 Q14 14 46 14 L440 14"
+                class="s-3" stroke-width="2" fill="none" stroke-dasharray="7 6" marker-end="url(#ah3)"/>
+          <text x="34" y="42" class="f-3" font-size="17" font-weight="700">第三步 · 持续改进（实验与学习）</text>
+          <text x="34" y="62" class="s-muted" font-size="13" opacity="0.85">Continuous Improvement — 实验 · 无指责复盘 · 把局部改进推广到全局</text>
+
+          <!-- 第一步：向右流动 -->
+          <line x1="78" y1="132" x2="800" y2="132" class="s-1" stroke-width="3" marker-end="url(#ah1)"/>
+          <text x="78" y="112" class="f-1" font-size="17" font-weight="700">第一步 · 流动 Flow</text>
+          <text x="252" y="112" class="s-muted" font-size="13" opacity="0.85">从左到右：小批量 · 限制在制品 · 消除约束 · 绝不把缺陷传给下游</text>
+
+          <!-- 价值流阶段 -->
+          <g font-size="15" text-anchor="middle">
+            <rect x="78"  y="182" width="130" height="60" rx="10" class="s-stroke s-fill2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="143" y="209" class="s-ink" font-weight="650">需求 / 规划</text>
+            <text x="143" y="228" class="s-muted" font-size="12" opacity="0.8">Business</text>
+
+            <rect x="228" y="182" width="130" height="60" rx="10" class="s-stroke s-fill2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="293" y="209" class="s-ink" font-weight="650">开发</text>
+            <text x="293" y="228" class="s-muted" font-size="12" opacity="0.8">Dev</text>
+
+            <rect x="378" y="182" width="130" height="60" rx="10" class="s-stroke s-fill2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="443" y="209" class="s-ink" font-weight="650">构建 / 测试</text>
+            <text x="443" y="228" class="s-muted" font-size="12" opacity="0.8">CI · Test</text>
+
+            <rect x="528" y="182" width="130" height="60" rx="10" class="s-stroke s-fill2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="593" y="209" class="s-ink" font-weight="650">部署 / 发布</text>
+            <text x="593" y="228" class="s-muted" font-size="12" opacity="0.8">Deploy</text>
+
+            <rect x="678" y="182" width="130" height="60" rx="10" class="s-stroke s-fill2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="743" y="209" class="s-ink" font-weight="650">运维 / 客户</text>
+            <text x="743" y="228" class="s-muted" font-size="12" opacity="0.8">Ops · Customer</text>
+          </g>
+
+          <!-- 第二步：向左反馈 -->
+          <line x1="800" y1="296" x2="78" y2="296" class="s-2" stroke-width="3" marker-end="url(#ah2)"/>
+          <text x="596" y="330" class="f-2" font-size="17" font-weight="700" text-anchor="end">第二步 · 反馈 Feedback</text>
+          <text x="608" y="330" class="s-muted" font-size="13" opacity="0.85">从右到左</text>
+          <text x="78" y="352" class="s-muted" font-size="13" opacity="0.85">自动化测试 · 遥测与可观测性 · 同行评审 · 在源头保证质量 · 问题出现即蜂拥解决</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-1-1　三步工作法的空间关系。</strong>
+        第一步是价值<strong>向右</strong>流向客户，第二步是信息<strong>向左</strong>流回源头，
+        第三步是<strong>环绕两者</strong>的实验与学习文化。
+        注意第三步画成外框而不是第三支箭头 —— 它不是流程中的一环，而是让前两步不断变快的土壤。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-1-1</div>
+        <h3 class="kp__title">三步工作法是什么<span class="en">The Three Ways</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            三步工作法是 DevOps 的<strong>底层原则集</strong>，描述一条健康的价值流必须同时具备的三种能力。
+            DOFD 官方 Blueprint 的表述是：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">官方名称</th><th style="width:26%">英文原文</th><th>一句话本质</th></tr></thead>
+              <tbody>
+                <tr><td><strong>第一步</strong></td><td><span class="term">Continuous Flow</span></td><td>让工作<strong>从左到右</strong>快速、平稳地流向客户</td></tr>
+                <tr><td><strong>第二步</strong></td><td><span class="term">Feedback</span></td><td>让信息<strong>从右到左</strong>快速回流到源头</td></tr>
+                <tr><td><strong>第三步</strong></td><td><span class="term">Continuous Improvement<br>(Experimenting and Learning)</span></td><td>建立<strong>敢于实验、能从失败中学习</strong>的文化，让前两步持续变快</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            它的思想来源是精益生产的价值流概念，由 Gene Kim 等人在《凤凰项目》与《DevOps 实践指南》中提炼为这三条。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            在它出现之前，IT 组织的改进几乎全是<strong>局部最优</strong>：
+            开发团队上了敏捷，两周一个迭代，但代码堆在测试环境等三个月；
+            运维团队为了稳定性把发布窗口压到一季度一次，于是每次发布都是一场高风险的大批量豪赌。
+            <strong>每个部门都在自己的指标上进步，端到端交付却更慢了。</strong>
+          </p>
+          <p class="mb-0">
+            三步工作法解决的正是这个问题：它把视角从「我的环节」拉到「整条价值流」，
+            并且回答了转型中最难的一个问题 —— <strong>先改什么</strong>。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">三步工作法</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>CALMS</strong></td>
+                  <td><strong>原则</strong>：说明价值流应当具备什么能力，以及改进的先后顺序</td>
+                  <td><strong>价值观</strong>：说明组织应当重视什么（文化 / 自动化 / 精益 / 度量 / 分享）</td>
+                </tr>
+                <tr>
+                  <td><strong>Agile</strong></td>
+                  <td>覆盖<strong>从需求到客户</strong>的完整价值流，包含运维</td>
+                  <td>主要覆盖<strong>需求到「开发完成」</strong>，交付之后不在其原始范围内</td>
+                </tr>
+                <tr>
+                  <td><strong>DORA 指标</strong></td>
+                  <td><strong>因</strong>：告诉你该往哪个方向改</td>
+                  <td><strong>果</strong>：告诉你改得怎么样了</td>
+                </tr>
+                <tr>
+                  <td><strong>约束理论 ToC</strong></td>
+                  <td>整体框架，三步都要</td>
+                  <td>是<strong>服务于第一步</strong>的具体方法：找到瓶颈并消除它</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：CALMS 和三步工作法都被叫作「DevOps 核心」，但一个是价值观、一个是原则。考题常用「哪个描述了 DevOps 的价值观」来区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            把它当作<strong>诊断框架</strong>，而不是背诵材料。当有人说「我们要做 DevOps」时，先问三个问题定位病灶：
+          </p>
+          <ul class="mb-0">
+            <li><strong>流动病</strong>：一个改动从提交到上线要多久？中间在哪个环节排队最长？——问题在第一步。</li>
+            <li><strong>反馈病</strong>：线上出问题多久能发现？是监控告警发现的，还是客户投诉发现的？——问题在第二步。</li>
+            <li><strong>学习病</strong>：上次故障复盘的改进项落地了吗？还是每次都在追责然后原地重来？——问题在第三步。</li>
+          </ul>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>场景归类题（最常见，Bloom 2）</strong>：给一个具体做法，问它体现了三步中的哪一步。
+              判断诀窍：看信息的<strong>方向</strong>——工作往客户走是第一步，信息往源头回是第二步，改变组织习惯是第三步。</li>
+            <li><strong>名称对应题（Bloom 1）</strong>：直接问第 N 步是什么。注意官方用词是
+              <em>Continuous Flow / Feedback / Continuous Improvement</em>，而不是「速度 / 质量 / 文化」这类改写。</li>
+            <li><strong>常见干扰项套路</strong>：把第二步和第三步的描述互换。
+              记住分界线 —— <strong>反馈是「知道出了什么事」，学习是「下次不再发生同类事」</strong>。</li>
+            <li>还会用「全部选项都对（All of the above）」作为干扰项。三步工作法的题里，
+              只有真正跨越三步的概念才选它；<strong>约束理论只支持第一步</strong>，不要误选。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本章练习将提供仿真题；官方样题受版权保护，本站不复制原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">向右流得快 → 向左反得快 → 绕着两者不停学。</p>
+          <p class="mb-0 muted"><small>第三步是<strong>圈</strong>不是<strong>箭头</strong>——这个形状记住了，就不会把它和第二步搞混。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-1-2</div>
+        <h3 class="kp__title">为什么三步必须按顺序<span class="en">Why the order matters</span></h3>
+        <div class="badge-row"><span class="badge badge--note">📝 教学整理</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p class="mb-0">
+            三步不是三个可以随意挑选、并行推进的选项，而是<strong>有前置依赖的阶梯</strong>：
+            后一步的效果，取决于前一步是否已经达到某个水平。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它解决的是转型中最常见的浪费 —— <strong>顺序搞反，钱花了却没效果</strong>：</p>
+          <ul class="mb-0">
+            <li><strong>跳过第一步直接做第二步</strong>：批量还是三个月一次发布，却上了一整套监控大屏。
+              结果是反馈来了也没用——你要等三个月才有机会修，而且一次改了两百个需求，根本定位不到是哪个引起的。
+              <strong>反馈的价值与批量大小成反比。</strong></li>
+            <li><strong>跳过第二步直接做第三步</strong>：鼓励大家大胆实验、快速试错，却没有能观测实验结果的手段。
+              这不叫实验，叫<strong>赌博</strong>——科学方法的前提是能测量。</li>
+          </ul>
+        </div>
+
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 880 300" role="img" aria-label="三步工作法的前置依赖关系">
+              <defs>
+                <marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)"/>
+                </marker>
+              </defs>
+
+              <rect x="20" y="180" width="240" height="88" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="40" y="212" class="f-1" font-size="16" font-weight="700">第一步 · 流动</text>
+              <text x="40" y="236" class="s-ink" font-size="13">缩小批量、消除约束</text>
+              <text x="40" y="255" class="s-muted" font-size="12" opacity="0.85">先让工作能快速走完一遍</text>
+
+              <rect x="315" y="100" width="240" height="88" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="335" y="132" class="f-2" font-size="16" font-weight="700">第二步 · 反馈</text>
+              <text x="335" y="156" class="s-ink" font-size="13">自动化测试、遥测、评审</text>
+              <text x="335" y="175" class="s-muted" font-size="12" opacity="0.85">批量足够小，反馈才指得准</text>
+
+              <rect x="610" y="20" width="250" height="88" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="630" y="52" class="f-3" font-size="16" font-weight="700">第三步 · 持续改进</text>
+              <text x="630" y="76" class="s-ink" font-size="13">实验、复盘、推广改进</text>
+              <text x="630" y="95" class="s-muted" font-size="12" opacity="0.85">能观测结果，实验才算实验</text>
+
+              <path d="M262 200 L313 152" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ahd)"/>
+              <path d="M557 120 L608 72" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ahd)"/>
+
+              <path d="M735 112 C 735 190 480 250 275 262" stroke="var(--dia-3)" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ahd)"/>
+              <text x="470" y="288" class="f-3" font-size="13" font-weight="650" text-anchor="middle">第三步反过来让第一、二步持续变快</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-1-2　三步的前置依赖。</strong>
+            实线是「必须先有」，虚线是「反过来加速」。
+            这张图解释了为什么 DevOps 转型的标准起手式是<strong>缩小批量</strong>，而不是先买监控工具或先谈文化。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:30%">常见误解</th><th style="width:35%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>三步可并行挑选</td><td>「我们先做第三步的文化建设」</td><td>文化建设没有可观测的改进作为反馈，会退化成口号</td></tr>
+                <tr><td>顺序 = 阶段</td><td>「第一步做完了再开始第二步」</td><td>是<strong>依赖</strong>不是<strong>阶段</strong>，三步长期并行推进，只是<strong>投入重心</strong>有先后</td></tr>
+                <tr><td>第三步是终点</td><td>「做到第三步就毕业了」</td><td>第三步是<strong>环</strong>，它的产出会回流去加强第一、二步</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p class="mb-0">
+            排转型路线图时按这个顺序投入重心：
+            <strong>① 先把一个改动走完全程的时间量出来</strong>（价值流映射）→
+            <strong>② 找到排队最久的环节并消除它</strong>（约束理论）→
+            <strong>③ 批量降下来后再补自动化测试与可观测性</strong>（反馈才有意义）→
+            <strong>④ 有了数据再推无指责复盘与实验机制</strong>（学习有依据）。
+            反过来做，每一步的投入都会打折。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0">
+            <li>题干描述一个组织的困境（比如发布周期很长、故障靠客户报障、复盘后无人跟进），
+              问<strong>应该优先关注什么</strong>。先定位困境属于哪一步，再选对应的实践。</li>
+            <li>会考「第一步的目标是什么」。正确方向是<strong>增加工作的流动</strong>；
+              干扰项常写成「允许已知缺陷流向下游」「允许局部优化导致全局退化」「增加约束」—— 这些都是第一步明确<strong>反对</strong>的。</li>
+            <li>约束理论服务于<strong>第一步</strong> —— 这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不要误选成第二、三步。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line mb-0">没有流动，反馈是噪音；没有反馈，实验是赌博。</p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-1-3</div>
+        <h3 class="kp__title">三步 × 实践 × 指标 的映射<span class="en">Mapping practices and metrics to the Three Ways</span></h3>
+        <div class="badge-row"><span class="badge badge--hot">📌 高频</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p class="mb-0">
+            三步是抽象原则，实践是具体做法，指标是验证手段。
+            <strong>三者是一一对应的三层结构</strong>，把这张对应关系记住，第 3、6、7 章的大量内容会自动串起来。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p class="mb-0">
+            没有这层映射，学习者会把 CI、可观测性、混沌工程、DORA 指标各自当成孤立名词去背。
+            有了映射，遇到任何新概念都可以先归位：<strong>它在加强哪一步？它验证的是哪一步？</strong>
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">③ 对应关系总表</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th style="width:16%">工作法</th><th style="width:42%">典型实践</th><th>典型指标</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="f-1" style="color:var(--dia-1)">第一步<br>流动</strong></td>
+                  <td>持续集成 · 部署流水线 · 小批量发布 · 看板与限制在制品 WIP ·
+                      消除约束（约束理论）· 基础设施即代码 · 干掉手工交接</td>
+                  <td><strong>速度类</strong>：部署频率 <span class="en">Deployment Frequency</span> ·
+                      变更前置时间 <span class="en">Change Lead Time</span> ·
+                      周期时间 <span class="en">Cycle Time</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--dia-2)">第二步<br>反馈</strong></td>
+                  <td>自动化测试与持续测试 · 监控与可观测性 · 同行评审 · 左移测试与安全（DevSecOps）·
+                      ChatOps · 问题出现即蜂拥解决 · 在源头保证质量</td>
+                  <td><strong>质量与稳定性类</strong>：变更失败率 <span class="en">Change Failure Rate</span> ·
+                      平均恢复时间 <span class="en">MTTR</span> · 缺陷逃逸率 · 平均检测时间 MTTD</td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--dia-3)">第三步<br>持续改进</strong></td>
+                  <td>混沌工程与故障演练 · 无指责事后复盘 · 改进型 Kata <span class="en">Improvement Kata</span> ·
+                      学习型组织 · Dojo 与沉浸式学习 · 把局部发现转化为全局改进</td>
+                  <td><strong>文化类</strong>：员工净推荐值 <span class="en">eNPS</span> ·
+                      实验与复盘数量 · 改进项落地率 · 员工敬业度与士气</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            表中的<strong>实践名称与指标名称</strong>均出自 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+            <strong>三者之间的对应归类</strong>是本站为便于理解所做的教学整理，官方文件未以此形式给出对照表。
+            考试中出现的对应关系以官方表述为准。
+          </div>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">④ 最容易混的三对</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:32%">容易混</th><th style="width:34%">分界线</th><th>归属</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>周期时间 vs MTTR</td>
+                  <td>前者量的是「<strong>交付</strong>一个变更要多久」，后者量的是「<strong>恢复</strong>一次故障要多久」</td>
+                  <td>周期时间 → 第一步<br>MTTR → 第二步</td>
+                </tr>
+                <tr>
+                  <td>持续测试 vs 混沌工程</td>
+                  <td>前者是「<strong>发现</strong>已知类型的问题」，后者是「<strong>主动制造</strong>未知故障来学习系统行为」</td>
+                  <td>持续测试 → 第二步<br>混沌工程 → 第三步</td>
+                </tr>
+                <tr>
+                  <td>同行评审 vs 事后复盘</td>
+                  <td>前者在变更<strong>上线前</strong>拦截问题（反馈），后者在事故<strong>发生后</strong>改变组织行为（学习）</td>
+                  <td>同行评审 → 第二步<br>事后复盘 → 第三步</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0">
+            <li><strong>给指标问工作法</strong>：出现「哪个指标用于度量第一步 / 流动」这类题，
+              在选项里找<strong>时间或频率</strong>类的（周期时间、前置时间、部署频率），
+              而不是失败率、恢复时间这些稳定性指标。</li>
+            <li><strong>给实践问工作法</strong>：同行评审属于第二步 —— 这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认，容易被误选成第三步。</li>
+            <li><strong>反向题</strong>：问某一步<strong>不包含</strong>什么。把握住方向判据（向右 / 向左 / 绕圈）即可排除。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">速度类指标 → 第一步；质量与稳定性类 → 第二步；文化类 → 第三步。</p>
+          <p class="mb-0 muted"><small>DORA 四大指标正好横跨前两步：部署频率与变更前置时间量<strong>流动</strong>，变更失败率与 MTTR 量<strong>反馈</strong>。这也是 DORA 能同时反映速度与稳定性的原因。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>三步的官方名称：<strong>Continuous Flow / Feedback / Continuous Improvement（Experimenting and Learning）</strong></li>
+        <li>方向判据：<strong>向右流 · 向左反 · 绕圈学</strong></li>
+        <li>顺序依赖：<strong>没有流动，反馈是噪音；没有反馈，实验是赌博</strong></li>
+        <li>约束理论支持<strong>第一步</strong>；同行评审属于<strong>第二步</strong>；混沌工程属于<strong>第三步</strong></li>
+        <li>第一步的目标是<strong>增加工作的流动</strong>，明确反对「把已知缺陷传给下游」和「局部优化导致全局退化」</li>
+        <li>指标归属：速度类 → 一，质量稳定类 → 二，文化类 → 三</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：三步的官方名称与表述出自 PeopleCert《DevOps Foundation® Blueprint》
+      —— <em>1st Way: Continuous Flow / 2nd Way: Feedback / 3rd Way: Continuous Improvement (Experimenting and Learning)</em>；
+      「The Three Ways」「Theory of Constraints」「Improvement kata」「Simian Army/Chaos Monkey」「Change lead time」「Cycle time」
+      「Deployment frequency」「Change failure rate」「MTTR」「eNPS」等术语均列于 DOFD v3.4 官方考纲术语表。
+      三层映射关系为本站教学整理，已在表下单独标注。<br>「约束理论支持第一步」与「同行评审属于第二步」两条归属，由 <strong>DOFD v3.4 官方样题答案键</strong>确认（本站只陈述结论，不复制题干与选项原文）。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

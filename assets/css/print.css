@@ -1,0 +1,28 @@
+/* ============================================================
+   打印 / 复习卡样式（Cmd+P）
+   ============================================================ */
+@media print {
+  :root {
+    --bg: #fff; --surface: #fff; --surface-2: #fff; --surface-3: #fff;
+    --text: #000; --text-strong: #000; --text-muted: #333; --text-faint: #555;
+    --border: #bbb; --border-strong: #888;
+    --accent: #05534f; --accent-soft: #fff;
+    --dia-fill: #fff; --dia-fill-2: #fff; --dia-ink: #000;
+  }
+  .topbar, .sidebar, .pager, .no-print, .theme-toggle, .menu-toggle { display: none !important; }
+  .layout { display: block; }
+  .page { max-width: none; padding: 0; }
+  body { font-size: 11pt; line-height: 1.6; }
+
+  h2 { break-after: avoid; }
+  h3, h4 { break-after: avoid; }
+  .kp, .callout, figure.dia, .q, table { break-inside: avoid; }
+  .kp { border: 1px solid #999; }
+
+  a { color: #000; text-decoration: none; }
+  /* 打印时显示外链地址，站内相对链接不显示 */
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; word-break: break-all; }
+
+  .badge { border: 1px solid #666 !important; background: #fff !important; color: #000 !important; }
+  .q__exp[hidden] { display: block !important; }
+}

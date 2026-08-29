@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.5 第三步：持续改进（实验与学习） · DevOps Foundation 学习站</title>
+<meta name="description" content="第三步的官方全称是持续改进（实验与学习）Continuous Improvement (Experimenting and Learning)。本节讲高信任文化与科学方法、把改进日常工作置于日常工作之上、改进型 Kata 与 Dojo，以及如何把局部发现转化为全局改进。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.5-third-way-learning"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.5 第三步：持续改进（实验与学习）</h1>
+      <div class="page-head__en">3rd Way: Continuous Improvement (Experimenting and Learning)</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        第三步是三步里唯一<strong>把「改进这件事本身」当成工作对象</strong>的一步 ——
+        它改的不只是某条流程，而是这个组织持续改流程的能力。
+        它要回答的问题很朴素：<strong>这个组织有没有能力，把一次经验变成一次永久的能力提升？</strong>
+        没有它，第一步和第二步的成果会随着人员流动和时间推移一点点退回原状。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>第三步的官方全称到底是什么 —— 为什么不能简称成「持续学习」</li>
+        <li>为什么「允许失败」不是软性口号，而是科学方法能否成立的前提</li>
+        <li>一个团队学到的东西，靠什么机制变成整个组织的默认能力</li>
+      </ul>
+    </div>
+
+    <!-- ============ 主图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 300" role="img" aria-label="同一次故障的时间轴：左半段是第二步反馈处理这一次，右半段是第三步持续改进防下一次，分界点是故障已恢复">
+          <defs>
+            <marker id="ah-25-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-25-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <text x="16" y="26" class="s-ink" font-size="16" font-weight="700">同一次故障，两段完全不同的工作</text>
+
+          <text x="16" y="54" class="f-2" font-size="15" font-weight="700">第二步 · 反馈：处理正在发生的这一次</text>
+          <text x="468" y="54" class="f-3" font-size="15" font-weight="700">第三步 · 持续改进：改变下一次的默认做法</text>
+
+          <g text-anchor="middle">
+            <rect x="16" y="76" width="124" height="74" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="78" y="104" class="f-2" font-size="15" font-weight="700">检测</text>
+            <text x="78" y="126" class="s-muted" font-size="12">遥测与告警</text>
+            <text x="78" y="142" class="s-muted" font-size="12">发现异常</text>
+
+            <rect x="162" y="76" width="124" height="74" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="224" y="104" class="f-2" font-size="15" font-weight="700">定位</text>
+            <text x="224" y="126" class="s-muted" font-size="12">蜂拥解决</text>
+            <text x="224" y="142" class="s-muted" font-size="12">停下来一起查</text>
+
+            <rect x="308" y="76" width="124" height="74" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="370" y="104" class="f-2" font-size="15" font-weight="700">恢复</text>
+            <text x="370" y="126" class="s-muted" font-size="12">服务回到正常</text>
+            <text x="370" y="142" class="s-muted" font-size="12">影响到此为止</text>
+
+            <rect x="468" y="76" width="124" height="74" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="530" y="104" class="f-3" font-size="15" font-weight="700">复盘</text>
+            <text x="530" y="126" class="s-muted" font-size="12">不问谁犯错</text>
+            <text x="530" y="142" class="s-muted" font-size="12">问系统怎么了</text>
+
+            <rect x="614" y="76" width="124" height="74" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="676" y="104" class="f-3" font-size="15" font-weight="700">改系统设计</text>
+            <text x="676" y="126" class="s-muted" font-size="12">改进项进待办</text>
+            <text x="676" y="142" class="s-muted" font-size="12">有 owner 有容量</text>
+
+            <rect x="760" y="76" width="124" height="74" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="822" y="104" class="f-3" font-size="15" font-weight="700">扩散</text>
+            <text x="822" y="126" class="s-muted" font-size="12">固化进模板与</text>
+            <text x="822" y="142" class="s-muted" font-size="12">平台默认配置</text>
+          </g>
+
+          <line x1="142" y1="113" x2="158" y2="113" class="s-2" stroke-width="2.5" marker-end="url(#ah-25-2)"/>
+          <line x1="288" y1="113" x2="304" y2="113" class="s-2" stroke-width="2.5" marker-end="url(#ah-25-2)"/>
+          <line x1="594" y1="113" x2="610" y2="113" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-1)"/>
+          <line x1="740" y1="113" x2="756" y2="113" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-1)"/>
+
+          <text x="224" y="176" class="f-2" font-size="13" text-anchor="middle">管的是：这一次的影响有多大</text>
+          <text x="676" y="176" class="f-3" font-size="13" text-anchor="middle">管的是：下一次还会不会发生</text>
+
+          <line x1="16" y1="200" x2="884" y2="200" class="s-stroke" stroke-width="1.5" marker-end="url(#ah-25-1)"/>
+          <text x="16" y="222" class="s-muted" font-size="12">故障发生</text>
+          <text x="884" y="222" class="s-muted" font-size="12" text-anchor="end">几天到几周之后</text>
+
+          <line x1="451" y1="66" x2="451" y2="238" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <text x="451" y="262" class="s-ink" font-size="13" text-anchor="middle">分界点：故障已恢复 —— 左边做的事到此结束，右边做的事才刚开始</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-5-1　第二步与第三步的分界不在做什么，而在管哪一次。</strong>
+        两侧的活动都围绕同一次故障，都会用到「故障」二字，所以场景题最爱在这里设干扰项。
+        这张图想让你看懂的是：<strong>分界点是「故障已恢复」这一刻</strong> ——
+        在它左边的一切是为了让这一次的影响停下来，在它右边的一切是为了让下一次不再发生。
+        六个活动的名称与两段划分为本站教学整理，官方未以此形式给出两步之间的边界。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-5-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-5-1</div>
+        <h3 class="kp__title">第三步：持续改进（实验与学习）<span class="en">3rd Way: Continuous Improvement (Experimenting and Learning)</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            第三步是<strong>在价值流之上建立一种敢于实验、能从失败中学习的组织习惯</strong>，
+            让第一步的流动和第二步的反馈持续变快、而不是靠一次运动式改造之后原地退化。
+          </p>
+          <p>
+            <strong>官方全称必须写全。</strong>PeopleCert 的 DevOps Foundation Blueprint 里，这一步写作
+            <em>3rd Way: Continuous Improvement (Experimenting and Learning)</em>。
+            中文资料常把它简写成「持续学习」或「第三步 = 学习」，这在考试用词上是有风险的：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">项</th><th style="width:40%">官方 Blueprint 用词</th><th>常见的不准确说法</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>名称</strong></td>
+                  <td><span class="term">Continuous Improvement <span class="en">(Experimenting and Learning)</span></span></td>
+                  <td>Continuous Learning / 持续学习</td>
+                </tr>
+                <tr>
+                  <td><strong>目的</strong></td>
+                  <td><strong>改进</strong>（Improvement）—— 系统真的变好了</td>
+                  <td>「学到了东西」「开了复盘会」</td>
+                </tr>
+                <tr>
+                  <td><strong>手段</strong></td>
+                  <td><strong>实验 + 学习</strong>（Experimenting and Learning）</td>
+                  <td>只提学习，丢掉「实验」这一半</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>本站把第三步的内涵拆成三条来讲：</p>
+          <ul>
+            <li><strong>高信任文化与科学方法</strong> —— 允许承担风险、把失败当数据（见本知识点 ②）</li>
+            <li><strong>把改进日常工作置于日常工作之上，并通过重复与练习达成精通</strong> —— 改进型 Kata、Dojo、沉浸式学习（kp-2-5-2）</li>
+            <li><strong>把局部发现转化为全局改进</strong> —— 一个团队学到的必须扩散到整个组织（kp-2-5-3）</li>
+          </ul>
+          <div class="src-note">
+            名称与英文原文出自 PeopleCert《DevOps Foundation® Blueprint》，并在 v3.4 课程大纲 M2 模块中以「The Third Way」作为独立子项列出。
+            与 <a href="2.4-second-way-feedback.html">2.4 第二步：反馈</a> 同一口径：v3.4 术语表 66 条收录的是「The Three Ways」，
+            「The Third Way」本身并未单列，因此本知识点不标「⭐ 考纲核心」，而标为「官方 · Blueprint 名称与 M2 子项」；
+            本节标题层的「⭐ 考纲核心」来自 kp-2-5-2 的三个术语表条目（Improvement kata / Dojo / Immersion）。
+            上面这<strong>三条内涵的拆分方式</strong>是本站的教学整理，官方 Blueprint 只给出名称、未以此形式列出内涵；
+            与之直接对应的官方术语表条目是 <strong>Improvement kata、Dojo、Immersion</strong>（DOFD v3.4 考纲术语表）。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它出现之前，组织不是不复盘，而是<strong>复盘会开成了追责会</strong>。一个真实形状的场景：
+          </p>
+          <ul>
+            <li>周四晚上发布，发布手册第 7 步「手工切换只读开关」被漏做，订单接口挂了 40 分钟。</li>
+            <li>复盘会的结论写成「因某工程师未严格执行发布手册，责任人已批评教育，后续加强培训与审批」。</li>
+            <li>三个月后同一个手工步骤又被漏做 —— 那句结论没有改动<strong>任何一处系统设计</strong>，开关还是手工的。</li>
+          </ul>
+          <p>
+            <strong>追责会让坏消息不再上行、把失败推迟到更贵的时候才暴露</strong> ——
+            这条机制归 <a href="2.7-learning-organizations.html">2.7 学习型组织</a> 展开（安全文化是学习的前提），本节不重复。
+            本节要问的是另一半：为什么一个必须手工执行的开关，还留在 2020 年代的发布流程里？
+          </p>
+          <p class="mb-0">
+            第三步要解决的就是这个：把「谁犯了错」换成「系统的什么设计让这个错误如此容易发生」，
+            让报告坏消息变成安全的行为，让失败变成可用的数据。
+            这不是道德要求，是<strong>科学方法的前提</strong> —— 数据被隐瞒的时候，实验就不成立。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">第三步 · 持续改进</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>第二步 · 反馈</strong><br><small class="muted">见 <a href="2.4-second-way-feedback.html">2.4 第二步：反馈</a></small></td>
+                  <td>让组织<strong>下次不再发生同类问题</strong>：改变系统设计与工作习惯</td>
+                  <td>让人<strong>尽快知道出了什么事</strong>：测试、遥测、同行评审、蜂拥解决</td>
+                </tr>
+                <tr>
+                  <td><strong>混沌工程</strong>（见 <a href="2.6-chaos-engineering.html">2.6 混沌工程</a>）</td>
+                  <td>整个第三步：包含文化、练习、扩散三层</td>
+                  <td>第三步<strong>之下的一种具体实验手段</strong>：主动注入故障来验证韧性假设</td>
+                </tr>
+                <tr>
+                  <td><strong>学习型组织</strong>（见 <a href="2.7-learning-organizations.html">2.7 学习型组织</a>）</td>
+                  <td>DevOps 三步工作法中的<strong>一步</strong>，落点是价值流</td>
+                  <td>更大的<strong>组织理论</strong>，描述整个组织如何持续获取与转化知识</td>
+                </tr>
+                <tr>
+                  <td><strong>无指责事后复盘</strong><span class="en">Blameless Postmortem</span></td>
+                  <td>原则层：为什么必须无指责</td>
+                  <td>活动层：一场具体的会议 —— 它是第三步的<strong>载体之一</strong>，不等于第三步</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            本对照表为本站教学整理，官方 Blueprint 未以此形式给出三步之间的边界。
+            「<strong>无指责事后复盘 Blameless Postmortem</strong>」<strong>不在 DOFD v3.4 考纲术语表 66 条内</strong>，仅作理解辅助。
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>第二步和第三步都会出现「故障」二字</strong>。分界线是时态 —— 反馈处理的是<strong>正在发生</strong>的这一次，学习处理的是<strong>还没发生</strong>的下一次。（此判据为本站教学口诀，官方未给出边界定义。）</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把它变成四个可以当场执行的检查动作，而不是一句「要建设文化」：</p>
+          <ul>
+            <li><strong>翻上一次的复盘纪要</strong>：里面出现人名 + 「应该更仔细」了吗？出现了，说明还在追责模式。</li>
+            <li><strong>看改进项去哪了</strong>：复盘产出的改进项有没有 owner、有没有进迭代待办、有没有占用容量？只写在纪要里的改进项等于没有。</li>
+            <li><strong>看故障上报的时延</strong>：从工程师察觉异常，到他告诉别人，中间隔多久？这个时延是信任度最诚实的度量。</li>
+            <li><strong>看有没有实验预算</strong>：允许「试了发现不行然后回滚」的时间是多少？如果每次尝试都必须成功，那做的就不是实验。</li>
+          </ul>
+          <p class="mb-0 muted"><small>文化本身如何定义、文化债如何累积、组织成熟度如何评估，属于第 5 章的范围（见 <a href="../ch05-culture/index.html">5.2 文化债</a>），本节不展开。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>名称补全题（Bloom 1 层级）</strong>：问第三步的官方名称。正确项的主词是
+              <em>Continuous Improvement</em>，括号里是 <em>Experimenting and Learning</em>。</li>
+            <li><strong>干扰项长什么样</strong>：最常见的一类是「形近词替换」——
+              <em>Continuous Learning</em>（丢掉 Improvement）、<em>Continuous Feedback</em>（挪用第二步）、
+              <em>Continuous Delivery</em>（挪用第 3 章的实践名）、<em>Continuous Experimentation</em>（只留半边括号内容）。
+              排除技巧：<strong>先看主词是不是 Improvement，再看括号里是不是两件事</strong>。</li>
+            <li><strong>场景归属题（Bloom 2）</strong>：给一段组织行为，问体现了哪一步。
+              出现「复盘不追责」「允许实验失败」「预留改进时间」→ 第三步；
+              出现「监控告警」「自动化测试拦截」「同行评审」→ <a href="2.4-second-way-feedback.html">第二步（2.4 反馈）</a>。</li>
+            <li><strong>反向干扰</strong>：把「通过更严格的审批与问责来杜绝人为失误」写得非常像管理常识。
+              排除技巧：<strong>凡是把「不许失败」当目标的选项，都不是第三步</strong>；
+              第三步的目标是让失败发生得早、发生得便宜、并且被记录下来。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度与干扰项形态为本站基于考纲结构与 Bloom 1–2 层级所作的教学推断，官方未公布题型分布；本站不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">官方叫「持续改进（实验与学习）」——学习是手段，改进才是目的。</p>
+          <p class="mb-0 muted"><small>时态判据：<strong>反馈解决正在发生的这一次，学习改变组织下一次的默认做法。</strong>（此判据为本站教学口诀，官方未给出边界定义。）</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-5-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-5-2</div>
+        <h3 class="kp__title">改进日常工作 · 改进型 Kata 与 Dojo<span class="en">Improving Daily Work · Improvement Kata, Dojo, Immersion</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            第三步不靠热情维持，靠<strong>两件被制度化的事</strong>：
+            一是<strong>把改进日常工作本身当成日常工作的一部分</strong>，并且优先级高于日常工作；
+            二是<strong>通过重复与练习达成精通</strong> —— 改进要有固定套路，新能力要有练习场地。
+            官方术语表里对应三个条目：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">官方术语</th><th style="width:16%">中文</th><th>本站的一句话解释</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">Improvement kata</span></td>
+                  <td><strong>改进型 Kata</strong></td>
+                  <td>一套<strong>固定的四步改进动作</strong>，练到形成肌肉记忆，改进就不再依赖灵感和英雄</td>
+                </tr>
+                <tr>
+                  <td><span class="term">Dojo</span></td>
+                  <td><strong>Dojo</strong><br><small class="muted">沉浸式实战训练场</small></td>
+                  <td>团队<strong>带着自己真实的工作</strong>脱产进驻数周，教练在旁，产出必须能带回生产</td>
+                </tr>
+                <tr>
+                  <td><span class="term">Immersion</span></td>
+                  <td><strong>沉浸式学习</strong></td>
+                  <td>把学习<strong>放进真实上下文并持续足够长时间</strong>的学习方式，区别于一次性的听课</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>Improvement kata、Dojo、Immersion</strong> 三个术语均列于 DOFD v3.4 官方考纲术语表；
+            表中<strong>「一句话解释」以及下文的 Kata 四步表述</strong>是本站的教学整理（Kata 四步源自精益改进传统），
+            官方考纲只列出术语名称，具体定义以官方 Learner Workbook 为准。
+            「把改进日常工作置于日常工作之上」是第三步的通行阐述，<strong>不是官方术语表条目</strong>，属教学补充。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它同时解决两个具体的坑。</p>
+          <p><strong>坑一：改进永远排在最后一格，然后被砍。</strong></p>
+          <ul>
+            <li>构建时间从 4 分钟涨到 26 分钟，团队里每个人都知道，也都知道怎么修，大概两天工作量。</li>
+            <li>但每个迭代都被功能需求塞满，「优化构建」这张卡连续四个迭代排在最后，四次都被移到下个迭代。</li>
+            <li>代价是复利式的：按 8 人每天各 10 次构建估算，8 × 10 × 多等 22 分钟 ≈ 每天多出近 29 小时的等待被摊进流程里 ——
+              即便只有三分之一变成真正的空转，也相当于每天丢掉一个人的产出，远超修复它的两天工作量。
+              <span class="muted">（本站教学估算，非考纲数据。）</span></li>
+            <li>结果是<strong>越没时间还债，债越贵，就越没时间还债</strong>。系统只会一年比一年脆。</li>
+          </ul>
+          <p><strong>坑二：改进和新技能依赖个别英雄。</strong></p>
+          <ul>
+            <li>某个资深工程师周末重构了一把，效果很好；他调岗之后半年，代码退回原样。</li>
+            <li>新技术靠一场两小时的培训 + 一套 PPT，回到工位面对真实代码库，没人敢动第一行。</li>
+          </ul>
+          <p class="mb-0">
+            Kata 把改进变成<strong>人人都会的固定动作</strong>，Dojo 与沉浸式学习把新技能变成<strong>在真实工作上练出来的手感</strong>。
+            两者都是在对抗同一件事：<strong>改进能力只长在个别人身上</strong>。
+          </p>
+        </div>
+
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 370" role="img" aria-label="改进型 Kata 的四步循环：理解方向、把握现状、设定下一个目标状态、用 PDCA 迭代逼近">
+              <defs>
+                <marker id="ah-25-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+                <marker id="ah-25-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <text x="12" y="26" class="f-3" font-size="16" font-weight="700">改进型 Kata　Improvement Kata</text>
+              <text x="12" y="52" class="s-muted" font-size="13">把「改进」变成可重复的四步动作，而不是等灵感和英雄出现</text>
+
+              <!-- 四个步骤 -->
+              <g text-anchor="middle">
+                <rect x="12" y="80" width="190" height="124" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="107" y="112" class="f-3" font-size="16" font-weight="700">① 理解方向</text>
+                <text x="107" y="134" class="s-muted" font-size="12">Understand the Direction</text>
+                <text x="107" y="174" class="s-ink" font-size="13">长期挑战：往哪儿去</text>
+                <text x="107" y="192" class="s-ink" font-size="13">几个月内不改</text>
+
+                <rect x="240" y="80" width="190" height="124" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="335" y="112" class="f-3" font-size="16" font-weight="700">② 把握现状</text>
+                <text x="335" y="134" class="s-muted" font-size="12">Grasp the Current Condition</text>
+                <text x="335" y="174" class="s-ink" font-size="13">用事实和数据说清</text>
+                <text x="335" y="192" class="s-ink" font-size="13">今天到底怎么跑</text>
+
+                <rect x="468" y="80" width="190" height="124" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="563" y="112" class="f-3" font-size="16" font-weight="700">③ 设定目标状态</text>
+                <text x="563" y="134" class="s-muted" font-size="12">Establish the Next</text>
+                <text x="563" y="150" class="s-muted" font-size="12">Target Condition</text>
+                <text x="563" y="174" class="s-ink" font-size="13">一小步：几天到几周</text>
+                <text x="563" y="192" class="s-ink" font-size="13">可衡量、说得清楚</text>
+
+                <rect x="696" y="80" width="190" height="124" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="791" y="112" class="f-3" font-size="16" font-weight="700">④ 迭代逼近</text>
+                <text x="791" y="134" class="s-muted" font-size="12">Experiment Toward</text>
+                <text x="791" y="150" class="s-muted" font-size="12">the Target (PDCA)</text>
+                <text x="791" y="174" class="s-ink" font-size="13">计划-执行-检查-处理</text>
+                <text x="791" y="192" class="s-ink" font-size="13">一次只动一个变量</text>
+              </g>
+
+              <line x1="204" y1="142" x2="236" y2="142" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-3)"/>
+              <line x1="432" y1="142" x2="464" y2="142" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-3)"/>
+              <line x1="660" y1="142" x2="692" y2="142" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-3)"/>
+
+              <!-- 回路 A：达成 -->
+              <path d="M760 206 C 760 246 740 250 700 250 L 630 250 C 590 250 563 246 563 210"
+                    class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-25-4)"/>
+              <text x="665" y="242" class="f-2" font-size="13" text-anchor="middle">达成 → 定下一个目标</text>
+
+              <!-- 回路 B：未达成 -->
+              <path d="M830 206 C 830 300 810 310 760 310 L 405 310 C 355 310 335 300 335 210"
+                    class="s-2" stroke-width="2" stroke-dasharray="7 5" fill="none" marker-end="url(#ah-25-4)"/>
+              <text x="583" y="302" class="f-2" font-size="13" text-anchor="middle">没达成 → 用新学到的事实更新现状，再跑一轮</text>
+
+              <text x="12" y="352" class="s-muted" font-size="13">方向由 ① 给定、全程不变；②③④ 是一轮又一轮的短循环，每跑完一轮，目标状态就往方向上挪一格。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-5-2　改进型 Kata 的四步循环。</strong>
+            这张图想让你看懂两件事：一是<strong>顺序不可交换</strong> —— 必须先用事实把现状说清，才有资格设定下一个目标状态；
+            二是<strong>失败是循环的正常出口</strong>，虚线那条回路才是常态，它把「没达成」变成新的现状数据，而不是变成一次问责。
+            四步的名称与英文出自精益改进传统（Toyota Kata），DOFD v3.4 考纲术语表只列出 <em>Improvement kata</em> 一词、未给出步骤名，英文不必背。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">容易混的一对</th><th style="width:37%">左边是什么</th><th>右边是什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>改进型 Kata</strong> vs <strong>PDCA</strong></td>
+                  <td>完整的改进套路：<strong>方向 → 现状 → 目标状态</strong>三步之后才进入循环</td>
+                  <td>只是 Kata 第 ④ 步<strong>内部</strong>的实验循环：计划-执行-检查-处理</td>
+                </tr>
+                <tr>
+                  <td><strong>Dojo</strong> vs <strong>常规培训</strong></td>
+                  <td>带<strong>真实工作</strong>进场、脱产数周、教练在旁、产出能上生产</td>
+                  <td>用示例项目、两小时、讲师授课、回工位后无处落地</td>
+                </tr>
+                <tr>
+                  <td><strong>Dojo</strong> vs <strong>Immersion</strong></td>
+                  <td>偏<strong>形式与场地</strong>：一个有教练的实战训练场</td>
+                  <td>偏<strong>学习方式</strong>：把学习放进真实上下文并持续足够久</td>
+                </tr>
+                <tr>
+                  <td><strong>改进型 Kata</strong> vs <strong>事后复盘</strong></td>
+                  <td><strong>主动</strong>发起：不需要出事，日常就在跑</td>
+                  <td><strong>被动</strong>触发：由一次事故或异常触发</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>Dojo 和 Immersion 在术语表里是两条并列的词</strong>，考题会把它们互相当干扰项。记住 Dojo 是<strong>地方</strong>（道场），Immersion 是<strong>方式</strong>（泡进去）。上表的对照为本站教学整理，官方未以此形式给出；表中的 <strong>PDCA</strong> 与<strong>事后复盘</strong>同样<strong>不在 DOFD v3.4 术语表 66 条内</strong>，只作理解辅助。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>让改进拿到真实容量</strong>：</p>
+          <ul>
+            <li>改进项和功能需求进<strong>同一个待办列表</strong>，同样有 owner、验收标准和迭代归属 —— 不进同一个列表，它就永远排在最后。</li>
+            <li>给改进划一块固定份额（例如每个迭代 20%，或每周固定半天），并且这块份额<strong>不允许被功能需求借走</strong>。</li>
+          </ul>
+          <p><strong>用 Kata 四步写一张改进卡</strong>（示例）：</p>
+          <ul>
+            <li><strong>方向</strong>：变更前置时间从 3 周降到 3 天（半年目标，期间不改）。</li>
+            <li><strong>现状</strong>：构建 26 分钟；等测试环境平均排队 2 天；发布需 3 个人工审批。</li>
+            <li><strong>下一个目标状态</strong>：两周内构建降到 8 分钟以内 —— 可衡量、说得清楚。</li>
+            <li><strong>迭代逼近</strong>：本轮只做一件事（拆分测试并行执行），跑完量一次，达成就定下一个目标状态，没达成就把量到的新事实写回「现状」。</li>
+          </ul>
+          <p class="mb-0">
+            <strong>Dojo 怎么办</strong>：不要把它办成培训班。挑一个团队<strong>带着自己正在做的服务</strong>进驻两到六周，
+            教练全程在场，结束时的验收标准是「改造后的服务已经跑在生产上」，而不是「课程满意度 4.8 分」。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语识别题（Bloom 1 层级）</strong>：给一段描述，问对应哪个术语。
+              <strong>Dojo / Immersion / Improvement kata 互为干扰项</strong>，因为三个词都在同一张术语表里、且都关于「学习」。
+              排除技巧：描述里出现<strong>「带着真实工作、有教练、一段时间的场所」→ Dojo</strong>；
+              出现<strong>「固定步骤、目标状态、一轮轮逼近」→ Improvement kata</strong>；
+              出现<strong>「深度投入、持续沉浸的学习方式」→ Immersion</strong>。</li>
+            <li><strong>Kata 步骤顺序题（Bloom 2）</strong>：典型干扰项是<strong>把「设定目标状态」放到「把握现状」之前</strong>，
+              读起来很顺（先定目标再看现状是日常管理语感），但顺序是错的。
+              排除技巧：<strong>Kata 一定先有事实，后有目标</strong>；而且方向是长期的、目标状态是短期的，两者不能互换。</li>
+            <li><strong>「把改进日常工作置于日常工作之上」这一条虽不是官方术语</strong>，
+              但场景归属题常按它的语义出题：把「改进应该在业余时间或加班时间做」「先交付完所有功能需求，再安排改进」
+              「改进由专门的改进团队负责，一线团队专注交付」这类说法放进选项。
+              排除技巧：<strong>凡是把改进从日常工作里挪出去的选项，都反了</strong> —— 它要的是挪进来并且排在前面。
+              <span class="muted">（此条为本站推断：该措辞不在 v3.4 术语表 66 条内，官方未就它公布命题角度。）</span></li>
+            <li><strong>反向题</strong>：问哪一项<strong>不属于</strong>第三步的做法。自动化测试、同行评审、监控告警属于<a href="2.4-second-way-feedback.html">第二步（2.4 反馈）</a>，是这一类题的典型正确答案。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度与干扰项形态为本站基于考纲结构与 Bloom 1–2 层级所作的教学推断，官方未公布题型分布；本站不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">方向长期不变，现状用事实说话，目标状态迈一小步，PDCA 一次只动一个变量。</p>
+          <p class="mb-0 muted"><small>三个词的分工：<strong>Kata 是套路，Dojo 是道场，Immersion 是泡进去的方式。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-5-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-5-3</div>
+        <h3 class="kp__title">把局部发现转化为全局改进<span class="en">Converting Local Discoveries into Global Improvements</span></h3>
+        <div class="badge-row"><span class="badge badge--warn">⚠️ 易混淆</span><span class="badge badge--note">📝 教学整理</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            第三步的最后一环：<strong>一个团队在实验中学到的东西，必须通过某种机制变成整个组织的默认起点</strong>。
+            只在一个团队内部循环的学习，改进的是<strong>那个团队</strong>；组织整体的能力没有任何变化。
+          </p>
+          <p class="mb-0">
+            考纲里与它直接对应的官方锚点有两个：CALMS 的 <strong>S: Sharing</strong>（Blueprint 原文），
+            以及第 8 章的官方模块名 <strong>Sharing, Shadowing and Evolving</strong>
+            （见 <a href="../ch08-sharing/index.html">第 8 章</a>）。
+            换句话说，这一环是第 2 章的原则，和第 8 章的组织落地，是同一件事的两端。
+          </p>
+          <div class="src-note">
+            「把局部发现转化为全局改进」这一<strong>措辞</strong>是第三步的通行阐述与本站教学表述，
+            <strong>不是 DOFD v3.4 考纲术语表中的条目</strong>，不要当成官方术语去背。
+            可以当成官方来记的是：CALMS 中的 <em>S: Sharing</em>（出自 PeopleCert DevOps Foundation Blueprint），
+            以及模块名 <em>Sharing, Shadowing and Evolving</em>（出自 DOFD v3.4 课程大纲）。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>痛点场景是「一家公司为同一个教训付四次学费」：</p>
+          <ul>
+            <li>某公司 20 个团队。A 团队花三个月把一次部署从 4 小时压到 12 分钟，做法写在自己空间的一个 wiki 页面里，标题叫「部署优化记录（临时）」。</li>
+            <li>一年后，其余 19 个团队仍在 4 小时部署。其中 3 个团队各自立项做了同一件事，各自重新踩了同样的坑，各自花了三个月。</li>
+            <li>没有人做错什么：A 团队写了文档，其他团队也在改进。缺的只是<strong>扩散机制</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            反面同样成立：<strong>扩散机制会放大好的，也会放大坏的</strong>。
+            如果 A 团队「成功」的做法是绕过评审直接上线，这套做法同样会顺着扩散渠道传遍全公司。
+            所以扩散必须和无指责复盘、标准化配对使用 —— 先确认学到的是对的，再让它变成默认值。
+          </p>
+        </div>
+
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 420" role="img" aria-label="对比图：左侧局部发现烂在团队里，右侧通过扩散机制变成组织级标准">
+              <defs>
+                <marker id="ah-25-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+                <marker id="ah-25-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <line x1="452" y1="16" x2="452" y2="404" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+              <!-- 左：反面 -->
+              <text x="12" y="30" class="f-5" font-size="16" font-weight="700">反面：学到的东西烂在团队里</text>
+
+              <g text-anchor="middle">
+                <rect x="16" y="64" width="176" height="88" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="104" y="94" class="s-ink" font-size="16" font-weight="700">A 团队</text>
+                <text x="104" y="118" class="s-muted" font-size="12">一次故障复盘里</text>
+                <text x="104" y="136" class="s-muted" font-size="12">找到了真正管用的做法</text>
+
+                <rect x="222" y="72" width="200" height="72" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="322" y="100" class="f-5" font-size="15" font-weight="700">有效的改进</text>
+                <text x="322" y="126" class="s-muted" font-size="12">只写在会议纪要里</text>
+
+                <text x="322" y="252" class="f-5" font-size="13">没有扩散渠道 · 学习止步于团队边界</text>
+              </g>
+
+              <line x1="194" y1="108" x2="218" y2="108" class="s-5" stroke-width="2.5" marker-end="url(#ah-25-6)"/>
+              <path d="M322 146 L322 196" class="s-5" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+              <path d="M311 201 L333 223 M333 201 L311 223" class="s-5" stroke-width="3" fill="none"/>
+
+              <g text-anchor="middle">
+                <rect x="16"  y="300" width="110" height="62" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="71" y="326" class="s-ink" font-size="15" font-weight="650">B 团队</text>
+                <text x="71" y="348" class="s-muted" font-size="12">半年后踩同坑</text>
+
+                <rect x="149" y="300" width="110" height="62" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="204" y="326" class="s-ink" font-size="15" font-weight="650">C 团队</text>
+                <text x="204" y="348" class="s-muted" font-size="12">自己重造一次</text>
+
+                <rect x="282" y="300" width="110" height="62" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="337" y="326" class="s-ink" font-size="15" font-weight="650">D 团队</text>
+                <text x="337" y="348" class="s-muted" font-size="12">一直没听说过</text>
+              </g>
+
+              <text x="16" y="396" class="s-muted" font-size="13">组织整体没变强：同一个教训，被付了四次学费。</text>
+
+              <!-- 右：正面 -->
+              <text x="470" y="30" class="f-3" font-size="16" font-weight="700">正面：局部发现 → 全局改进</text>
+
+              <g text-anchor="middle">
+                <rect x="474" y="64" width="160" height="88" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="554" y="94" class="s-ink" font-size="16" font-weight="700">A 团队</text>
+                <text x="554" y="118" class="s-muted" font-size="12">同样的一次发现</text>
+                <text x="554" y="136" class="s-muted" font-size="12">进入扩散机制</text>
+
+                <rect x="666" y="52" width="222" height="118" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="777" y="78" class="f-3" font-size="15" font-weight="700">扩散机制</text>
+              </g>
+              <text x="680" y="100" class="s-ink" font-size="12">· 无指责复盘纪要公开</text>
+              <text x="680" y="120" class="s-ink" font-size="12">· Dojo / 沉浸式学习</text>
+              <text x="680" y="140" class="s-ink" font-size="12">· 做法固化进流水线模板</text>
+              <text x="680" y="160" class="s-ink" font-size="12">· 轮岗与影随 Shadowing</text>
+
+              <line x1="636" y1="108" x2="662" y2="108" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-5)"/>
+              <line x1="777" y1="172" x2="777" y2="196" class="s-3" stroke-width="2.5" marker-end="url(#ah-25-5)"/>
+
+              <g text-anchor="middle">
+                <rect x="620" y="200" width="268" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="754" y="226" class="f-3" font-size="15" font-weight="700">组织级标准 / 默认配置</text>
+                <text x="754" y="248" class="s-muted" font-size="12">新团队开箱即得，不必再学一遍</text>
+              </g>
+
+              <line x1="700" y1="264" x2="545" y2="294" class="s-3" stroke-width="2" marker-end="url(#ah-25-5)"/>
+              <line x1="754" y1="264" x2="670" y2="294" class="s-3" stroke-width="2" marker-end="url(#ah-25-5)"/>
+              <line x1="818" y1="264" x2="798" y2="294" class="s-3" stroke-width="2" marker-end="url(#ah-25-5)"/>
+
+              <g text-anchor="middle">
+                <rect x="474" y="300" width="120" height="62" rx="10" class="s-3" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="534" y="326" class="s-ink" font-size="15" font-weight="650">B 团队</text>
+                <text x="534" y="348" class="s-muted" font-size="12">第一天就用上</text>
+
+                <rect x="607" y="300" width="120" height="62" rx="10" class="s-3" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="667" y="326" class="s-ink" font-size="15" font-weight="650">C 团队</text>
+                <text x="667" y="348" class="s-muted" font-size="12">第一天就用上</text>
+
+                <rect x="740" y="300" width="120" height="62" rx="10" class="s-3" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+                <text x="800" y="326" class="s-ink" font-size="15" font-weight="650">D 团队</text>
+                <text x="800" y="348" class="s-muted" font-size="12">第一天就用上</text>
+              </g>
+
+              <text x="474" y="396" class="f-3" font-size="13">一个团队学到的，成为所有团队的默认起点。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-5-3　局部学习为什么必须被扩散。</strong>
+            两侧的 A 团队做的事完全一样，差别只在中间那一格：有没有<strong>扩散机制</strong>。
+            这张图想让你看懂的是 —— 左边不是「学习没发生」，学习发生了；
+            它失败在<strong>学习没有离开团队边界</strong>，所以组织的能力曲线是平的。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">全局改进（本知识点）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>局部改进</strong></td>
+                  <td>组织的<strong>默认起点</strong>被抬高了：新团队什么都不做就已经拥有它</td>
+                  <td>只有那一个团队变快了，组织整体的能力曲线是平的</td>
+                </tr>
+                <tr>
+                  <td><strong>「分享」这个动作</strong></td>
+                  <td>关注<strong>结果</strong>：别的团队是否真的用上了</td>
+                  <td>关注<strong>动作</strong>：开了分享会、写了文档 —— 做了不等于扩散成功</td>
+                </tr>
+                <tr>
+                  <td><strong>CALMS 的 S: Sharing</strong></td>
+                  <td>三步工作法里的一环，说明<strong>价值流如何持续变强</strong></td>
+                  <td>CALMS 里的一条<strong>价值观</strong>，说明组织应当重视什么</td>
+                </tr>
+                <tr>
+                  <td><strong>学习型组织</strong>（见 <a href="2.7-learning-organizations.html">2.7 学习型组织</a>）</td>
+                  <td>一条具体机制：把已验证的做法变成默认值</td>
+                  <td>一整套组织理论，扩散机制只是其中的一部分体现</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>「分享」不等于「扩散」</strong>。开了分享会但没人改变做法，组织能力没有任何提升 —— 判据永远是别的团队的默认值有没有变。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>按<strong>扩散强度</strong>从弱到强排，越往下越不依赖人的主动性：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">强度</th><th style="width:30%">形式</th><th>为什么强度不同</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 说出来</strong></td><td>内部分享会、复盘纪要全员可见</td><td>要求听众记住并主动照做，衰减最快</td></tr>
+                <tr><td><strong>② 写下来</strong></td><td>手册、Runbook、内部技术站点</td><td>可检索，但仍要求别人先想到去查</td></tr>
+                <tr><td><strong>③ 练进去</strong></td><td>Dojo、沉浸式学习、轮岗与影随</td><td>人带着手感回到团队，改的是能力不是文档</td></tr>
+                <tr><td><strong>④ 固化进工具</strong></td><td>流水线模板、脚手架、平台默认配置</td><td>不需要任何人主动做什么，<strong>新团队默认就已经拿到</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            这张「四级扩散强度」表是本站的教学整理，用于比较不同扩散方式的可靠性，<strong>官方未以此形式给出分级</strong>。
+            其中出现的 <strong>Dojo</strong>、<strong>Immersion</strong> 为官方术语表条目。
+          </div>
+          <p class="mb-0">
+            <strong>一个判断动作</strong>：随便挑一个团队上季度最有价值的改进，去问另一个团队 ——
+            「这件事你们现在是默认就有，还是要自己重做一遍？」
+            如果答案是后者，这个组织没有扩散机制，只有一堆各自努力的团队。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>场景诊断题（Bloom 2）</strong>：题干描述「某个团队试点非常成功，但一年后组织整体的交付表现没有变化」，
+              问这个组织缺了什么。答案落在<strong>分享 / 扩散 / 把局部改进推广到全局</strong>这一族词上。</li>
+            <li><strong>干扰项长什么样</strong>：全部是「听起来很务实的加法」——
+              「需要采购更强的自动化工具」「需要增加培训预算」「需要成立一个专职的 DevOps 团队来推广」。
+              最后一个尤其危险，它是最像正确答案的一个：它把扩散责任外包给一个新团队，
+              而题干缺的是知识流动机制，不是人手；方向也与「打通已有团队、而不是新增一个孤岛团队」的一般共识相反。
+              <span class="muted">（这是本站的教学判断；官方术语表只列出 <em>DevOps teams</em> 词条本身，未给出立场性定义。）</span>
+              排除技巧：<strong>题干说的是「知识没流动」，答案就必须是让知识流动的选项，而不是加人加工具。</strong></li>
+            <li><strong>CALMS 字母题</strong>：<strong>S = Sharing</strong>。常见干扰项是同样以 S 开头的
+              <em>Standardization</em>、<em>Security</em>、<em>Sustainability</em>、<em>Scaling</em>。
+              排除技巧：CALMS 五个词一次性背成一串（Culture / Automation / Lean / Measurement / Sharing），
+              考场上按顺序默一遍即可排除。</li>
+            <li><strong>归属题</strong>：问「把局部发现转化为全局改进」属于哪一步 —— <strong>第三步</strong>。
+              干扰项常挂到第二步（因为它也和「信息流动」有关）。
+              分界线：第二步的信息流<strong>回到源头修这一次</strong>，这里的知识流<strong>横向传到别的团队防下一次</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度与干扰项形态为本站基于考纲结构与 Bloom 1–2 层级所作的教学推断，官方未公布题型分布；本站不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">一个团队学到的，必须变成所有团队的起点；否则同一个教训，组织要付很多次学费。</p>
+          <p class="mb-0 muted"><small>强度口诀：<strong>说出来 &lt; 写下来 &lt; 练进去 &lt; 固化进工具</strong>。最强的扩散是「新团队什么都不用做，就已经拿到了」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>官方全称：<strong>3rd Way: Continuous Improvement (Experimenting and Learning)</strong> —— 不是 Continuous Learning，别丢掉 Improvement 和括号里的两件事</li>
+        <li>第二步（见 <a href="2.4-second-way-feedback.html">2.4</a>）vs 第三步的时态判据：<strong>反馈解决正在发生的这一次，学习改变组织下一次的默认做法</strong>（本站教学口诀，官方未给出边界定义）</li>
+        <li>官方术语表里属于本节的三个词：<strong>Improvement kata · Dojo · Immersion</strong>（Kata 是套路，Dojo 是道场，Immersion 是方式）</li>
+        <li>改进型 Kata 四步顺序：<strong>理解方向 → 把握现状 → 设定下一个目标状态 → PDCA 迭代逼近</strong>，先有事实后有目标，顺序不能换</li>
+        <li>把<strong>改进日常工作置于日常工作之上</strong>：不还技术债 → 系统更脆 → 更没时间还债，这个死循环正是第三步要打断的</li>
+        <li>高信任文化不是软性话题：<strong>数据被隐瞒的时候，科学方法不成立</strong>；凡把「不许失败」当目标的选项都不是第三步</li>
+        <li>局部发现必须转化为全局改进，对应 <strong>CALMS 的 S: Sharing</strong> 与第 8 章 <em>Sharing, Shadowing and Evolving</em></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：第三步的官方名称与英文原文出自 PeopleCert《DevOps Foundation® Blueprint》
+      —— <em>3rd Way: Continuous Improvement (Experimenting and Learning)</em>；CALMS 的 <em>S: Sharing</em> 同出于该 Blueprint。
+      「Improvement kata」「Dojo」「Immersion」「The Three Ways」「Organizational culture」等术语列于 DOFD v3.4 官方考纲术语表；
+      模块名 <em>Sharing, Shadowing and Evolving</em> 出自 DOFD v3.4 课程大纲。
+      <strong>第三步三条内涵的拆分、第二步与第三步的分界图、Kata 四步的中文表述、三步对照表、Dojo 与 Immersion 的对照、四级扩散强度表、
+      各知识点 ⑤ 面的命题角度与干扰项形态</strong>均为本站教学整理或教学推断，已分别在对应位置就地标注；官方文件未以这些形式给出，
+      官方也未公布题型分布与干扰项构造方式。
+      <br>
+      <strong>教学补充声明</strong>：本节用到但<strong>不在 DOFD v3.4 考纲术语表 66 条内</strong>的说法有 ——
+      <em>无指责事后复盘 Blameless Postmortem</em>、<em>PDCA</em>、<em>高信任文化</em>、<em>科学方法</em>、
+      <em>改进型 Kata 的四步名称（理解方向 / 把握现状 / 设定下一个目标状态 / 迭代逼近）</em>、
+      <em>「把改进日常工作置于日常工作之上」</em>、<em>「把局部发现转化为全局改进」</em>。
+      它们是理解第三步的辅助表述，不要当成官方术语去背；术语表中与本节直接对应的是
+      <em>Improvement kata</em>、<em>Dojo</em>、<em>Immersion</em>。
+      混沌工程见 <a href="2.6-chaos-engineering.html">2.6 混沌工程</a>，学习型组织见 <a href="2.7-learning-organizations.html">2.7 学习型组织</a>，
+      文化与文化债见<a href="../ch05-culture/index.html">第 5 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

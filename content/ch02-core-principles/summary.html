@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.8 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 2 章核心原则的收口：一张把 2.1 到 2.7 串起来的知识地图、一页纸复习表、八对易混淆概念、本章官方术语速查，以及本章在 40 题中的位置。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.8 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章七节讲的其实是<strong>同一条主轴的七个切面</strong>。
+        这一页不重讲各节正文，只做跨节的归位与对照，一共四件事：把七节压回一张图、
+        把最容易混的地方摆在一起对照、标清哪些名词是官方术语表里的，
+        最后给出本章在全卷 40 题里的分量。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>2.1 到 2.7 各自留下的<strong>一条核心结论</strong>是什么，它们怎么挂在三步工作法这条主轴上</li>
+        <li>全章八对最容易混的概念，各自的<strong>分界线</strong>究竟在哪一句话上</li>
+        <li>本章在 40 道题里占多少，出题会从哪些角度切入</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1：本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 560" role="img" aria-label="第 2 章知识地图：三步工作法为主轴，约束理论挂在第一步下，混沌工程与学习型组织挂在第三步下。图中方框为可点击的小节入口，同样的入口在下方「一页纸复习表」的小节列里也有一份。">
+          <defs>
+            <marker id="ah-28-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-28-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-28-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)"/>
+            </marker>
+          </defs>
+
+          <!-- 主轴根节点 2.1 -->
+          <a href="2.1-three-ways.html">
+            <rect x="330" y="20" width="300" height="66" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="480" y="48" class="f-4" font-size="17" font-weight="700" text-anchor="middle">2.1　三步工作法总览</text>
+            <text x="480" y="70" class="s-muted" font-size="13" text-anchor="middle">The Three Ways · 全章主轴</text>
+          </a>
+
+          <!-- 根节点分叉到三步 -->
+          <path d="M480 88 C 480 116 165 118 165 144" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-28-2)"/>
+          <path d="M480 88 L 480 144" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-28-2)"/>
+          <path d="M480 88 C 480 116 795 118 795 144" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-28-2)"/>
+
+          <!-- 第一步 -->
+          <a href="2.2-first-way-flow.html">
+            <rect x="30" y="150" width="270" height="100" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="48" y="180" class="f-1" font-size="16" font-weight="700">第一步 · 流动</text>
+            <text x="48" y="204" class="s-ink" font-size="13">§2.2　缩小批量 · 限制在制品</text>
+            <text x="48" y="226" class="s-muted" font-size="12">量它：周期时间 · 变更前置时间 · 部署频率</text>
+          </a>
+
+          <!-- 第二步 -->
+          <a href="2.4-second-way-feedback.html">
+            <rect x="345" y="150" width="270" height="100" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="363" y="180" class="f-2" font-size="16" font-weight="700">第二步 · 反馈</text>
+            <text x="363" y="204" class="s-ink" font-size="13">§2.4　源头保质 · 遥测 · 同行评审</text>
+            <text x="363" y="226" class="s-muted" font-size="12">量它：变更失败率 · 平均恢复时间 MTTR</text>
+          </a>
+
+          <!-- 第三步 -->
+          <a href="2.5-third-way-learning.html">
+            <rect x="660" y="150" width="270" height="100" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+            <text x="678" y="180" class="f-3" font-size="16" font-weight="700">第三步 · 持续改进</text>
+            <text x="678" y="204" class="s-ink" font-size="13">§2.5　实验 · 无指责事后复盘</text>
+            <text x="678" y="226" class="s-muted" font-size="12">改进型 Kata · Dojo · 沉浸式学习</text>
+          </a>
+
+          <!-- 主轴上的顺序依赖 -->
+          <text x="322" y="186" class="s-muted" font-size="12" text-anchor="middle">依赖</text>
+          <path d="M302 200 L 341 200" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-28-2)"/>
+          <text x="637" y="186" class="s-muted" font-size="12" text-anchor="middle">依赖</text>
+          <path d="M617 200 L 656 200" stroke="var(--border-strong)" stroke-width="2" fill="none" marker-end="url(#ah-28-2)"/>
+
+          <!-- 第一步下挂：约束理论 -->
+          <path d="M165 250 L 165 292" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-28-1)"/>
+          <a href="2.3-theory-of-constraints.html">
+            <rect x="30" y="298" width="270" height="76" rx="12" class="s-1" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="48" y="322" class="f-1" font-size="15" font-weight="700">2.3　约束理论 ToC</text>
+            <text x="48" y="344" class="s-ink" font-size="13">服务于第一步：找到并消除瓶颈</text>
+            <text x="48" y="364" class="s-muted" font-size="12">改进非约束环节 = 整体产出不变</text>
+          </a>
+
+          <!-- 第二步：本章只到原则层 -->
+          <text x="480" y="322" class="s-muted" font-size="12" text-anchor="middle">第二步的具体实践在第 3、7 章展开</text>
+          <text x="480" y="342" class="s-muted" font-size="12" text-anchor="middle">本章只讲到原则层</text>
+
+          <!-- 第三步下挂：混沌工程 / 学习型组织 -->
+          <path d="M795 250 L 795 268 L 692 268 L 692 430" class="s-3" stroke-width="2" fill="none"/>
+          <path d="M692 336 L 701 336" class="s-3" stroke-width="2" fill="none" marker-end="url(#ah-28-3)"/>
+          <path d="M692 430 L 701 430" class="s-3" stroke-width="2" fill="none" marker-end="url(#ah-28-3)"/>
+
+          <a href="2.6-chaos-engineering.html">
+            <rect x="705" y="298" width="225" height="76" rx="12" class="s-3" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="721" y="322" class="f-3" font-size="15" font-weight="700">2.6　混沌工程</text>
+            <text x="721" y="344" class="s-ink" font-size="13">主动注入故障，验证韧性</text>
+            <text x="721" y="364" class="s-muted" font-size="12">术语表：Chaos Monkey</text>
+          </a>
+
+          <a href="2.7-learning-organizations.html">
+            <rect x="705" y="392" width="225" height="76" rx="12" class="s-3" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="721" y="416" class="f-3" font-size="15" font-weight="700">2.7　学习型组织</text>
+            <text x="721" y="438" class="s-ink" font-size="13">把个人经验变成组织能力</text>
+            <text x="721" y="458" class="s-muted" font-size="12">安全文化 · 经验沉淀 · 知识扩散</text>
+          </a>
+
+          <!-- 第三步回流 -->
+          <path d="M930 200 L 936 200 Q 946 200 946 210 L 946 512 Q 946 522 936 522 L 24 522 Q 14 522 14 512 L 14 210 Q 14 200 24 200 L 26 200"
+                class="s-3" stroke-width="2" fill="none" stroke-dasharray="7 6" marker-end="url(#ah-28-3)"/>
+          <text x="480" y="543" class="f-3" font-size="13" font-weight="650" text-anchor="middle">第三步的产出回流：让第一步更快、第二步更准</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--dia-4)"></i>全章主轴 2.1</span>
+        <span><i style="background:var(--dia-1)"></i>第一步线：2.2 / 2.3</span>
+        <span><i style="background:var(--dia-2)"></i>第二步线：2.4</span>
+        <span><i style="background:var(--dia-3)"></i>第三步线：2.5 / 2.6 / 2.7</span>
+      </div>
+      <figcaption>
+        <strong>图 2-8-1　第 2 章知识地图。</strong>
+        这张图要让你看懂的是<strong>挂靠关系</strong>：本章没有七个并列的知识块，
+        只有一条主轴和两处下挂 —— 约束理论服务第一步，混沌工程与学习型组织都长在第三步里。
+        遇到本章任何一个名词，先问它挂在哪一步，答案基本就出来了。
+        方框可点击，直达对应小节；用读屏或键盘的话，下方<strong>一页纸复习表</strong>首列是同样一组逐节链接，
+        七个入口在那里都能到达。
+        <br>
+        <em>图中「挂靠」这一层结构，以及「把周期时间 / 变更前置时间 / 部署频率挂到第一步、
+        把变更失败率 / MTTR 挂到第二步」这一层归类，均为本站为便于记忆所做的教学整理：
+        官方 v3.4 课程大纲只把 M2 的七个子项平行列出、未给出层级图，指标也只在 M7 统称
+        <span class="en">DevOps metrics</span>，并未按三步切分。第三步没有官方单列的对应指标，
+        因此图中第三步方框不写「量它」一行。</em>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节只保留一条结论、一句锚点、一个最易错点。看到某一行想不起来了，点节号回去补。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:13%">小节</th>
+            <th style="width:38%">核心结论</th>
+            <th style="width:24%">记忆锚点</th>
+            <th>最易错点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="2.1-three-ways.html"><strong>2.1</strong><br>三步工作法</a></td>
+            <td>三步不是三条并列口号，而是有前置依赖的因果链；第三步是环绕前两步的土壤，不是第三支箭头。</td>
+            <td>向右流得快 → 向左反得快 → 绕着两者不停学。</td>
+            <td>把第三步画成流程的第三段；把 CALMS（价值观）当成三步（原则）的同义词。</td>
+          </tr>
+          <tr>
+            <td><a href="2.2-first-way-flow.html"><strong>2.2</strong><br>第一步 · 流动</a></td>
+            <td>让工作从左到右快速平稳流向客户：缩小批量、限制在制品、减少交接与返工，并且<strong>绝不把已知缺陷传给下游</strong>。</td>
+            <td>批量越大：排队越久、风险越集中、定位越难、越不敢回滚。</td>
+            <td>把流动窄化成「有一条跑得快的流水线」，忽略「不把缺陷传给下游」同样是第一步的硬要求。</td>
+          </tr>
+          <tr>
+            <td><a href="2.3-theory-of-constraints.html"><strong>2.3</strong><br>约束理论</a></td>
+            <td>整个系统的产出由那唯一的约束决定，改进非约束环节不会提升端到端产出。约束理论<strong>在本站的教学结构中服务第一步</strong>。</td>
+            <td>产出等于最细那段管子的流量，加宽别的段只是把水堵得更满。</td>
+            <td>约束和浪费混为一谈；把约束理论当成能同时回答「反馈怎么做」「学习怎么做」的完整框架。</td>
+          </tr>
+          <tr>
+            <td><a href="2.4-second-way-feedback.html"><strong>2.4</strong><br>第二步 · 反馈</a></td>
+            <td>让信息从右到左快速回流到源头，在源头保证质量；问题一出现就蜂拥解决，而不是登记成工单排队等待。</td>
+            <td>第二步量的不是「有没有发现」，而是「隔了多久才发现」。</td>
+            <td>把「上了监控大屏」等同于有反馈；把同行评审归到第三步。</td>
+          </tr>
+          <tr>
+            <td><a href="2.5-third-way-learning.html"><strong>2.5</strong><br>第三步 · 持续改进</a></td>
+            <td>把改进变成日常工作的一部分：用实验和<strong>无指责事后复盘 <span class="en">Blameless postmortem</span></strong>，把一次局部经验转成全组织的能力。</td>
+            <td>官方叫「持续改进（实验与学习）」——学习是手段，改进才是目的。</td>
+            <td>与第二步混：反馈是「知道出了什么事」，第三步是「让同类事不再发生」。</td>
+          </tr>
+          <tr>
+            <td><a href="2.6-chaos-engineering.html"><strong>2.6</strong><br>混沌工程</a></td>
+            <td>在受控条件下主动注入故障，验证系统与团队的真实韧性，把单点故障 SPOF 提前暴露出来。它<strong>在本站的教学结构中属于第三步</strong>（官方未把混沌工程正式归入第三步）。</td>
+            <td>故障一定会来，混沌工程做的只是把「什么时候来」的选择权抢回自己手里。</td>
+            <td>当成「随机搞破坏」；忽略它有假设、有爆炸半径、有中止条件。</td>
+          </tr>
+          <tr>
+            <td><a href="2.7-learning-organizations.html"><strong>2.7</strong><br>学习型组织</a></td>
+            <td>组织能持续把自身经验转化成<strong>行为改变</strong>：个人经验 → 团队知识 → 组织能力，唯一判据是「下次的默认做法变了」，不是「知道了」；前提是能安全地说出坏消息的安全文化。</td>
+            <td>学到了不是「知道了」，是「下次默认不会那样做了」。</td>
+            <td>把学习型组织与安全文化当成一回事；把「安全文化」理解成信息安全。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      各节的<strong>官方名称与术语</strong>出自 PeopleCert《DevOps Foundation® Blueprint》与 DOFD v3.4 官方考纲；
+      本表的<strong>「核心结论 / 记忆锚点 / 最易错点」三栏切分方式为本站教学整理</strong>，官方未以此形式给出复习表，
+      「记忆锚点」一栏<strong>逐字取自各节 ⑥ 记忆要点面的锚点句</strong>，那些句子均为本站编写的助记语，不是官方表述。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总</div>
+
+    <p>
+      本章丢分几乎都发生在下面这八对上。看这张表的方法是：<strong>先只读「分界线」一列</strong>，
+      能自己补出左右两边的，才算过关。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th style="width:22%">容易混的一对</th>
+            <th style="width:42%">分界线（最容易混的那一点）</th>
+            <th>一句话判据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>第二步 · 反馈</strong><br>vs<br><strong>第三步 · 持续改进</strong></td>
+            <td>反馈解决的是「<strong>我现在知不知道出了什么事</strong>」；持续改进解决的是「<strong>下次同类的事还会不会发生</strong>」。两者都发生在事情出问题之后，所以最容易互换。</td>
+            <td>看时间指向：指向<strong>当下</strong>是第二步，指向<strong>下一次</strong>是第三步。</td>
+          </tr>
+          <tr>
+            <td><strong>约束</strong> Constraint<br>vs<br><strong>浪费</strong> Waste</td>
+            <td>约束是<strong>决定整体产出上限的那一个环节</strong>，全系统只有一个在起作用；浪费是<strong>任何不为客户创造价值的活动</strong>，到处都是。消除非约束处的浪费，端到端产出一点都不会变。</td>
+            <td>问「去掉它，整体交付会变快吗」：会 → 约束；不会 → 只是浪费。</td>
+          </tr>
+          <tr>
+            <td><strong>混沌工程</strong><br>vs<br><strong>故障演练</strong></td>
+            <td>混沌工程是<strong>带假设的实验</strong>：先声明「我认为系统能扛住 X」，再注入 X 去证伪，目的是<strong>发现未知</strong>；故障演练是按既定剧本走一遍<strong>已知预案</strong>，目的是验证预案和人能不能执行。</td>
+            <td>问「事先知不知道会发生什么」：不知道 → 混沌工程；知道 → 演练。</td>
+          </tr>
+          <tr>
+            <td><strong>同行评审</strong><br>vs<br><strong>无指责事后复盘</strong></td>
+            <td>位置判据（门之前 / 门之后）<a href="2.1-three-ways.html#kp-2-1-3">2.1 kp-2-1-3</a> 已给出，这里补一层跨节的：两者<strong>失效的方式不同</strong>。同行评审失效于「走过场签字」，补法在第二步内部（缩小变更、让评审快到能真看）；无指责事后复盘失效于「变成追责会」，补法在第三步之外的安全文化（<a href="2.7-learning-organizations.html">2.7</a>）——同一个坏结果，修的不是同一件东西。</td>
+            <td>看发生位置：<strong>门之前</strong>是第二步，<strong>门之后</strong>是第三步。</td>
+          </tr>
+          <tr>
+            <td><strong>学习型组织</strong><br>vs<br><strong>安全文化</strong></td>
+            <td>安全文化是<strong>前提</strong>——人敢把坏消息说出来；学习型组织是<strong>结果</strong>——说出来的东西被吸收、传播、变成组织能力。有安全文化不一定有学习型组织，没有安全文化则一定没有。</td>
+            <td>安全文化 = 敢说；学习型组织 = 说了之后组织真的变了。</td>
+          </tr>
+          <tr>
+            <td><strong>周期时间</strong> Cycle time<br>vs<br><strong>平均恢复时间</strong> MTTR</td>
+            <td>方向判据（交付 vs 恢复）<a href="2.1-three-ways.html#kp-2-1-3">2.1 kp-2-1-3</a> 已给出，这里补的是<strong>同一场事故里两者会一起动</strong>：批量变大时，周期时间上升，故障定位范围也随之变宽、MTTR 跟着上升。题干同时给出两个数时，看它问的是「交付」还是「恢复」，不要因为两个都在恶化就随便选一个。</td>
+            <td>周期时间 → 第一步 · 流动；MTTR → 第二步 · 反馈。</td>
+          </tr>
+          <tr>
+            <td><strong>三步工作法</strong><br>vs<br><strong>CALMS</strong></td>
+            <td>原则 vs 价值观这一层<a href="2.1-three-ways.html#kp-2-1-1">2.1 kp-2-1-1</a> 已经展开，此处不重讲。跨节要记的只有一条：<strong>两者都是官方内容、且互不隶属</strong>——Blueprint 同时列出三步与 CALMS 五个字母，谁也不是谁的细化，所以「CALMS 是三步的展开」「三步是 CALMS 的 Lean 部分」都不成立。</td>
+            <td>题干出现「values / 价值观」，答案往 CALMS 走。</td>
+          </tr>
+          <tr>
+            <td><strong>约束理论</strong><br>vs<br><strong>三步工作法</strong></td>
+            <td>官方 v3.4 课程大纲把 <span class="en">The Theory of Constraints</span> 与 <span class="en">The First / Second / Third Way</span> <strong>并列列在 M2 之下</strong>；本站在教学上把它挂到第一步，是因为它回答的是「流动卡在哪」。两种说法针对的问题不同，<strong>不要用其中一种去否定另一种</strong>——这也是本章最容易混的分界，复习时优先确认。</td>
+            <td>问它解决什么问题：找瓶颈、提升端到端产出 → 约束理论；描述价值流该具备哪三种能力 → 三步工作法。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中「<strong>故障演练</strong>」不是 DOFD v3.4 官方考纲术语表中的条目，
+      它在这里只作为帮助理解混沌工程边界的<strong>教学补充</strong>；
+      考试中出现的是官方术语表条目「Simian Army / Chaos Monkey」。
+      「安全文化 Safety Culture」是 v3.4 课程大纲 M4 的模块子项，但未列入 66 条术语表。
+      各对概念之间的<strong>分界线表述与判据口诀，均为本站教学整理</strong>，非官方原文。
+    </div>
+
+    <!-- ============ 官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      下表收录的条目<strong>都出现在 DOFD v3.4 官方考纲术语表（66 条）里</strong>，
+      本章正文里出现过但不在这张术语表内的名词（例如混沌工程、学习型组织、安全文化、无指责事后复盘、蜂拥解决），
+      不进此表。
+    </p>
+    <p>
+      <strong>取舍口径</strong>：本表只收<strong>本章正文真正展开过</strong>的术语表条目。
+      本章只作前向引用、正文未展开的条目（部署流水线 <span class="en">Deployment pipeline</span>、
+      持续集成 <span class="en">Continuous integration</span>、<span class="en">Kanban</span> 留到第 3 章，
+      文化债 <span class="en">Cultural debt</span> 留到第 5 章，精益七种浪费的完整分类留到 4.3）
+      在对应小节收录，因此<strong>本表不是「本章相关官方术语」的完整清单</strong>，
+      不能反过来当成「不在表里就不是官方术语」的排除线。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%">中文（统一译法）</th>
+            <th style="width:26%">术语表英文原名</th>
+            <th>一句话定义</th>
+            <th style="width:9%">出处</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>三步工作法</td><td><span class="en">The Three Ways</span></td><td>描述一条健康价值流必须同时具备的三种能力：流动、反馈、持续改进。</td><td><a href="2.1-three-ways.html">2.1</a></td></tr>
+          <tr><td>流动</td><td><span class="en">Flow</span></td><td>工作从左到右快速、平稳地流向客户的能力。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>价值流映射</td><td><span class="en">Value stream mapping</span></td><td>把一个变更端到端经过的每个环节、等待与返工都画出来的分析方法。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>周期时间</td><td><span class="en">Cycle time</span></td><td>一段工序从开始处理到处理完成所花的时间。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>变更前置时间</td><td><span class="en">Change lead time</span></td><td>一个变更从提交到在生产环境可用所经历的总时长。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>部署频率</td><td><span class="en">Deployment frequency</span></td><td>单位时间内把变更部署到生产环境的次数。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>Velocity 速率</td><td><span class="en">Velocity</span></td><td>敏捷团队在一个迭代内完成工作量的产能估算，终点是「开发完成」而不是客户。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>精益七种浪费 DOWNTIME</td><td><span class="en">Lean types of Waste (DOWNTIME)</span></td><td>精益对浪费类型的分类与助记（完整展开见 4.3）。</td><td><a href="2.2-first-way-flow.html">2.2</a></td></tr>
+          <tr><td>约束</td><td><span class="en">Constraint</span></td><td>决定整个系统产出上限的那个环节。</td><td><a href="2.3-theory-of-constraints.html">2.3</a></td></tr>
+          <tr><td>约束理论</td><td><span class="en">Theory of Constraints</span></td><td>主张先识别并消除约束、让其余环节迁就它的改进方法。</td><td><a href="2.3-theory-of-constraints.html">2.3</a></td></tr>
+          <tr><td>浪费</td><td><span class="en">Waste</span></td><td>消耗资源却不为客户创造价值的活动。</td><td><a href="2.3-theory-of-constraints.html">2.3</a></td></tr>
+          <tr><td>持续测试</td><td><span class="en">Continuous testing</span></td><td>把验证活动嵌进交付流程的每一环，让问题在离源头最近的地方暴露。</td><td><a href="2.4-second-way-feedback.html">2.4</a></td></tr>
+          <tr><td>左移</td><td><span class="en">Shift left</span></td><td>把测试、安全等验证活动提前到交付流程更早的位置。</td><td><a href="2.4-second-way-feedback.html">2.4</a></td></tr>
+          <tr><td>变更失败率</td><td><span class="en">Change failure rate</span></td><td>生产变更中导致服务降级或需要补救的比例。</td><td><a href="2.4-second-way-feedback.html">2.4</a></td></tr>
+          <tr><td>平均恢复时间 MTTR</td><td><span class="en">Mean Time to Repair/Recover (MTTR)</span></td><td>从服务受损到恢复正常所需的平均时间。</td><td><a href="2.4-second-way-feedback.html">2.4</a></td></tr>
+          <tr><td>改进型 Kata</td><td><span class="en">Improvement kata</span></td><td>以小步实验反复逼近目标状态的固定改进套路。</td><td><a href="2.5-third-way-learning.html">2.5</a></td></tr>
+          <tr><td>Dojo</td><td><span class="en">Dojo</span></td><td>团队暂离日常工作、在教练带领下集中实战训练的场所与形式（沉浸式实战训练场）。</td><td><a href="2.5-third-way-learning.html">2.5</a></td></tr>
+          <tr><td>沉浸式学习</td><td><span class="en">Immersion</span></td><td>让团队长时间投入真实问题以获得能力的学习方式。</td><td><a href="2.5-third-way-learning.html">2.5</a></td></tr>
+          <tr><td>Simian Army / Chaos Monkey</td><td><span class="en">Simian Army/Chaos Monkey</span></td><td>通过随机终止生产环境中的组件来暴露系统脆弱点的一类做法与工具。</td><td><a href="2.6-chaos-engineering.html">2.6</a></td></tr>
+          <tr><td>单点故障 SPOF</td><td><span class="en">Single Point of Failure (SPOF)</span></td><td>一旦失效就会导致整个系统不可用的那个部件或环节。</td><td><a href="2.6-chaos-engineering.html">2.6</a></td></tr>
+          <tr><td>韧性工程</td><td><span class="en">Resilience engineering</span></td><td>把系统与组织「从故障中恢复并继续工作」的能力当作设计目标的工程取向，是混沌工程的上位目标。</td><td><a href="2.6-chaos-engineering.html">2.6</a></td></tr>
+          <tr><td>站点可靠性工程 SRE</td><td><span class="en">Site Reliability Engineering</span></td><td>用软件工程手段承担运维可靠性目标的一整套角色与运维模型，混沌工程常是其工具箱中的一件（展开见 3.4）。</td><td><a href="2.6-chaos-engineering.html">2.6</a></td></tr>
+          <tr><td>DevOps 指标</td><td><span class="en">DevOps metrics</span></td><td>官方对速度、质量、稳定性、文化四类度量的统称，未按三步切分。</td><td><a href="2.7-learning-organizations.html">2.7</a></td></tr>
+          <tr><td>高绩效组织</td><td><span class="en">High-performing organizations</span></td><td>在交付速度与稳定性上同时领先、并能持续保持的组织。</td><td><a href="2.7-learning-organizations.html">2.7</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      英文条目名<strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List，共 66 条）</strong>；
+      中文译名依本站统一译法表。<strong>「一句话定义」是本站用自己的话写的压缩说明，不是官方定义原文</strong>，
+      考试以官方表述为准。
+      混沌工程 <span class="en">Chaos Engineering</span> 与学习型组织 <span class="en">Learning Organizations</span>
+      是 v3.4 课程大纲 M2 的<strong>模块子项</strong>（属于官方内容），但不在 66 条术语表内，因此未收入本表 ——
+      <strong>「不在本表内」不等于「不是官方内容」</strong>，术语表与课程大纲是两份清单。
+      本表<strong>「收哪些、不收哪些」的取舍（只收本章正文展开过的条目）是本站的教学安排</strong>，官方并未按章节划分术语表。
+    </div>
+
+    <!-- ============ 考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">4</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">40</div><div class="stat__k">全卷题数</div></div>
+      <div class="stat"><div class="stat__v">≈10%</div><div class="stat__k">占比上限（v3.4 · 4/40）</div></div>
+      <div class="stat"><div class="stat__v">26</div><div class="stat__k">及格线（65%）</div></div>
+    </div>
+
+    <div class="src-note">
+      本章 <strong>4 题</strong>与 <strong>≈10% 占比上限</strong>出自
+      <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，该表给的是各模块的<strong>最多题数</strong>而非固定配额，
+      因此只能读成上限；<strong>v3.6 未公开重新发布权重表</strong>，把它当作<strong>相对分量的参考</strong>而不是 v3.6 的承诺值。
+      <strong>40 题</strong>与 <strong>26 分及格线（65%）</strong>则出自 PeopleCert 现行 DevOps Foundation 产品页公布的考试形式。
+      这四个数字<strong>不来自同一个版本</strong>，不要整块当成 v3.6 的现行数据。
+    </div>
+
+    <!-- ============ 图 2：模块权重 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 330" role="img" aria-label="DOFD 八大模块最多题数分布条形图，第 2 章核心原则为 4 题">
+          <text x="12" y="20" class="s-muted" font-size="13">八大模块最多题数（合计 40 题）</text>
+
+          <text x="200" y="49" class="s-ink" font-size="13" text-anchor="end">M1 探索 DevOps</text>
+          <rect x="210" y="34" width="220" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="440" y="49" class="s-muted" font-size="12">5</text>
+
+          <text x="200" y="81" class="f-4" font-size="13" font-weight="700" text-anchor="end">M2 核心原则（本章）</text>
+          <rect x="210" y="66" width="176" height="20" rx="4" class="s-4 f-4" stroke-width="1.5"/>
+          <text x="396" y="81" class="f-4" font-size="12" font-weight="700">4</text>
+          <text x="560" y="81" class="f-4" font-size="13" font-weight="700">← 本章：最多 4 / 40，占比上限约 10%</text>
+
+          <text x="200" y="113" class="s-ink" font-size="13" text-anchor="end">M3 关键实践</text>
+          <rect x="210" y="98" width="308" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="113" class="s-muted" font-size="12">7</text>
+
+          <text x="200" y="145" class="s-ink" font-size="13" text-anchor="end">M4 业务与技术框架</text>
+          <rect x="210" y="130" width="308" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="145" class="s-muted" font-size="12">7</text>
+
+          <text x="200" y="177" class="s-ink" font-size="13" text-anchor="end">M5 文化与运营模式</text>
+          <rect x="210" y="162" width="264" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="484" y="177" class="s-muted" font-size="12">6</text>
+
+          <text x="200" y="209" class="s-ink" font-size="13" text-anchor="end">M6 自动化与工具链</text>
+          <rect x="210" y="194" width="220" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="440" y="209" class="s-muted" font-size="12">5</text>
+
+          <text x="200" y="241" class="s-ink" font-size="13" text-anchor="end">M7 度量与报告</text>
+          <rect x="210" y="226" width="88" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="308" y="241" class="s-muted" font-size="12">2</text>
+
+          <text x="200" y="273" class="s-ink" font-size="13" text-anchor="end">M8 分享与演进</text>
+          <rect x="210" y="258" width="176" height="20" rx="4" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="396" y="273" class="s-muted" font-size="12">4</text>
+
+          <text x="12" y="312" class="s-muted" font-size="12">来源：DOFD v3.4 Examination Requirements（2022-05）。v3.6 未公开重新发布权重表。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-8-2　本章在全卷中的分量。</strong>
+        这张图想让你看懂的是<strong>投入的性价比</strong>：本章最多 4 题，绝对分量不算大，
+        但 M3（7 题）、M6（5 题）、M7（2 题）里的实践与指标全都要靠本章的三步框架归位。
+        本章值得花时间，理由不是它自己的 4 题，而是它是另外十几题的解题坐标系。
+        图中所有数字都是 v3.4 的<strong>最多题数</strong>，且 v3.6 未公开重新发布权重表，
+        因此只能当作<strong>相对分量的参考</strong>，不是 v3.6 的承诺值。
+      </figcaption>
+    </figure>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 本章的出题角度</div>
+      <ul class="mb-0">
+        <li><strong>归类题</strong>：给一个具体做法或指标，问它属于三步中的哪一步。
+          干扰项通常把第二步与第三步的描述互换，或者把只服务第一步的约束理论说成覆盖全部三步。</li>
+        <li><strong>目标题</strong>：问某一步的目标是什么。干扰项常写成该步<strong>明确反对</strong>的行为
+          （比如「允许已知缺陷流向下游」「用局部优化换全局退化」）—— 看到「反对项被写成目标」直接排除。</li>
+        <li><strong>定义辨析题</strong>：约束 vs 浪费、周期时间 vs MTTR 这类。
+          干扰项的做法是给出一个<strong>本身正确、但描述的是隔壁概念</strong>的句子，
+          所以不能只看「这句话对不对」，要看「这句话说的是不是题干问的那个词」。</li>
+        <li><strong>排除技巧</strong>：凡是需要<strong>横跨三步才成立</strong>的选项都要格外小心 ——
+          约束理论、同行评审、混沌工程在本站的归类里各有明确归属，
+          先确认题干问的那个词到底落在哪一步，再判断这个选项站不站得住。</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      以上<strong>命题角度与干扰项形态的归纳，是本站基于考纲结构与 Bloom 1–2 层级要求所做的教学整理</strong>，
+      不是官方公布的命题说明。本站不复制任何官方样题的题干或选项原文。
+    </div>
+
+    <!-- ============ 练习占位 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章配套练习题（覆盖 2.1–2.7，含三步归类、约束理论归属、易混淆辨析、指标对应四类题型）
+        将在 <strong>P2 阶段</strong>统一命制并接入本页，届时此处会替换为可作答的题目组。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文，
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>全章一句话：<strong>一条主轴（三步工作法）＋ 两处下挂（约束理论挂第一步，混沌工程与学习型组织挂第三步）</strong></li>
+        <li>方向判据：<strong>向右流 · 向左反 · 绕圈学</strong>；顺序判据：<strong>没有流动，反馈是噪音；没有反馈，实验是赌博</strong></li>
+        <li>归属三连：<strong>约束理论 → 第一步</strong>、<strong>同行评审 → 第二步</strong>（这两条由 DOFD v3.4 官方样题答案键确认）；<strong>混沌工程与无指责事后复盘 → 第三步</strong>（这一条为本站教学归类，官方未发布完整的实践—工作法对照表）</li>
+        <li>约束 vs 浪费：<strong>去掉它整体会变快的才是约束</strong>，其余只是浪费</li>
+        <li>时间指向：<strong>指向当下 = 反馈，指向下一次 = 持续改进</strong></li>
+        <li>安全文化是<strong>前提（敢说）</strong>，学习型组织是<strong>结果（说了之后组织真的变了）</strong></li>
+        <li>权重：本章<strong>最多 4 / 40，占比上限约 10%</strong>（v3.4 数据，v3.6 未重新发布权重表）；全卷及格 <strong>26 / 40</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：三步的官方名称出自 PeopleCert《DevOps Foundation® Blueprint》
+      —— <em>1st Way: Continuous Flow / 2nd Way: Feedback / 3rd Way: Continuous Improvement (Experimenting and Learning)</em>；
+      本章各节的模块归属出自 <strong>DOFD v3.4 课程大纲 M2 Core DevOps Principles</strong>
+      （The Three Ways / The First Way / The Theory of Constraints / The Second Way / The Third Way /
+      Chaos Engineering / Learning Organizations）；
+      「本章官方术语速查」中的英文条目名出自 <strong>DOFD v3.4 官方考纲术语表（66 条）</strong>；
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，v3.6 未公开重新发布权重表；
+      考试形式（40 题 / 60 分钟 / 及格 65%）出自 PeopleCert 现行 DevOps Foundation 产品页。
+      <br>
+      本页的<strong>知识地图挂靠结构、一页纸复习表、易混淆分界线、术语一句话定义、命题角度归纳</strong>
+      均为本站教学整理，已在各自表格下方单独标注；练习题为仿真题，非官方真题。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

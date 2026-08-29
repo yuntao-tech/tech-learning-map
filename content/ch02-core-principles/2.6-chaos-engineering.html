@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.6 混沌工程 · DevOps Foundation 学习站</title>
+<meta name="description" content="混沌工程（Chaos Engineering）是在生产或类生产环境中主动注入故障、验证系统真实行为的学科。本节讲清它的定义、Simian Army/Chaos Monkey 的由来、三个不可跳过的前提条件，以及它与故障演练的分界。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.6-chaos-engineering"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.6 混沌工程</h1>
+      <div class="page-head__en">Chaos Engineering</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        故障一定会发生，区别只在于<strong>是你挑的时间，还是它挑的时间</strong>。
+        混沌工程把这句话变成一套可执行的方法：主动、有控制地弄坏自己的系统，
+        在损失可承受的时候把弱点找出来。但它有三个前提条件——
+        <strong>缺了任何一个，混沌工程就不是工程，是自残</strong>。
+      </p>
+      <div class="src-note">
+        「Chaos Engineering」列于 DOFD v3.4 课程大纲 M2 <em>Core DevOps Principles</em> 的官方模块子项，
+        但<strong>未列入 66 条官方考纲术语表</strong>，因此本节标题不标「⭐ 考纲核心」。
+        本节可标为官方术语的只有 Simian Army/Chaos Monkey、Resilience engineering、SPOF、MTTR、
+        Site Reliability Engineering、Continuous testing 这几条。
+      </div>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>为什么要花力气主动制造故障，而不是好好地把系统守住</li>
+        <li>做混沌工程之前必须先具备什么——这一点最容易被跳过，也最容易被考</li>
+        <li>混沌工程属于三步工作法的哪一步，它和故障演练、和持续测试的分界线在哪</li>
+      </ul>
+    </div>
+
+    <!-- ============ 主图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 520" role="img" aria-label="按已知未知与事前事后划分的四象限：故障演练、混沌工程、监控告警、事后复盘">
+          <!-- 象限底 -->
+          <rect x="110" y="70" width="680" height="360" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <rect x="450" y="70" width="340" height="180" class="s-1" stroke-width="2.5" fill="none"/>
+          <line x1="450" y1="70" x2="450" y2="430" class="s-stroke" stroke-width="1.5"/>
+          <line x1="110" y1="250" x2="790" y2="250" class="s-stroke" stroke-width="1.5"/>
+
+          <!-- 轴标签 -->
+          <text x="450" y="44" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">▲ 故障发生之前 · 主动</text>
+          <text x="450" y="474" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">▼ 故障发生之后 · 被动</text>
+          <text x="58" y="242" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">◀ 面向</text>
+          <text x="58" y="262" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">已知</text>
+          <text x="845" y="242" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">面向 ▶</text>
+          <text x="845" y="262" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">未知</text>
+
+          <!-- 左上：故障演练 -->
+          <g text-anchor="middle">
+            <text x="280" y="118" class="f-2" font-size="16" font-weight="700">故障演练 / Game Day</text>
+            <text x="280" y="146" class="s-ink" font-size="13">按已有预案走一遍：切机房、切流量</text>
+            <text x="280" y="170" class="s-muted" font-size="13">验证的是：预案还能用吗、人还会用吗</text>
+            <text x="280" y="200" class="s-muted" font-size="12">（教学补充 · 不在 DOFD 考纲术语表内）</text>
+          </g>
+
+          <!-- 右上：混沌工程 -->
+          <g text-anchor="middle">
+            <text x="620" y="118" class="f-1" font-size="16" font-weight="700">混沌工程 Chaos Engineering</text>
+            <text x="620" y="146" class="s-ink" font-size="13">对稳态假设注入故障，观测偏离</text>
+            <text x="620" y="170" class="s-muted" font-size="13">发现的是：没人想到过的弱点</text>
+            <text x="620" y="200" class="f-1" font-size="12" font-weight="650">Simian Army / Chaos Monkey · 第三步</text>
+          </g>
+
+          <!-- 左下：监控告警 -->
+          <g text-anchor="middle">
+            <text x="280" y="300" class="f-4" font-size="16" font-weight="700">监控与告警</text>
+            <text x="280" y="328" class="s-ink" font-size="13">已知失败模式触发已知响应</text>
+            <text x="280" y="352" class="s-muted" font-size="13">回答的是：现在坏了吗、坏在哪</text>
+            <text x="280" y="382" class="s-muted" font-size="12">属第二步 · 反馈</text>
+          </g>
+
+          <!-- 右下：事后复盘 -->
+          <g text-anchor="middle">
+            <text x="620" y="300" class="f-3" font-size="16" font-weight="700">无指责事后复盘</text>
+            <text x="620" y="328" class="s-ink" font-size="13">从已发生的真实事故里挖未知原因</text>
+            <text x="620" y="352" class="s-muted" font-size="13">学到的是真知识，但学费由事故收取</text>
+            <text x="620" y="382" class="s-muted" font-size="12">属第三步 · 持续改进</text>
+          </g>
+
+          <text x="450" y="502" class="s-muted" font-size="12" text-anchor="middle">右列两格挖到的都是未知弱点，区别只在于学费由谁定；同一行的两格时机相同，区别在于面向已知还是未知。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-6-1　四种「让系统变可靠」的活动各自站在哪。</strong>
+        横轴分的是<strong>面向已知还是未知</strong>，纵轴分的是<strong>在故障之前还是之后</strong>。
+        混沌工程独占右上角——只有它同时做到「事前」和「找未知」，这就是它不可替代的原因。
+        对照左上与右下：故障演练验证的是<strong>你已经想到的</strong>，事后复盘挖的是<strong>已经付过学费的</strong>。
+        <span class="muted">本四象限为本站教学整理，官方未以此形式给出；Game Day 不在 DOFD 考纲术语表内；
+        图中「属第二步 / 属第三步」的标注为本站教学推断，官方只给出三步的名称，未发布实践与三步的归属对照表。</span>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-6-1</div>
+        <h3 class="kp__title">混沌工程是什么<span class="en">Chaos Engineering · Simian Army / Chaos Monkey</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">混沌工程 <span class="en">Chaos Engineering</span></span>
+            是在<strong>生产或类生产环境</strong>中<strong>主动注入故障</strong>，
+            观察系统在真实故障下的实际行为，从而<strong>暴露未知弱点</strong>的学科。
+          </p>
+          <p>
+            关键词有三个，缺一个意思就变了：<strong>主动</strong>（不是等故障找上门）、
+            <strong>真实环境</strong>（不是测试环境的模拟）、<strong>找未知</strong>（不是验证已经想到的东西）。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">官方术语</th><th style="width:24%">英文原词</th><th>与混沌工程的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Simian Army / Chaos Monkey</strong></td>
+                  <td><span class="term">Simian Army / Chaos Monkey</span></td>
+                  <td>混沌工程最早被广泛引用的<strong>具体实现</strong>：一组会随机破坏基础设施的工具，
+                      Chaos Monkey 负责随机终止生产环境中的实例，逼迫服务必须能在实例随时消失的前提下正常工作</td>
+                </tr>
+                <tr>
+                  <td><strong>单点故障</strong></td>
+                  <td><span class="term">Single Point of Failure / SPOF</span></td>
+                  <td>混沌实验最常挖出来的东西：架构图上看不出、只有真的把它拔掉才会暴露的唯一依赖</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            「Simian Army/Chaos Monkey」「Single Point of Failure (SPOF)」均列于 DOFD v3.4 官方考纲术语表（66 条），
+            「Resilience engineering 韧性工程」同样在表内，本节放在 ③ 与混沌工程对照。
+            <strong>「Chaos Engineering」本身只出现在 M2 <em>Core DevOps Principles</em> 的官方模块子项里，未列入 66 条术语表</strong>；
+            上面这句定义是本站依据官方模块名与业界通用表述写成的教学定义，官方未公布其术语定义原文。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            分布式系统里有一类弱点，<strong>测试测不出来、评审看不出来、架构图上画不出来</strong>，
+            只有真的坏一次才会露头。一个典型场景：
+          </p>
+          <ul>
+            <li>订单服务调用一个查询优惠券的下游接口，客户端超时用的是框架默认的 60 秒，没有熔断，没有降级。</li>
+            <li>这条链路平时耗时 20 毫秒，压测、集成测试、上线评审全部通过——因为<strong>没有人测过下游不返回的情况</strong>。</li>
+            <li>某天下游数据库抖动，接口不报错，只是变慢。订单服务的线程被一个个挂住，60 秒内线程池耗尽，
+              <strong>整个订单服务对所有请求不可用</strong>——一个非核心的优惠券查询，拖垮了核心下单。</li>
+          </ul>
+          <p>
+            事后复盘会写下「补熔断、调超时」。但代价是：这次学习的学费，是由一次真实的生产事故垫付的，
+            金额由故障本身决定，而不是由你决定。
+          </p>
+          <p class="mb-0">
+            混沌工程解决的就是这个问题：<strong>故障的发生是确定的，可以选择的只有发生的时机</strong>。
+            工作日上午十点、有人盯着、只影响 1% 流量、随时能停——这个时机由你挑；
+            大促当晚、值班一人、全量流量——这个时机由故障挑。同样的弱点，两种学费。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">混沌工程</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>韧性工程<br><span class="en">Resilience engineering</span></strong></td>
+                  <td><strong>手段</strong>：通过实验取得「系统确实扛得住」的证据</td>
+                  <td><strong>目标 / 学科</strong>：让系统具备遭遇扰动仍维持关键功能的能力。混沌工程只是它的验证方式之一</td>
+                </tr>
+                <tr>
+                  <td><strong>持续测试<br><span class="en">Continuous testing</span></strong></td>
+                  <td>验证<strong>系统在故障下的行为</strong>，对象是运行中的真实系统与其依赖</td>
+                  <td>验证<strong>变更是否符合预期</strong>，对象是这次改动的代码，在流水线里跑</td>
+                </tr>
+                <tr>
+                  <td><strong>压力测试 / 容量测试</strong></td>
+                  <td>问「某个组件<strong>坏掉</strong>时，整体还满足稳态吗」</td>
+                  <td>问「负载升到某个量时，性能曲线怎么走」——加的是<strong>量</strong>，不是<strong>故障</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>站点可靠性工程 SRE<br><span class="en">Site Reliability Engineering</span></strong></td>
+                  <td>一项<strong>具体实践</strong></td>
+                  <td>一整套<strong>工程角色与运维模型</strong>，混沌工程常是其工具箱中的一件。展开见 3.4 SRE 与韧性工程（第 3 章）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>持续测试和混沌工程都在「找问题」，但找的问题类型相反</strong>。
+            持续测试找的是「这次改动引入的、可预期的」问题；混沌工程找的是「没人想到过的、系统层面的」问题。
+            考题常把两者放在同一组选项里，靠这条判据分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>典型的注入手法按破坏程度从轻到重排：</p>
+          <ul>
+            <li><strong>杀实例</strong>：随机终止一个服务实例，看流量是否自动转移、是否有请求失败。Chaos Monkey 的原型做法。</li>
+            <li><strong>加延迟</strong>：给某个下游调用注入 3 秒延迟，看调用方的超时、重试、熔断是否按设计生效。
+              这是最容易挖出问题的一类，因为<strong>「变慢」比「报错」更难处理</strong>。</li>
+            <li><strong>断依赖</strong>：直接切断对缓存 / 消息队列 / 第三方接口的访问，看有没有降级路径，还是直接把错误抛给用户。</li>
+            <li><strong>拔掉一个可用区</strong>：验证跨区容灾真的能切，而不只是在架构文档里写着能切。</li>
+          </ul>
+          <p class="mb-0">
+            判断动作只有一个：<strong>实验前先写下「我预期系统会怎样」，实验后对比实际</strong>。
+            预期和实际一致，说明这块韧性有证据了；不一致，就是一条待修的弱点。
+          </p>
+          <div class="src-note">
+            「稳态假设 steady state hypothesis」是混沌工程社区的通用说法，<strong>不在 DOFD v3.4 官方考纲术语表的 66 条中</strong>，
+            属本站教学补充，仅用于理解「实验」与「破坏」的分界。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语归属题（Bloom 1）</strong>：给出 <em>Chaos Monkey</em> 或 <em>Simian Army</em>，问它属于哪个概念，
+              或反过来问「混沌工程的典型工具是什么」。这两个词在官方术语表里是<strong>并列写在一起</strong>的，
+              见到其中一个就应联想到另一个。</li>
+            <li><strong>定义辨析题</strong>：问混沌工程的核心特征。正确方向必须同时含
+              <strong>主动注入</strong>与<strong>真实（生产 / 类生产）环境</strong>两层意思。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <ul>
+                <li>把它写成「在<strong>功能测试环境</strong>中<strong>模拟</strong>故障」——既丢了真实环境，
+                  也把「注入真实故障」换成了「模拟」。</li>
+                <li>把它写成「在生产环境中<strong>随机</strong>制造破坏」——少了「有假设、有控制、有观测」，
+                  这描述的是事故不是工程。<strong>有「随机破坏」而没有「假设与观测」的选项，一律排除。</strong></li>
+                <li>把它和<strong>压力测试</strong>混写：「通过持续加压找到系统容量上限」——那是容量测试。</li>
+                <li>把它归到<strong>第二步 · 反馈</strong>——见 kp-2-6-3。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧</strong>：先看选项里有没有「环境」这个维度。
+              凡是把混沌工程限定在<strong>与生产差异很大的测试 / 开发环境</strong>，或写成<strong>「模拟 / 仿真故障」</strong>的，划掉；
+              写「生产或<strong>类生产</strong>（production-like）环境」的保留。
+              剩下的再看有没有「假设 / 观测 / 可控」这类词，有的那个通常是答案。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本章练习将提供仿真题；官方样题受版权保护，本站不复制原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">故障一定会来，混沌工程做的只是把「什么时候来」的选择权抢回自己手里。</p>
+          <p class="mb-0 muted"><small>三个关键词连起来记：<strong>主动 · 真实环境 · 找未知</strong>。少任何一个，那个选项就不是混沌工程。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-6-2</div>
+        <h3 class="kp__title">三个前提条件与爆炸半径<span class="en">Prerequisites &amp; blast radius</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>混沌工程不是一上来就能做的实践。它有<strong>三个不可跳过的前提</strong>：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">前提</th><th style="width:34%">要具备什么</th><th>缺了会怎样</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>① 可观测性</strong><br><span class="en">Observability</span>
+                      <span class="badge badge--new" style="margin-top:4px">🆕 v3.6 新增</span></td>
+                  <td>能实时看到系统的稳态指标——成功率、延迟、关键业务量，并且能定位到具体服务</td>
+                  <td>故障注进去了，<strong>看不见发生了什么</strong>。实验没有产出，只有损失</td>
+                </tr>
+                <tr>
+                  <td><strong>② 快速恢复能力</strong></td>
+                  <td>一键停止实验、快速回滚、把流量切走；<strong>平均恢复时间 MTTR</strong> 已经在分钟级</td>
+                  <td>实验失控时<strong>关不掉</strong>。一次「实验」变成一次真实的重大事故</td>
+                </tr>
+                <tr>
+                  <td><strong>③ 小爆炸半径</strong></td>
+                  <td>能把影响限制在一小部分流量 / 一个实例 / 一个非核心链路上，并能逐步放大</td>
+                  <td>第一次实验就是全量。<strong>不是发现弱点，是制造事故</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>这三个前提条件是本站的教学整理，官方未以此形式给出。</strong>
+            「爆炸半径 blast radius」是业界通用说法，用于描述一次实验的最大影响范围，
+            <strong>不在 DOFD v3.4 官方考纲术语表的 66 条中</strong>；
+            其中「可观测性 Observability」出自 PeopleCert 现行产品页公布的学习目标（v3.6 增量），
+            「Mean Time to Repair/Recover (MTTR)」列于 v3.4 官方术语表。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这三条不是学术上的严谨，是被踩出来的。一个组织读完混沌工程的介绍，
+            周五下午在生产环境随机杀了一批实例，结果是：
+          </p>
+          <ul>
+            <li>监控只有主机 CPU 和内存，<strong>没有按服务的成功率曲线</strong>——大屏一片绿，但用户已经下不了单。</li>
+            <li>发起实验的脚本没有停止开关，工程师只能一台台手动把实例拉起来，恢复花了 40 分钟。</li>
+            <li>被杀的实例里正好包含一个所有人都以为有双活、实际只有一个副本的配置中心——<strong>整个集群跟着挂了</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            结果是这家公司此后三年不许再提混沌工程。<strong>它确实发现了一个真实的单点故障，
+            但发现的方式和一次生产事故没有区别</strong>——这就是缺前提的代价。
+            三个前提存在的意义，就是把「实验」和「事故」区分开：
+            <strong>两者都在破坏系统，区别只在于你是否看得见、停得住、圈得小</strong>。
+          </p>
+        </div>
+
+        <!-- ============ 图 1 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 420" role="img" aria-label="混沌工程实验循环：定义稳态假设、注入故障、观测偏离、学习并加固、扩大爆炸半径">
+              <defs>
+                <marker id="ah-26-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-26-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 连接箭头 -->
+              <g class="s-1" stroke-width="2.5" fill="none">
+                <path d="M556 76 L654 145" marker-end="url(#ah-26-1)"/>
+                <path d="M764 202 L740 300" marker-end="url(#ah-26-1)"/>
+                <path d="M536 336 L366 336" marker-end="url(#ah-26-1)"/>
+                <path d="M178 302 L146 204" marker-end="url(#ah-26-1)"/>
+              </g>
+              <path d="M244 156 L342 82" class="s-3" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-26-2)"/>
+
+              <!-- 节点 -->
+              <g text-anchor="middle">
+                <rect x="345" y="34" width="210" height="62" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="450" y="60" class="s-ink" font-size="15" font-weight="700">① 定义稳态假设</text>
+                <text x="450" y="80" class="s-muted" font-size="12">正常时的指标长什么样</text>
+
+                <rect x="659" y="138" width="210" height="62" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="764" y="164" class="s-ink" font-size="15" font-weight="700">② 注入故障</text>
+                <text x="764" y="184" class="s-muted" font-size="12">杀实例 · 加延迟 · 断依赖</text>
+
+                <rect x="539" y="305" width="210" height="62" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="644" y="331" class="s-ink" font-size="15" font-weight="700">③ 观测偏离</text>
+                <text x="644" y="351" class="s-muted" font-size="12">稳态被打破了吗，多快发现</text>
+
+                <rect x="151" y="305" width="210" height="62" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="256" y="331" class="s-ink" font-size="15" font-weight="700">④ 学习并加固</text>
+                <text x="256" y="351" class="s-muted" font-size="12">补熔断 · 超时 · 降级 · 冗余</text>
+
+                <rect x="31" y="138" width="210" height="62" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <text x="136" y="164" class="f-3" font-size="15" font-weight="700">⑤ 扩大爆炸半径</text>
+                <text x="136" y="184" class="s-muted" font-size="12">从单实例到整个可用区</text>
+              </g>
+
+              <!-- 中心说明 -->
+              <text x="450" y="196" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">每一轮只回答一个问题</text>
+              <text x="450" y="220" class="s-muted" font-size="13" text-anchor="middle">「如果 X 坏了，系统还满足稳态吗？」</text>
+              <text x="450" y="252" class="s-muted" font-size="12" text-anchor="middle">前提：看得见（可观测性）· 停得住（快速恢复）· 圈得小（爆炸半径）</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-6-2　混沌工程的实验循环。</strong>
+            这是一个<strong>环</strong>而不是一条流水线：⑤ 之后回到 ①，用更大的范围重新问同一个问题。
+            ① 在 ② 之前——<strong>先有假设才叫实验</strong>，直接从 ② 开始只是在破坏。
+            底部那行前提条件是整张图的地基，三者任缺其一，这个环就转不起来。
+            <span class="muted">实验循环五步与「稳态假设」为业界通用说法，不在 DOFD 考纲术语表内，本图为本站教学整理。</span>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:39%">混沌工程实验</th><th>一次生产事故</th></tr></thead>
+              <tbody>
+                <tr><td><strong>发起方</strong></td><td>你，在选定的时间</td><td>系统，在最不方便的时间</td></tr>
+                <tr><td><strong>是否有假设</strong></td><td>有。实验前已写下预期行为</td><td>没有。事后才知道发生了什么</td></tr>
+                <tr><td><strong>是否看得见</strong></td><td>有可观测性支撑，偏离立刻可见</td><td>常常是客户先发现</td></tr>
+                <tr><td><strong>能否停止</strong></td><td>有停止开关，随时中止</td><td>只能等排查完再恢复</td></tr>
+                <tr><td><strong>影响范围</strong></td><td>预先限定，逐步放大</td><td>由故障自己决定</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被忽略的一点：<strong>这张表的左右两列，在系统内部发生的事情是一样的</strong>——都是组件坏了。
+            区分它们的不是破坏本身，而是三个前提条件。所以「有没有前提」不是成熟度问题，是<strong>定义问题</strong>。</small></p>
+          <div class="src-note">
+            本对照表为本站教学整理，官方未以此形式给出。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把三个前提当成<strong>准入检查清单</strong>，做实验之前逐条过：</p>
+          <ul>
+            <li><strong>看得见吗</strong>：能不能在一块屏上同时看到这条链路的成功率、延迟和业务量？
+              如果只有主机指标，先补可观测性，别做实验。</li>
+            <li><strong>停得住吗</strong>：停止实验的操作是什么、谁能执行、需要多久？把它写下来，并在实验前演一次。</li>
+            <li><strong>圈得小吗</strong>：这次实验最坏情况影响多少用户？先从<strong>非核心链路 + 单实例 + 低峰时段</strong>起步。</li>
+            <li><strong>还要有人</strong>：实验期间必须有人在线盯着，并提前通知相关团队。
+              不打招呼的实验会被当成事故，触发一整套应急流程——这本身就是一种浪费。</li>
+          </ul>
+          <p class="mb-0">
+            扩大爆炸半径的节奏也有讲究：<strong>只在上一轮完全符合预期时才放大</strong>。
+            上一轮出了意料之外的偏离，就先修，修完在原来的范围上重跑一次。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>本站教学推断的命题角度</strong>：若命题涉及「一个刚开始做 DevOps、监控只有基础主机指标、
+              发布要人工审批数天的组织能否引入混沌工程」，合理方向是<strong>先建能力（可观测性与快速恢复），而不是先买工具</strong>。
+              这三个前提条件是本站教学整理，<strong>官方既未以此形式给出，也未公布题型分布与频次</strong>。</li>
+            <li><strong>能挂在官方条目上的只有这两类</strong>：<em>Simian Army / Chaos Monkey</em> 的术语归属，
+              以及混沌工程作为 M2 <em>Core DevOps Principles</em> 的官方模块子项，与 Resilience engineering、SPOF、MTTR、
+              Continuous testing 之间的分辨——这些词都在 v3.4 官方术语表内。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <ul>
+                <li>「先在生产环境全量注入故障，以获得最真实的结果」——把「真实环境」曲解成「全量」。
+                  真实环境和小爆炸半径<strong>并不矛盾</strong>，见到「全量 / 最大范围 / 不设限」直接排除。</li>
+                <li>「购买一款混沌工程平台」——把能力问题偷换成工具问题。DOFD 层面的题几乎不会以「买某个工具」为正确答案。</li>
+                <li>「先做完所有单元测试再做混沌工程」——把它和持续测试的前置关系搞反，两者不是先后关系。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧</strong>：这类题的正确项通常指向<strong>能力建设</strong>（看得见、停得住、圈得小），
+              干扰项则指向<strong>工具采购</strong>或<strong>加大破坏力度</strong>。这是本站归纳的判断方向，不是官方口径。</li>
+          </ul>
+          <div class="src-note">
+            本面所列命题角度与干扰项形态<strong>均为本站教学归纳</strong>，官方未公布题型分布与频次；
+            「三个前提条件」「爆炸半径」「稳态假设」不在 v3.4 官方考纲术语表的 66 条中，不会以术语形式直接被考。
+          </div>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">看得见、停得住、圈得小——三条都在才叫实验，缺一条就叫事故。</p>
+          <p class="mb-0 muted"><small>记忆锚点：<strong>先假设，后注入</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>——实验循环的顺序是业界通用做法，
+            不在 DOFD 考纲术语表内，官方未规定考法，此处仅作理解锚点。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-6-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-6-3</div>
+        <h3 class="kp__title">它在三步工作法中的位置<span class="en">Chaos Engineering and the Third Way</span></h3>
+        <div class="badge-row"><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            按本站的理解，混沌工程落在<strong>第三步 · 持续改进（实验与学习）</strong>上，
+            它是官方表述里那个括号——<em>Experimenting and Learning</em>——<strong>在技术层面最直接的体现</strong>。
+            第三步说「要建立敢于实验、能从失败中学习的文化」，混沌工程回答的是：
+            <strong>那这个「实验」具体长什么样？</strong>答案是：主动制造一次可控的失败，然后从中学习。
+          </p>
+          <div class="src-note">
+            <strong>本站教学推断</strong>：v3.4 课程大纲 M2 中 <em>Chaos Engineering</em> 与 <em>The Third Way</em> 是
+            <strong>并列子项</strong>，官方并未把混沌工程正式归入第三步。
+            本站依据 PeopleCert《DevOps Foundation® Blueprint》对第三步的官方表述
+            <em>3rd Way: Continuous Improvement (Experimenting and Learning)</em> 作此对应，
+            <strong>用于理解，不是官方归类</strong>。
+            第三步本身的官方表述与展开见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            大多数组织的「从失败中学习」是<strong>被动的</strong>：等一次真实事故发生，拉一场复盘，写几条改进项。
+            这条学习路径有一个硬伤：
+          </p>
+          <p>
+            硬伤只有一句话：<strong>被动学习的学费由故障规模决定、频率由故障次数决定</strong>，两个变量都不在自己手里。
+          </p>
+          <p class="mb-0">
+            混沌工程把这条路径反过来：<strong>不等失败发生，主动安排失败</strong>。
+            学习频率从「按事故次数」变成「按实验次数」，学费从「由故障决定」变成「由自己设定上限」。
+            这就是本站把它对应到第三步而不是第二步的理由——它改变的不是「多快知道出事了」，
+            而是<strong>组织获取知识的方式</strong>。
+            学习型组织与第三步的完整机制见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>与 <a href="2.7-learning-organizations.html">2.7 学习型组织</a>。
+          </p>
+        </div>
+
+        <!-- 回指本节主图 -->
+        <p class="muted"><small>这一段对应本节主图<strong>图 2-6-1</strong>的右上角与右下角：
+          同样是「找未知」，混沌工程在故障之前，事后复盘在故障之后。</small></p>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">混沌工程</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>故障演练 / Game Day</strong><br><span class="muted"><small>教学补充 · 非考纲术语</small></span></td>
+                  <td>验证<strong>未知</strong>：假设可能是错的，实验就是为了看它错在哪</td>
+                  <td>验证<strong>已知预案</strong>：预案已经写好，演练是确认它还有效、人还会用</td>
+                </tr>
+                <tr>
+                  <td><strong>监控与告警</strong></td>
+                  <td>主动制造异常，属<strong>第三步</strong></td>
+                  <td>被动等待异常并报告，属<strong>第二步 · 反馈</strong>（见 <a href="2.4-second-way-feedback.html">2.4 第二步：反馈</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>无指责事后复盘</strong><br><span class="en">Blameless postmortem</span></td>
+                  <td>同属第三步，但发生在故障<strong>之前</strong>，学费上限自己定</td>
+                  <td>同属第三步，发生在故障<strong>之后</strong>，学费由事故规模决定</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>演练和混沌工程都在「制造故障」，但目的相反</strong>。
+            演练希望结果和预案一致（一致 = 成功）；混沌工程恰恰希望找到不一致（找到 = 有收获）。
+            持续测试与混沌工程的分界见本节 kp-2-6-1 ③ 与 <a href="2.1-three-ways.html">2.1 三步工作法总览</a>；持续测试本身属第二步，见 <a href="2.4-second-way-feedback.html">2.4 第二步：反馈</a>。</small></p>
+          <div class="src-note">
+            「Game Day / 故障演练」是业界通用说法，<strong>不在 DOFD 考纲术语表的 66 条中</strong>，属教学补充。
+            本表中「监控与告警属第二步」「无指责事后复盘属第三步」<strong>为本站教学推断</strong>——
+            官方仅给出三步的名称（PeopleCert Blueprint），<strong>未发布实践与三步的归属对照表</strong>。
+            与图 2-6-1 的标注同一口径。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把这个定位用在两个地方：</p>
+          <ul>
+            <li><strong>排优先级时</strong>：如果组织连「线上出事多久能发现」都答不上来，
+              说明第二步还没打牢（见 <a href="2.4-second-way-feedback.html">2.4 第二步：反馈</a>），此时该补的是可观测性与告警，不是混沌工程。
+              <strong>第三步的实践，需要第二步的能力垫底</strong>（这条依赖关系在 <a href="2.1-three-ways.html">2.1 三步工作法总览</a> 已经讲过）。</li>
+            <li><strong>设计学习机制时</strong>：把混沌实验的结果和事后复盘放进<strong>同一个改进池</strong>。
+              两者产出的都是「系统的弱点清单」，区别只是来源。
+              一个健康的组织，这个池子里<strong>来自实验的条目应该多于来自事故的条目</strong>——
+              这本身就是个很好的成熟度信号。</li>
+          </ul>
+          <p class="mb-0">
+            混沌工程在实践层面通常由 SRE 团队承接，但这属于第 3 章的范围，
+            完整展开见 3.4 SRE 与韧性工程；可观测性的技术实现见 3.8 监控与可观测性。
+            第三步的官方表述与展开见 <a href="2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a>。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>归类题</strong>：给出混沌工程，问它体现三步工作法中的哪一步。
+              若出现此类题，按本站推断的方向法判断（主动制造 → 第三步）；
+              <strong>该归属为本站教学推断，官方未明示</strong>。
+              判据用 <a href="2.1-three-ways.html">2.1 三步工作法总览</a> 的方向法：它既不是把工作推向客户（第一步），
+              也不是把线上信息回传给源头（第二步），而是<strong>改变组织学习的方式</strong>——绕圈那一条。</li>
+            <li><strong>反向题</strong>：给一组实践，问哪一个<strong>不属于</strong>第二步。混沌工程常是那个答案。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <ul>
+                <li>把混沌工程归到<strong>第二步 · 反馈</strong>。理由听上去很顺——「它也是为了更早发现问题」。
+                  排除依据：第二步是<strong>观察已经发生的事</strong>，混沌工程是<strong>主动让事发生</strong>。
+                  <strong>只要是「主动制造」的，就落在第三步。</strong></li>
+                <li>把它归到<strong>第一步 · 流动</strong>，理由写成「提高发布信心从而加快发布」。
+                  这是把间接效果当成归属，属于典型的过度推理型干扰项。</li>
+                <li>用「All of the above / 以上皆是」把三步全包进去。混沌工程有明确归属，不选。</li>
+              </ul>
+            </li>
+            <li><strong>排除技巧</strong>：碰到「某实践属于哪一步」的题，先问一句
+              <strong>「这个动作是在观察，还是在制造？」</strong>观察 → 第二步；制造并从中学习 → 第三步。
+              这一条能一次性理清混沌工程、事后复盘、改进型 Kata 三者的位置。</li>
+          </ul>
+          <div class="src-note">
+            本面所列命题角度、干扰项形态与「观察 / 制造」判据<strong>均为本站教学归纳</strong>，
+            官方未公布题型分布与频次，也未发布实践与三步的归属对照表。本站不复制官方样题的题干与选项原文。
+          </div>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">第三步说「要实验与学习」，混沌工程就是那个「实验」的具体样子。</p>
+          <p class="mb-0 muted"><small>一句话分清四格：<strong>演练验证已知，混沌发现未知，告警报告已发生，复盘挖掘已付费。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>定义三要素：<strong>主动注入 · 生产或类生产的真实环境 · 暴露未知弱点</strong>。少一个就不是混沌工程</li>
+        <li>官方术语：<strong>Simian Army / Chaos Monkey</strong>（典型实现）、<strong>Resilience engineering 韧性工程</strong>（上位目标）、<strong>SPOF 单点故障</strong>（最常挖到的东西）</li>
+        <li>存在理由：<strong>故障一定会发生，能选的只有时机</strong>——你挑的时机，学费便宜得多</li>
+        <li>三个前提：<strong>看得见（可观测性）· 停得住（快速恢复 / MTTR）· 圈得小（爆炸半径）</strong>，缺一条就是自残
+          （三条前提与「爆炸半径」为本站教学整理，非考纲条目；其中「可观测性」属 v3.6 学习目标增量、MTTR 属 v3.4 术语表）</li>
+        <li>实验循环第一步是<strong>定义稳态假设</strong>，不是注入故障；⑤ 之后回到 ①，逐步放大范围
+          （实验循环与「稳态假设」为业界通用说法，不在 DOFD 考纲术语表内）</li>
+        <li>归属：<strong>第三步 · 持续改进（实验与学习）</strong>，判据是「主动制造」而非「被动观察」
+          （该归属为本站教学推断，官方未把混沌工程正式归入第三步）</li>
+        <li>和故障演练的分界：<strong>演练验证已知预案，混沌工程发现未知弱点</strong>（Game Day 属教学补充，非考纲术语）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<strong>「Chaos Engineering」是 DOFD v3.4 课程大纲 M2 <em>Core DevOps Principles</em> 的官方模块子项，
+      但未列入 66 条官方考纲术语表（Concept and Terminology List）</strong>；本节可标为官方术语的仅
+      「Simian Army/Chaos Monkey」「Resilience engineering」「Single Point of Failure (SPOF)」
+      「Mean Time to Repair/Recover (MTTR)」「Site Reliability Engineering 站点可靠性工程」「Continuous testing」这几条。
+      第三步的官方名称与表述出自 PeopleCert《DevOps Foundation® Blueprint》
+      <em>3rd Way: Continuous Improvement (Experimenting and Learning)</em>。
+      「可观测性 Observability」出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 增量）。
+      <br>
+      <strong>教学推断与教学整理（非官方）</strong>：<strong>「混沌工程属于第三步」这一归属为本站教学推断，官方未给出</strong>——
+      v3.4 课程大纲 M2 中 <em>Chaos Engineering</em> 与 <em>The Third Way</em> 是并列子项，官方也未发布实践与三步的归属对照表；
+      本节中的<strong>三个前提条件、实验循环五步、混沌工程与生产事故对照表、四象限图</strong>同样是本站教学整理，
+      官方未以此形式给出，均已在各自位置就地标注；<strong>Game Day / 故障演练、爆炸半径、稳态假设</strong>为业界通用说法，
+      不在 DOFD 考纲术语表的 66 条内，仅作理解辅助。
+      本节各知识点<strong>「⑤ 考试怎么考」均为本站对命题角度与干扰项构造方式的教学归纳，官方未公布题型分布与频次</strong>。
+      本站不复制任何官方样题的题干与选项原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

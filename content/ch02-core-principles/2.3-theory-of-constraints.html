@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 约束理论 · DevOps Foundation 学习站</title>
+<meta name="description" content="约束理论（Theory of Constraints）指出系统的产出由最慢的那一环决定。本节讲清约束的定义、「瓶颈之外的改进不提升产出」这一核心结论、五步聚焦法，以及 DevOps 中的典型约束。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch02", sec:"2.3-theory-of-constraints"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 2 章 · 核心原则</div>
+      <h1 class="page-head__title">2.3 约束理论</h1>
+      <div class="page-head__en">Theory of Constraints</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        一条价值流的产出，不等于各环节能力的平均值，而<strong>等于最弱那一环的能力</strong>。
+        这句话推出一个反直觉但极其重要的结论：<strong>在瓶颈之外做的改进，不会让系统产出增加一分</strong>。
+        约束理论就是把「先改哪里」这个问题变成可回答问题的方法。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>什么是约束（瓶颈），为什么它单独决定整个系统的产出</li>
+        <li>为什么优化非瓶颈环节不但没用，还会让情况变糟</li>
+        <li>找到约束之后按什么顺序动手，以及考试怎么问「约束理论支持哪一步」</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 400" role="img" aria-label="串联管道流量示意图：最细的一段决定整条管路的流量">
+          <defs>
+            <marker id="ah-23-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-23-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah-23-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+          </defs>
+
+          <!-- 顶部：非瓶颈改进的批注 -->
+          <text x="60" y="38" class="f-4" font-size="16" font-weight="700">把这一段加宽：毫无用处</text>
+          <text x="60" y="60" class="s-muted" font-size="13">整体产出一点不变，只会让在制品在瓶颈前堆得更快</text>
+          <path d="M300 74 L300 118" class="s-4" stroke-width="2" fill="none" marker-end="url(#ah-23-4)"/>
+
+          <!-- 入口流量 -->
+          <line x1="14" y1="190" x2="52" y2="190" class="s-1" stroke-width="10" marker-end="url(#ah-23-1)"/>
+
+          <!-- 管段 -->
+          <rect x="60"  y="150" width="160" height="80" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="220" y="156" width="160" height="68" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="380" y="176" width="160" height="28" rx="8" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <rect x="540" y="160" width="160" height="60" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="700" y="152" width="140" height="76" rx="8" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <!-- 环节名（管段上方） -->
+          <g text-anchor="middle" class="s-ink" font-size="15" font-weight="650">
+            <text x="140" y="140">需求 / 规划</text>
+            <text x="300" y="140">开发</text>
+            <text x="460" y="140">测试环境准备</text>
+            <text x="620" y="140">部署 / 发布</text>
+            <text x="770" y="140">运维 / 客户</text>
+          </g>
+
+          <!-- 通过能力（管段内） -->
+          <g text-anchor="middle" class="s-muted" font-size="13">
+            <text x="140" y="195">通过能力 80</text>
+            <text x="300" y="195">通过能力 70</text>
+            <text x="620" y="195">通过能力 60</text>
+            <text x="770" y="195">通过能力 75</text>
+          </g>
+
+          <!-- 出口流量：细 -->
+          <line x1="848" y1="190" x2="884" y2="190" class="s-2" stroke-width="4" marker-end="url(#ah-23-2)"/>
+          <text x="884" y="228" class="f-2" font-size="13" font-weight="650" text-anchor="end">实际产出 = 20</text>
+
+          <!-- 底部：瓶颈批注 -->
+          <path d="M460 330 L460 210" class="s-2" stroke-width="2.5" fill="none" marker-end="url(#ah-23-2)"/>
+          <text x="460" y="352" class="f-2" font-size="16" font-weight="700" text-anchor="middle">约束 / 瓶颈：通过能力 20</text>
+          <text x="460" y="376" class="s-muted" font-size="13" text-anchor="middle">整条价值流的产出被这一段单独锁死，与其他四段的能力无关</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 2-3-1　串联管道里的约束。</strong>
+        这张图要看懂的只有一件事：<strong>产出等于最细段的通过能力，而不是各段的平均值</strong>。
+        把「开发」那段从 70 加宽到 140，出口仍然只有 20 —— 多出来的工作全部变成了堆在瓶颈前的在制品。
+        这就是「非瓶颈改进不提升产出」的几何解释。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-2-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-3-1</div>
+        <h3 class="kp__title">约束与约束理论<span class="en">Constraint &amp; Theory of Constraints</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">约束 <span class="en">Constraint</span></span>是系统中<strong>限制整体产出的那一个环节</strong>；
+            指具体位置时通常叫<strong>瓶颈</strong>。
+            <span class="term">约束理论 <span class="en">Theory of Constraints / ToC</span></span>
+            是围绕它建立的管理方法：<strong>任何系统在任一时刻都至少有一个约束，系统的产出由这个约束单独决定。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">说法</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>产出取决于最弱环</strong></td><td>价值流是<strong>串联</strong>的，不是并联的。串联链条的强度等于最弱一环，不等于平均值</td></tr>
+                <tr><td><strong>约束一定存在</strong></td><td>提升一个约束，产出提高，随后<strong>另一个环节会成为新的约束</strong>。目标不是消灭所有约束，而是让约束落在你希望它落的位置</td></tr>
+                <tr><td><strong>局部效率 ≠ 系统产出</strong></td><td>非约束环节 100% 忙碌，只说明它在制造在制品，不说明系统交付得更多</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Constraint</strong> 与 <strong>Theory of Constraints</strong> 都列在 DOFD v3.4 官方考纲术语表中，属于必须掌握的名词。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一个很具体、也很常见的失败场景：<strong>钱花了、人加了、指标好看了，交付却一点没变快。</strong>
+          </p>
+          <ul>
+            <li>某电商团队发现交付慢，于是给开发团队扩编一倍，还引入了 IDE 插件和代码生成工具，
+              人均提交量翻倍。<strong>结果上线频率纹丝不动</strong> —— 因为真正卡住的是测试环境：
+              全公司共用三套环境，排队申请平均等 9 天。开发变快只是让待测分支从 15 个涨到 40 个。</li>
+            <li>更糟的是副作用：待测分支越多，合并冲突越多，每个分支等待的时间越长，
+              返工和重新测试的次数上升。<strong>非瓶颈提速不仅无效，还把在制品和返工一起推高了。</strong></li>
+          </ul>
+          <p>
+            在有约束理论这套语言之前，这类争论只能靠嗓门和部门话语权决定投哪儿。
+            约束理论把它变成一个可以用数据回答的问题：<strong>工作在哪个环节排队最久，就先动哪里。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">约束 / 约束理论</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>浪费 <span class="en">Waste</span></strong></td>
+                  <td>指<strong>一个具体位置</strong>：限制整体产出的那一环。数量极少，通常只有一个</td>
+                  <td>指<strong>一类活动</strong>：不产生价值的动作（等待、交接、返工等），散布在整条价值流上</td>
+                </tr>
+                <tr>
+                  <td><strong>单点故障 <span class="en">SPOF</span></strong></td>
+                  <td>关注<strong>产出速度</strong>：它在，系统慢</td>
+                  <td>关注<strong>可用性</strong>：它挂，系统停</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value Stream Mapping</span></strong></td>
+                  <td>是<strong>结论与行动方法</strong>：约束在哪、按什么顺序处理它</td>
+                  <td>是<strong>识别手段</strong>：把各环节的处理时间与等待时间量出来，约束自然浮现<br><small class="muted">完整方法见 4.6</small></td>
+                </tr>
+                <tr>
+                  <td><strong>三步工作法第一步 · 流动</strong><br><small class="muted">见 <a href="2.2-first-way-flow.html">2.2 第一步：流动</a></small></td>
+                  <td>是<strong>其中一条具体做法</strong>：<strong>识别约束并提升其产能</strong>，而不是消灭它 —— 约束被提升后会转移到下一处</td>
+                  <td>是<strong>更大的原则</strong>：还包括缩小批量、限制在制品、不把缺陷传给下游等</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>约束和浪费不是同义词</strong>。整条价值流到处都有浪费，但约束只有一个。
+            清除非约束环节上的浪费，属于「感觉良好但产出不变」的改进 —— 考题很喜欢用这个差别设置干扰项。</small></p>
+          <p class="mb-0 muted"><small>表中「约束理论服务于第一步 · 流动」这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+            不是本站推断；v3.4 课程大纲 M2 模块也将 <em>The Theory of Constraints</em> 与 <em>The First Way</em> 并列。
+            本站只陈述结论，不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断约束在哪，看<strong>等待时间</strong>而不是看谁最忙：</p>
+          <ul>
+            <li><strong>找排队最长的队列</strong>：在看板上，卡片积压最厚的那一列的<strong>下游</strong>就是约束。
+              「待测试」堆了 40 张卡，约束是测试，不是开发。</li>
+            <li><strong>比等待时间与处理时间</strong>：一个变更从提交到上线 21 天，其中实际动手 2 天、排队 19 天。
+              把 19 天拆开，占比最大的那一段就是要动的地方。</li>
+            <li><strong>别用忙碌度当证据</strong>：所有环节都说自己很忙。忙碌度高证明不了它是约束，
+              只有<strong>它前面有队列、它后面在等它</strong>才是证据。</li>
+            <li><strong>改完重新测量</strong>：约束会转移。测试环境从 9 天降到 1 小时之后，
+              新的约束很可能变成发布审批或某位只有一个人懂的组件。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的判断动作为本站教学整理，官方文件只给出约束理论的定义，未规定具体的识别步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>定义题（本站判断偏 Bloom 1）</strong>：直接问约束理论说的是什么。
+              正确方向是「<strong>系统的产出由约束决定</strong>」；干扰项常写成
+              「产出由所有环节的<strong>总和 / 平均</strong>决定」「约束应当被<strong>全部消除</strong>」
+              —— 前者混淆了串联与并联，后者违背「约束总会转移到下一处」。</li>
+            <li><strong>场景判断题（本站判断偏 Bloom 2）</strong>：给一段描述（某环节前排着长队、其他环节在等它），
+              问应该优先改哪里。<strong>排除技巧：先划掉所有「让某个非瓶颈环节更快 / 更忙」的选项</strong>，
+              它们几乎必然是干扰项。</li>
+            <li><strong>后果题</strong>：问优化非约束环节会发生什么。正确方向是
+              「<strong>整体产出不变，在制品增加</strong>」；干扰项会写成「整体产出小幅提升」
+              —— 听起来温和、合理，正因如此才是最常见的错项。</li>
+            <li><strong>易错点</strong>：约束 <span class="en">Constraint</span> 与浪费 <span class="en">Waste</span>
+              会被放进同一组选项。记住约束是<strong>位置</strong>，浪费是<strong>活动类型</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">系统的产出等于最细那段管子的流量，加宽别的段只是把水堵得更满。</p>
+          <p class="mb-0 muted"><small>一句话推论：<strong>瓶颈之外的改进不提升产出</strong> —— 它可能改善质量或成本，但要等约束转移之后才兑现为交付速度。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-2-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-3-2</div>
+        <h3 class="kp__title">五步聚焦法<span class="en">The Five Focusing Steps</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            五步聚焦法是约束理论给出的操作步骤：
+            <strong>识别约束 → 挖尽约束 → 让其他一切迁就约束 → 提升约束 → 回到第一步</strong>。
+            前三步<strong>不花钱</strong>，第四步才动预算，第五步防止流程僵化。
+          </p>
+          <div class="src-note">
+            五步聚焦法出自 Eliyahu M. Goldratt 的约束理论原著，是理解 Theory of Constraints 的必备背景，
+            但<strong>它本身不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>。
+            本站将其作为教学补充讲解，考试不会要求按名称背诵这五步。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            知道「约束在测试环境」之后，绝大多数团队的第一反应是<strong>立刻申请预算再买五套环境</strong>。
+            这个反应通常是错的，而且代价很高：
+          </p>
+          <ul>
+            <li>采购与建设周期三个月，这三个月里交付速度<strong>一点没变</strong>。</li>
+            <li>三个月后真相往往是：原来那三套环境有 40% 的时间闲置，
+              因为没人排班、申请流程要走两级审批、每次用完要手工清理两小时。
+              <strong>先把这些榨干，产能立刻能翻一倍，一分钱不花。</strong></li>
+            <li>更隐蔽的浪费：上游还在按自己的节奏往里塞任务，让本就紧张的环境反复被抢占、被中断。</li>
+          </ul>
+          <p class="mb-0">
+            五步聚焦法把顺序固定下来：<strong>先把现有产能用满（挖尽），再让全流程配合它（迁就），最后才谈扩容（提升）</strong>。
+            它解决的是「找到了约束却把钱花错地方、把时间浪费在等采购上」这个问题。
+          </p>
+        </div>
+
+        <!-- ============ 图 2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 470" role="img" aria-label="约束理论五步聚焦法的循环流程图">
+              <defs>
+                <marker id="ah-23-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-23-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 节点 1 -->
+              <rect x="355" y="16" width="250" height="76" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="480" y="48" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">① 识别约束　Identify</text>
+              <text x="480" y="72" class="s-muted" font-size="13" text-anchor="middle">找出限制整体产出的那一环</text>
+
+              <!-- 节点 2 -->
+              <rect x="690" y="150" width="250" height="76" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="815" y="182" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">② 挖尽约束　Exploit</text>
+              <text x="815" y="206" class="s-muted" font-size="13" text-anchor="middle">不加钱，先榨干它现有产能</text>
+
+              <!-- 节点 3 -->
+              <rect x="580" y="370" width="250" height="76" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="705" y="402" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">③ 迁就约束　Subordinate</text>
+              <text x="705" y="426" class="s-muted" font-size="13" text-anchor="middle">其余环节按它的节奏排产</text>
+
+              <!-- 节点 4 -->
+              <rect x="120" y="370" width="250" height="76" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="245" y="402" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">④ 提升约束　Elevate</text>
+              <text x="245" y="426" class="s-muted" font-size="13" text-anchor="middle">投入资源扩容，抬高上限</text>
+
+              <!-- 节点 5 -->
+              <rect x="10" y="150" width="250" height="76" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="135" y="182" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">⑤ 回到第一步　Repeat</text>
+              <text x="135" y="206" class="s-muted" font-size="13" text-anchor="middle">约束会转移，别让惰性接管</text>
+
+              <!-- 环形箭头 -->
+              <path d="M610 62 Q 672 92 704 144" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-23-5)"/>
+              <path d="M812 232 Q 792 312 734 364" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-23-5)"/>
+              <path d="M574 408 L 376 408" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-23-5)"/>
+              <path d="M152 364 Q 100 300 118 232" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-23-5)"/>
+              <path d="M146 144 Q 200 52 348 46" class="s-3" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-end="url(#ah-23-6)"/>
+
+              <text x="248" y="30" class="f-3" font-size="13" font-weight="650" text-anchor="middle">回到 ① · 别让惰性成为新的约束</text>
+
+              <!-- 圆心说明 -->
+              <text x="475" y="212" class="s-ink" font-size="18" font-weight="700" text-anchor="middle">五步聚焦法</text>
+              <text x="475" y="236" class="s-muted" font-size="13" text-anchor="middle">The Five Focusing Steps</text>
+              <text x="475" y="262" class="s-muted" font-size="12" text-anchor="middle">教学补充 · 不在 DOFD 考纲 66 条术语表内</text>
+              <text x="475" y="292" class="f-1" font-size="13" font-weight="650" text-anchor="middle">①②③ 不花钱　④ 才动预算</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 2-3-2　五步聚焦法为什么是一个环。</strong>
+            要看懂的是<strong>顺序的经济学</strong>：前三步都不需要预算，只需要改变使用方式和排产规则，
+            所以必须走在扩容之前。第五步画成回到起点的虚线，是因为约束被提升之后<strong>一定会转移到别处</strong>，
+            如果继续按老规则运行，昨天为旧约束设计的流程本身就变成了今天的新约束 —— 这就是「惰性」。
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">容易混的两步</th><th style="width:39%">② 挖尽 Exploit</th><th>④ 提升 Elevate</th></tr></thead>
+              <tbody>
+                <tr><td><strong>做什么</strong></td><td>在<strong>不增加产能</strong>的前提下，把现有产能用满</td><td><strong>增加产能</strong>本身</td></tr>
+                <tr><td><strong>典型动作</strong></td><td>取消排队审批、去掉环境的手工清理、给瓶颈环节优先排班、不让它做非核心杂事</td><td>再买环境、加人、把单体拆分以便并行测试</td></tr>
+                <tr><td><strong>成本与周期</strong></td><td>基本零成本，几天见效</td><td>要预算、要采购或招聘，周期以月计</td></tr>
+                <tr><td><strong>顺序</strong></td><td>必须<strong>先</strong>做</td><td>只有挖尽之后仍不够，<strong>才</strong>做</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">另一组易混</th><th style="width:39%">③ 迁就 Subordinate</th><th>常见误解</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>含义</strong></td>
+                  <td>让<strong>所有非约束环节</strong>按约束的节奏工作 —— 上游不许超量投料，下游预留能力随时接住</td>
+                  <td>误以为是「让约束去配合大家的计划」。方向正好反了：<strong>是全体配合约束，不是约束配合全体</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>反直觉之处</strong></td>
+                  <td>非约束环节会出现<strong>合理的空闲</strong>，这是正确状态</td>
+                  <td>管理者看到有人闲着就派活，于是在制品再次堆到瓶颈前，第三步作废</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：<strong>「挖尽」和「提升」都在说「让约束产能变大」，区别只在花不花钱</strong>。
+            记住「挖尽 = 用满存量，提升 = 增加增量」。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把测试环境作为约束，五步落到具体动作：</p>
+          <ul>
+            <li><strong>① 识别</strong>：用价值流映射量出每段的等待时间，确认「等环境」占了 21 天里的 9 天。</li>
+            <li><strong>② 挖尽</strong>：取消两级申请审批改为自助领取；把环境重置从手工两小时改成脚本 5 分钟；
+              禁止把环境用于演示和临时调试。<strong>不买任何东西，可用时长直接翻倍。</strong></li>
+            <li><strong>③ 迁就</strong>：上游按环境的实际吞吐控制并行分支数（限制在制品）；
+              测试一报缺陷，开发立刻停下手上的新需求先修 —— 让约束不空转比让开发满负荷更重要。</li>
+            <li><strong>④ 提升</strong>：确认仍不够，再上按需创建的容器 <span class="en">Containers</span> 环境，
+              或用<span class="term">基础设施即代码 <span class="en">Infrastructure as Code / IaC</span></span>把环境定义纳入版本控制。</li>
+            <li><strong>⑤ 回到第一步</strong>：重新测量，发现新约束变成了「只有两个人能审批生产发布」，然后重来一轮。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上映射为本站教学示例，用于说明五步的落地方式，不是官方给出的案例。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>本站判断：不必背名称</strong>。五步聚焦法未列入 DOFD v3.4 的 66 条术语表，
+              因此按名称直接设问的可能性很低；把重心放在「先不花钱、后花钱」这个顺序上即可。</li>
+            <li><strong>会以场景形式间接考</strong>：题干描述某团队找到了瓶颈，问下一步最该做什么。
+              <strong>排除技巧：优先选「不增加资源、先改变使用方式与排产规则」的选项</strong>，
+              而写着「立即采购 / 立即扩容 / 立即招人」的选项通常是干扰项 —— 它跳过了不花钱的前三步。</li>
+            <li><strong>干扰项另一种长相</strong>：「让所有环节都提高利用率」「让每个团队都满负荷运转」。
+              这类说法直接违反第三步，凡见到「全员满负荷」基本可判错。</li>
+            <li>如果题目问的是<strong>官方术语</strong>，答案应落在 <em>Theory of Constraints</em> / <em>Constraint</em> 上，
+              不要去找五步的名字。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「不必背名称」为本站基于 66 条术语表与 Bloom 1–2 范围所作的推断，非官方声明；
+            以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先找到它，再榨干它，让全体让着它，最后才花钱扩它 —— 然后从头再来一遍。</p>
+          <p class="mb-0 muted"><small>五个动词的顺序就是<strong>成本的顺序</strong>：越靠前越便宜。这是教学补充内容，不需要背英文名。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-2-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-2-3-3</div>
+        <h3 class="kp__title">DevOps 中的典型约束<span class="en">Common constraints in DevOps</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>DevOps 语境下的约束高度集中，绝大多数组织的瓶颈落在下面五类之一：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">典型约束</th><th>它长什么样</th></tr></thead>
+              <tbody>
+                <tr><td><strong>环境搭建</strong></td><td>环境靠人工申请与配置，交付一套要按天甚至按周计；环境之间还不一致</td></tr>
+                <tr><td><strong>代码部署</strong></td><td>部署是一份几十步的手册，只能在窗口期由特定人执行，一次要几个小时</td></tr>
+                <tr><td><strong>测试准备与执行</strong></td><td>测试数据要人工造、回归要人工点，一轮跑完要几天，于是只能攒一批一起测</td></tr>
+                <tr><td><strong>过度紧耦合的架构</strong></td><td>改一个小功能要协调多个团队同时发版，任何一方没准备好，全体一起等</td></tr>
+                <tr><td><strong>对少数专家的依赖</strong></td><td>某个组件、某次审批只有一两个人能做，所有工作在这两个人面前排队</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            这五类有一个共同点：<strong>它们都是「等待」，不是「不够努力」</strong>。所以解法几乎都是自动化、解耦与知识扩散，而不是加班。
+          </p>
+          <div class="src-note">
+            这份典型约束清单是本站基于 DevOps 常见实践所作的<strong>教学整理</strong>，
+            官方考纲把 <em>Constraint</em> 与 <em>Theory of Constraints</em> 列为术语，
+            但<strong>未以清单形式规定「DevOps 的五类典型约束」</strong>。考试不会要求按此清单选择。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            知道「产出由约束决定」之后，真正卡住人的是下一句：<strong>那我的约束到底在哪？</strong>
+            没有这份地图时，团队通常凭直觉指认，而直觉几乎总是指向<strong>看起来最忙的人</strong>，即开发。
+          </p>
+          <p>
+            于是出现最典型的误诊：设想一个银行团队连续两年在开发侧投入 —— 加人、上代码扫描、推行结对编程，
+            交付周期从 42 天只降到 39 天。真实约束是<strong>变更审批委员会每周只开一次会</strong>，
+            任何变更平均要等 4 天才排上评审，赶不上就再等一周。
+            <strong>把典型约束列出来，作用是先去这几个地方翻，而不是去问谁最忙。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">问题</th><th style="width:38%">约束理论的回答</th><th>不是什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>约束 vs 最忙的环节</strong></td>
+                  <td>约束的证据是<strong>前面有队列、后面在等它</strong></td>
+                  <td>不是「利用率最高的环节」。非约束环节也可以 100% 忙，忙的是在制品</td>
+                </tr>
+                <tr>
+                  <td><strong>约束 vs 人的能力问题</strong></td>
+                  <td>约束是<strong>系统属性</strong>：流程、架构、环境、审批的结构造成的</td>
+                  <td>不是「某个团队不努力」。换人不改结构，约束原地不动</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>约束不等于「利用率最高的那个环节」</strong>。
+            指认约束只看它前面有没有队列、后面是不是在等它，忙碌度不是证据。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方文件未以对照表形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>拿到一条真实的交付流程，按这个顺序排查上面五类约束：</p>
+          <ul>
+            <li><strong>先量再猜</strong>：用价值流映射把每个环节的处理时间与等待时间分别记下来。
+              约束几乎总是等待时间最长的那一段，而不是处理时间最长的那一段。</li>
+            <li><strong>问三个问题</strong>：要一套可用环境需要多久？一次部署要多少人工步骤？
+              一轮完整回归要多久，能不能随时跑？答案里最刺眼的那个就是候选约束。</li>
+            <li><strong>专家依赖单独查</strong>：列出「只有一个人会做」的清单（某组件、某审批、某发布操作）。
+              这类约束不体现在流程图上，但常常是真正的天花板；解法是同行评审、结对与轮值，把知识摊开。</li>
+            <li><strong>架构约束要认账</strong>：如果发版必须多团队同步，那再多的流水线优化也只能改善其中一小段。
+              这时候要动的是拆分与解耦，属于第四步「提升约束」，代价大、周期长，需要单独立项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上排查顺序与三个问题为本站教学整理，官方文件未规定约束的识别步骤；
+            文中「第四步『提升约束』」引用的五步聚焦法亦为教学补充，见 kp-2-3-2。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先记牢官方归属</strong>：约束理论支持<strong>第一步</strong>，这一点由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是推断。<br>
+              <strong>以下为本站判断的命题方向</strong>：题干只描述<strong>慢、排队、等待</strong>时，答案方向是约束理论；
+              题干描述<strong>信息回流、复盘、实验</strong>时，就不该往约束理论上靠 —— 那是<a href="2.4-second-way-feedback.html">第二步（2.4 反馈）</a>与<a href="2.5-third-way-learning.html">第三步（2.5 持续改进）</a>的地盘。
+              这一条「场景词 → 答案方向」的映射为教学推断；但<strong>约束理论对应第一步这一归属本身是官方确认的</strong>。</li>
+            <li><strong>场景题的干扰项长相</strong>：题干说某处排着长队，选项里会掺入
+              「增加另一个环节的自动化」「提高非瓶颈团队的产能」「让所有团队都满负荷」。
+              <strong>排除技巧：凡是把资源投在队列之外的选项，一律先划掉。</strong></li>
+            <li><strong>典型约束的问法</strong>：给一个具体现象（环境要等一周、部署靠手工手册、只有一个人能审批），
+              问它属于什么。答案方向是「这是一个约束 / 瓶颈」，不要选成「这是单点故障」——
+              题干说的是<strong>慢</strong>而不是<strong>会挂</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干或选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">环境、部署、测试、耦合、专家 —— 五个地方翻一遍，约束基本就在里面。</p>
+          <p class="mb-0 muted"><small>助记：这五类全是<strong>「等」</strong>出来的，所以解法是自动化、解耦、把知识摊开，不是加人加班。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>约束理论核心：<strong>系统的产出由约束（最慢的那一环）单独决定</strong>，不是各环节的平均或总和</li>
+        <li>最重要的一句：<strong>瓶颈之外的改进不提升产出</strong> —— 产出不变，在制品和返工反而上升</li>
+        <li><strong>Constraint</strong> 与 <strong>Theory of Constraints</strong> 都在官方术语表内；<strong>五步聚焦法不在</strong>，属教学补充</li>
+        <li>五步顺序（教学补充）：<strong>识别 → 挖尽 → 迁就 → 提升 → 回到第一步防惰性</strong>；前三步不花钱</li>
+        <li>DevOps 典型约束：<strong>环境搭建 · 代码部署 · 测试准备与执行 · 过度紧耦合的架构 · 对少数专家的依赖</strong></li>
+        <li><strong>约束理论支持第一步（流动），不是三步全部</strong> —— 见到「全部选项都对」要警惕（第一步本体见 <a href="2.2-first-way-flow.html">2.2 第一步：流动</a>，三步全局见 <a href="2.1-three-ways.html">2.1 三步工作法总览</a>）</li>
+        <li>识别约束靠<strong>等待时间与队列</strong>，不靠谁最忙；价值流映射是识别手段（详见 4.6）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Constraint</em> 与 <em>Theory of Constraints</em> 均列于
+      DOFD v3.4 官方考纲术语表（Concept and Terminology List），
+      <em>Value stream mapping</em>、<em>Waste</em>、<em>Single Point of Failure (SPOF)</em> 亦为官方术语。
+      <strong>「约束理论支持第一步」这一归属由 DOFD v3.4 官方样题答案键确认</strong>，不是本站推断；
+      v3.4 课程大纲（2022-05）M2 模块也将 <em>The Theory of Constraints</em> 与 <em>The First Way</em> 并列。
+      本站只陈述结论，不复制官方样题的题干与选项原文。
+      <strong>五步聚焦法</strong>出自 Goldratt 约束理论原著，<strong>不在官方术语表内</strong>，本站作为教学补充讲解，已在 kp-2-3-2 就地标注。
+      <strong>DevOps 五类典型约束清单</strong>与各面中的识别动作、落地示例为本站教学整理，官方未以此形式给出，已分别在对应位置标注。
+      本节不含任何官方样题原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
