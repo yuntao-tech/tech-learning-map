@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 官方来源与参考文献 · DevOps Foundation 学习站</title>
+<meta name="description" content="本站所有事实的出处：官方文件清单、四级来源标注体系、四条来源纪律、已知的不确定性、非官方延伸阅读与免责声明。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"appendix", sec:"a4-sources"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">附录与复习工具</div>
+      <h1 class="page-head__title">A4 官方来源与参考文献</h1>
+      <div class="page-head__en">Sources and References</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        备考资料最容易出的问题不是写错，而是<strong>把二手转述当成官方规定</strong>。
+        本页把全站每一处「官方」二字的出处摊开：来自哪份文件、哪个版本、哪一小节，
+        以及哪些内容其实是本站的整理与推断。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本页要回答</div>
+      <ul class="mb-0">
+        <li>本站说「官方」时，指的到底是哪几份文件、哪个版本</li>
+        <li>页面上的来源标注分四级，看到每一级该怎么读、能不能直接背进考场</li>
+        <li>哪些地方官方没给答案，本站是怎么处理的、凭什么这么处理</li>
+      </ul>
+      <p class="mb-0"><small>本页只讲出处。要查词条本身去 <a href="a1-glossary.html">A1 术语表（中英对照）</a>，
+        查缩写去 <a href="a2-acronyms.html">A2 缩略语速查</a>，
+        查「官方每一项写在本站哪一节」去 <a href="a3-syllabus-map.html">A3 考纲映射表</a>。</small></p>
+    </div>
+
+    <h2>一、官方文件清单</h2>
+
+    <p>
+      本站标为「官方」的内容，出处只有下面这几份文件。<strong>清单之外的任何说法都不是官方</strong>——
+      包括行业常识、其他框架的术语、具体人名书名理论名，一律作为教学补充并显式标注。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:22%">文件（点击进入原件）</th>
+            <th style="width:16%">版本 / 日期</th>
+            <th>它包含什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.devopsinstitute.com/wp-content/uploads/2022/06/DOFD-v3.4-English-Study-Guide.pdf" target="_blank" rel="noopener"><strong>DOFD 官方考试指南</strong></a><br><span class="en">DevOps Foundation® Exam Study Guide</span><br><small class="muted">全站引用最频繁的一份</small></td>
+            <td><strong>v3.4</strong><br>PDF 于 2022-06 发布</td>
+            <td>DevOps Institute 时代<strong>最后一份公开完整</strong>的考试文件。内含课程描述、考试要求（含题数分布表）、术语表、增值资源，以及官方样题与答案键。逐小节拆解见下一张表</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.peoplecert.org/browse-certifications/devops/DevOps-13/devops-foundation-2457" target="_blank" rel="noopener"><strong>认证概览海报</strong></a><br><span class="en">DevOps Foundation® Blueprint</span><br><small class="muted">在 PeopleCert 产品页内下载</small></td>
+            <td>PeopleCert 现行版</td>
+            <td>只有一页，六个色块。承载<strong>官方 DevOps 定义句</strong>与 <strong>CALMS 五格的完整描述句</strong>，另有 The Three Ways、Organization、Principles &amp; Practices、Related Frameworks、Benefits。<br><strong>它是概览海报，不是考试大纲</strong>——没有权重、没有学习目标、没有 Bloom 层级</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.peoplecert.org/browse-certifications/devops/DevOps-13/devops-foundation-2457" target="_blank" rel="noopener"><strong>PeopleCert 现行产品页</strong></a><br><span class="en">DevOps Foundation — PeopleCert</span></td>
+            <td><strong>v3.6</strong></td>
+            <td>v3.6 学习目标（本站 <span class="badge badge--new">🆕 v3.6 新增</span> 内容的唯一出处）、考试形式、续证要求</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.peoplecert.org/Partners/support/Articles/official-training-material-updates/_Local/official-training-material-updates" target="_blank" rel="noopener"><strong>官方教材更新记录</strong></a><br><span class="en">Official Training Material Updates</span></td>
+            <td>持续更新</td>
+            <td>版本时间线的来源：v3.6 于 <strong>2024-10</strong> 改版，<strong>2025-02-03</strong> 修订（考试说明更正为开卷）</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.peoplecert.org/Partners/support/Articles/important-update-peoplecert-certifications-retirements/_Local/Retirement-Updates" target="_blank" rel="noopener"><strong>认证退役公告</strong></a><br><span class="en">PeopleCert Certifications Retirements</span></td>
+            <td>持续更新</td>
+            <td>哪些 DevOps Institute 认证停售停考，影响进阶路线的选择。<strong>DevOps Foundation 本身不在退役名单上</strong></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.devopsinstitute.com/certifications/devops-foundation/" target="_blank" rel="noopener"><strong>DevOps Institute 认证页</strong></a><br><span class="en">DevOps Foundation Certification</span></td>
+            <td>v3.4 时代</td>
+            <td>v3.4 认证介绍与 Study Guide 的入口页</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>v3.4 Study Guide 的内部小节</h3>
+
+    <p>
+      本站引用格式里出现的 <span class="en">Course Description</span>、<span class="en">Examination Requirements</span>、
+      <span class="en">Concept and Terminology List</span> 等，都是这份 PDF 内部的<strong>官方逐字小节名</strong>，
+      不是本站的分类叫法。看到这些名字，说明该处内容可以核到具体页码。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%">官方小节</th>
+            <th style="width:10%">日期</th>
+            <th>本站用它支撑什么</th>
+            <th style="width:24%">页面上的引用写法</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="en">Course Description<br><small class="muted">课程描述</small></td>
+            <td>v3.4</td>
+            <td>三个量化收益区间：整体 IT 成本下降 <strong>15–25%</strong>、变更失败率下降 <strong>50–70%</strong>、供应与部署时间下降<strong>最多 90%</strong></td>
+            <td><code>DOFD v3.4 Course Description</code></td>
+          </tr>
+          <tr>
+            <td class="en">Examination Requirements<br><small class="muted">考试要求</small></td>
+            <td>May 2022</td>
+            <td>八大知识域<strong>最多题数表</strong>（合计 40），以及考试形式的官方表述</td>
+            <td><code>DOFD v3.4 Examination Requirements（2022-05）</code></td>
+          </tr>
+          <tr>
+            <td class="en">Concept and Terminology List<br><small class="muted">概念与术语清单</small></td>
+            <td>May 2022</td>
+            <td><strong>67 条</strong>考纲术语，Bloom 1–2。本站徽章 <span class="badge badge--core">⭐ 考纲核心</span> 的唯一判据：主题词是否逐字出现在这张表里。逐条对照见 <a href="a1-glossary.html">A1 术语表</a></td>
+            <td><code>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</code></td>
+          </tr>
+          <tr>
+            <td class="en">Value Added Resources<br><small class="muted">增值资源</small></td>
+            <td>May 2022</td>
+            <td>官方列出的补充阅读方向</td>
+            <td><code>DOFD v3.4 Value Added Resources</code></td>
+          </tr>
+          <tr>
+            <td class="en">Sample Examination 1<br><small class="muted">官方样题及答案键</small></td>
+            <td>May 2022</td>
+            <td>本站 15 条标为「官方样题确认」的判断，全部来自 <span class="en">Sample Examination 1</span> 的<strong>答案键</strong>。它是目前唯一能证明「官方认为哪个答案对」的硬证据</td>
+            <td><code>DOFD v3.4 官方样题答案键</code><br><small class="muted">本站只陈述结论，<strong>不复制题干与选项原文</strong></small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>二、四级来源标注体系</h2>
+
+    <p>
+      本站每一处事实都归入 A / B / C / D 四级之一。<strong>先看级别，再决定这句话能不能直接背进考场</strong>：
+      A 与 B 可以，C 是理解脚手架，D 只服务工程理解。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>级别</th>
+            <th>名称</th>
+            <th>判据</th>
+            <th>页面上长什么样</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A</strong></td>
+            <td><strong>官方原文</strong></td>
+            <td>逐字出现在上表任一官方文件里</td>
+            <td>来源标注写明<strong>文件名 + 版本 + 日期</strong>，例如「出自 DOFD v3.4 Examination Requirements（2022-05）」。徽章为 <span class="badge badge--core">⭐ 考纲核心</span>（在 67 条术语表内）或 <span class="badge badge--plain">📘 官方模块子项</span>（在 v3.4 课程大纲子项内但不在术语表）</td>
+          </tr>
+          <tr>
+            <td><strong>B</strong></td>
+            <td><strong>官方现行页面</strong></td>
+            <td>出自 PeopleCert 现行产品页公布的学习目标，晚于 v3.4 的术语表与模块大纲</td>
+            <td>写「出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标」，并就地注明 v3.4 术语表未收录。徽章为 <span class="badge badge--plain">📘 官方模块子项</span> 叠加 <span class="badge badge--new">🆕 v3.6 新增</span>。<br><strong>它是官方内容，不是延伸内容</strong></td>
+          </tr>
+          <tr>
+            <td><strong>C</strong></td>
+            <td><strong>本站教学整理 / 本站推断</strong></td>
+            <td>官方未以此形式表述的归类、对照表、映射关系、命题角度分析、术语的中文释义</td>
+            <td>标注<strong>紧贴在该内容正下方</strong>，不是只写在页尾——这样读者不会把一张自制对照表误读成官方表格。徽章为 <span class="badge badge--note">📝 教学整理</span></td>
+          </tr>
+          <tr>
+            <td><strong>D</strong></td>
+            <td><strong>延伸 · 非考纲</strong></td>
+            <td>既不在 67 条术语表也不在模块子项，属他人理论或具体工程实践</td>
+            <td>徽章 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，并在正文里用一句话说明它不在考纲内。集中收在<a href="../ext/index.html">延伸工程实践</a>一章</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 只有这四种</div>
+      <p class="mb-0">
+        没有第五级。凡是本站认为出处存疑的内容，<strong>保留内容并按最贴切的一级标注</strong>（通常是 C），
+        核查过程走内部流程，不在页面上留任何临时标记。
+        读者在正文里看到的每一条标注，都是已经定级的结论。
+      </p>
+    </div>
+
+    <h2>三、本站的四条来源纪律</h2>
+
+    <ol>
+      <li>
+        <p><strong>推断必须写成推断。</strong>
+        官方从未公布命题规律、题型分布与逐题 Bloom 分级。因此各节「⑤ 考试怎么考」里的命题角度、
+        干扰项构造方式、排除技巧，全部是 C 级教学推断，在该面内统一标注，不冒充官方口径。
+        例见 <a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>。</p>
+      </li>
+      <li>
+        <p><strong>权重表永远带版本标注。</strong>
+        八大知识域的题数分布只要出现，就必然写明出自
+        <span class="en">DOFD v3.4 Examination Requirements（2022-05）</span>，并注明 v3.6 的情况（详见下一节第 1 行）。同理，15–25% / 50–70% / 90% 三个量化收益必须标
+        <span class="en">v3.4 Course Description</span>——那不是 v3.6 重新发布的数据。
+        版本背景见<a href="../ch00-overview/index.html">第 0 章 导论</a>。</p>
+      </li>
+      <li>
+        <p><strong>不复制官方样题原文。</strong>
+        答案键确认的 15 条判断，本站<strong>只陈述结论</strong>，绝不写出题干或选项原文。
+        本站自己出的练习题一律标注「仿真题，非官方真题」；官方 Learner Workbook 与
+        Quick Reference Guide 的文字不成段复制；所有图表自制。
+        例见第 4 章的 <a href="../ch04-frameworks/summary.html">4.8 本章总结与练习</a>中的答案键考点汇总。</p>
+      </li>
+      <li>
+        <p><strong>延伸内容不混入考纲正文。</strong>
+        GitOps、Kubernetes、Terraform、Team Topologies、SLO / 错误预算、康威定律、SPACE 框架、
+        具体厂商工具名等，都不在 DOFD 考纲内。它们要么带
+        <span class="badge badge--ext">🧭 延伸 · 非考纲</span> 就地标注，要么整体移入
+        <a href="../ext/index.html">延伸工程实践</a>一章。
+        目的是让「考试要背的」和「工作要用的」在视觉上一眼可分。</p>
+      </li>
+    </ol>
+
+    <h2>四、已知的不确定性</h2>
+
+    <p>
+      下面四处，官方<strong>没有给出明确答案</strong>。本站的处理方式与理由摊在这里，
+      不在页面上假装它们是确定的。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>不确定的是什么</th>
+            <th>本站怎么处理</th>
+            <th>理由</th>
+            <th>涉及哪里</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>v3.6 未公开重新发布权重表</strong><br><small class="muted">目前带「每个知识域最多几道题」的官方文件，公开可得的最新版仍是 v3.4</small></td>
+            <td>全站沿用 v3.4 的八域题数分布（合计 40），每次出现都标注版本与日期，并写明 v3.6 未重新发布</td>
+            <td>本站比对 PeopleCert 现行产品页的学习目标与 v3.4 模块大纲后判断：<strong>八个模块可一一对应</strong>，v3.6 的变化落在模块<em>内部</em>新增的学习目标上（可观测性、VSM、平台工程、生成式 AI、AIOps 等），未见模块重划。因此按 v3.4 分布安排复习时间是当前最可靠的近似</td>
+            <td>各章索引的权重条、<a href="../ch00-overview/index.html">第 0 章 导论</a>、<a href="a3-syllabus-map.html">A3 考纲映射表</a></td>
+          </tr>
+          <tr>
+            <td><strong>67 条术语表只列词条，不附定义</strong></td>
+            <td>本站给出的每一条中文释义<strong>必然是本站措辞</strong>，统一在页尾来源标注里说明一次，不在每个术语旁重复声明</td>
+            <td>官方文件里 <span class="en">Concept and Terminology List</span> 这一节确实只有词条清单。术语「在不在表里」是官方事实，「它是什么意思」是本站表述——两件事必须分开看</td>
+            <td>全站术语解释；附录 A1 术语表（中英对照）</td>
+          </tr>
+          <tr>
+            <td><strong>官方未公布命题规律、题型分布与逐题 Bloom 分级</strong></td>
+            <td>按 C 级标注为本站教学推断，理由见上节纪律 1</td>
+            <td>官方公开的只有<strong>总体 Bloom 1–2</strong> 与八域最多题数，没有任何逐题信息</td>
+            <td>全部知识点页的第 ⑤ 面</td>
+          </tr>
+          <tr>
+            <td><strong>DOFD 未指定 Kubler-Ross 变革曲线用五阶段还是七阶段版本</strong></td>
+            <td>两个版本<strong>并列呈现</strong>，标 C 级，不替官方选边</td>
+            <td>67 条术语表里只写了 <span class="en">Kubler-Ross Change Curve</span> 这个词条名，未指定版本。考场上遇到阶段数相关的判断，按题干给出的框架走</td>
+            <td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted">
+      <small>本表「本站怎么处理 / 理由」两列为<strong>本站教学整理与推断</strong>，官方未以此形式给出。
+      其中「v3.4 与 v3.6 的八个模块一一对应」是本站比对 PeopleCert 现行产品页学习目标与 v3.4 模块大纲后的判断，
+      官方并未公开发布 v3.6 的模块权重对照。</small>
+    </p>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📖 一个容易被误认成「不确定」的地方</div>
+      <p class="mb-0">
+        <strong>变更前置时间 <span class="en">Change lead time</span> 的起点有两种口径，但这不是官方含糊，是两把不同的尺子。</strong>
+        DORA 口径从<strong>代码提交</strong>算起，量的是交付管线；精益价值流口径从<strong>需求被接受</strong>算起，包含需求排队时间。
+        两者都对。本站的纪律是：任何一处提到前置时间，都必须写明采用哪一种口径。
+        差别讲透在 <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>，
+        价值流口径的用法见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>。
+      </p>
+    </div>
+
+    <h2>五、延伸阅读</h2>
+
+    <div class="badge-row">
+      <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+    </div>
+
+    <p>
+      <strong>DOFD 官方指定的教材是 Learner Workbook 与 Quick Reference Guide</strong>——
+      开卷考试也只允许带这两份，其他任何资料都不能带进考场。
+      下面这些书<strong>都不是官方指定教材</strong>，考试不会考书里的说法，
+      它们的价值在于把考纲里那些压缩成一个词条的概念还原成完整的因果。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>书</th>
+            <th>原名 / 作者</th>
+            <th>帮你打通哪一块</th>
+            <th>与本站哪节呼应</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>《凤凰项目》</strong></td>
+            <td class="en">The Phoenix Project<br>Gene Kim, Kevin Behr, George Spafford</td>
+            <td>用小说讲清在制品堆积、约束转移与三步工作法的因果。适合完全没有运维经验的读者建立直觉</td>
+            <td><a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a>、<a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+          </tr>
+          <tr>
+            <td><strong>《DevOps 实践指南》</strong></td>
+            <td class="en">The DevOps Handbook<br>Gene Kim, Jez Humble, Patrick Debois, John Willis</td>
+            <td>三步工作法的完整展开与实践清单。考纲里每个实践在这里都有一整章</td>
+            <td><a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>、<a href="../ch03-key-practices/index.html">第 3 章 关键实践</a></td>
+          </tr>
+          <tr>
+            <td><strong>《Accelerate》</strong></td>
+            <td class="en">Accelerate<br>Nicole Forsgren, Jez Humble, Gene Kim</td>
+            <td>四大指标的统计学依据，以及「高绩效组织」这个词条背后的实证研究</td>
+            <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+          </tr>
+          <tr>
+            <td><strong>《持续交付》</strong></td>
+            <td class="en">Continuous Delivery<br>Jez Humble, David Farley</td>
+            <td>部署流水线的原始定义，以及持续交付与持续部署那条边界为什么划在「谁按下按钮」上</td>
+            <td><a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a>、<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+          </tr>
+          <tr>
+            <td><strong>《目标》</strong></td>
+            <td class="en">The Goal<br>Eliyahu M. Goldratt</td>
+            <td>约束理论的源头。读过之后就不会再把「约束」理解成「最忙的那个人」</td>
+            <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+          </tr>
+          <tr>
+            <td><strong>《SRE：Google 运维解密》</strong></td>
+            <td class="en">Site Reliability Engineering<br>Google SRE 团队</td>
+            <td>SRE 的完整实践面。注意其中的 SLO / SLI / 错误预算不在 DOFD 考纲内</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted">
+      <small>上表的书目选择、对应关系与推荐理由均为本站教学整理，不是官方
+      <span class="en">Value Added Resources</span> 清单的复制。官方增值资源清单以 v3.4 Study Guide 内的原文为准。</small>
+    </p>
+
+    <h2>六、免责声明</h2>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 请先读完这一段再使用本站内容</div>
+      <ul class="mb-0">
+        <li>本项目是<strong>个人学习资料</strong>，与 DevOps Institute、PeopleCert <strong>无隶属、无合作、无背书关系</strong>，也不是任何形式的官方或授权培训材料。</li>
+        <li><strong>DevOps Foundation®</strong> 是其权利人的注册商标，本站仅在描述认证本身时使用该名称。文中出现的其他商标、书名、产品名归各自权利人所有。</li>
+        <li><strong>考试形式、权重分布与考纲内容以官方最新发布为准。</strong>本站基于公开可得的 v3.4 官方文件与 PeopleCert 现行产品页整理，官方随时可能更新；报考前请自行核对上表中的官方来源。</li>
+        <li>本站所有练习题均为<strong>仿真题，非官方真题</strong>；所有图表自制；不复制官方样题、Learner Workbook 或 Quick Reference Guide 的原文。</li>
+        <li>如认为本站某处内容侵犯了权利，或与官方现行文件不符，欢迎指出并更正。</li>
+      </ul>
+    </div>
+
+    <div class="divider-label">本页速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>A / B 级可以直接背</strong>——A 带文件名与版本，B 出自 PeopleCert 现行产品页的学习目标。</li>
+        <li><strong>C 级是理解脚手架</strong>——本站的整理与推断，考场上不会以这个形式出现，标注就贴在内容下方。</li>
+        <li><strong>D 级不考</strong>——工程里有用，考纲里没有，带 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>。</li>
+        <li>看到题数分布没带 v3.4 版本标注，或者术语释义被说成「官方定义」，那多半不是本站写的。</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：官方文件清单、版本时间线（v3.4 2022-05 / v3.6 2024-10 / 2025-02-03 修订）、
+      八域题数分布、67 条术语表、量化收益区间与样题答案键，均出自本页第一节列出的
+      <em>DevOps Institute《DevOps Foundation® Exam Study Guide》v3.4</em>、
+      <em>PeopleCert DevOps Foundation Blueprint</em>、
+      <em>PeopleCert 现行 DevOps Foundation 产品页</em>、
+      <em>PeopleCert Official Training Material Updates</em> 与 <em>PeopleCert Certifications Retirements</em>，
+      获取地址见表内链接。<br>
+      四级标注体系的划分方式、四条来源纪律的表述、不确定性的处理理由，以及延伸阅读的书目与对应关系，
+      均为<strong>本站教学整理</strong>，官方未以此形式给出。延伸阅读所列书籍<strong>不是 DOFD 官方指定教材</strong>——
+      官方指定的是 Learner Workbook 与 Quick Reference Guide。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0.3 全局知识地图导读 · DevOps Foundation 学习站</title>
+<meta name="description" content="首页那张八层因果链知识地图怎么用：每一层回答什么问题、为什么顺序不能乱、遇到陌生名词如何三步归位，以及 CALMS 为什么画成贯穿而不是一层。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch00", sec:"0.3-map-guide"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 0 章 · 导论</div>
+      <h1 class="page-head__title">0.3 全局知识地图导读</h1>
+      <div class="page-head__en">Reading the Knowledge Map</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        <a href="../../index.html">首页</a>那张八层地图不是目录的另一种画法，而是一条<strong>因果链</strong>：
+        上一层是下一层存在的理由，下一层是上一层的落地方式。
+        本页教的不是地图上有什么，而是<strong>怎么用它给任何一个陌生名词定位</strong> ——
+        这是全书唯一一个反复要用到的动作。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>八层各自回答什么问题，为什么必须是这个顺序而不是别的顺序</li>
+        <li>拿到一个没见过的名词，用哪三步把它放回地图上</li>
+        <li>CALMS 为什么是竖着贯穿的一条，而不是横着的一层</li>
+        <li>按章号读书和按层号理解，唯一一处错位在哪一章</li>
+        <li>哪三种读法会把这张图读反</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 0-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 880 664" role="img" aria-label="八层因果链简化图：业务驱动、思想来源、核心原则、关键实践、自动化底座、度量、文化与组织演进自上而下依次依赖，CALMS 作为一条竖向价值观带贯穿其中，度量结果沿左侧通道回流到核心原则层。">
+          <defs>
+            <marker id="ah-03-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-03-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <!-- 左侧回流通道 -->
+          <path d="M116 520 L 56 520 L 56 250 L 112 250"
+                class="s-2" stroke-width="2.5" fill="none" stroke-dasharray="8 6" marker-end="url(#ah-03-2)"/>
+          <text transform="rotate(-90 40 400)" x="40" y="400" class="f-2" font-size="14" font-weight="700" text-anchor="middle">度量回流 · 改进的依据</text>
+
+          <!-- ① 业务驱动 -->
+          <rect x="120" y="40" width="430" height="60" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="68" class="f-4" font-size="15" font-weight="700">① 业务驱动与目标</text>
+          <text x="140" y="88" class="s-muted" font-size="12">第 1 章 · 最多 5 题—— DevOps 是为了解决什么</text>
+          <line x1="335" y1="100" x2="335" y2="126" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+
+          <!-- ② 思想来源 -->
+          <rect x="120" y="130" width="430" height="60" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="158" class="f-3" font-size="15" font-weight="700">② 思想来源 · 业务与技术框架</text>
+          <text x="140" y="178" class="s-muted" font-size="12">第 4 章 · 最多 7 题—— Agile / Lean / ITSM 给了什么现成答案</text>
+          <line x1="335" y1="190" x2="335" y2="216" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+
+          <!-- ③ 核心原则 -->
+          <rect x="120" y="220" width="430" height="60" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="140" y="248" class="f-1" font-size="15" font-weight="700">③ 核心原则 · 三步工作法</text>
+          <text x="140" y="268" class="s-muted" font-size="12">第 2 章 · 最多 4 题—— 流动 → 反馈 → 持续改进，全书因果主轴</text>
+          <line x1="335" y1="280" x2="335" y2="306" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+          <text x="140" y="300" class="s-muted" font-size="12">④ 不在纵列上 —— 见右侧贯穿带</text>
+
+          <!-- ⑤ 关键实践 -->
+          <rect x="120" y="310" width="430" height="60" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="338" class="f-1" font-size="15" font-weight="700">⑤ 关键实践</text>
+          <text x="140" y="358" class="s-muted" font-size="12">第 3 章 · 最多 7 题—— 原则变成每天的工作方式</text>
+          <line x1="335" y1="370" x2="335" y2="396" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+
+          <!-- ⑥ 自动化底座 -->
+          <rect x="120" y="400" width="430" height="60" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="428" class="f-4" font-size="15" font-weight="700">⑥ 自动化底座与工具链</text>
+          <text x="140" y="448" class="s-muted" font-size="12">第 6 章 · 最多 5 题—— 让实践以可重复的方式跑起来</text>
+          <line x1="335" y1="460" x2="335" y2="486" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+
+          <!-- ⑦ 度量 -->
+          <rect x="120" y="490" width="430" height="60" rx="12" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="140" y="518" class="f-2" font-size="15" font-weight="700">⑦ 度量、指标与报告</text>
+          <text x="140" y="538" class="s-muted" font-size="12">第 7 章 · 最多 2 题—— 改进有没有发生，只能由数据回答</text>
+          <line x1="335" y1="550" x2="335" y2="576" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-1)"/>
+
+          <!-- ⑧ 文化与组织演进 -->
+          <rect x="120" y="580" width="430" height="60" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="608" class="f-5" font-size="15" font-weight="700">⑧ 文化与组织演进</text>
+          <text x="140" y="628" class="s-muted" font-size="12">第 5 · 8 章 · 最多 10 题—— 让改进在组织层面留得下来</text>
+
+          <!-- ④ CALMS 贯穿带 -->
+          <rect x="580" y="220" width="270" height="420" rx="14" class="s-1" stroke-width="2"
+                stroke-dasharray="7 6" fill="var(--dia-fill-2)"/>
+          <text x="600" y="252" class="f-1" font-size="15" font-weight="700">④ CALMS · 贯穿而非一层</text>
+          <text x="600" y="274" class="s-muted" font-size="12">五个字母各自落在左边不同的层上</text>
+
+          <text x="600" y="322" class="s-ink" font-size="14" font-weight="650">C 文化</text>
+          <text x="672" y="322" class="s-muted" font-size="12">→ 原则层与第 ⑧ 层</text>
+          <text x="600" y="372" class="s-ink" font-size="14" font-weight="650">A 自动化</text>
+          <text x="686" y="372" class="s-muted" font-size="12">→ 第 ⑤ ⑥ 层</text>
+          <text x="600" y="422" class="s-ink" font-size="14" font-weight="650">L 精益</text>
+          <text x="672" y="422" class="s-muted" font-size="12">→ 第 ② 层与第一步</text>
+          <text x="600" y="472" class="s-ink" font-size="14" font-weight="650">M 度量</text>
+          <text x="672" y="472" class="s-muted" font-size="12">→ 第 ⑦ 层</text>
+          <text x="600" y="522" class="s-ink" font-size="14" font-weight="650">S 分享</text>
+          <text x="672" y="522" class="s-muted" font-size="12">→ 第 ⑧ 层</text>
+
+          <text x="600" y="578" class="s-muted" font-size="12">它是价值观，不是流程环节，</text>
+          <text x="600" y="598" class="s-muted" font-size="12">所以没有「做完 C 再做 A」这回事。</text>
+          <text x="600" y="622" class="s-muted" font-size="12">五句描述句出自官方 Blueprint。</text>
+        </svg>
+      </div>
+      <figcaption><strong>图 0-3-1　八层因果链与度量回流。</strong>
+        看两件事：实线箭头只有一个方向 —— 上一层不成立，下一层就没有意义；
+        左边那条虚线是唯一一条往回走的通道，它说明度量不是链条的终点，而是把改进送回原则层的输入。
+        右边的 CALMS 竖着画，是因为它同时作用于多层，把它压成第四层会读错 ——
+        纵列从 ③ 直接跳到 ⑤，跳掉的 ④ 就是右边这条贯穿带。
+        图中题数为 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong> 给出的各模块<strong>最多题数</strong>；
+        v3.6（2024-10 更新）未公开重新发布权重表，本站沿用 v3.4 分布。</figcaption>
+    </figure>
+
+    <h2>一、八层各自回答什么问题</h2>
+
+    <p>每一层只回答一个问题。判断一层放得对不对，看的是<strong>它依赖上一层的什么</strong> ——
+      如果拿掉上一层，这一层还能讲得通，那顺序就是可以调的；讲不通，顺序就是锁死的。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:16%">层</th><th style="width:10%">所在章</th><th style="width:22%">它回答什么问题</th><th style="width:26%">为什么排在这个位置</th><th>它依赖上一层的什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>① 业务驱动与目标</strong></td>
+            <td>第 1 章（5 题）</td>
+            <td>DevOps 要解决什么业务问题，谁在为它买单</td>
+            <td>它是整条链的起点。没有业务问题，后面所有做法都变成没有对象的技术偏好</td>
+            <td>无上一层 —— 它本身就是全书的输入</td>
+          </tr>
+          <tr>
+            <td><strong>② 思想来源 · 框架</strong></td>
+            <td>第 4 章（7 题）</td>
+            <td>面对这些问题，Agile、Lean、ITSM 已经给出了哪些现成答案</td>
+            <td>在原则之前。DevOps 的原则不是凭空发明的，是从这些框架里提炼出来的</td>
+            <td>依赖 ① 给出的问题清单 —— 框架是按问题挑的，不是按流行度挑的</td>
+          </tr>
+          <tr>
+            <td><strong>③ 核心原则 · 三步工作法</strong></td>
+            <td>第 2 章（4 题）</td>
+            <td>这些答案提炼成一条什么样的通用主轴</td>
+            <td>在实践之前。它给出判断标准：任何做法都要能说清自己在加强哪一步</td>
+            <td>依赖 ② 的提炼结果 —— 流动来自 Lean，反馈与实验来自安全文化和学习型组织</td>
+          </tr>
+          <tr>
+            <td><strong>④ CALMS</strong></td>
+            <td>贯穿全书</td>
+            <td>原则翻译成组织行为，要有哪五类支柱</td>
+            <td>不占独立位置。它同时作用于原则、实践、自动化、度量、文化多层</td>
+            <td>依赖 ③ 的主轴，但不接在它后面 —— 详见本页第五节</td>
+          </tr>
+          <tr>
+            <td><strong>⑤ 关键实践</strong></td>
+            <td>第 3 章（7 题）</td>
+            <td>原则每天具体怎么做</td>
+            <td>在原则之后、自动化之前。先确定做什么，再谈用什么把它自动跑起来</td>
+            <td>依赖 ③ 的判断标准 —— 每一项实践的存在理由都是「它加强了某一步」</td>
+          </tr>
+          <tr>
+            <td><strong>⑥ 自动化底座与工具链</strong></td>
+            <td>第 6 章（5 题）</td>
+            <td>怎么让这些实践可重复、可规模化地执行</td>
+            <td>在实践之后。工具是实践的执行器，先有实践才知道要自动化什么</td>
+            <td>依赖 ⑤ 定义出来的动作 —— 部署流水线自动化的正是持续集成与持续测试这些实践</td>
+          </tr>
+          <tr>
+            <td><strong>⑦ 度量、指标与报告</strong></td>
+            <td>第 7 章（2 题）</td>
+            <td>改进到底有没有发生，幅度多大</td>
+            <td>在自动化之后。手工流程产不出稳定数据，自动化跑起来才有可信的遥测</td>
+            <td>依赖 ⑤ ⑥ 产生的事实 —— 部署频率要有自动部署才测得出来</td>
+          </tr>
+          <tr>
+            <td><strong>⑧ 文化与组织演进</strong></td>
+            <td>第 5 · 8 章（10 题）</td>
+            <td>怎么让这些改变在组织里留得下来、扩得出去</td>
+            <td>在最后。它处理的是前七层做完之后仍会失败的那部分原因</td>
+            <td>依赖 ⑦ 的证据 —— 推动组织变革需要拿得出手的数据，而不是主张</td>
+          </tr>
+          <tr>
+            <td><strong>回流通道</strong></td>
+            <td>⑦ → ③</td>
+            <td>下一轮该改哪里</td>
+            <td>它让整张图从直线变成闭环</td>
+            <td>度量结果指出哪一步最弱，回到原则层重新定位约束，开始下一轮</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>题数出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      v3.6 未公开重新发布权重表，本站沿用 v3.4 分布。
+      八层的划分与层间依赖关系为本站教学整理，官方未以此形式给出。</small></p>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📌 起点为什么是业务，不是技术</div>
+      <p class="mb-0">
+        DOFD v3.4 官方样题答案键确认：决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>。
+        这条官方结论与本站把业务放在第 ① 层的教学排序方向一致 ——
+        也是考试里「先看业务再看技术」这类题的答案方向（八层排序本身为本站教学整理，官方未以此形式给出）。
+        详见 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a>。
+      </p>
+    </div>
+
+    <h2>二、这张图最重要的用法：给陌生名词归位</h2>
+
+    <p>DOFD 的知识密度不在深度，在广度 —— 一路会撞上几十个没见过的名词。
+      逐个背定义是最低效的办法。正确动作是<strong>先归位，再理解</strong>：
+      任何名词一旦被放进某一层，它的存在理由、它的相邻概念、它在考试里的问法就同时确定了。</p>
+
+    <!-- ============ 图 0-3-2 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 880 470" role="img" aria-label="陌生名词归位的三步决策流程图：先判定名词属于实践、指标还是框架，再针对每一类追问一个特定问题，最后得到它在八层地图上的位置。">
+          <defs>
+            <marker id="ah-03-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)"/>
+            </marker>
+            <marker id="ah-03-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-03-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah-03-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 第一步 -->
+          <rect x="290" y="16" width="300" height="54" rx="12" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="440" y="40" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">第一步：它属于哪一类？</text>
+          <text x="440" y="60" class="s-muted" font-size="12" text-anchor="middle">不问它是什么意思，先问它是哪种东西</text>
+          <line x1="440" y1="70" x2="440" y2="98" class="s-stroke" stroke-width="2" marker-end="url(#ah-03-n)"/>
+          <line x1="146" y1="102" x2="734" y2="102" class="s-stroke" stroke-width="2"/>
+
+          <!-- 三条分支的竖线 -->
+          <line x1="146" y1="102" x2="146" y2="128" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-p)"/>
+          <line x1="440" y1="102" x2="440" y2="128" class="s-2" stroke-width="2.5" marker-end="url(#ah-03-m)"/>
+          <line x1="734" y1="102" x2="734" y2="128" class="s-3" stroke-width="2.5" marker-end="url(#ah-03-f)"/>
+
+          <!-- 分支 A：实践 -->
+          <rect x="16" y="132" width="260" height="48" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="146" y="162" class="f-1" font-size="15" font-weight="700" text-anchor="middle">是一项「实践」</text>
+          <line x1="146" y1="180" x2="146" y2="208" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-p)"/>
+          <rect x="16" y="212" width="260" height="86" rx="10" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="146" y="238" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">第二步：追问</text>
+          <text x="146" y="262" class="s-ink" font-size="13" text-anchor="middle">它服务于三步工作法的</text>
+          <text x="146" y="282" class="s-ink" font-size="13" text-anchor="middle">哪一步？</text>
+          <line x1="146" y1="298" x2="146" y2="326" class="s-1" stroke-width="2.5" marker-end="url(#ah-03-p)"/>
+          <rect x="16" y="330" width="260" height="120" rx="10" class="s-1" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="146" y="356" class="f-1" font-size="13" font-weight="700" text-anchor="middle">第三步：落位到第 ⑤ 层</text>
+          <text x="36" y="382" class="s-muted" font-size="12">向右加速 → 第一步 · 流动</text>
+          <text x="36" y="404" class="s-muted" font-size="12">向左回传 → 第二步 · 反馈</text>
+          <text x="36" y="426" class="s-muted" font-size="12">制造实验 → 第三步 · 持续改进</text>
+
+          <!-- 分支 B：指标 -->
+          <rect x="310" y="132" width="260" height="48" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="440" y="162" class="f-2" font-size="15" font-weight="700" text-anchor="middle">是一个「指标」</text>
+          <line x1="440" y1="180" x2="440" y2="208" class="s-2" stroke-width="2.5" marker-end="url(#ah-03-m)"/>
+          <rect x="310" y="212" width="260" height="86" rx="10" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="440" y="238" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">第二步：追问</text>
+          <text x="440" y="262" class="s-ink" font-size="13" text-anchor="middle">它验证的是哪一条实践</text>
+          <text x="440" y="282" class="s-ink" font-size="13" text-anchor="middle">有没有生效？</text>
+          <line x1="440" y1="298" x2="440" y2="326" class="s-2" stroke-width="2.5" marker-end="url(#ah-03-m)"/>
+          <rect x="310" y="330" width="260" height="120" rx="10" class="s-2" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="440" y="356" class="f-2" font-size="13" font-weight="700" text-anchor="middle">第三步：落位到第 ⑦ 层</text>
+          <text x="330" y="382" class="s-muted" font-size="12">再顺着回流通道往回看：</text>
+          <text x="330" y="404" class="s-muted" font-size="12">它最终在评价哪一步</text>
+          <text x="330" y="426" class="s-muted" font-size="12">工作法的健康度</text>
+
+          <!-- 分支 C：框架 -->
+          <rect x="604" y="132" width="260" height="48" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="734" y="162" class="f-3" font-size="15" font-weight="700" text-anchor="middle">是一个「框架」</text>
+          <line x1="734" y1="180" x2="734" y2="208" class="s-3" stroke-width="2.5" marker-end="url(#ah-03-f)"/>
+          <rect x="604" y="212" width="260" height="86" rx="10" stroke="var(--border-strong)" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="734" y="238" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">第二步：追问</text>
+          <text x="734" y="262" class="s-ink" font-size="13" text-anchor="middle">DevOps 从它继承了</text>
+          <text x="734" y="282" class="s-ink" font-size="13" text-anchor="middle">哪一样东西？</text>
+          <line x1="734" y1="298" x2="734" y2="326" class="s-3" stroke-width="2.5" marker-end="url(#ah-03-f)"/>
+          <rect x="604" y="330" width="260" height="120" rx="10" class="s-3" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="734" y="356" class="f-3" font-size="13" font-weight="700" text-anchor="middle">第三步：落位到第 ② 层</text>
+          <text x="624" y="382" class="s-muted" font-size="12">考的是继承关系，</text>
+          <text x="624" y="404" class="s-muted" font-size="12">不是框架本身的细节 ——</text>
+          <text x="624" y="426" class="s-muted" font-size="12">这一点最容易学反</text>
+        </svg>
+      </div>
+      <figcaption><strong>图 0-3-2　陌生名词的三步归位。</strong>
+        关键在第二步：三类东西的追问方式不一样，问错了就归错位。
+        实践问「加强哪一步」，指标问「验证哪条实践」，框架问「DevOps 继承了什么」。
+        三条支路的终点都是地图上的一个确定层号，而不是一段定义。</figcaption>
+    </figure>
+
+    <h3>三个演练例子</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>陌生名词</th><th>第一步：哪一类</th><th>第二步：追问</th><th>第三步：落位与一句话推演</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>蜂拥解决</strong><br><span class="en">Swarming</span></td>
+            <td>一项实践 —— 它描述的是一群人的动作</td>
+            <td>它加强三步工作法的哪一步？</td>
+            <td>问题一出现就全员围上去当场解决，目的是<strong>不让缺陷流向下游</strong>、把信号在源头掐断 ——
+              这是典型的向左回传，落在<strong>第二步 · 反馈</strong>，属于第 ⑤ 层。
+              见 <a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a>。</td>
+          </tr>
+          <tr>
+            <td><strong>变更失败率</strong><br><span class="en">Change failure rate</span></td>
+            <td>一个指标 —— 它是个可以算出数值的比率</td>
+            <td>它在验证哪一条实践有没有生效？</td>
+            <td>它数的是「部署出去之后需要补救的比例」，直接验证<strong>持续测试与持续集成</strong>有没有真的把缺陷挡在前面；
+              落在第 ⑦ 层，沿回流通道往回看，它评价的是<strong>第二步 · 反馈</strong>的健康度。
+              见 <a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a>与
+              <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a>。</td>
+          </tr>
+          <tr>
+            <td><strong>ITSM / ITIL</strong><br><span class="en">IT service management</span></td>
+            <td>一个框架 —— 它是 DevOps 之外自成体系的东西</td>
+            <td>DevOps 从它继承了什么？</td>
+            <td>不是继承它的流程文档，而是继承它对<strong>组织变革、事件、服务连续性</strong>的处理方式，
+              让快速交付仍然可控；落在第 ② 层。
+              官方样题答案键确认：对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>。
+              注意是组织变革管理 <span class="en">Organizational Change Management</span>，不是 ITSM 的变更管理
+              <span class="en">Change Management</span> —— 这两个词是本题最常见的干扰项对。
+              见 <a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>三步归位法为本站教学整理，官方未以此形式给出；表中「ITSM 三流程」一条由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认（本站只陈述结论，不复制题干与选项原文）。</small></p>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 归位失败时怎么办</div>
+      <p class="mb-0">
+        如果一个名词三类都套不上，多半它<strong>不在 DOFD 考纲里</strong> ——
+        比如 Kubernetes、Terraform、GitOps、Team Topologies 这些工程里常见但考纲不覆盖的内容。
+        本站把它们收在「延伸工程实践」一章，与考纲内容严格分开。
+        判据很简单：不在 67 条官方术语表、也不在 v3.4 课程大纲子项里，就是延伸内容，
+        理解即可，不必按考点强度去背。
+      </p>
+    </div>
+
+    <h2>三、为什么这个顺序不能乱</h2>
+
+    <p>八层的排列不是从易到难，也不是按章节号，而是<strong>依赖关系</strong>。
+      检验方法是把相邻两层调换或抽掉，看会推出什么荒谬结论。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:22%">顺序主张</th><th>换序或抽掉会发生什么</th><th style="width:22%">相关小节</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>思想来源在原则之前</strong><br>② → ③</td>
+            <td>三步工作法会被当成一套凭空发明的口号。实际上流动来自 Lean 的消除浪费，
+              反馈与实验来自安全文化与学习型组织 —— 不知道它从哪来，就答不了「DevOps 与某框架什么关系」这类题，
+              而这类题在第 4 章占 7 分。</td>
+            <td><a href="../ch04-frameworks/4.1-framework-landscape.html">4.1 框架全景</a>、
+              <a href="../ch04-frameworks/4.3-lean.html">4.3 Lean</a></td>
+          </tr>
+          <tr>
+            <td><strong>原则在实践之前</strong><br>③ → ⑤</td>
+            <td>实践会退化成一张待办清单：CI 要做、SRE 要做、ChatOps 也要做，但说不出为什么。
+              一旦资源不够就无从取舍。原则的作用正是提供取舍依据 —— 先补最弱的那一步。</td>
+            <td><a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>、
+              <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a></td>
+          </tr>
+          <tr>
+            <td><strong>实践在自动化之前</strong><br>⑤ → ⑥</td>
+            <td>会变成「先买工具再想怎么用」。把一条混乱的流程自动化，得到的是一条跑得更快的混乱流程。
+              部署流水线之所以有价值，是因为它自动化的是已经想清楚的持续集成与持续测试。</td>
+            <td><a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a>、
+              <a href="../ch06-automation/6.1-why-automate.html">6.1 自动化的价值与边界</a></td>
+          </tr>
+          <tr>
+            <td><strong>度量在自动化之后</strong><br>⑥ → ⑦</td>
+            <td>没有自动化就没有稳定的遥测源，指标只能靠人工统计，数据不可信也不及时。
+              「部署频率」这个指标本身就预设了部署是自动的。</td>
+            <td><a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a></td>
+          </tr>
+          <tr>
+            <td><strong>度量回流到原则</strong><br>⑦ → ③</td>
+            <td>如果没有这条回流，度量就成了考核工具 —— 数据被用来评价人，而不是用来找下一个约束。
+              回流通道的存在决定了整张图是<strong>闭环</strong>而不是流水线。
+              回流的落点是重新定位约束 —— 官方样题答案键确认约束理论服务于三步工作法的<strong>第一步</strong>，
+              不是第二、三步。</td>
+            <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>、
+              <a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标</a></td>
+          </tr>
+          <tr>
+            <td><strong>文化压在最后</strong><br>⑦ → ⑧</td>
+            <td>文化排最后不代表它最不重要，恰恰相反 —— 前七层全部做对仍然会失败的部分都在这里。
+              它排在度量之后，是因为推动组织变革需要拿得出证据。</td>
+            <td><a href="../ch05-culture/5.2-cultural-debt.html">5.2 文化债</a>、
+              <a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>层间依赖的推演与上表的反证方式为本站教学整理，官方未以此形式表述；
+      其中「约束理论支持三步工作法中的第一步」由 <strong>DOFD v3.4 官方样题答案键</strong>确认。</small></p>
+
+    <h2>四、八章与八层的对应</h2>
+
+    <p>学习顺序按章号推进，理解顺序按层号推进 —— 两者只有一处错位：
+      <strong>第 4 章（框架）在地图上排第 ②，位置在第 2 章之前</strong>。
+      这不是编排失误：按章号读时先读第 2 章，等到第 4 章才补上「原则从哪来」，是刻意的先给主轴再补来源。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>章</th><th>地图层</th><th>最多题数</th><th>一句话核心</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="../ch01-exploring-devops/index.html">第 1 章 · 认识 DevOps</a></td>
+            <td>① 业务驱动与目标</td>
+            <td class="num">5</td>
+            <td>先说清 DevOps 要解决的业务问题和它服务的干系人，整张图的输入</td>
+          </tr>
+          <tr>
+            <td><a href="../ch02-core-principles/index.html">第 2 章 · 核心原则</a></td>
+            <td>③ 核心原则</td>
+            <td class="num">4</td>
+            <td>三步工作法是全书主轴，后面每一项内容都要能说清自己加强哪一步</td>
+          </tr>
+          <tr>
+            <td><a href="../ch03-key-practices/index.html">第 3 章 · 关键实践</a></td>
+            <td>⑤ 关键实践</td>
+            <td class="num">7</td>
+            <td>原则落成每天的动作，CI/CD 家族最易混，可观测性与平台工程是 v3.6 新增</td>
+          </tr>
+          <tr>
+            <td><a href="../ch04-frameworks/index.html">第 4 章 · 业务与技术框架</a></td>
+            <td>② 思想来源</td>
+            <td class="num">7</td>
+            <td>考的是 DevOps 与 Agile / Lean / ITSM 的继承关系，不是各框架自身的细节</td>
+          </tr>
+          <tr>
+            <td><a href="../ch05-culture/index.html">第 5 章 · 文化、行为与运营模型</a></td>
+            <td>⑧ 文化与组织演进</td>
+            <td class="num">6</td>
+            <td>文化债、行为模型、成熟度模型 —— 转型失败最常发生的地方</td>
+          </tr>
+          <tr>
+            <td><a href="../ch06-automation/index.html">第 6 章 · 自动化与工具链架构</a></td>
+            <td>⑥ 自动化底座</td>
+            <td class="num">5</td>
+            <td>部署流水线是主干，IaC 与云原生是支撑，工具是实践的执行器</td>
+          </tr>
+          <tr>
+            <td><a href="../ch07-metrics/index.html">第 7 章 · 度量、指标与报告</a></td>
+            <td>⑦ 度量（含回流）</td>
+            <td class="num">2</td>
+            <td>只出 2 题，却是理解整条因果链的枢纽 —— 按理解重要性学，按考试权重分配时间</td>
+          </tr>
+          <tr>
+            <td><a href="../ch08-sharing/index.html">第 8 章 · 分享、跟随与演进</a></td>
+            <td>⑧ 文化与组织演进</td>
+            <td class="num">4</td>
+            <td>从团队做 DevOps 到组织做 DevOps：角色、领导力、起步方式与关键成功因素</td>
+          </tr>
+          <tr>
+            <td colspan="2"><strong>合计</strong></td>
+            <td class="num"><strong>40</strong></td>
+            <td>及格 65%，即 26 / 40</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>题数与及格线出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      v3.6 未公开重新发布权重表；「章 ↔ 层」的对应为本站教学整理。
+      第 5 章与第 8 章共同构成第 ⑧ 层，两章合计 10 题。</small></p>
+
+    <h2>五、CALMS 为什么画成「贯穿」而不是一层</h2>
+
+    <p>如果 CALMS 是一层，它就该有上一层和下一层，也就该有先后。但它没有 ——
+      它是<strong>五类价值观</strong>，同时作用在多个层上。
+      官方 Blueprint 给出的是五句彼此并列的描述句，句中没有任何先后词或顺序词。</p>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📄 官方原文 · CALMS 五格</div>
+      <p><strong>C: Culture</strong> - <em>emphasizes shared vision collaboration, communication, learning and continuous improvement.</em></p>
+      <p><strong>A: Automation</strong> - <em>CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.</em></p>
+      <p><strong>L: Lean</strong> - <em>Maximize customer value while minimizing waste and improving flow.</em></p>
+      <p><strong>M: Measurement</strong> - <em>Value-driven metrics for people, process and technology support trust and performance improvement.</em></p>
+      <p class="mb-0"><strong>S: Sharing</strong> - <em>Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em></p>
+    </div>
+    <p class="muted"><small>以上五句为逐字原文，出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>。</small></p>
+
+    <p>逐句读会发现，每一格点名的东西分别落在地图的不同层上 —— 这正是它不能被压成一层的原因。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>字母</th><th>官方描述句点名了什么</th><th>落在地图哪些层</th><th>相关小节</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>C · Culture</strong></td>
+            <td>共同愿景、协作、沟通、学习与持续改进</td>
+            <td>第 ③ 层（第三步 · 持续改进）与第 ⑧ 层（组织文化）</td>
+            <td><a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a>、
+              <a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步</a></td>
+          </tr>
+          <tr>
+            <td><strong>A · Automation</strong></td>
+            <td>逐字点名 CI/CD 工具链与 <span class="en">infrastructure-as-code</span></td>
+            <td>第 ⑤ 层（实践）与第 ⑥ 层（自动化底座）</td>
+            <td><a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a>、
+              <a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 工具链架构</a></td>
+          </tr>
+          <tr>
+            <td><strong>L · Lean</strong></td>
+            <td>最大化客户价值、最小化浪费、改善流动</td>
+            <td>第 ② 层（Lean 作为来源）与第 ③ 层（第一步 · 流动）</td>
+            <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与浪费</a>、
+              <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a></td>
+          </tr>
+          <tr>
+            <td><strong>M · Measurement</strong></td>
+            <td>逐字点名 <span class="en">value-driven metrics</span> 与 <span class="en">trust</span></td>
+            <td>第 ⑦ 层，以及那条回流通道</td>
+            <td><a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标</a>、
+              <a href="../ch07-metrics/7.3-four-metric-families.html">7.3 四类指标</a></td>
+          </tr>
+          <tr>
+            <td><strong>S · Sharing</strong></td>
+            <td>逐字点名 <span class="en">share ideas, and skills</span>，领导者与团队共同分享</td>
+            <td>第 ⑧ 层（分享、跟随与演进）</td>
+            <td><a href="../ch08-sharing/8.3-leadership.html">8.3 DevOps 领导力</a>、
+              <a href="../ch03-key-practices/3.6-chatops.html">3.6 ChatOps</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>五个字母与地图层的对应为本站教学整理，官方 Blueprint 只给出五句并列描述，未做分层映射。</small></p>
+
+    <p>注意 M 格里的 <span class="en">trust</span> 一词：官方把价值驱动指标的作用写成<strong>支撑信任</strong>与绩效改进，
+      而不是控制或考核。这一句是判断「度量是不是被用错了」的官方依据。</p>
+
+    <h2>六、三种常见的误读</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>误读</th><th>为什么错</th><th>正确读法</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>把 CALMS 当成实施步骤</strong><br>先做 C，再做 A，最后做 S</td>
+            <td>官方五句描述句里没有任何顺序词，五句彼此并列。
+              按顺序推的结果通常是「文化改造做半年再谈自动化」，两边都停在原地。</td>
+            <td>它是五个同时成立的检查维度。做任何一项改进都可以问：这一步在五个维度上分别推进了什么、牺牲了什么。</td>
+          </tr>
+          <tr>
+            <td><strong>把三步工作法当成三个阶段</strong><br>第一年做流动，第二年做反馈</td>
+            <td>三步是<strong>同时运行</strong>的三个方向：向右流、向左反、绕圈学。
+              把它读成阶段，就会出现「反馈机制还没建就宣布第一步完成」这种情况 ——
+              而没有反馈的流动只是把缺陷更快地送到生产环境。</td>
+            <td>三者是依赖关系不是时间关系：<strong>没有流动，反馈是噪音；没有反馈，实验是赌博</strong>。
+              见 <a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>。</td>
+          </tr>
+          <tr>
+            <td><strong>把度量当成终点</strong><br>指标做出来、报表发出去就算完成</td>
+            <td>地图上第 ⑦ 层有一条往回走的通道。指标不产生改进，指标只是<strong>下一轮改进的输入</strong>。
+              停在报表这一步，度量就滑向考核 —— 而官方对价值驱动指标的表述是支撑<span class="en">trust</span>与绩效改进。</td>
+            <td>每看一个指标都追问一句：它指向哪一步最弱，下一轮该动哪里。
+              官方样题答案键也确认，<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>三条误读的表述与纠正为本站教学整理；「用指标控制和评价员工不属于 DevOps 领导力目标」一条由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认。</small></p>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📖 配合另外三节使用</div>
+      <p class="mb-0">
+        本页解释的是<a href="../../index.html">首页那张全局知识地图</a>，随时可以点回去对照。
+        每一层里的知识点长什么样、徽章怎么读，见 <a href="0.1-how-to-use.html">0.1 如何使用本资料</a>；
+        图中各层标注的题数出自哪份文件，见 <a href="0.2-exam-facts.html#weighting">0.2 第二节 · 八大知识域题数分布</a>；
+        把这条因果链铺成 12 周排期，见 <a href="0.4-learning-path.html">0.4 三个月学习路径</a>。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>八层 = 纵向七层（<strong>业务① → 框架② → 原则③ → 实践⑤ → 自动化⑥ → 度量⑦ → 文化⑧</strong>）
+          + 竖向贯穿的第 ④ 层 CALMS —— ④ 不占顺序位，所以箭头链上是跳过的</li>
+        <li>归位三问：实践问<strong>加强哪一步</strong>，指标问<strong>验证哪条实践</strong>，框架问<strong>继承了什么</strong></li>
+        <li>顺序锁死的理由：来源产生原则、原则筛选实践、实践定义自动化、自动化产生可信数据</li>
+        <li>度量不是终点，第 ⑦ 层有一条<strong>回流到原则层</strong>的通道，整张图是闭环</li>
+        <li>三类误读：CALMS 不是步骤、三步工作法不是阶段、度量不是终点</li>
+        <li>三类都套不上的名词，多半不在考纲内，理解即可</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：CALMS 五格的五句描述句为逐字原文，出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>；
+      各章题数与及格线出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong> ——
+      v3.6（2024-10 更新，2025-02-03 修订）未公开重新发布权重表，本站沿用 v3.4 分布并全程标注；
+      考试形式的完整口径见 <a href="0.2-exam-facts.html">0.2 DOFD v3.6 考试全解</a>。
+      「ITSM 三流程皆关键」「约束理论支持第一步」「用指标控制和评价员工不属于 DevOps 领导力目标」
+      三条判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论，不复制题干与选项原文。<br>
+      八层因果链的划分、层间依赖推演、「章 ↔ 层」对应表、CALMS 五字母与层的映射、三步归位法与三条误读，
+      均为<strong>本站教学整理</strong>，官方未以此形式给出，相关标注已紧贴在各表下方。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

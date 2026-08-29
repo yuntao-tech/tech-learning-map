@@ -265,7 +265,7 @@
               答案是 <strong>DevSecOps</strong> 而不是 SRE —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
               判别关键词：谈<strong>安全</strong>就往 DevSecOps 走，谈<strong>可靠性与运维自动化</strong>才往 SRE 走。</li>
             <li><strong>不在考纲范围内的部分</strong>：SLO / SLI / 错误预算、具体厂商的 SRE 工具、值班轮换的具体制度。
-              <small class="muted">这几项既不在 66 条考纲术语表内，也不在 v3.4 课程大纲子项里；「因此不必花时间背」为本站推断，官方未公布任何题目构成信息。</small></li>
+              <small class="muted">这几项既不在 67 条考纲术语表内，也不在 v3.4 课程大纲子项里；「因此不必花时间背」为本站推断，官方未公布任何题目构成信息。</small></li>
           </ul>
           <p class="mb-0 muted"><small>题型与 Bloom 层级的对应为本站教学推断，官方仅公布整体范围为 Bloom 1–2；
             以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。</small></p>
@@ -289,7 +289,7 @@
         它让「可靠性和交付速度怎么取舍」变成一个有数字的谈判，而不是靠嗓门。
       </p>
       <p class="mb-0">
-        这三个词<strong>不在考纲范围内</strong>：既不在 DOFD v3.4 的 66 条考纲术语表内，
+        这三个词<strong>不在考纲范围内</strong>：既不在 DOFD v3.4 的 67 条考纲术语表内，
         也不在 v3.4 课程大纲的模块子项里，因此<strong>本站将其作为理解用的教学补充</strong>处理。
         写在这里只是为了让上文「可靠性可以被工程化取舍」这句话有个落点。
         <small class="muted">「不在考纲范围内因此不需要背、不会作为正确答案出现」为本站推断，官方未公布任何题目构成信息。</small>
@@ -470,7 +470,7 @@
           <p class="mb-0 muted"><small><strong>Single Point of Failure (SPOF)</strong> 与
             <strong>Mean Time to Repair/Recover (MTTR)</strong> 均逐字列在 DOFD v3.4 官方考纲术语表中。
             下文用于对照的 <strong>MTBF</strong>（Mean Time Between Failures，平均故障间隔）
-            <strong>不在这 66 条术语表内</strong>，本站引入它只是为了把 MTTR 的取向讲清楚。</small></p>
+            <strong>不在这 67 条术语表内</strong>，本站引入它只是为了把 MTTR 的取向讲清楚。</small></p>
         </div>
 
         <!-- ============ 图 3-4-2 ============ -->
@@ -660,7 +660,7 @@
               <g class="s-muted" font-size="13">
                 <text x="82" y="280">最直接的手段：减少变更、拉长发布间隔、加严审批。</text>
                 <text x="82" y="304">副作用：批量变大，出事时更难定位、更难回滚。</text>
-                <text x="82" y="328">MTBF 不在官方 66 条术语表内，此处仅作对照。</text>
+                <text x="82" y="328">MTBF 不在官方 67 条术语表内，此处仅作对照。</text>
               </g>
 
               <!-- 右框 -->
@@ -765,7 +765,7 @@
         <li><strong>SPOF = 失效即导致整体不可用的那一个环节</strong>；识别靠部署视角逐个问「拔掉它，核心流程还能完成吗」</li>
         <li><strong>MTTR 比 MTBF 更适合作现代分布式系统的目标</strong>：MTBF 靠减少变更刷好看（与 DevOps 反向），MTTR 靠自动化与演练（与 DevOps 同向）</li>
         <li>题干出现<strong>指责文化 + 大量单点故障 + 频繁战情室</strong> → 答案方向是<strong>安全文化</strong>，由 <strong>DOFD v3.4 官方样题答案键</strong>确认；<strong>事件管理</strong>等三项 ITSM 流程「皆是」对 DevOps 最关键者，同为官方样题答案键确认</li>
-        <li><strong>SLO / SLI / 错误预算不在 66 条考纲术语表与 v3.4 模块子项内</strong>（本站据此判断不需要背）；混沌工程见 <a href="../ch02-core-principles/2.6-chaos-engineering.html">第 2 章 混沌工程（2.6）</a>，指标完整体系见 <a href="../ch07-metrics/index.html">第 7 章</a>，可观测性见 <a href="3.8-observability.html">3.8 监控与可观测性</a></li>
+        <li><strong>SLO / SLI / 错误预算不在 67 条考纲术语表与 v3.4 模块子项内</strong>（本站据此判断不需要背）；混沌工程见 <a href="../ch02-core-principles/2.6-chaos-engineering.html">第 2 章 混沌工程（2.6）</a>，指标完整体系见 <a href="../ch07-metrics/index.html">第 7 章</a>，可观测性见 <a href="3.8-observability.html">3.8 监控与可观测性</a></li>
       </ul>
     </div>
 
@@ -782,7 +782,7 @@
       <strong>教学整理与延伸部分</strong>：「SRE 是 DevOps 的一种具体实现方式」这一定位、
       「混沌工程是韧性工程的验证手段」这一关系、SPOF 清点方法与 MTTR 四个杠杆、
       两张对照表，均为本站教学整理，官方未以此形式给出，已分别在对应位置就地标注。
-      <strong>MTBF</strong> 与 <strong>SLO / SLI / 错误预算</strong>不在 66 条官方术语表内，
+      <strong>MTBF</strong> 与 <strong>SLO / SLI / 错误预算</strong>不在 67 条官方术语表内，
       本站分别作为对照项与延伸内容，已标注为非考纲。本节不含任何官方样题原文。
     </div>
 

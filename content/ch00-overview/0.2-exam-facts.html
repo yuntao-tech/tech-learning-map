@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0.2 DOFD v3.6 考试全解 · DevOps Foundation 学习站</title>
+<meta name="description" content="DOFD v3.6 的考试形式、八大知识域题数分布、版本时间线、开卷规则的准确含义，以及三张同名 DevOps Foundation 证书的辨析。本站全部考试数字的来源中心。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch00", sec:"0.2-exam-facts"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 0 章 · 导论</div>
+      <h1 class="page-head__title">0.2 DOFD v3.6 考试全解</h1>
+      <div class="page-head__en">The DOFD v3.6 Exam Explained</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        这一页是全站的<strong>考试事实中心</strong>。站内任何一处出现的题数、时长、及格线、权重，
+        都以本页为准，本页的每一个数字都标了它出自哪份官方文件、哪个版本。
+        关于这张证书，网上流传的错误说法主要集中在三处：<strong>开卷能带什么</strong>、
+        <strong>Blueprint 是不是大纲</strong>、<strong>你考的到底是哪张 DevOps Foundation</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>考试形式的每一项硬指标，以及它们各自出自哪份官方文件</li>
+        <li>八大知识域的题数怎么分，为什么这份分布来自 v3.4 而不是 v3.6</li>
+        <li>「开卷」的准确边界；Blueprint 为什么不能当大纲用；三张同名证书怎么区分</li>
+      </ul>
+    </div>
+
+    <!-- ================= 一、考试形式 ================= -->
+    <h2 id="format">一、考试形式总表</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>项目</th><th>规定</th><th>需要注意什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>题量与题型</strong></td>
+            <td>40 道单项选择题</td>
+            <td>全部单选，没有多选、没有配对题、没有简答</td>
+          </tr>
+          <tr>
+            <td><strong>时长</strong></td>
+            <td>60 分钟</td>
+            <td>平均 90 秒一题。题干短，时间通常不是主要压力来源</td>
+          </tr>
+          <tr>
+            <td><strong>及格线</strong></td>
+            <td>65%，即 <strong>26 / 40</strong></td>
+            <td>可以错 14 题。整章放弃仍能过，但两个 7 题大章同时崩掉就很难补</td>
+          </tr>
+          <tr>
+            <td><strong>开卷</strong></td>
+            <td>开卷，<strong>仅限官方 Learner Workbook 与 Quick Reference Guide</strong></td>
+            <td>这是 2025-02-03 修订才明确的口径，详见<a href="#openbook">第四节</a></td>
+          </tr>
+          <tr>
+            <td><strong>考试形式</strong></td>
+            <td>线上 web proctored，24/7 可预约</td>
+            <td>远程监考，不需要去考场；对网络、摄像头与环境有要求</td>
+          </tr>
+          <tr>
+            <td><strong>前置条件</strong></td>
+            <td>无正式前置要求；官方建议 <strong>16 学时</strong>学习</td>
+            <td>「建议」不是「必须」，不强制参加授权培训</td>
+          </tr>
+          <tr>
+            <td><strong>认知层级</strong></td>
+            <td><strong>Bloom 1–2</strong>（记忆与理解）</td>
+            <td>不考应用与分析层，含义见<a href="#bloom">第七节</a></td>
+          </tr>
+          <tr>
+            <td><strong>证书有效期</strong></td>
+            <td>3 年，续证需 <strong>60 CPD</strong> 分</td>
+            <td>CPD = 持续专业发展学分，需在有效期内累积</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted"><small>以上八项均为官方考试形式规定。现行版本为 <strong>v3.6</strong>：2024-10 更新，2025-02-03 修订。</small></p>
+
+    <!-- ================= 二、题数分布 ================= -->
+    <h2 id="weighting">二、八大知识域题数分布</h2>
+
+    <p>
+      八大知识域对应本站第 1–8 章，一章一域，编号一致。
+      下面这张分布图决定了你的时间该怎么分配：
+      <strong>第 3、4 章各 7 题并列最高</strong>，两章合起来占 35%；
+      <strong>第 7 章只有 2 题</strong>，是全考纲最低。
+    </p>
+
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 400" style="min-width:680px" role="img" aria-label="八大知识域最多题数横向条形图，第 3 章与第 4 章各 7 题最高，第 7 章 2 题最低">
+          <text x="18" y="22" class="s-muted" font-size="13">每个知识域的最多题数（合计 40 题）</text>
+
+          <!-- 刻度线与刻度数字 -->
+          <g>
+            <line x1="250" y1="52" x2="250" y2="366" class="s-stroke" stroke-width="1"/>
+            <line x1="312" y1="52" x2="312" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="374" y1="52" x2="374" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="436" y1="52" x2="436" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="498" y1="52" x2="498" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="560" y1="52" x2="560" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="622" y1="52" x2="622" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="684" y1="52" x2="684" y2="366" class="s-stroke" stroke-width="1" stroke-dasharray="3 5"/>
+            <text x="250" y="46" class="s-muted" font-size="12" text-anchor="middle">0</text>
+            <text x="312" y="46" class="s-muted" font-size="12" text-anchor="middle">1</text>
+            <text x="374" y="46" class="s-muted" font-size="12" text-anchor="middle">2</text>
+            <text x="436" y="46" class="s-muted" font-size="12" text-anchor="middle">3</text>
+            <text x="498" y="46" class="s-muted" font-size="12" text-anchor="middle">4</text>
+            <text x="560" y="46" class="s-muted" font-size="12" text-anchor="middle">5</text>
+            <text x="622" y="46" class="s-muted" font-size="12" text-anchor="middle">6</text>
+            <text x="684" y="46" class="s-muted" font-size="12" text-anchor="middle">7</text>
+          </g>
+
+          <!-- 第 1 章 5 题 -->
+          <text x="240" y="75" class="s-ink" font-size="15" text-anchor="end">第 1 章　认识 DevOps</text>
+          <rect x="250" y="58" width="310" height="24" rx="4" class="f-2"/>
+          <text x="570" y="75" class="s-ink" font-size="13">5 题 · 12.5%</text>
+
+          <!-- 第 2 章 4 题 -->
+          <text x="240" y="115" class="s-ink" font-size="15" text-anchor="end">第 2 章　核心原则</text>
+          <rect x="250" y="98" width="248" height="24" rx="4" class="f-2"/>
+          <text x="508" y="115" class="s-ink" font-size="13">4 题 · 10%</text>
+
+          <!-- 第 3 章 7 题 -->
+          <text x="240" y="155" class="s-ink" font-size="15" text-anchor="end">第 3 章　关键实践</text>
+          <rect x="250" y="138" width="434" height="24" rx="4" class="f-1"/>
+          <text x="694" y="155" class="f-1" font-size="13" font-weight="700">7 题 · 17.5%　最高</text>
+
+          <!-- 第 4 章 7 题 -->
+          <text x="240" y="195" class="s-ink" font-size="15" text-anchor="end">第 4 章　业务与技术框架</text>
+          <rect x="250" y="178" width="434" height="24" rx="4" class="f-1"/>
+          <text x="694" y="195" class="f-1" font-size="13" font-weight="700">7 题 · 17.5%　最高</text>
+
+          <!-- 第 5 章 6 题 -->
+          <text x="240" y="235" class="s-ink" font-size="15" text-anchor="end">第 5 章　文化、行为与运营模型</text>
+          <rect x="250" y="218" width="372" height="24" rx="4" class="f-2"/>
+          <text x="632" y="235" class="s-ink" font-size="13">6 题 · 15%</text>
+
+          <!-- 第 6 章 5 题 -->
+          <text x="240" y="275" class="s-ink" font-size="15" text-anchor="end">第 6 章　自动化与工具链架构</text>
+          <rect x="250" y="258" width="310" height="24" rx="4" class="f-2"/>
+          <text x="570" y="275" class="s-ink" font-size="13">5 题 · 12.5%</text>
+
+          <!-- 第 7 章 2 题 -->
+          <text x="240" y="315" class="s-ink" font-size="15" text-anchor="end">第 7 章　度量、指标与报告</text>
+          <rect x="250" y="298" width="124" height="24" rx="4" class="f-4"/>
+          <text x="384" y="315" class="f-4" font-size="13" font-weight="700">2 题 · 5%　最低</text>
+
+          <!-- 第 8 章 4 题 -->
+          <text x="240" y="355" class="s-ink" font-size="15" text-anchor="end">第 8 章　分享、跟随与演进</text>
+          <rect x="250" y="338" width="248" height="24" rx="4" class="f-2"/>
+          <text x="508" y="355" class="s-ink" font-size="13">4 题 · 10%</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 0-2-1　八大知识域题数分布。</strong>
+        题数不是平均分的：第 3、4 两章合计 14 题，已超过及格所需 26 题的一半；
+        而第 7 章只有 2 题，它的价值在于把整条因果链讲通，而不在于卷面分数 ——
+        <strong>按理解重要性学它，按考试权重给它时间</strong>。
+      </figcaption>
+    </figure>
+
+    <p class="muted"><small>
+      合计 40 题，答对 26 题（65%）即通过。题数出自 DOFD v3.4 Examination Requirements（2022-05）；
+      图中百分比为本站按 40 题总量换算。
+    </small></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>知识域官方英文名</th><th>本站章节</th><th class="num">最多题数</th><th>占比</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td>Exploring DevOps</td>
+            <td><a href="../ch01-exploring-devops/index.html">第 1 章 认识 DevOps</a></td>
+            <td class="num">5</td>
+            <td>12.5%</td>
+          </tr>
+          <tr>
+            <td>2</td><td>Core DevOps Principles</td>
+            <td><a href="../ch02-core-principles/index.html">第 2 章 核心原则</a></td>
+            <td class="num">4</td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td>3</td><td>Key DevOps Practices</td>
+            <td><a href="../ch03-key-practices/index.html">第 3 章 关键实践</a></td>
+            <td class="num"><strong>7</strong></td>
+            <td><strong>17.5%</strong></td>
+          </tr>
+          <tr>
+            <td>4</td><td>Business &amp; Technology Frameworks</td>
+            <td><a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></td>
+            <td class="num"><strong>7</strong></td>
+            <td><strong>17.5%</strong></td>
+          </tr>
+          <tr>
+            <td>5</td><td>Culture, Behaviors &amp; Operating Models</td>
+            <td><a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型</a></td>
+            <td class="num">6</td>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <td>6</td><td>Automation &amp; Architecting DevOps Toolchains</td>
+            <td><a href="../ch06-automation/index.html">第 6 章 自动化与工具链架构</a></td>
+            <td class="num">5</td>
+            <td>12.5%</td>
+          </tr>
+          <tr>
+            <td>7</td><td>Measurement, Metrics, and Reporting</td>
+            <td><a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></td>
+            <td class="num">2</td>
+            <td>5%</td>
+          </tr>
+          <tr>
+            <td>8</td><td>Sharing, Shadowing and Evolving</td>
+            <td><a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></td>
+            <td class="num">4</td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>合计</strong></td><td class="num"><strong>40</strong></td><td><strong>100%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted"><small>官方文件给出的是每个知识域的「最多题数」，百分比为本站按 40 题总量换算，官方未以百分比形式发布权重。</small></p>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">这份权重表来自 v3.4，不是 v3.6</div>
+      <p>
+        上表出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong> 的
+        <em>Exam Topic Areas and Question Weighting</em>。
+        这是目前唯一一份公开可得的、带「每个知识域最多几题」的官方文件。
+      </p>
+      <p>
+        <strong>v3.6 未公开重新发布权重表。</strong>
+        PeopleCert 现行产品页只公布八条学习目标，不含题数或百分比。
+      </p>
+      <p class="mb-0">
+        本站沿用 v3.4 分布的理由：v3.6 的<strong>模块结构没有改变</strong> ——
+        八个模块与 PeopleCert 现行页面的八条学习目标一一对应，变化发生在模块<em>内部</em>
+        （新增可观测性、VSM、平台工程等条目），不是模块的增删或重排。
+        在没有新权重表的前提下，沿用 v3.4 分布是可辩护的最优近似，
+        但它<strong>是近似，不是 v3.6 官方数据</strong>，站内每次引用都会标注版本。
+      </p>
+    </div>
+
+    <!-- ================= 三、版本时间线 ================= -->
+    <h2 id="timeline">三、版本时间线：v3.4 → v3.6</h2>
+
+    <p>
+      理解这条时间线，才能理解本站为什么会同时出现两个版本号：
+      <strong>考什么</strong>按 v3.6，<strong>各域几道题</strong>按 v3.4。
+    </p>
+
+    <ul class="timeline">
+      <li>
+        <div><span class="timeline__year">2022-05</span>　<span class="timeline__what">v3.4 · 最后一批公开完整的考试文件</span></div>
+        <p class="mb-0">
+          DevOps Institute 时代。本站的三项硬证据分别出自其中不同的文件，至今没有被替代品：
+          <strong>题数分布表</strong>出自 <em>Examination Requirements</em>（2022-05）；
+          <strong>67 条考纲术语表</strong>出自 <em>Concept and Terminology List</em>（2022-05）；
+          <strong>官方样题</strong>（Sample Examination 1）出自 DevOps Institute
+          《DevOps Foundation® Exam Study Guide》v3.4。
+          本站的权重、术语判定、命题方向证据全部来自这一批文件。
+        </p>
+      </li>
+      <li>
+        <div><span class="timeline__year">2024-10</span>　<span class="timeline__what">v3.6 · PeopleCert 改版，内容大更新</span></div>
+        <p>
+          品牌与运营移交 PeopleCert，课程内容做了一轮实质性扩充，新增七个方向：
+        </p>
+        <div class="badge-row" style="margin-top:var(--sp-2)">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+        </div>
+        <p>
+          <a href="../ch03-key-practices/3.8-observability.html">Observability 可观测性（3.8）</a>　·
+          <a href="../ch03-key-practices/3.9-vsm.html">Value Stream Management 价值流管理（3.9）</a>　·
+          <a href="../ch03-key-practices/3.10-platform-engineering.html">Platform Engineering 平台工程（3.10）</a>　·
+          <a href="../ch06-automation/6.6-vsm-platform-genai.html">VSM 平台（6.6）</a>　·
+          <a href="../ch06-automation/6.6-vsm-platform-genai.html">Generative AI 用例（6.6）</a>　·
+          <a href="../ch07-metrics/7.6-aiops.html">AIOps（7.6）</a>　·
+          <a href="../ch07-metrics/7.5-value-driven-metrics.html">DevOps Dashboards 看板（7.5）</a>
+        </p>
+        <p class="mb-0">
+          另有框架层的调整：<strong>Value Stream Management 与 SRE 被显式列入框架层</strong>。
+          需要区分的是，<strong>DevSecOps 不属于这批增量</strong> ——
+          它自 v3.4 起就是 M3 关键实践的模块子项，并且逐字收录在 67 条考纲术语表内，
+          详见 <a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a>。
+        </p>
+      </li>
+      <li>
+        <div><span class="timeline__year">2025-02-03</span>　<span class="timeline__what">v3.6 修订 · 考试形式更正为开卷</span></div>
+        <p class="mb-0">
+          一次小修订，但改了一件影响备考策略的事：<strong>考试说明更正为开卷</strong>。
+          2025 年 2 月之前写的备考文章大多说这门考试是闭卷 —— 那些内容已经过期。
+        </p>
+      </li>
+    </ul>
+
+    <p class="muted"><small>
+      现行版本 v3.6，2024-10 更新，2025-02-03 修订为开卷 —— 这三项属官方考试形式规定。
+      上列 v3.6 增量条目出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标，v3.4 术语表未收录。
+    </small></p>
+
+    <!-- ================= 四、开卷 ================= -->
+    <h2 id="openbook">四、「开卷」到底允许带什么</h2>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 开卷 ≠ 可以带任何资料</div>
+      <p>
+        官方规定的开卷范围是 <strong>官方 Learner Workbook 与 Quick Reference Guide</strong>，
+        除此之外的任何材料都不在允许范围内：
+      </p>
+      <div class="grid grid--2">
+        <div>
+          <div class="callout__title">✅ 可以带入</div>
+          <ul class="mb-0">
+            <li>官方 <strong>Learner Workbook</strong>（学员手册）</li>
+            <li>官方 <strong>Quick Reference Guide</strong>（快速参考指南）</li>
+          </ul>
+        </div>
+        <div>
+          <div class="callout__title">❌ 不可以带入</div>
+          <ul class="mb-0">
+            <li>本站页面、笔记、自制速查表</li>
+            <li>第三方教材、市面备考书、题库</li>
+            <li>搜索引擎、AI 助手、任何在线检索</li>
+            <li>他人协助（考试为线上 web proctored）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted"><small>官方只规定了允许带入的两份文档，右列为本站据此推出的排除项，官方未逐条列举禁带清单。</small></p>
+      <p class="mb-0">
+        <strong>这条规则决定了本站的定位</strong>：本站是理解工具与训练工具，
+        帮你把概念之间的关系想清楚、把易混点分开、把回忆速度练起来，
+        但<strong>它不能替代官方教材进考场</strong>。
+        真正能翻的只有那两份官方文档，所以备考时应当同时熟悉<strong>官方教材的结构</strong> ——
+        考场上你需要的是「知道该翻到哪一页」，而不是「现场把它读一遍」。60 分钟不够读书。
+      </p>
+    </div>
+
+    <!-- ================= 五、Blueprint ================= -->
+    <h2 id="blueprint">五、澄清：Blueprint 不是考试大纲</h2>
+
+    <p>
+      PeopleCert 官网 DevOps Foundation 页面可以下载一份名为
+      <strong>Certification Blueprint</strong> 的文件。很多备考文章把它当作考试大纲，这是误解。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>它是什么</th><th>它不是什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>一页纸的概览海报。</strong>版面由六个色块构成：
+              CALMS 五值 · The Three Ways · Organization ·
+              Principles &amp; Practices · Related Frameworks · Benefits。
+            </td>
+            <td>
+              <strong>不含权重</strong> —— 没有任何题数或百分比。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              它承载了<strong>官方的 DevOps 定义句</strong>，以及 CALMS 五格的官方完整描述句。
+              这些是可以直接引用的官方原文。
+            </td>
+            <td>
+              <strong>不含学习目标</strong>，<strong>不含 Bloom 层级</strong>，
+              也不列出各知识域包含哪些条目。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              适合当作<strong>全局速记卡</strong>：一眼看到 DevOps 的六个面。
+            </td>
+            <td>
+              把它当大纲用，会漏掉整个第 5、7、8 章的绝大部分考点。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Blueprint 上那句官方定义在
+      <a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a> 有逐字原文与译文；
+      六个色块中的 The Three Ways 展开在
+      <a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>。
+      <strong>带权重的官方文件只有 Examination Requirements</strong>，公开可得的最新版本是 v3.4。
+    </p>
+
+    <!-- ================= 六、同名证书辨析 ================= -->
+    <h2 id="which-cert">六、三张同名证书：你考的是哪一张</h2>
+
+    <p>
+      市面上至少有三张证书都叫「DevOps Foundation」或近似名称，
+      <strong>考纲互不通用</strong>，题库、教材、术语口径都不一样。
+      买课或买题库之前先确认发证机构，否则会背错内容。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>DOFD<br><small class="muted">DevOps Institute / PeopleCert</small></th>
+            <th>EXIN DevOps Foundation</th>
+            <th>DASA DevOps Fundamentals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>题量</strong></td><td>40</td><td>40</td><td>40</td></tr>
+          <tr><td><strong>时长</strong></td><td>60 分钟</td><td>60 分钟</td><td>60 分钟（非母语 75 分钟）</td></tr>
+          <tr><td><strong>及格线</strong></td><td>65%</td><td>65%</td><td>65%</td></tr>
+          <tr><td><strong>开卷</strong></td><td><strong>是</strong>（仅官方教材）</td><td>否</td><td>否（可带草稿纸）</td></tr>
+          <tr><td><strong>官方公开权重</strong></td><td>否（v3.4 有题数表）</td><td><strong>是</strong>，细到 2.5%</td><td>否</td></tr>
+          <tr><td><strong>有效期</strong></td><td>3 年 + 60 CPD</td><td>官方文件未写</td><td>终身</td></tr>
+          <tr><td><strong>本站是否覆盖</strong></td><td><strong>是，本站基准</strong></td><td>否</td><td>否</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>本站的基准是 DOFD</strong>，版本 v3.6。
+      选它的决定性理由是知识体系覆盖度：三步工作法、约束理论、SRE、DevSecOps、
+      可观测性、平台工程、DORA 指标这一组当代 DevOps 核心概念，只有 DOFD 全部纳入考纲。
+    </p>
+
+    <p class="muted"><small>
+      本对照表为本站教学整理，依据三家发证机构官网现行公开信息，不是 DOFD 官方文件内容。
+      EXIN 与 DASA 两列仅供选型辨析，不构成本站的学习范围。
+    </small></p>
+
+    <!-- ================= 七、Bloom ================= -->
+    <h2 id="bloom">七、Bloom 1–2 意味着什么</h2>
+
+    <p>
+      官方把这门考试的认知层级定为 <strong>Bloom 1–2</strong>，即 Bloom 认知目标分类的前两层：
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>层级</th><th>含义</th><th>典型问法</th><th>考不考</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1 记忆</strong> <span class="en">Remember</span></td>
+            <td>回忆事实、术语、定义、归属关系</td>
+            <td>某术语的定义是什么；某实践属于哪一步</td>
+            <td><strong>考</strong></td>
+          </tr>
+          <tr>
+            <td><strong>2 理解</strong> <span class="en">Understand</span></td>
+            <td>解释含义、辨析差别、把一个场景归到正确的概念下</td>
+            <td>描述一段组织症状，问应当转向什么</td>
+            <td><strong>考</strong></td>
+          </tr>
+          <tr>
+            <td>3 应用 <span class="en">Apply</span></td>
+            <td>在新情境中执行方法、给出方案</td>
+            <td>为这条流水线设计测试策略</td>
+            <td>不考</td>
+          </tr>
+          <tr>
+            <td>4 分析 <span class="en">Analyze</span></td>
+            <td>拆解结构、比较权衡、推断因果</td>
+            <td>分析这组指标下降的根因</td>
+            <td>不考</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      对备考的实际含义：题型集中在<strong>定义题</strong>与<strong>场景归类题</strong>两类。
+      前者问「这个词是什么意思」，后者给一小段情境问「这属于哪个概念 / 应该采用哪个实践」。
+      不会要求你写配置、算指标、设计架构。
+    </p>
+    <p>
+      因此复习的重点不是深度，而是<strong>边界清晰</strong> ——
+      能不能在两个相邻概念之间划出那条线。持续交付与持续部署、
+      变更前置时间与周期时间、监控与可观测性，这类成对概念是场景归类题的主要出处。
+      站内每个知识点的「③ 与相邻概念的区别」一面就是为这件事准备的。
+    </p>
+
+    <p class="muted"><small>
+      「Bloom 1–2」本身是官方规定的认知层级。上表第 3、4 层的对照，以及
+      「题型以定义题和场景归类题为主」这一判断，是本站依据 Bloom 分类法与官方样题方向所做的教学整理 ——
+      官方未公布命题规律、题型分布或逐题的 Bloom 分级。
+    </small></p>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📖 这些数字接下来怎么用</div>
+      <p class="mb-0">
+        本页只负责把考试事实定下来，怎么用它们分在另外三节：
+        <a href="0.1-how-to-use.html">0.1 如何使用本资料</a>讲六面模板、七种徽章与四级来源标注怎么读；
+        <a href="0.3-map-guide.html">0.3 全局知识地图导读</a>把八个知识域接成一条因果链；
+        <a href="0.4-learning-path.html#allocation">0.4 三个月学习路径</a>把本页第二节的题数分布换算成每章的时间预算。
+      </p>
+    </div>
+
+    <!-- ================= 速查 ================= -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>40</strong> 题 / <strong>60</strong> 分钟 / <strong>65%</strong>（26 题）/ 开卷 / 线上 web proctored / Bloom 1–2 / 3 年 + 60 CPD</li>
+        <li>开卷只能带 <strong>官方 Learner Workbook 与 Quick Reference Guide</strong>，本站笔记不能带</li>
+        <li>题数分布 <strong>5 · 4 · 7 · 7 · 6 · 5 · 2 · 4</strong>：第 3、4 章并列最高，第 7 章最低</li>
+        <li>权重出自 <strong>v3.4</strong>；v3.6 未公开重新发布权重表</li>
+        <li>v3.6 关键日期：<strong>2024-10 内容大更新，2025-02-03 更正为开卷</strong></li>
+        <li>Blueprint 是<strong>一页概览海报</strong>，不是大纲；但它承载官方定义句</li>
+        <li>三张同名证书里，<strong>本站基准是 DOFD</strong>，EXIN 与 DASA 考纲不通用</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：考试形式（题量、时长、及格线、开卷范围、监考方式、建议学时、Bloom 层级、有效期与 CPD）
+      为 DOFD 官方考试形式规定，现行版本 v3.6（2024-10 更新，2025-02-03 修订）。<br>
+      八大知识域题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong> 的
+      <em>Exam Topic Areas and Question Weighting</em>；<strong>v3.6 未公开重新发布权重表</strong>，
+      本站沿用 v3.4 分布的理由已在正文说明，属本站的显式判断。<br>
+      版本号与日期为官方考试形式规定：现行版本 v3.6，2024-10 更新，2025-02-03 修订为开卷；
+      v3.6 增量条目出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。<br>
+      「开卷可以带什么」一节中，允许带入的两份文档为官方规定，不可带入的各项为本站据此推出的排除项，
+      官方未逐条列举禁带清单。八大知识域的百分比为本站按 40 题总量换算，官方只发布最多题数。<br>
+      Blueprint 的构成与定位说明出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 本身。<br>
+      三张同名证书对照表为本站教学整理，依据三家发证机构官网现行公开信息，非 DOFD 官方内容。
+      Bloom 第 3、4 层的对照与题型判断为本站教学整理 —— 官方未公布命题规律与题型分布。<br>
+      本页图表全部自制，未复制任何官方样题的题干或选项原文。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 缩略语速查 · DevOps Foundation 学习站</title>
+<meta name="description" content="DOFD 考题大量使用缩略语。本页按字母序汇总全站出现的缩写、英文全称、中文与所属小节，并单列 CD 与 VSM 这两组「一个缩写两个含义」的陷阱。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"appendix", sec:"a2-acronyms"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">附录与复习工具</div>
+      <h1 class="page-head__title">A2 缩略语速查</h1>
+      <div class="page-head__en">Acronyms</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        考题很少写全称。题干里出现 <strong>MTTR</strong>、<strong>SPOF</strong>、<strong>eNPS</strong> 时，
+        认不出来就等于没读懂题。这一页只做一件事：<strong>三秒查到它是什么、归在哪一节</strong>。
+        最需要停下来读两遍的是两组 —— <strong>CD</strong> 与 <strong>VSM</strong>，
+        它们各有两个含义，且都被官方文件同时使用。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 怎么用这一页</div>
+      <ul class="mb-0">
+        <li><strong>徽章看的是「考纲收录状态」，不是重要程度。</strong>
+          <span class="badge badge--core">⭐ 考纲核心</span> = 该词或其全称逐字见于
+          DOFD v3.4 官方考纲术语表（Concept and Terminology List，67 条）；
+          <span class="badge badge--plain">📘 官方模块子项</span> = 见于 v3.4 课程大纲子项，或 v3.6 官方学习目标（后者叠加
+          <span class="badge badge--new">🆕 v3.6 新增</span>）；
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span> = 两处都未逐字收录。</li>
+        <li><strong>🧭 不等于不用看。</strong>SLO、DORA、KPI 这些词在真实工程里到处都是，只是官方没把它列成考点词条。
+          考试若出现，多半是当干扰项用。</li>
+        <li>「所属小节」给的是该缩写<strong>被正式讲透</strong>的那一节，不是它出现过的所有地方。
+          个别 <span class="badge badge--ext">🧭 延伸 · 非考纲</span> 条目只给出最相关的一节，该节未必展开讲解；
+          确实全站没有归属节的，此列写作「本站补充，未单列小节」。</li>
+        <li>要查完整词条（不只是缩写）与它们的一句话定义，去 <a href="a1-glossary.html">A1 术语表（中英对照）</a>；
+            要查官方每一项落在本站哪一节，去 <a href="a3-syllabus-map.html">A3 考纲映射表</a>；
+            本页每条徽章判据所依据的官方文件，逐份列于 <a href="a4-sources.html">A4 官方来源与参考文献</a>。</li>
+      </ul>
+    </div>
+
+    <h2>按字母序速查</h2>
+
+    <div class="callout callout--info no-print">
+      <div class="callout__title">🔎 按字母检索</div>
+      <p class="mb-0"><a href="#ac-a">A</a> · <a href="#ac-c">C</a> · <a href="#ac-d">D</a> · <a href="#ac-e">E</a> · <a href="#ac-g">G</a> · <a href="#ac-i">I</a> · <a href="#ac-k">K</a> · <a href="#ac-m">M</a> · <a href="#ac-s">S</a> · <a href="#ac-t">T</a> · <a href="#ac-u">U</a> · <a href="#ac-v">V</a> · <a href="#ac-w">W</a></p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>缩写</th>
+            <th>英文全称</th>
+            <th>中文与辨析</th>
+            <th>所属小节</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr id="ac-a">
+            <td><strong>AIOps</strong><br><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            <td><span class="en">Artificial Intelligence for IT Operations</span></td>
+            <td>面向 IT 运维的人工智能。本站按官方写法保留 AIOps 不译</td>
+            <td><a href="../ch07-metrics/7.6-aiops.html">7.6 AIOps</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>API</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Application Programming Interface</span></td>
+            <td>应用程序编程接口</td>
+            <td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+          </tr>
+
+          <tr id="ac-c">
+            <td><strong>CALMS</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Culture · Automation · Lean · Measurement · Sharing</span></td>
+            <td>文化 · 自动化 · 精益 · 度量 · 分享，DevOps 的五要素模型</td>
+            <td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CBOK</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Collective Body of Knowledge</span></td>
+            <td>集体知识体。是组织沉淀下来、可被后来者取用的知识整体，不等于某一本手册或某个 wiki 站点</td>
+            <td><a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CD</strong> ①<br><span class="badge badge--core">⭐ 考纲核心</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Continuous Delivery</span></td>
+            <td>持续交付 —— 随时<strong>可以</strong>部署，部不部署由人决定</td>
+            <td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CD</strong> ②<br><span class="badge badge--core">⭐ 考纲核心</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Continuous Deployment</span></td>
+            <td>持续部署 —— 通过测试就<strong>自动</strong>进生产，无人工放行</td>
+            <td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CI</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Continuous Integration</span></td>
+            <td>持续集成</td>
+            <td><a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CI/CD</strong><br><span class="badge badge--plain">📘 官方模块子项</span></td>
+            <td><span class="en">Continuous Integration / Continuous Delivery（或 Deployment）</span></td>
+            <td>持续集成与持续交付（或持续部署）的合称。<strong>合写时 CD 指哪一个由上下文决定</strong></td>
+            <td><a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>CMM / CMMI</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Capability Maturity Model / Capability Maturity Model Integration</span></td>
+            <td>能力成熟度模型 / 能力成熟度模型集成。理解「成熟度分级」这一思路的背景，非 DOFD 词条。<strong>5.4 只点名不展开</strong></td>
+            <td><a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a></td>
+          </tr>
+
+          <tr id="ac-d">
+            <td><strong>DoD</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Definition of Done</span></td>
+            <td>完成的定义。术语表收录的是 <span class="en">Scrum roles, artifacts and events</span>，未单列 DoD</td>
+            <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>DORA</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">DevOps Research and Assessment</span></td>
+            <td>DevOps 研究与评估（研究项目名）。术语表收录的是 <span class="en">DevOps metrics</span> 与四个指标各自的词条，DORA 这个名字本身不在表内</td>
+            <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>DOWNTIME</strong><br><span class="badge badge--core">⭐ 考纲核心</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Defects · Overproduction · Waiting · Non-utilized talent · Transportation · Inventory · Motion · Extra-processing</span></td>
+            <td>精益浪费类型 DOWNTIME，<strong>八项</strong>。术语表词条为
+              <span class="en">Lean types of Waste (DOWNTIME)</span>，不要写成「七种浪费 DOWNTIME」 ——
+              比经典七种浪费多出 <span class="en">Non-utilized talent</span> 一项</td>
+            <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+          </tr>
+
+          <tr id="ac-e">
+            <td><strong>eNPS</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">employee Net Promoter Score</span></td>
+            <td>员工净推荐值。文化类指标的代表，术语表原文首字母小写</td>
+            <td><a href="../ch07-metrics/7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a></td>
+          </tr>
+
+          <tr id="ac-g">
+            <td><strong>GenAI</strong><br><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            <td><span class="en">Generative AI</span></td>
+            <td>生成式 AI。官方学习目标写作 <span class="en">Generative AI Use Cases</span></td>
+            <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td>
+          </tr>
+
+          <tr id="ac-i">
+            <td><strong>IaC</strong><br><span class="badge badge--plain">📘 官方模块子项</span></td>
+            <td><span class="en">Infrastructure as Code</span></td>
+            <td>基础设施即代码。Blueprint 的 CALMS-A 描述句逐字点名 <span class="en">infrastructure-as-code</span></td>
+            <td><a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>IDP</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Internal Developer Platform</span></td>
+            <td>内部开发者平台。平台工程的产物；平台工程本身是 v3.6 学习目标，IDP 这个缩写不是</td>
+            <td><a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>ITIL</strong><br><span class="badge badge--plain">📘 官方模块子项</span></td>
+            <td><span class="en">ITIL</span>（早期展开为
+              <span class="en">Information Technology Infrastructure Library</span>，现通行作专有名称使用 ——
+              <strong>本站教学整理</strong>，DOFD 官方文件未就此作说明）</td>
+            <td>ITSM 领域最广泛采用的实践框架。ITIL 是<strong>一套具体框架</strong>，ITSM 是<strong>学科</strong></td>
+            <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>ITSM</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">IT Service Management</span></td>
+            <td>IT 服务管理。术语表词条写作 <span class="en">IT service management</span></td>
+            <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+          </tr>
+
+          <tr id="ac-k">
+            <td><strong>KPI</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Key Performance Indicator</span></td>
+            <td>关键绩效指标。通用管理词汇，DOFD 强调的是<strong>价值驱动指标</strong>而非泛指的 KPI</td>
+            <td><a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a></td>
+          </tr>
+
+          <tr id="ac-m">
+            <td><strong>ML</strong><br><span class="badge badge--plain">📘 官方模块子项</span></td>
+            <td><span class="en">Machine Learning</span></td>
+            <td>机器学习。v3.4 课程大纲 M6 子项逐字写作 <span class="en">AI and Machine Learning</span></td>
+            <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>MTBF</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Mean Time Between Failures</span></td>
+            <td>平均无故障时间。「假设故障可预防」年代的指标，常作 MTTR 的干扰项</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>MTTD</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Mean Time to Detect</span></td>
+            <td>平均检测时间。从故障发生到被发现，属反馈速度。<strong>本站补充，DOFD 未收录</strong></td>
+            <td>—（本站补充，未单列小节）</td>
+          </tr>
+
+          <tr>
+            <td><strong>MTTR</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Mean Time to Repair / Recover</span></td>
+            <td>平均恢复时间。DORA 四指标之一，术语表词条写作
+              <span class="en">Mean Time to Repair/Recover (MTTR)</span></td>
+            <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+          </tr>
+
+          <tr id="ac-s">
+            <td><strong>SAFe</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Scaled Agile Framework</span></td>
+            <td>规模化敏捷框架。注意官方拼写是 SAFe，末位小写</td>
+            <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>SLA</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Service Level Agreement</span></td>
+            <td>服务级别协议。对<strong>外</strong>的承诺，违约有后果</td>
+            <td><a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>SLI</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Service Level Indicator</span></td>
+            <td>服务级别指标。实际测出来的那个数</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>SLO</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Service Level Objective</span></td>
+            <td>服务级别目标。对<strong>内</strong>设定的目标值，错误预算由它推出</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>SPOF</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Single Point of Failure</span></td>
+            <td>单点故障。既指技术上的单点，也指「只有一个人会做这件事」的人员单点</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>SRE</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Site Reliability Engineering</span></td>
+            <td>站点可靠性工程</td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+          </tr>
+
+          <tr id="ac-t">
+            <td><strong>TDD</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Test Driven Development</span></td>
+            <td>测试驱动开发。先写测试再写实现</td>
+            <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>TIMWOOD</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Transportation · Inventory · Motion · Waiting · Overproduction · Over-processing · Defects</span></td>
+            <td>经典精益<strong>七种</strong>浪费的助记。加入 <span class="en">Non-utilized talent</span> 后才成为官方收录的八项 DOWNTIME</td>
+            <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>ToC</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><span class="en">Theory of Constraints</span></td>
+            <td>约束理论。不译「制约理论」</td>
+            <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+          </tr>
+
+          <tr id="ac-u">
+            <td><strong>UAT</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">User Acceptance Testing</span></td>
+            <td>用户验收测试。术语表以
+              <span class="en">Testing (unit, acceptance, integration)</span> 一条收录验收测试，未单列 UAT 这个缩写</td>
+            <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+          </tr>
+
+          <tr id="ac-v">
+            <td><strong>VSM</strong> ①<br><span class="badge badge--core">⭐ 考纲核心</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Value Stream Mapping</span></td>
+            <td>价值流<strong>映射</strong> —— 一次分析活动：画图、量时间、找浪费</td>
+            <td><a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a></td>
+          </tr>
+
+          <tr>
+            <td><strong>VSM</strong> ②<br><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span> <span class="badge badge--warn">⚠️ 易混淆</span></td>
+            <td><span class="en">Value Stream Management</span></td>
+            <td>价值流<strong>管理</strong> —— 持续的管理实践：端到端可见、持续度量</td>
+            <td><a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a></td>
+          </tr>
+
+          <tr id="ac-w">
+            <td><strong>WIP</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            <td><span class="en">Work in progress</span></td>
+            <td>在制品。看板的核心动作是<strong>限制在制品</strong>；术语表收录的是 <span class="en">Kanban</span> 与 <span class="en">Flow</span>，未单列 WIP</td>
+            <td><a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      <strong>本站教学整理</strong>：DOWNTIME 八个字母的英文对应词属通行精益知识，官方术语表只给词条名
+      <span class="en">Lean types of Waste (DOWNTIME)</span>，不附展开与定义。
+    </div>
+
+    <div class="divider-label">考试最爱设的陷阱</div>
+
+    <h2>一个缩写，两个含义</h2>
+
+    <p>
+      共同点是：<strong>两个含义都对，都是官方用词，靠上下文判断</strong>，
+      所以题干不会提示你「这里的 CD 指哪一个」——判据必须自己带着。
+    </p>
+
+    <div class="grid grid--2" style="margin:var(--sp-5) 0">
+
+      <div class="callout callout--warn" style="margin:0">
+        <div class="callout__title">⚠️ CD · 差一道人工闸门</div>
+        <div class="table-wrap">
+          <table class="vs-table">
+            <thead>
+              <tr><th>含义</th><th>判据</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Continuous Delivery</strong><br>持续交付</td>
+                <td>流水线尽头<strong>还有一道人工闸门</strong>：随时<strong>可以</strong>按需一键部署，但按不按由人决定</td>
+              </tr>
+              <tr>
+                <td><strong>Continuous Deployment</strong><br>持续部署</td>
+                <td><strong>没有人工闸门</strong>：通过全部自动化测试的版本<strong>自动</strong>进入生产</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="anchor-line">题干里出现「可以部署 / 按需部署 / on demand」→ 交付；出现「每一个通过测试的版本都自动部署」→ 部署。</p>
+        <p class="mb-0"><small>
+          这两条方向由 <strong>DOFD v3.4 官方样题答案键</strong>确认：依赖部署流水线实现「按需一键部署」的实践是<strong>持续交付</strong>；
+          自动部署每个通过单元、集成、用户验收与非功能测试的版本，属<strong>持续部署</strong>。
+          两个词条也都逐字列于 v3.4 官方考纲术语表。<br>
+          完整辨析见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>。
+        </small></p>
+      </div>
+
+      <div class="callout callout--warn" style="margin:0">
+        <div class="callout__title">⚠️ VSM · 中文只差一个字</div>
+        <div class="table-wrap">
+          <table class="vs-table">
+            <thead>
+              <tr><th>含义</th><th>判据</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Value Stream Mapping</strong><br>价值流<strong>映射</strong></td>
+                <td><strong>一次性的分析活动</strong>：画出当前状态、标注处理时间与等待时间、算增值比例、找浪费</td>
+              </tr>
+              <tr>
+                <td><strong>Value Stream Management</strong><br>价值流<strong>管理</strong></td>
+                <td><strong>持续的管理实践</strong>：把工具链数据接起来，端到端持续可见，而不是画完就归档</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="anchor-line">题干里出现「画图 / 分析 / 识别浪费」→ 映射；出现「端到端 / 持续可见 / 平台」→ 管理。</p>
+        <p><small>
+          <span class="en">Value stream mapping</span> 逐字列于 v3.4 官方考纲术语表；
+          <span class="en">Value Stream Management</span> 属 v3.6 官方学习目标（PeopleCert 现行产品页），v3.4 术语表未收录，
+          Blueprint 的 Related Frameworks 一栏写作 <em>Value Stream Management: End-to-End</em>。
+        </small></p>
+        <p class="mb-0"><small>
+          分别见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>
+          与 <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a>。
+        </small></p>
+      </div>
+
+    </div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>CD 有两个</strong>：Delivery 留人工闸门，Deployment 不留。合写成 CI/CD 时指哪一个看上下文</li>
+        <li><strong>VSM 有两个</strong>：Mapping 是画一次图，Management 是持续管。中文只差「映射 / 管理」一个词</li>
+        <li><strong>DOWNTIME 是八项不是七项</strong>；七项那个助记叫 TIMWOOD，不是官方词条</li>
+        <li><strong>MTTR 在术语表内，MTBF 不在</strong> —— MTBF 是典型干扰项</li>
+        <li><strong>eNPS 官方写法首字母小写</strong>；<strong>SAFe 末位小写</strong></li>
+        <li><strong>ITIL 是框架，ITSM 是学科</strong>；术语表收录的是 ITSM（IT service management）</li>
+      </ul>
+    </div>
+
+    <div class="divider-label">考务缩写</div>
+
+    <h2>考务与证书缩写</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>缩写</th><th>英文全称</th><th>中文</th><th>相关章节</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DOFD</strong></td>
+            <td><span class="en">DevOps Foundation</span></td>
+            <td>本站基准认证的官方代码，现行版本 v3.6</td>
+            <td><a href="../ch00-overview/index.html">第 0 章 导论</a></td>
+          </tr>
+          <tr>
+            <td><strong>QRG</strong></td>
+            <td><span class="en">Quick Reference Guide</span></td>
+            <td>官方速查手册。与 Learner Workbook 一同构成开卷考试<strong>唯一允许携带</strong>的资料</td>
+            <td><a href="../ch00-overview/index.html">第 0 章 导论</a></td>
+          </tr>
+          <tr>
+            <td><strong>CPD</strong></td>
+            <td><span class="en">Continuing Professional Development</span></td>
+            <td>持续专业发展学分。证书 3 年有效，续证需 60 CPD 分</td>
+            <td><a href="../ch00-overview/index.html">第 0 章 导论</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      考试形式相关事实（40 题 / 60 分钟 / 及格 65% / 开卷仅限 Learner Workbook 与 Quick Reference Guide /
+      证书 3 年有效需 60 CPD）出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>与
+      PeopleCert 现行 DevOps Foundation 产品页；现行版本 v3.6（2024-10 更新，2025-02-03 修订为开卷）。
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：徽章判定依据 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>的 67 条词条
+      与 <strong>DOFD v3.4 课程大纲</strong>的八个模块子项清单；
+      标注 <span class="badge badge--new">🆕 v3.6 新增</span> 的条目出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标，v3.4 术语表未收录。
+      官方术语表<strong>只列词条，不附定义</strong>，因此本页每一条中文释义与判据句均为本站措辞，不是官方译名或官方定义；
+      中文译名统一采用本站译法表，同一术语全站一致。
+      <span class="en">infrastructure-as-code</span> 与 <em>Value Stream Management: End-to-End</em> 两处引文出自
+      <strong>PeopleCert DevOps Foundation Blueprint</strong> 逐字原文。
+      CD 两个含义的判定方向由 <strong>DOFD v3.4 官方样题答案键</strong>确认（本站只陈述结论，不复制题干与选项原文）。
+      缩写的英文展开按来源分三组：
+      ① 展开见于 <strong>v3.4 官方考纲术语表</strong>词条（大小写以术语表原文为准）：API、CBOK、eNPS、MTTR、SAFe、SPOF、ITSM、SRE、ToC、TDD、CI、CD①、CD②、VSM①；
+      ② 展开见于其他官方文件：CALMS 五格与 IaC 逐字出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>，
+      ML 出自 v3.4 课程大纲 M6 子项 <span class="en">AI and Machine Learning</span>，
+      GenAI 出自 v3.6 官方学习目标 <span class="en">Generative AI Use Cases</span>；
+      ③ 其余（AIOps、DORA、IDP、TIMWOOD、MTBF、MTTD、SLA / SLI / SLO、DOWNTIME 八个对应词、KPI、UAT、WIP、DoD、CMM / CMMI）为本站按行业通行写法整理。<br>
+      以上各份官方文件的版本、日期与获取地址，逐份列于 <a href="a4-sources.html">A4 官方来源与参考文献</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

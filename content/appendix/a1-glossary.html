@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 术语表（中英对照） · DevOps Foundation 学习站</title>
+<meta name="description" content="DOFD 官方考纲术语表逐条中英对照，附 v3.4 官方模块子项、v3.6 增量术语与「常被误当考点」的非考纲词，四张表分开列，一眼看清哪些必须背。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"appendix", sec:"a1-glossary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">附录与复习工具</div>
+      <h1 class="page-head__title">A1 术语表（中英对照）</h1>
+      <div class="page-head__en">Glossary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        这一页把全站的术语按<strong>官方性级别</strong>分成四张表：
+        <strong>表 1</strong> 是官方考纲术语表的逐条对照，<strong>表 1b</strong> 是 v3.4 课程大纲点名、
+        但术语表未收录的模块子项，<strong>表 2</strong> 是 v3.6 才加进来的官方学习目标，
+        <strong>表 3</strong> 是工程里常见、但明确不在考纲内的词。
+        分开列，是为了让「必须背的」和「用来理解的」不再混在一起。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 这一页怎么用</div>
+      <ul class="mb-0">
+        <li>复习时只扫<strong>表 1</strong>：能一句话说清、并说出它属于哪一节，就算过关</li>
+        <li>做题时若一个词你在<strong>表 3</strong> 里找到了，它多半是干扰项而不是答案</li>
+        <li>每条右侧的小节链接指向<strong>讲得最透的那一节</strong>，忘了就点进去看六面卡片</li>
+        <li>只想认缩写（MTTR、SPOF、eNPS、CD、VSM），去 <a href="a2-acronyms.html">A2 缩略语速查</a>；
+            想知道<strong>官方每一项写在本站哪一节</strong>，去 <a href="a3-syllabus-map.html">A3 考纲映射表</a>；
+            想核对本页每一处「官方」二字的出处，去 <a href="a4-sources.html">A4 官方来源与参考文献</a></li>
+      </ul>
+    </div>
+
+    <div class="callout callout--info no-print" id="g-index">
+      <div class="callout__title">🔎 按字母检索（表 1）</div>
+      <p class="mb-0"><a href="#g-a">A</a> · <a href="#g-c">C</a> · <a href="#g-d">D</a> · <a href="#g-e">E</a> · <a href="#g-f">F</a> · <a href="#g-g">G</a> · <a href="#g-h">H</a> · <a href="#g-i">I</a> · <a href="#g-k">K</a> · <a href="#g-l">L</a> · <a href="#g-m">M</a> · <a href="#g-o">O</a> · <a href="#g-r">R</a> · <a href="#g-s">S</a> · <a href="#g-t">T</a> · <a href="#g-v">V</a> · <a href="#g-w">W</a></p>
+    </div>
+
+    <div class="divider-label">必背</div>
+
+    <h2>表 1 · DOFD v3.4 官方考纲术语表</h2>
+
+    <p>
+      下表<strong>逐条收录</strong>官方术语清单，未增、未删、未合并，按英文字母严格排序。
+      凡逐字出现在这张表里的词，才可以标 <span class="badge badge--core">⭐ 考纲核心</span>；
+      不在表内的词，无论多常见，都不能当成考纲术语。
+    </p>
+
+    <div class="badge-row">
+      <span class="badge badge--core">⭐ 考纲核心</span>
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 关于「一句话定义」这一列</div>
+      <p class="mb-0">
+        官方术语表<strong>只列词条，不附定义</strong>。
+        因此下表第三列的每一条释义、以及第二列的中文译名，<strong>全部是本站措辞</strong>，
+        用于帮助记忆，不是官方原文。唯一的例外是 <strong>DevOps</strong> 一条 —— 它取自
+        PeopleCert DevOps Foundation Blueprint 正文定义句的本站译文。
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">英文原词</th>
+            <th style="width:16%">中文译名</th>
+            <th style="width:38%">一句话定义（本站措辞）</th>
+            <th style="width:20%">主讲小节</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr id="g-a">
+              <td><strong>Agile Manifesto</strong></td>
+              <td>敏捷宣言</td>
+              <td>2001 年发布的四条价值观与十二条原则，把重心从流程与文档转向个体互动、可工作的软件、客户协作与响应变化。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Agile service management</strong></td>
+              <td>敏捷服务管理</td>
+              <td>把敏捷的迭代节奏与协作方式带进 IT 服务管理流程，让变更、事件等流程跟得上频繁交付。</td>
+              <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+            </tr>
+            <tr>
+              <td><strong>Agile software development</strong></td>
+              <td>敏捷软件开发</td>
+              <td>以短迭代、持续反馈、可工作软件为核心的一类开发方法总称，Scrum 是其中最常见的一种。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Application Programming Interface (API)</strong></td>
+              <td>应用程序编程接口 API</td>
+              <td>系统之间约定好的调用契约；工具链正是靠它把彼此独立的工具串成一条自动化链路。</td>
+              <td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+            </tr>
+            <tr id="g-c">
+              <td><strong>CALMS</strong></td>
+              <td>CALMS</td>
+              <td>DevOps 的五个维度 —— Culture、Automation、Lean、Measurement、Sharing，用来判断一个组织在哪一格有短板。</td>
+              <td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Change failure rate</strong></td>
+              <td>变更失败率</td>
+              <td>投入生产的变更中导致服务降级或需要补救的比例，DORA 四指标的稳定性侧之一。</td>
+              <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+            </tr>
+            <tr>
+              <td><strong>Change fatigue</strong></td>
+              <td>变革疲劳</td>
+              <td>变革推得太多太快又看不到结果，导致人对新一轮变革不再有反应的状态。</td>
+              <td><a href="../ch05-culture/5.2-cultural-debt.html">5.2 文化债</a></td>
+            </tr>
+            <tr>
+              <td><strong>Change lead time</strong></td>
+              <td>变更前置时间</td>
+              <td>从代码提交到该变更在生产环境运行所经过的时间（DORA 口径；价值流口径从需求被接受算起）。</td>
+              <td><a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a></td>
+            </tr>
+            <tr>
+              <td><strong>ChatOps</strong></td>
+              <td>ChatOps</td>
+              <td>把运维操作与工具输出放进团队聊天频道执行，使操作过程与上下文对所有人可见。</td>
+              <td><a href="../ch03-key-practices/3.6-chatops.html">3.6 ChatOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Code commit</strong></td>
+              <td>代码提交</td>
+              <td>开发者把一段改动提交进版本库的动作，是持续集成的触发点，也是 DORA 口径变更前置时间的计时起点（精益价值流口径自需求被接受起算，见 <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4</a>）。</td>
+              <td><a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a></td>
+            </tr>
+            <tr>
+              <td><strong>Collaboration and communication</strong></td>
+              <td>协作与沟通</td>
+              <td>DevOps 文化最直接的可观察面：信息是否跨职能流动、坏消息能不能被说出来。</td>
+              <td><a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a></td>
+            </tr>
+            <tr>
+              <td><strong>Collective Body of Knowledge (CBOK)</strong></td>
+              <td>集体知识体 CBOK</td>
+              <td>组织把分散在个人手里的经验沉淀成可复用、可传播的共享知识资产。</td>
+              <td><a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Constraint</strong></td>
+              <td>约束</td>
+              <td>决定整条价值流最大产出的那一个环节；改善它以外的环节不会提升全局产出。</td>
+              <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+            </tr>
+            <tr>
+              <td><strong>Containers</strong></td>
+              <td>容器</td>
+              <td>把应用与其运行依赖打包在一起的轻量封装，使同一份制品在各环境行为一致。</td>
+              <td><a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></td>
+            </tr>
+            <tr>
+              <td><strong>Continuous delivery</strong></td>
+              <td>持续交付</td>
+              <td>每个通过流水线的版本都随时具备可发布状态，发不发布由人决定。</td>
+              <td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+            </tr>
+            <tr>
+              <td><strong>Continuous deployment</strong></td>
+              <td>持续部署</td>
+              <td>通过全部自动化测试的版本自动进入生产，没有人工放行环节。</td>
+              <td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+            </tr>
+            <tr>
+              <td><strong>Continuous integration</strong></td>
+              <td>持续集成</td>
+              <td>开发者频繁把代码合入主干，每次合入都自动构建并测试，尽早暴露集成冲突。</td>
+              <td><a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a></td>
+            </tr>
+            <tr>
+              <td><strong>Continuous testing</strong></td>
+              <td>持续测试</td>
+              <td>测试贯穿流水线全程而不是堆在末尾，让质量反馈随每次变更即时返回。</td>
+              <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+            </tr>
+            <tr>
+              <td><strong>Cultural debt</strong></td>
+              <td>文化债</td>
+              <td>长期回避的行为与协作问题积累出的欠账，会像技术债一样持续加收利息。</td>
+              <td><a href="../ch05-culture/5.2-cultural-debt.html">5.2 文化债</a></td>
+            </tr>
+            <tr>
+              <td><strong>Cycle time</strong></td>
+              <td>周期时间</td>
+              <td>一件工作从真正开始处理到完成所经过的时间，不含开始之前的排队等待。</td>
+              <td><a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a></td>
+            </tr>
+            <tr id="g-d">
+              <td><strong>Deployment frequency</strong></td>
+              <td>部署频率</td>
+              <td>单位时间内把变更成功投入生产的次数，DORA 四指标的速度侧之一。</td>
+              <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+            </tr>
+            <tr>
+              <td><strong>Deployment pipeline</strong></td>
+              <td>部署流水线</td>
+              <td>把构建、测试、部署串成的自动化通道，一次提交沿着它一路走到生产。</td>
+              <td><a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps</strong></td>
+              <td>DevOps</td>
+              <td>IT 组织中的各方协同工作，使计划中的工作快速流动、获得反馈并持续改进直至进入生产，同时达成质量、稳定性、可靠性、可用性、安全与团队满意度。</td>
+              <td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps metrics</strong></td>
+              <td>DevOps 指标</td>
+              <td>覆盖速度、质量、稳定性、文化四类的度量集合，目的是驱动改进而不是考核个人。</td>
+              <td><a href="../ch07-metrics/7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps roles</strong></td>
+              <td>DevOps 角色</td>
+              <td>承担具体职责的岗位切面（如 SRE、自动化工程师），与「团队」「干系人」是三个不同的切面。</td>
+              <td><a href="../ch08-sharing/8.2-roles-teams.html">8.2 角色与团队</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps stakeholders</strong></td>
+              <td>DevOps 干系人</td>
+              <td>对 DevOps 结果有利害关系或有影响力的各方，范围远超开发与运维两个部门。</td>
+              <td><a href="../ch08-sharing/8.2-roles-teams.html">8.2 角色与团队</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps teams</strong></td>
+              <td>DevOps 团队</td>
+              <td>围绕业务目标组建、覆盖端到端交付所需技能的跨职能团队。</td>
+              <td><a href="../ch08-sharing/8.2-roles-teams.html">8.2 角色与团队</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps toolchain</strong></td>
+              <td>DevOps 工具链</td>
+              <td>覆盖从计划到运行各环节、通过集成串起来的一组工具；重点在衔接，不在单个工具选型。</td>
+              <td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevSecOps</strong></td>
+              <td>DevSecOps</td>
+              <td>把安全内建进交付流水线并左移到早期，取代发布前的一次性集中安全评审。</td>
+              <td><a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Dojo</strong></td>
+              <td>Dojo（沉浸式实战训练场）</td>
+              <td>团队带着真实工作离开日常岗位、在教练指导下集中练习新工作方式的场所。</td>
+              <td><a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></td>
+            </tr>
+            <tr id="g-e">
+              <td><strong>employee Net Promoter Score (eNPS)</strong></td>
+              <td>员工净推荐值 eNPS</td>
+              <td>用「是否愿意把本组织推荐给他人」来度量员工投入度的文化类指标。</td>
+              <td><a href="../ch07-metrics/7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a></td>
+            </tr>
+            <tr>
+              <td><strong>Epics</strong></td>
+              <td>Epics（大颗粒需求）</td>
+              <td>大到装不进一个迭代、必须先拆分才能交付的需求条目 —— 是「太大」，不是「最紧急」。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr id="g-f">
+              <td><strong>Flow</strong></td>
+              <td>流动</td>
+              <td>工作从需求一路向右走到生产、不回头也不积压的顺畅程度，三步工作法第一步的目标。</td>
+              <td><a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a></td>
+            </tr>
+            <tr id="g-g">
+              <td><strong>Golden Circle</strong></td>
+              <td>Golden Circle 黄金圈</td>
+              <td>why / how / what 三层模型，主张先说清目的与信念，再谈做法与产出。</td>
+              <td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a></td>
+            </tr>
+            <tr id="g-h">
+              <td><strong>High-performing organizations</strong></td>
+              <td>高绩效组织</td>
+              <td>在速度与稳定性两侧同时领先的组织 —— 它的存在说明两者不是取舍关系。</td>
+              <td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a></td>
+            </tr>
+            <tr id="g-i">
+              <td><strong>Immersion</strong></td>
+              <td>沉浸式学习</td>
+              <td>通过长时间投入真实场景来习得新工作方式的学习方式；Dojo 是场所，Immersion 是方式。</td>
+              <td><a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Improvement kata</strong></td>
+              <td>改进型 Kata</td>
+              <td>设定目标状态、看清当前状态、以小步实验逼近目标的固定改进套路。</td>
+              <td><a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></td>
+            </tr>
+            <tr>
+              <td><strong>IT service management</strong></td>
+              <td>IT 服务管理</td>
+              <td>以服务为单位规划、交付、运营与改进 IT 的管理体系，ITIL 是其中最广泛使用的框架。</td>
+              <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+            </tr>
+            <tr id="g-k">
+              <td><strong>Kanban</strong></td>
+              <td>看板方法</td>
+              <td>通过可视化工作流与限制在制品来暴露瓶颈、以拉动方式推进工作的方法。</td>
+              <td><a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></td>
+            </tr>
+            <tr>
+              <td><strong>Kubler-Ross Change Curve</strong></td>
+              <td>Kubler-Ross 变革曲线</td>
+              <td>描述人面对重大变化时依次经历的情绪阶段，用来预判变革中必然出现的抵触期。</td>
+              <td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td>
+            </tr>
+            <tr id="g-l">
+              <td><strong>Lean production</strong></td>
+              <td>精益生产</td>
+              <td>源自丰田生产方式的制造管理体系，核心是消除浪费、拉动生产与持续改进。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr>
+              <td><strong>Lean thinking</strong></td>
+              <td>精益思想</td>
+              <td>把精益从车间提炼成通用思维：定义价值、识别价值流、让价值流动、由需求拉动、追求尽善尽美。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr>
+              <td><strong>Lean tools</strong></td>
+              <td>精益工具</td>
+              <td>价值流映射、看板、5 Why 等把精益思想落到具体动作上的工具集合。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr>
+              <td><strong>Lean types of Waste (DOWNTIME)</strong></td>
+              <td>精益浪费类型 DOWNTIME</td>
+              <td>精益浪费的八项清单，DOWNTIME 是这八项的首字母助记 —— 比经典七种多出「未被利用的人才」一项。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr id="g-m">
+              <td><strong>Mean Time to Repair/Recover (MTTR)</strong></td>
+              <td>平均恢复时间 MTTR</td>
+              <td>从服务受损到恢复正常所需时间的平均值，DORA 四指标的稳定性侧之一。</td>
+              <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a></td>
+            </tr>
+            <tr>
+              <td><strong>Microservices</strong></td>
+              <td>微服务</td>
+              <td>把系统拆成可独立部署的小服务，让团队不必等待彼此就能各自发布。</td>
+              <td><a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></td>
+            </tr>
+            <tr id="g-o">
+              <td><strong>Open source</strong></td>
+              <td>开源</td>
+              <td>源码公开、允许自由使用与修改的软件模式；DevOps 工具链大量构建在其上。</td>
+              <td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+            </tr>
+            <tr>
+              <td><strong>Organizational considerations</strong></td>
+              <td>组织考量</td>
+              <td>推行 DevOps 之前必须评估的组织侧因素：现状、结构、既有流程与承受变化的能力。</td>
+              <td><a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td>
+            </tr>
+            <tr>
+              <td><strong>Organizational culture</strong></td>
+              <td>组织文化</td>
+              <td>组织中被默认接受、真正支配行为的共同假设与规范 —— 看行为，不看墙上的标语。</td>
+              <td><a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a></td>
+            </tr>
+            <tr id="g-r">
+              <td><strong>Resilience engineering</strong></td>
+              <td>韧性工程</td>
+              <td>承认故障必然发生，把工程重点放在吸收冲击与快速恢复上，而不是追求不出故障。</td>
+              <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+            </tr>
+            <tr id="g-s">
+              <td><strong>Scaled Agile Framework (SAFe)</strong></td>
+              <td>规模化敏捷框架 SAFe</td>
+              <td>把敏捷实践扩展到多团队、项目群与投资组合层级的框架。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Scrum</strong></td>
+              <td>Scrum</td>
+              <td>以固定长度 Sprint 组织交付的敏捷框架，有明确规定的角色、事件与工件。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Scrum roles, artifacts and events</strong></td>
+              <td>Scrum 的角色、工件与事件</td>
+              <td>Scrum 的三类构成 —— 角色（PO / SM / 开发团队）、工件（产品待办列表等）、事件（Sprint 及其四场会议）。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Service</strong></td>
+              <td>服务</td>
+              <td>以结果交付给客户的能力单元：客户享用结果，底层成本与风险由服务提供方承担；ITSM 的管理基本单位就是它。</td>
+              <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+            </tr>
+            <tr>
+              <td><strong>Shift left</strong></td>
+              <td>左移</td>
+              <td>把测试与安全等活动提前到开发早期并持续进行，把质量内建进开发过程。</td>
+              <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+            </tr>
+            <tr>
+              <td><strong>Simian Army/Chaos Monkey</strong></td>
+              <td>Simian Army / Chaos Monkey</td>
+              <td>Netflix 用于在生产环境主动注入故障、检验系统韧性的一组工具。</td>
+              <td><a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a></td>
+            </tr>
+            <tr>
+              <td><strong>Single Point of Failure (SPOF)</strong></td>
+              <td>单点故障 SPOF</td>
+              <td>一处失效就会拖垮整体的环节；既可能是某个组件，也可能是「只有某个人会做」。</td>
+              <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+            </tr>
+            <tr>
+              <td><strong>Site Reliability Engineering</strong></td>
+              <td>站点可靠性工程 SRE</td>
+              <td>用软件工程的方法解决运维问题、以可靠性为工程目标的实践体系。</td>
+              <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+            </tr>
+            <tr id="g-t">
+              <td><strong>Test driven development</strong></td>
+              <td>测试驱动开发 TDD</td>
+              <td>先写一条会失败的测试、再写让它通过的实现代码的开发方式。</td>
+              <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+            </tr>
+            <tr>
+              <td><strong>Testing (unit, acceptance, integration)</strong></td>
+              <td>测试（单元 / 集成 / 验收）</td>
+              <td>三个层级的自动化测试：单元验证最小单位、集成验证组件间协作、验收验证是否满足需求。</td>
+              <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td>
+            </tr>
+            <tr>
+              <td><strong>The Three Ways</strong></td>
+              <td>三步工作法</td>
+              <td>流动、反馈、持续改进（实验与学习）三步构成的因果链，是 DevOps 的主轴。</td>
+              <td><a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a></td>
+            </tr>
+            <tr>
+              <td><strong>Theory of Constraints</strong></td>
+              <td>约束理论</td>
+              <td>系统整体产出由唯一的约束决定，改进必须先找到它并聚焦于它。</td>
+              <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+            </tr>
+            <tr>
+              <td><strong>Thomas-Kilmann Conflict Modes</strong></td>
+              <td>Thomas-Kilmann 冲突处理模式</td>
+              <td>按「关注自身诉求」与「关注他人诉求」两轴划分出的五种冲突处理方式。</td>
+              <td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td>
+            </tr>
+            <tr id="g-v">
+              <td><strong>Value stream mapping</strong></td>
+              <td>价值流映射</td>
+              <td>画出一件工作从需求到交付的全部步骤与等待时间，让浪费与瓶颈显形。</td>
+              <td><a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a></td>
+            </tr>
+            <tr>
+              <td><strong>Velocity</strong></td>
+              <td>Velocity 速率</td>
+              <td>一个 Sprint 内团队完成的故事点数，用于本团队的容量预测 —— 不能跨团队比较，也不是绩效。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr id="g-w">
+              <td><strong>Waste</strong></td>
+              <td>浪费</td>
+              <td>消耗资源却不为客户创造价值的一切活动。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr>
+              <td><strong>Waterfall</strong></td>
+              <td>瀑布</td>
+              <td>需求、设计、开发、测试、发布依次串行的交付方式，是上述各框架共同的对照系。</td>
+              <td><a href="../ch04-frameworks/4.1-framework-landscape.html">4.1 框架全景与彼此关系</a></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="no-print muted"><a href="#g-index">↑ 回到字母检索</a></p>
+
+    <div class="divider-label">官方，但不在术语表内</div>
+
+    <h2>表 1b · v3.4 官方模块子项</h2>
+
+    <div class="badge-row">
+      <span class="badge badge--plain">📘 官方模块子项</span>
+    </div>
+
+    <p>
+      下表收录 <strong>DOFD v3.4 课程大纲逐字点名、但术语表未收录</strong>的模块子项，按 M1–M8 的模块顺序排列，
+      外加 Blueprint 正文点名的 infrastructure-as-code。
+      它们是官方内容，只是没有进入术语表 —— 所以<strong>不标「⭐ 考纲核心」，也不属于延伸内容</strong>。
+      查 ITIL、Safety Culture、Chaos Engineering 这类词在表 1 里找不到，是因为它们在这里。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">英文原词</th>
+            <th style="width:16%">中文译名</th>
+            <th style="width:38%">一句话定义（本站措辞）</th>
+            <th style="width:20%">主讲小节</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td><strong>Defining DevOps</strong></td>
+              <td>定义 DevOps</td>
+              <td>M1 的第一个子项：先把 DevOps 是什么说清楚，再谈实践 —— 定义句本身是术语表条目 DevOps。</td>
+              <td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>Why Does DevOps Matter?</strong></td>
+              <td>DevOps 为什么重要</td>
+              <td>从业务结果而不是技术偏好回答动机：速度与稳定性可以同时改善。</td>
+              <td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a></td>
+            </tr>
+            <tr>
+              <td><strong>The First Way</strong></td>
+              <td>第一步：流动</td>
+              <td>三步工作法的第一步，目标是让工作从左到右顺畅流动 —— 术语表收录的是 Flow 与 The Three Ways。</td>
+              <td><a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a></td>
+            </tr>
+            <tr>
+              <td><strong>The Second Way</strong></td>
+              <td>第二步：反馈</td>
+              <td>三步工作法的第二步，让右侧的信息快速回流到左侧，问题在源头被看见。</td>
+              <td><a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a></td>
+            </tr>
+            <tr>
+              <td><strong>The Third Way</strong></td>
+              <td>第三步：持续改进（实验与学习）</td>
+              <td>三步工作法的第三步，用实验与学习把前两步变成可持续的改进循环。</td>
+              <td><a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></td>
+            </tr>
+            <tr>
+              <td><strong>Chaos Engineering</strong></td>
+              <td>混沌工程</td>
+              <td>在受控条件下主动注入故障、验证系统韧性假设的实践 —— 术语表只收录工具侧的 Simian Army/Chaos Monkey。</td>
+              <td><a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a></td>
+            </tr>
+            <tr>
+              <td><strong>Learning Organizations</strong></td>
+              <td>学习型组织</td>
+              <td>能把个体经验转成组织能力、并据此改变行为的组织；M2 与 M4 都点名了它。</td>
+              <td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td>
+            </tr>
+            <tr>
+              <td><strong>Agile</strong></td>
+              <td>敏捷</td>
+              <td>作为框架整体被点名的 Agile；术语表收录的是 Agile Manifesto / software development / service management 三条，没有单独的 Agile。</td>
+              <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td>
+            </tr>
+            <tr>
+              <td><strong>Lean</strong></td>
+              <td>精益</td>
+              <td>作为框架整体被点名的 Lean；术语表收录的是 Lean production / thinking / tools / types of Waste 四条。</td>
+              <td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td>
+            </tr>
+            <tr>
+              <td><strong>ITIL</strong></td>
+              <td>ITIL</td>
+              <td>最广泛使用的 ITSM 框架；术语表收录的是 IT service management，没有 ITIL 这个专名。</td>
+              <td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td>
+            </tr>
+            <tr>
+              <td><strong>Safety Culture</strong></td>
+              <td>安全文化</td>
+              <td>能安全地说出坏消息、不必担心被追责的文化状态 —— 不是信息安全，也不在术语表内。</td>
+              <td><a href="../ch04-frameworks/4.5-safety-culture.html">4.5 安全文化与学习型组织</a></td>
+            </tr>
+            <tr>
+              <td><strong>Continuous Funding</strong></td>
+              <td>持续资金</td>
+              <td>按产品与价值流长期投入，取代按项目一次性批预算的出资方式。</td>
+              <td><a href="../ch04-frameworks/4.7-continuous-funding.html">4.7 持续资金</a></td>
+            </tr>
+            <tr>
+              <td><strong>Defining Culture</strong></td>
+              <td>什么是组织文化</td>
+              <td>M5 的第一个子项：先界定文化是什么、怎么观察 —— 术语表条目是 Organizational culture。</td>
+              <td><a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a></td>
+            </tr>
+            <tr>
+              <td><strong>Behavioral Models</strong></td>
+              <td>行为模型</td>
+              <td>解释人在变革中如何反应的一组模型（如 Kubler-Ross 变革曲线、Thomas-Kilmann 冲突处理模式）。</td>
+              <td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td>
+            </tr>
+            <tr>
+              <td><strong>Organizational maturity models</strong></td>
+              <td>组织成熟度模型</td>
+              <td>用分级描述组织当前所处状态、给出下一步方向的评估工具，用于定位而不是打分排名。</td>
+              <td><a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a></td>
+            </tr>
+            <tr>
+              <td><strong>CI/CD</strong></td>
+              <td>CI/CD</td>
+              <td>作为一条自动化链路被合称的持续集成与持续交付/部署；四个单词分别是术语表条目，合称本身不是。</td>
+              <td><a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a></td>
+            </tr>
+            <tr>
+              <td><strong>Cloud, Containers, and Microservices</strong></td>
+              <td>云、容器与微服务</td>
+              <td>支撑独立部署与快速恢复的三层技术底座；术语表单独收录 Containers 与 Microservices，不收录 Cloud。</td>
+              <td><a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></td>
+            </tr>
+            <tr>
+              <td><strong>AI and Machine Learning</strong></td>
+              <td>人工智能与机器学习</td>
+              <td>把模型能力用在交付与运维环节上的一类子项，v3.6 进一步展开为生成式 AI 用例与 AIOps。</td>
+              <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td>
+            </tr>
+            <tr>
+              <td><strong>Automation</strong></td>
+              <td>自动化</td>
+              <td>把重复且规则明确的动作交给机器执行，换取一致性与速度；不是「什么都自动化」。</td>
+              <td><a href="../ch06-automation/6.1-why-automate.html">6.1 自动化的价值与边界</a></td>
+            </tr>
+            <tr>
+              <td><strong>infrastructure-as-code</strong></td>
+              <td>基础设施即代码 IaC</td>
+              <td>用可版本化的代码描述并创建基础设施；它逐字出现在 Blueprint 的 CALMS-A 描述句里，属官方正文点名的内容。</td>
+              <td><a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a></td>
+            </tr>
+            <tr>
+              <td><strong>The Importance of Measurement</strong></td>
+              <td>度量的重要性</td>
+              <td>M7 的第一个子项：先说清为什么必须度量，再谈用哪些指标。</td>
+              <td><a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a></td>
+            </tr>
+            <tr>
+              <td><strong>Value Driven Metrics</strong></td>
+              <td>价值驱动指标</td>
+              <td>面向业务结果而不是活动量的指标；Blueprint 的 M 格逐字点名了 value-driven metrics。</td>
+              <td><a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps in the Enterprise</strong></td>
+              <td>企业中的 DevOps</td>
+              <td>把 DevOps 从单个团队扩展到整个组织时要处理的规模、边界与治理问题。</td>
+              <td><a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps Leadership</strong></td>
+              <td>DevOps 领导力</td>
+              <td>领导者创造条件、承诺文化变革并移除障碍；用指标控制和评价员工不属于它的目标。</td>
+              <td><a href="../ch08-sharing/8.3-leadership.html">8.3 DevOps 领导力</a></td>
+            </tr>
+            <tr>
+              <td><strong>Getting Started</strong></td>
+              <td>如何起步</td>
+              <td>从哪条价值流、哪个团队开始的落地路径 —— 由业务战略与目标决定，不是照抄别人的做法。</td>
+              <td><a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td>
+            </tr>
+            <tr>
+              <td><strong>Challenges, Risks, and Critical Success Factors</strong></td>
+              <td>挑战、风险与关键成功因素</td>
+              <td>推行过程中反复出现的阻力与其对策；关键成功因素是管理层对文化变革的承诺。</td>
+              <td><a href="../ch08-sharing/8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表 1b 的子项名称出自 <strong>DOFD v3.4 课程大纲的模块构成（M1–M8）</strong>，
+      infrastructure-as-code 一条出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 的 CALMS-A 描述句；
+      中文译名、一句话定义与「哪些子项未进入术语表」的对照为本站教学整理，官方未以此形式给出。
+    </div>
+
+    <div class="divider-label">官方补充 · v3.6</div>
+
+    <h2>表 2 · v3.6 增量术语</h2>
+
+    <div class="badge-row">
+      <span class="badge badge--plain">📘 官方模块子项</span>
+      <span class="badge badge--new">🆕 v3.6 新增</span>
+    </div>
+
+    <p>
+      这七项出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，
+      是官方内容，只是晚于 v3.4 的术语表与模块大纲 —— <strong>v3.4 术语表未收录它们</strong>。
+      所以它们既不标「⭐ 考纲核心」，也不属于延伸内容。
+      <strong>表 1b 与表 2 同为 📘 档</strong>，区别只在 v3.4 大纲子项 vs v3.6 现行学习目标。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">英文原词</th>
+            <th style="width:16%">中文译名</th>
+            <th style="width:38%">一句话定义（本站措辞）</th>
+            <th style="width:20%">主讲小节</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td><strong>Monitoring and Observability</strong></td>
+              <td>监控与可观测性</td>
+              <td>监控回答「已知的指标现在如何」，可观测性回答「面对没预设过的问题，能不能从系统输出里问出答案」。</td>
+              <td><a href="../ch03-key-practices/3.8-observability.html">3.8 监控与可观测性</a></td>
+            </tr>
+            <tr>
+              <td><strong>Value Stream Management</strong></td>
+              <td>价值流管理 VSM</td>
+              <td>把价值流从一次性的绘图升级为持续度量与治理的常态管理活动。</td>
+              <td><a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a></td>
+            </tr>
+            <tr>
+              <td><strong>Platform Engineering</strong></td>
+              <td>平台工程</td>
+              <td>由专门团队把通用能力做成自助式内部平台，降低产品团队的认知负荷。</td>
+              <td><a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a></td>
+            </tr>
+            <tr>
+              <td><strong>VSM Platforms</strong></td>
+              <td>价值流管理平台</td>
+              <td>把工具链各环节的数据汇总成端到端价值流视图的平台类产品。</td>
+              <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td>
+            </tr>
+            <tr>
+              <td><strong>Generative AI Use Cases</strong></td>
+              <td>生成式 AI 用例</td>
+              <td>生成式 AI 在代码、测试、文档、事件摘要等交付环节上的具体应用场景。</td>
+              <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td>
+            </tr>
+            <tr>
+              <td><strong>AIOps</strong></td>
+              <td>AIOps</td>
+              <td>用机器学习处理运维遥测，做告警降噪、异常检测与根因定位。</td>
+              <td><a href="../ch07-metrics/7.6-aiops.html">7.6 AIOps</a></td>
+            </tr>
+            <tr>
+              <td><strong>DevOps Dashboards</strong></td>
+              <td>DevOps 仪表盘</td>
+              <td>把速度、质量、稳定性、文化四类指标聚合展示、供团队自我调节的看板。</td>
+              <td><a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider-label">见到不用背</div>
+
+    <h2>表 3 · 明确不在考纲内的常见词</h2>
+
+    <div class="badge-row">
+      <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+    </div>
+
+    <p>
+      下面这些词在真实工程和技术文章里出现频率极高，也确实有助于理解 DevOps，
+      但它们<strong>既不在官方术语表，也不是官方模块子项</strong>。
+      <strong>见到它不用背，但理解它有帮助</strong> —— 而在考场上，
+      一个明显更「时髦」的词出现在选项里，往往正是干扰项。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:26%">英文 / 说法</th>
+            <th style="width:16%">中文</th>
+            <th style="width:38%">理解它有什么用（本站措辞）</th>
+            <th style="width:20%">本站在哪讲到</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td><strong>Senge&#39;s Five Disciplines</strong></td>
+              <td>彼得·圣吉五项修炼</td>
+              <td>学习型组织最常被引用的理论来源；DOFD 只把 Learning Organizations 列为模块子项，不考这五项的名称。</td>
+              <td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td>
+            </tr>
+            <tr>
+              <td><strong>Single-loop / Double-loop learning</strong></td>
+              <td>单环学习 / 双环学习</td>
+              <td>解释「改做法」与「改前提假设」的差别，是理解第三步为什么难的好工具。</td>
+              <td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td>
+            </tr>
+            <tr>
+              <td><strong>SLO / SLI / Error Budget</strong></td>
+              <td>服务等级目标 / 指标 / 错误预算</td>
+              <td>SRE 体系里最实用的一组概念，但 DOFD 术语表只收录 Site Reliability Engineering 本身。</td>
+              <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+            </tr>
+            <tr>
+              <td><strong>GitOps</strong></td>
+              <td>GitOps</td>
+              <td>以 Git 仓库为唯一事实源驱动部署的做法，常被误当成 IaC 的官方术语。</td>
+              <td><span class="muted">暂无对应小节</span></td>
+            </tr>
+            <tr>
+              <td><strong>Kubernetes</strong></td>
+              <td>Kubernetes</td>
+              <td>容器编排的事实标准；官方术语表只有 Containers，不点名任何编排产品。</td>
+              <td><a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></td>
+            </tr>
+            <tr>
+              <td><strong>Terraform</strong></td>
+              <td>Terraform</td>
+              <td>IaC 的常见工具之一；官方文件点名的是 infrastructure-as-code 这一实践，不是工具。</td>
+              <td><a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a></td>
+            </tr>
+            <tr>
+              <td><strong>Team Topologies</strong></td>
+              <td>Team Topologies</td>
+              <td>四种团队类型与三种交互模式的模型，理解平台团队定位很有用，但不在考纲内。</td>
+              <td><a href="../ch05-culture/5.5-operating-models.html">5.5 运营模型与团队结构</a></td>
+            </tr>
+            <tr>
+              <td><strong>OpenTelemetry</strong></td>
+              <td>OpenTelemetry</td>
+              <td>遥测数据采集的开放标准，属可观测性的工程实现层。</td>
+              <td><a href="../ch03-key-practices/3.8-observability.html">3.8 监控与可观测性</a></td>
+            </tr>
+            <tr>
+              <td><strong>Conway&#39;s Law</strong></td>
+              <td>康威定律</td>
+              <td>系统架构会映射组织沟通结构，解释了为什么改架构常要先改团队边界。</td>
+              <td><a href="../ch05-culture/5.5-operating-models.html">5.5 运营模型与团队结构</a></td>
+            </tr>
+            <tr>
+              <td><strong>Cynefin</strong></td>
+              <td>Cynefin 框架</td>
+              <td>按问题复杂度分类的决策框架；本站与官方文件都未把它列为考点。</td>
+              <td><span class="muted">暂无对应小节</span></td>
+            </tr>
+            <tr>
+              <td><strong>SPACE framework</strong></td>
+              <td>SPACE 框架</td>
+              <td>开发者生产力的五维度模型，是 DORA 四指标之外的补充视角。</td>
+              <td><span class="muted">暂无对应小节</span></td>
+            </tr>
+            <tr>
+              <td><strong>Westrum model</strong></td>
+              <td>Westrum 组织文化类型</td>
+              <td>病态 / 官僚 / 生成型三类文化的分类，常与安全文化一起被引用。</td>
+              <td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td>
+            </tr>
+            <tr>
+              <td><strong>Five Focusing Steps</strong></td>
+              <td>五步聚焦法</td>
+              <td>约束理论的操作步骤；术语表收录的是 Theory of Constraints 与 Constraint，不是这五步的名称。</td>
+              <td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td>
+            </tr>
+            <tr>
+              <td><strong>Blameless postmortem</strong></td>
+              <td>无指责事后复盘</td>
+              <td>安全文化最具体的落地动作，但它本身不是术语表条目。</td>
+              <td><a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></td>
+            </tr>
+            <tr>
+              <td><strong>具体厂商工具名</strong></td>
+              <td>Jenkins / Ansible / Prometheus 等</td>
+              <td>官方文件几乎不点名商业或开源产品；见到具体产品名出现在选项里，通常不是答案。</td>
+              <td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表 3 收录的这些词条判定为「不在考纲内」，依据是这些词未出现于 DOFD v3.4 官方考纲术语表，
+      也未出现于 v3.4 课程大纲的模块子项清单；分类与用途说明为本站教学整理，官方未以此形式给出。
+      GitOps、Cynefin、SPACE 框架三条本站尚无对应小节，
+      工程侧展开见 <a href="../ext/index.html">延伸工程实践</a>。
+    </div>
+
+    <div class="divider-label">来源</div>
+
+    <div class="src-note">
+      <strong>来源</strong>：表 1 的术语清单出自
+      <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）</strong>，
+      本站逐条收录、未增删；<strong>中文译名与一句话定义均为本站措辞</strong>
+      —— 官方术语表只列词条，不附定义。<br>
+      <strong>DevOps</strong> 一条的定义为 PeopleCert DevOps Foundation Blueprint 正文定义句的本站译文；
+      <strong>Change lead time</strong> 采用 DORA 口径（自代码提交起算），价值流口径（自需求被接受起算）见
+      <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a> 与 <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>。<br>
+      表 1b 的子项名称出自 <strong>DOFD v3.4 课程大纲的模块构成（M1–M8）</strong>，
+      infrastructure-as-code 一条出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 的 CALMS-A 描述句。<br>
+      表 2 的七项出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，
+      v3.4 术语表未收录。<br>
+      表 3 为本站教学整理的非考纲对照清单，官方未以此形式给出。<br>
+      「主讲小节」一列的归属为本站编排，用于定位讲解位置，与官方模块划分无关。<br>
+      上述各份官方文件的版本、日期与获取地址，逐份列于 <a href="a4-sources.html">A4 官方来源与参考文献</a>；
+      本站小节与官方子项的逐条对应关系见 <a href="a3-syllabus-map.html">A3 考纲映射表</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

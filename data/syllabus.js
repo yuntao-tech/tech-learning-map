@@ -34,10 +34,10 @@ window.SYLLABUS = {
       questions: null,
       desc: "先搞清楚考什么、怎么考、这套资料怎么用，再进入知识本身。",
       sections: [
-        { n: "0.1", slug: "0.1-how-to-use", title: "如何使用本资料", status: "todo" },
-        { n: "0.2", slug: "0.2-exam-facts", title: "DOFD v3.6 考试全解", status: "todo" },
-        { n: "0.3", slug: "0.3-map-guide", title: "全局知识地图导读", status: "todo" },
-        { n: "0.4", slug: "0.4-learning-path", title: "三个月学习路径", status: "todo" }
+        { n: "0.1", slug: "0.1-how-to-use", title: "如何使用本资料", status: "done" },
+        { n: "0.2", slug: "0.2-exam-facts", title: "DOFD v3.6 考试全解", status: "done" },
+        { n: "0.3", slug: "0.3-map-guide", title: "全局知识地图导读", status: "done" },
+        { n: "0.4", slug: "0.4-learning-path", title: "三个月学习路径", status: "done" }
       ]
     },
     {
@@ -96,7 +96,7 @@ window.SYLLABUS = {
       sections: [
         { n: "4.1", slug: "4.1-framework-landscape", title: "框架全景与彼此关系", status: "done" },
         { n: "4.2", slug: "4.2-agile-scrum", title: "Agile 与 Scrum", status: "done" },
-        { n: "4.3", slug: "4.3-lean", title: "Lean 与七种浪费", status: "done" },
+        { n: "4.3", slug: "4.3-lean", title: "Lean 与八项浪费 DOWNTIME", status: "done" },
         { n: "4.4", slug: "4.4-itsm-itil", title: "ITSM 与 ITIL", status: "done" },
         { n: "4.5", slug: "4.5-safety-culture", title: "安全文化与学习型组织", status: "done" },
         { n: "4.6", slug: "4.6-value-stream-mapping", title: "价值流映射", status: "done" },
@@ -185,10 +185,10 @@ window.SYLLABUS = {
       isAppendix: true,
       desc: "术语表、考纲映射、错题本与模拟考试。",
       sections: [
-        { n: "A1", slug: "a1-glossary", title: "术语表（中英对照）", status: "todo" },
-        { n: "A2", slug: "a2-acronyms", title: "缩略语速查", status: "todo" },
-        { n: "A3", slug: "a3-syllabus-map", title: "考纲映射表", status: "todo" },
-        { n: "A4", slug: "a4-sources", title: "官方来源与参考文献", status: "todo" },
+        { n: "A1", slug: "a1-glossary", title: "术语表（中英对照）", status: "done" },
+        { n: "A2", slug: "a2-acronyms", title: "缩略语速查", status: "done" },
+        { n: "A3", slug: "a3-syllabus-map", title: "考纲映射表", status: "done" },
+        { n: "A4", slug: "a4-sources", title: "官方来源与参考文献", status: "done" },
         { n: "A5", slug: "a5-wrongbook", title: "错题本", status: "todo" },
         { n: "A6", slug: "a6-mock-exam", title: "模拟考试", status: "todo" }
       ]

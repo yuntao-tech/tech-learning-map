@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 考纲映射表 · DevOps Foundation 学习站</title>
+<meta name="description" content="把 DOFD v3.4 八个模块的每一条官方子项、v3.6 的七项增量学习目标、以及官方样题答案键确认的 15 条结论，逐条对到本站小节，并如实标出未单独成节的位置。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"appendix", sec:"a3-syllabus-map"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">附录与复习工具</div>
+      <h1 class="page-head__title">A3 考纲映射表</h1>
+      <div class="page-head__en">Syllabus Coverage Map</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        这是本站的<strong>完整性审计工具</strong>，不是学习页。它的唯一用途是回答一个问题：
+        官方考纲上的每一项，本站到底写在哪一节？
+        凡是没有单独成节的，<a href="#s4">第四节</a>会逐条列出。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 这张表怎么用</div>
+      <ul>
+        <li><strong>考前查漏</strong>：从<a href="#s1">「一 · 八个模块逐项映射」</a>自上而下扫一遍，任何一行你答不出「这讲的是什么」，就点进去补</li>
+        <li><strong>找硬证据</strong>：<a href="#s3">「三 · 官方样题答案键 15 条落位」</a>是全站唯一有官方答案背书的清单，优先级高于任何本站推断</li>
+        <li><strong>确认没跑偏</strong>：<a href="#s5">「五 · 反向索引」</a>列出各章里<strong>不属于</strong> v3.4 子项的内容，以及它们各自的官方依据</li>
+      </ul>
+      <p><a href="#s1">一 逐项映射</a> · <a href="#s2">二 v3.6 增量</a> · <a href="#s3">三 答案键 15 条</a> · <a href="#s4">四 缺口清单</a> · <a href="#s5">五 反向索引</a></p>
+      <p class="mb-0"><small>本页的徽章判据（哪些词在 67 条术语表内）逐条列于 <a href="a1-glossary.html">A1 术语表（中英对照）</a>，
+        缩写速查见 <a href="a2-acronyms.html">A2 缩略语速查</a>，
+        本页引用的每一份官方文件的版本、日期与获取地址见 <a href="a4-sources.html">A4 官方来源与参考文献</a>。</small></p>
+    </div>
+
+    <!-- ============ 图 A3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 410" role="img" aria-label="DOFD v3.4 八个模块官方子项数量与本站覆盖方式的横向条形图">
+          <!-- 刻度 -->
+          <line x1="196" y1="52" x2="196" y2="352" class="s-stroke" stroke-width="1"/>
+          <line x1="742" y1="52" x2="742" y2="352" class="s-stroke" stroke-width="1" stroke-dasharray="3 4" opacity="0.6"/>
+          <text x="196" y="44" class="s-muted" font-size="12">0</text>
+          <text x="736" y="44" class="s-muted" font-size="12">7 条子项</text>
+
+          <!-- M1 -->
+          <text x="16" y="76" class="s-ink" font-size="14">M1 认识 DevOps</text>
+          <rect x="196" y="62" width="156" height="22" rx="3" class="f-1"/>
+          <text x="368" y="78" class="s-muted" font-size="13">2 条 · 全部独立成节</text>
+
+          <!-- M2 -->
+          <text x="16" y="112" class="s-ink" font-size="14">M2 核心原则</text>
+          <rect x="196" y="98" width="546" height="22" rx="3" class="f-1"/>
+          <text x="758" y="114" class="s-muted" font-size="13">7 条 · 全部独立成节</text>
+
+          <!-- M3 -->
+          <text x="16" y="148" class="s-ink" font-size="14">M3 关键实践</text>
+          <rect x="196" y="134" width="312" height="22" rx="3" class="f-1"/>
+          <rect x="508" y="134" width="78" height="22" rx="3" class="f-3"/>
+          <text x="602" y="150" class="s-muted" font-size="13">5 条 · 1 条拆成三节</text>
+
+          <!-- M4 -->
+          <text x="16" y="184" class="s-ink" font-size="14">M4 业务与技术框架</text>
+          <rect x="196" y="170" width="390" height="22" rx="3" class="f-1"/>
+          <rect x="586" y="170" width="78" height="22" rx="3" class="f-3"/>
+          <text x="680" y="186" class="s-muted" font-size="13">6 条 · 1 条主节在第 2 章</text>
+
+          <!-- M5 -->
+          <text x="16" y="220" class="s-ink" font-size="14">M5 文化与运营模型</text>
+          <rect x="196" y="206" width="312" height="22" rx="3" class="f-1"/>
+          <text x="524" y="222" class="s-muted" font-size="13">4 条 · 全部独立成节</text>
+
+          <!-- M6 -->
+          <text x="16" y="256" class="s-ink" font-size="14">M6 自动化与工具链</text>
+          <rect x="196" y="242" width="234" height="22" rx="3" class="f-1"/>
+          <rect x="430" y="242" width="156" height="22" rx="3" class="f-3"/>
+          <text x="602" y="258" class="s-muted" font-size="13">5 条 · 2 条无独立节</text>
+
+          <!-- M7 -->
+          <text x="16" y="292" class="s-ink" font-size="14">M7 度量与报告</text>
+          <rect x="196" y="278" width="312" height="22" rx="3" class="f-1"/>
+          <text x="524" y="294" class="s-muted" font-size="13">4 条 · 全部独立成节</text>
+
+          <!-- M8 -->
+          <text x="16" y="328" class="s-ink" font-size="14">M8 分享跟随与演进</text>
+          <rect x="196" y="314" width="312" height="22" rx="3" class="f-1"/>
+          <rect x="508" y="314" width="156" height="22" rx="3" class="f-3"/>
+          <text x="680" y="330" class="s-muted" font-size="13">6 条 · 2 条并入 8.4</text>
+
+          <!-- 图例 -->
+          <rect x="196" y="372" width="16" height="14" rx="3" class="f-1"/>
+          <text x="220" y="384" class="s-muted" font-size="13">独立成节（33 条）</text>
+          <rect x="392" y="372" width="16" height="14" rx="3" class="f-3"/>
+          <text x="416" y="384" class="s-muted" font-size="13">拆分 / 合节 / 跨章覆盖（6 条）</text>
+          <text x="16" y="384" class="s-muted" font-size="13">覆盖方式</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 A3-1　v3.4 八个模块的官方子项数与本站覆盖方式。</strong>
+        条的长度是官方子项的<strong>条数</strong>，不是考试题数——M7 只有 2 道题却有 4 条子项，M2 有 7 条子项却只出 4 题。
+        青绿段（图例左格同色）是本站单独成节的部分，紫色段（图例右格同色）是被拆开、合并或放在别章的部分：
+        只有 M3、M4、M6、M8 有紫色段，它们正是复习时最容易漏掉的位置。
+      </figcaption>
+    </figure>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">39</div><div class="stat__k">v3.4 官方子项总条数</div></div>
+      <div class="stat"><div class="stat__v">39</div><div class="stat__k">已覆盖</div></div>
+      <div class="stat"><div class="stat__v">0</div><div class="stat__k">未覆盖</div></div>
+      <div class="stat"><div class="stat__v">33</div><div class="stat__k">独立成节</div></div>
+      <div class="stat"><div class="stat__v">6</div><div class="stat__k">拆分 / 合节 / 跨章</div></div>
+      <div class="stat"><div class="stat__v">15 / 15</div><div class="stat__k">官方样题答案键落位</div></div>
+    </div>
+
+    <p class="muted"><small>
+      39 条按 <strong>DOFD v3.4 课程大纲各模块子项清单</strong>逐条计数（本站节号形如 4.4、7.5，与官方文件的节号无关），其中 <strong>Learning Organizations 在 M2 与 M4 各出现一次</strong>，
+      去重后为 38 个不同子项。「已覆盖」的口径是：本站有一节以它为主题或明确承接它，
+      而不是「某处提过这个词」。
+      <br>子项清单出自 <strong>DOFD v3.4 课程大纲</strong>；计数与覆盖判定为本站教学整理，官方未以此形式给出。
+    </small></p>
+
+    <!-- ============================================================ -->
+    <h2 class="divider-label" id="s1" style="border-bottom:0;padding-bottom:0">一 · 八个模块逐项映射</h2>
+
+    <h3>M1　Exploring DevOps</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>Defining DevOps</td><td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a></td><td>独立成节</td></tr>
+          <tr><td>Why Does DevOps Matter?</td><td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M2　Core DevOps Principles</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>The Three Ways</td><td><a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a></td><td>独立成节</td></tr>
+          <tr><td>The First Way</td><td><a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a></td><td>独立成节</td></tr>
+          <tr><td>The Theory of Constraints</td><td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a></td><td>独立成节</td></tr>
+          <tr><td>The Second Way</td><td><a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a></td><td>独立成节</td></tr>
+          <tr><td>The Third Way</td><td><a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a></td><td>独立成节</td></tr>
+          <tr><td>Chaos Engineering</td><td><a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a></td><td>独立成节</td></tr>
+          <tr><td>Learning Organizations</td><td><a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a></td><td>独立成节（M4 重复列出同一条）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M3　Key DevOps Practices</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Continuous Testing, Integration, Delivery, Deployment</td>
+            <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a> ·
+                <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a> ·
+                <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+            <td><strong>一条子项拆成三节</strong>——四个实践的边界是全站最高频的混淆点，合成一节讲不清</td>
+          </tr>
+          <tr><td>Site Reliability &amp; Resilience Engineering</td><td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td><td>独立成节</td></tr>
+          <tr><td>DevSecOps</td><td><a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a></td><td>独立成节</td></tr>
+          <tr><td>ChatOps</td><td><a href="../ch03-key-practices/3.6-chatops.html">3.6 ChatOps</a></td><td>独立成节</td></tr>
+          <tr><td>Kanban</td><td><a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M4　Business and Technology Frameworks</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>Agile</td><td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a></td><td>独立成节</td></tr>
+          <tr><td>ITSM</td><td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td><td>独立成节</td></tr>
+          <tr><td>Lean</td><td><a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a></td><td>独立成节</td></tr>
+          <tr><td>Safety Culture</td><td><a href="../ch04-frameworks/4.5-safety-culture.html">4.5 安全文化与学习型组织</a></td><td>独立成节</td></tr>
+          <tr>
+            <td>Learning Organizations</td>
+            <td>主节：<a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a>；
+                框架视角：<a href="../ch04-frameworks/4.5-safety-culture.html">4.5 安全文化与学习型组织</a></td>
+            <td><strong>跨章覆盖</strong>——v3.4 把同一条子项同时列在 M2 与 M4，本站只在 2.7 单独成节</td>
+          </tr>
+          <tr><td>Continuous Funding</td><td><a href="../ch04-frameworks/4.7-continuous-funding.html">4.7 持续资金</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M5　Culture, Behaviors &amp; Operating Models</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>Defining Culture</td><td><a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a></td><td>独立成节</td></tr>
+          <tr><td>Cultural Debt</td><td><a href="../ch05-culture/5.2-cultural-debt.html">5.2 文化债</a></td><td>独立成节</td></tr>
+          <tr><td>Behavioral Models</td><td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td><td>独立成节</td></tr>
+          <tr><td>Organizational maturity models</td><td><a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a></td><td>独立成节</td></tr>
+          <tr>
+            <td><em>（模块标题含 Operating Models，v3.4 子项清单未列出对应条目）</em></td>
+            <td><a href="../ch05-culture/5.5-operating-models.html">5.5 运营模型与团队结构</a></td>
+            <td>本站按模块标题补节，不计入 39 条。该节标 <span class="badge badge--note">📝 教学整理</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M6　Automation &amp; Architecting DevOps Toolchains</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>CI/CD</td>
+            <td>主干：<a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a>；
+                实践定义：<a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a> ·
+                <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td>
+            <td><strong>本站无名为 CI/CD 的单独小节</strong>——M6 讲的是流水线怎么搭，M3 讲的是四个实践各自是什么</td>
+          </tr>
+          <tr><td>Cloud, Containers, and Microservices</td><td><a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></td><td>独立成节</td></tr>
+          <tr>
+            <td>AI and Machine Learning</td>
+            <td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a> ·
+                <a href="../ch07-metrics/7.6-aiops.html">7.6 AIOps</a></td>
+            <td><strong>本站尚未单独成节</strong>——按 v3.6 的两个落点拆开讲：生成式 AI 用例在 6.6，运维侧 AI 在 7.6</td>
+          </tr>
+          <tr><td>Automation</td><td><a href="../ch06-automation/6.1-why-automate.html">6.1 自动化的价值与边界</a></td><td>独立成节</td></tr>
+          <tr><td>DevOps Toolchains</td><td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M7　Measurement, Metrics, and Reporting</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>The Importance of Measurement</td><td><a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a></td><td>独立成节</td></tr>
+          <tr><td>DevOps Metrics - Speed, Quality, Stability, Culture</td><td><a href="../ch07-metrics/7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a></td><td>独立成节</td></tr>
+          <tr><td>Change lead/cycle time</td><td><a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a></td><td>独立成节</td></tr>
+          <tr><td>Value Driven Metrics</td><td><a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>M8　Sharing, Shadowing and Evolving</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">官方子项（v3.4 原名）</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>DevOps in the Enterprise</td><td><a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td><td>独立成节</td></tr>
+          <tr><td>Roles</td><td><a href="../ch08-sharing/8.2-roles-teams.html">8.2 角色与团队</a></td><td>独立成节</td></tr>
+          <tr><td>DevOps Leadership</td><td><a href="../ch08-sharing/8.3-leadership.html">8.3 DevOps 领导力</a></td><td>独立成节</td></tr>
+          <tr><td>Organizational Considerations</td><td><a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td><td><strong>与下一条合为一节</strong></td></tr>
+          <tr><td>Getting Started</td><td><a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td><td><strong>与上一条合为一节</strong>——两条子项共用 8.4</td></tr>
+          <tr><td>Challenges, Risks, and Critical Success Factors</td><td><a href="../ch08-sharing/8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a></td><td>独立成节</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="divider-label" id="s2" style="border-bottom:0;padding-bottom:0">二 · v3.6 增量映射</h2>
+
+    <p>
+      下面七项<strong>不在 v3.4 的模块子项清单里，也不在 67 条术语表内</strong>，
+      但它们是 PeopleCert 现行产品页公布的官方学习目标，属官方内容而非延伸内容。
+      本站统一标 <span class="badge badge--plain">📘 官方模块子项</span> 与 <span class="badge badge--new">🆕 v3.6 新增</span>。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:22%">v3.6 学习目标</th><th style="width:16%">落在哪个模块</th><th style="width:30%">本站小节</th><th>覆盖状态</th></tr></thead>
+        <tbody>
+          <tr><td>Monitoring and Observability</td><td>M3 关键实践</td><td><a href="../ch03-key-practices/3.8-observability.html">3.8 监控与可观测性</a></td><td>独立成节</td></tr>
+          <tr><td>Value Stream Management</td><td>M3 关键实践 / M4 框架层</td><td><a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a></td><td>独立成节；框架层视角见 <a href="../ch04-frameworks/4.1-framework-landscape.html">4.1</a></td></tr>
+          <tr><td>Platform Engineering</td><td>M3 关键实践 / M6 工具链</td><td><a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a></td><td>独立成节</td></tr>
+          <tr><td>VSM Platforms</td><td>M6 自动化与工具链</td><td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td><td>与下一条合为一节</td></tr>
+          <tr><td>Generative AI Use Cases</td><td>M6 自动化与工具链</td><td><a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></td><td>与上一条合为一节</td></tr>
+          <tr><td>AIOps</td><td>M7 度量与报告</td><td><a href="../ch07-metrics/7.6-aiops.html">7.6 AIOps</a></td><td>独立成节</td></tr>
+          <tr><td>DevOps Dashboards</td><td>M7 度量与报告</td><td><a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a></td><td><strong>并入 7.5</strong>，未单独成节——看板是价值驱动指标的呈现层，拆开会重复</td></tr>
+          <tr>
+            <td><em>框架层显式加入 VSM 与 SRE</em></td>
+            <td>M4 业务与技术框架</td>
+            <td><a href="../ch04-frameworks/4.1-framework-landscape.html">4.1 框架全景与彼此关系</a> ·
+                <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a> ·
+                <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+            <td>这是结构变化不是新增词条，由 4.1 承接</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted"><small>
+      本表左列出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>；
+      「落在哪个模块」一列是本站按 v3.4 模块结构所做的归位，官方未公布 v3.6 的模块归属表。
+    </small></p>
+
+    <!-- ============================================================ -->
+    <h2 class="divider-label" id="s3" style="border-bottom:0;padding-bottom:0">三 · 官方样题答案键 15 条落位</h2>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这 15 条的分量</div>
+      <p class="mb-0">
+        全站唯一能证明「官方认为哪个答案是对的」的硬证据，只有这 15 条。
+        其余所有关于命题角度、干扰项、排除技巧的分析都是本站教学推断——
+        官方从未公布命题规律与题型分布。
+        <strong>时间不够时，先把这张表上的 15 行背下来。</strong>
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="num">#</th><th style="width:48%">官方确认的判断</th><th>讲解小节</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>约束理论支持三步工作法中的<strong>第一步</strong>（不是全部三步）</td><td><a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>（另见 <a href="../ch02-core-principles/2.1-three-ways.html">2.1</a>）</td></tr>
+          <tr><td class="num">2</td><td>对生产变更进行<strong>同行评审</strong>属于第二步</td><td><a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a>（另见 <a href="../ch02-core-principles/2.1-three-ways.html">2.1</a>）</td></tr>
+          <tr><td class="num">3</td><td>持续集成的必要前提是<strong>自动化的单元、集成与验收测试</strong></td><td><a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a>（另见 <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1</a>）</td></tr>
+          <tr><td class="num">4</td><td>依赖部署流水线实现「按需一键部署」的实践是<strong>持续交付</strong></td><td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td></tr>
+          <tr><td class="num">5</td><td>对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong></td><td><a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a></td></tr>
+          <tr><td class="num">6</td><td>面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向<strong>安全文化</strong></td><td><a href="../ch04-frameworks/4.5-safety-culture.html">4.5 安全文化与学习型组织</a></td></tr>
+          <tr><td class="num">7</td><td>推动重大变革时应参与规划并担任变革推动者的是<strong>早期采用者</strong></td><td><a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a> · <a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a></td></tr>
+          <tr><td class="num">8</td><td><strong>服务台事件管理系统不属于</strong>典型 DevOps 工具链要素</td><td><a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td></tr>
+          <tr><td class="num">9</td><td>DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong></td><td><a href="../ch08-sharing/8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a></td></tr>
+          <tr><td class="num">10</td><td><strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标</td><td><a href="../ch08-sharing/8.3-leadership.html">8.3 DevOps 领导力</a></td></tr>
+          <tr><td class="num">11</td><td>Shift left 的含义是<strong>通过早期与持续的测试把质量内建到开发过程中</strong></td><td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a></td></tr>
+          <tr><td class="num">12</td><td>把安全测试并入左移测试以消除 Sprint 后安全评审延迟，需要的实践是 <strong>DevSecOps</strong></td><td><a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a>（另见 <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1</a>）</td></tr>
+          <tr><td class="num">13</td><td>自动部署每个通过单元、集成、用户验收与非功能测试的版本，属于<strong>持续部署</strong></td><td><a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></td></tr>
+          <tr><td class="num">14</td><td>Golden Circle 的「why」代表组织的<strong>目的、事业与信念</strong></td><td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a> · <a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a></td></tr>
+          <tr><td class="num">15</td><td>决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong></td><td><a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a> · <a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a>（另见 <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a>）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted"><small>
+      15 条判断出自 <strong>DOFD v3.4 官方样题答案键</strong>（DevOps Institute《DevOps Foundation® Exam Study Guide》v3.4
+      所附 Sample Examination 1 的答案键）。本站只陈述结论，
+      <strong>不复制任何官方样题的题干与选项原文</strong>。
+      本站已逐节核对，15 条均在对应小节就地写明出处（涉及两节的第 7、14、15 条，两节均已写明）。
+    </small></p>
+
+    <!-- ============================================================ -->
+    <h2 class="divider-label" id="s4" style="border-bottom:0;padding-bottom:0">四 · 缺口清单</h2>
+
+    <p>
+      下面六条是本站与官方条目（v3.4 子项 + v3.6 学习目标）<strong>不完全一一对应</strong>的位置。它们不构成知识缺失，
+      但复习时按目录扫一遍容易漏掉——因为目录上没有一个和官方原名同名的条目。
+      其中 5 条属于图 A3-1 的 6 条 v3.4 子项（M8 的两条合并为一行），DevOps Dashboards 属 v3.6 增量、不计入 39 条。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:26%">官方条目</th><th style="width:34%">本站处理</th><th>为什么这样处理</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>AI and Machine Learning（M6）</td>
+            <td><strong>未单独成节</strong>，拆在 <a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6</a> 与 <a href="../ch07-metrics/7.6-aiops.html">7.6</a></td>
+            <td>v3.6 把这条拆成了 Generative AI Use Cases 与 AIOps 两个落点，本站按 v3.6 的形态组织</td>
+          </tr>
+          <tr>
+            <td>CI/CD（M6）</td>
+            <td><strong>未单独成节</strong>，主干在 <a href="../ch06-automation/6.2-deployment-pipeline.html">6.2</a>，实践定义在 <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2</a> / <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></td>
+            <td>M3 与 M6 都点名 CI/CD，一个考「是什么」一个考「怎么搭」，合成一节会互相干扰</td>
+          </tr>
+          <tr>
+            <td>Learning Organizations（M2 与 M4 重复）</td>
+            <td>只在 <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7</a> 单独成节，<a href="../ch04-frameworks/4.5-safety-culture.html">4.5</a> 从框架角度复述</td>
+            <td>v3.4 大纲本身把同一条列了两次，本站不重复建节</td>
+          </tr>
+          <tr>
+            <td>Organizational Considerations + Getting Started（M8）</td>
+            <td>两条<strong>共用</strong> <a href="../ch08-sharing/8.4-getting-started.html">8.4</a> 一节</td>
+            <td>「有哪些组织约束」与「据此怎么起步」是同一条推理链的两端</td>
+          </tr>
+          <tr>
+            <td>Continuous Testing, Integration, Delivery, Deployment（M3）</td>
+            <td>一条<strong>拆成三节</strong>：<a href="../ch03-key-practices/3.1-continuous-testing.html">3.1</a> / <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2</a> / <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></td>
+            <td>拆细而非遗漏。这四个实践的边界是官方样题连出两问的位置</td>
+          </tr>
+          <tr>
+            <td>DevOps Dashboards <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            <td><strong>并入</strong> <a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5</a>，未单独成节</td>
+            <td>看板是价值驱动指标的呈现层，脱离指标单讲会空</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 站内尚未建成的部分</div>
+      <p>
+        以下内容<strong>不属于</strong> v3.4 官方子项，不影响上面 39 / 39 的覆盖率，
+        但它们在侧栏目录里可见，读者会点空：
+      </p>
+      <ul class="mb-0">
+        <li>延伸工程实践 E1–E7（GitOps、Kubernetes、IaC 工具生态、可观测性技术栈、软件供应链安全、Team Topologies、FinOps）——全部标注非考纲</li>
+        <li>附录 A5 错题本、A6 模拟考试</li>
+      </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="divider-label" id="s5" style="border-bottom:0;padding-bottom:0">五 · 反向索引</h2>
+
+    <p>
+      从章往回看：每一章除了官方子项，还写了什么？下面第三列给出每条<strong>额外内容的官方依据</strong>。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:18%">本站章节</th><th style="width:32%">覆盖的 v3.4 官方子项</th><th>非子项内容及其依据</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="../ch01-exploring-devops/index.html">第 1 章 认识 DevOps</a></td>
+            <td>Defining DevOps（1.1）· Why Does DevOps Matter?（1.2）</td>
+            <td><a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3</a> 与
+                <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a> 无同名子项，
+                但其主题词 <em>Service</em>、<em>IT service management</em>、<em>DevOps stakeholders</em>、
+                <em>High-performing organizations</em> 均列于 67 条术语表</td>
+          </tr>
+          <tr>
+            <td><a href="../ch02-core-principles/index.html">第 2 章 核心原则</a></td>
+            <td>七条子项 → 2.1–2.7，一一对应</td>
+            <td>无额外小节</td>
+          </tr>
+          <tr>
+            <td><a href="../ch03-key-practices/index.html">第 3 章 关键实践</a></td>
+            <td>五条子项 → 3.1–3.7</td>
+            <td><a href="../ch03-key-practices/3.8-observability.html">3.8</a> ·
+                <a href="../ch03-key-practices/3.9-vsm.html">3.9</a> ·
+                <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10</a> 为 v3.6 官方学习目标</td>
+          </tr>
+          <tr>
+            <td><a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></td>
+            <td>Agile（4.2）· Lean（4.3）· ITSM（4.4）· Safety Culture（4.5）· Continuous Funding（4.7）；Learning Organizations 主节在 2.7</td>
+            <td><a href="../ch04-frameworks/4.1-framework-landscape.html">4.1</a> 是本站为本章建立坐标系所做的
+                <span class="badge badge--note">📝 教学整理</span>；
+                <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a> 的主题词
+                <em>Value stream mapping</em> 逐字列于 67 条术语表，且 v3.6 把 VSM 提到框架层</td>
+          </tr>
+          <tr>
+            <td><a href="../ch05-culture/index.html">第 5 章 文化、行为与运营模型</a></td>
+            <td>四条子项 → 5.1–5.4</td>
+            <td><a href="../ch05-culture/5.5-operating-models.html">5.5</a> 对应模块标题里的 Operating Models，
+                v3.4 子项清单无对应条目，按 <span class="badge badge--note">📝 教学整理</span> 处理</td>
+          </tr>
+          <tr>
+            <td><a href="../ch06-automation/index.html">第 6 章 自动化与工具链架构</a></td>
+            <td>Automation（6.1）· CI/CD（6.2 主干）· Cloud, Containers, and Microservices（6.4）· DevOps Toolchains（6.5）· AI and Machine Learning（6.6 承接一半）</td>
+            <td><a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a>不是 M6 具名子项，
+                但 <em>infrastructure-as-code</em> 逐字出现在 Blueprint 的 CALMS-A 描述句里，判为官方内容；
+                <a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6</a> 同时承接两项 v3.6 学习目标</td>
+          </tr>
+          <tr>
+            <td><a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></td>
+            <td>四条子项 → 7.1 / 7.3 / 7.4 / 7.5</td>
+            <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a>不是子项原名，
+                但它讲的四个指标 <em>Change lead time</em>、<em>Deployment frequency</em>、
+                <em>Change failure rate</em>、<em>MTTR</em> 全部列于 67 条术语表；
+                <a href="../ch07-metrics/7.6-aiops.html">7.6</a> 为 v3.6 官方学习目标</td>
+          </tr>
+          <tr>
+            <td><a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></td>
+            <td>六条子项 → 8.1 / 8.2 / 8.3 / 8.4（承两条）/ 8.5</td>
+            <td>无额外小节</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 反向索引的结论</div>
+      <ul class="mb-0">
+        <li>八章共 <strong>7 节</strong>不对应任何 v3.4 官方子项：1.3、1.4、4.1、4.6、5.5、6.3、7.2。
+            分档如下：4.1 与 5.5 标 <span class="badge badge--note">📝 教学整理</span>；
+            1.3、1.4、4.6、7.2 的主题词逐字列于 67 条术语表；
+            6.3 由 Blueprint 的 CALMS-A 描述句逐字点名 <em>infrastructure-as-code</em> 背书</li>
+        <li>PeopleCert 现行产品页公布的 <strong>7 项 v3.6 学习目标</strong>落在 <strong>6 个小节</strong>：
+            3.8、3.9、3.10、6.6（承两项）、7.6，以及并入 7.5 的 DevOps Dashboards；
+            框架层显式加入 VSM 与 SRE 是结构变化，由 4.1 承接，不另计小节</li>
+        <li>其余小节全部一一对应官方子项。非考纲内容不单独成节，只在考纲章节正文中按需提及并就地标
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>（如 6.3 的 Terraform、6.4 的 Kubernetes、3.10 与 5.5 的 Team Topologies，均已标注）；
+            延伸工程实践 E1–E7 尚未建成</li>
+      </ul>
+    </div>
+
+    <!-- ============ 速查 ============ -->
+    <div class="divider-label">本页速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>v3.4 官方子项共 <strong>39 条</strong>（Learning Organizations 重复列出，去重 38），本站全部覆盖，<strong>0 条未覆盖</strong></li>
+        <li>子项条数 ≠ 考试题数：M7 有 4 条子项只出 <strong>2 题</strong>，M3 与 M4 各出 <strong>7 题</strong>（DOFD v3.4 Examination Requirements，2022-05；v3.6 未重新发布权重表）</li>
+        <li>目录上找不到同名条目的三处：<strong>CI/CD</strong>、<strong>AI and Machine Learning</strong>、<strong>DevOps Dashboards</strong></li>
+        <li>两条子项共用一节：M8 的 <strong>Organizational Considerations 与 Getting Started</strong> 都在 8.4</li>
+        <li>唯一的官方答案硬证据是<strong>官方样题答案键 15 条</strong>，落在 <strong>15 个小节</strong>里（按第三节表格「讲解小节」列的主小节去重计数，不含仅以「另见」出现的 2.1），每节均已就地写明出处</li>
+        <li>本站不对应任何 v3.4 官方子项的正文小节共 <strong>7 节</strong>：1.3、1.4、4.1、4.6、5.5、6.3、7.2</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：八个模块的子项清单出自 <strong>DOFD v3.4 课程大纲</strong>；
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      v3.6（2024-10 更新，2025-02-03 修订）未公开重新发布权重表。
+      67 条术语表出自 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>，该表只列词条不附定义。
+      <em>infrastructure-as-code</em> 一词逐字出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 的 CALMS-A 描述句。
+      「二 · v3.6 增量映射」左列出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。
+      「三 · 官方样题答案键 15 条落位」的判断出自 <strong>DOFD v3.4 官方样题答案键</strong>，
+      本页只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。<br>
+      本页的<strong>映射关系、条数统计、覆盖状态判定与反向索引均为本站教学整理</strong>，
+      官方从未发布考纲与任何第三方资料的对照表。图 A3-1 为本站自制。<br>
+      以上各份官方文件的版本、日期与获取地址，逐份列于 <a href="a4-sources.html">A4 官方来源与参考文献</a>；
+      术语的逐条中英对照见 <a href="a1-glossary.html">A1 术语表（中英对照）</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

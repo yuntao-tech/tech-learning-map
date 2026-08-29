@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0.4 三个月学习路径 · DevOps Foundation 学习站</title>
+<meta name="description" content="12 周主路径逐周排期、两周冲刺备选路径、按题数权重的每章时间分配建议，以及复习节奏。每周排到具体小节，可直接点开。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch00", sec:"0.4-learning-path"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 0 章 · 导论</div>
+      <h1 class="page-head__title">0.4 三个月学习路径</h1>
+      <div class="page-head__en">A Twelve-Week Study Path</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 参考页</span>
+      </div>
+      <p class="page-head__lede">
+        这是一张排期表，不是一份建议清单。每一周都排到<strong>具体小节</strong>、
+        写明<strong>这一周结束时你应该能做出什么</strong>，可以直接点开学。
+        时间紧的人跳到<a href="#sprint2w">第三节</a>看两周冲刺路径 —— 但先看清楚那条路要付的代价。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>12 周怎么排，为什么是这个顺序而不是按章号 1 到 8 顺着读</li>
+        <li>只剩两周时该怎么排，以及这么排会丢掉什么</li>
+        <li>哪一章的<strong>考试权重</strong>和<strong>理解重要性</strong>严重不一致，时间该怎么分</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 0-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 330" role="img" aria-label="12 周主路径时间轴：第 1 至 2 周为主轴阶段（导论与第 1、2 章），第 3 至 6 周为实践与自动化阶段（第 3 章与第 6 章），第 7 至 9 周为框架与文化阶段（第 4 章与第 5 章），第 10 至 11 周为度量与演进阶段（第 7 章与第 8 章），第 12 周为冲刺区。下方五张卡片分别列出各阶段的目标产出。">
+
+          <text x="20" y="20" class="s-muted" font-size="12">12 周主路径 · 横轴每格 1 周</text>
+
+          <!-- 阶段条 -->
+          <rect x="60"  y="42" width="150" height="58" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="135" y="68" class="f-1" font-size="15" font-weight="700" text-anchor="middle">① 主轴</text>
+          <text x="135" y="88" class="s-ink" font-size="12" text-anchor="middle">导论 + 第 1、2 章</text>
+
+          <rect x="210" y="42" width="300" height="58" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="360" y="68" class="f-2" font-size="15" font-weight="700" text-anchor="middle">② 实践与自动化</text>
+          <text x="360" y="88" class="s-ink" font-size="12" text-anchor="middle">第 3 章 + 第 6 章</text>
+
+          <rect x="510" y="42" width="225" height="58" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="622" y="68" class="f-3" font-size="15" font-weight="700" text-anchor="middle">③ 框架与文化</text>
+          <text x="622" y="88" class="s-ink" font-size="12" text-anchor="middle">第 4 章 + 第 5 章</text>
+
+          <rect x="735" y="42" width="150" height="58" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="810" y="68" class="f-4" font-size="15" font-weight="700" text-anchor="middle">④ 度量与演进</text>
+          <text x="810" y="88" class="s-ink" font-size="12" text-anchor="middle">第 7 章 + 第 8 章</text>
+
+          <rect x="885" y="42" width="75" height="58" rx="10" class="s-5" stroke-width="3" fill="var(--dia-fill-2)"/>
+          <text x="922" y="68" class="f-5" font-size="15" font-weight="700" text-anchor="middle">⑤</text>
+          <text x="922" y="88" class="f-5" font-size="13" font-weight="700" text-anchor="middle">冲刺</text>
+
+          <!-- 周刻度 -->
+          <line x1="60" y1="108" x2="960" y2="108" class="s-stroke" stroke-width="1.5"/>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="97.5"  y="126">W1</text>
+            <text x="172.5" y="126">W2</text>
+            <text x="247.5" y="126">W3</text>
+            <text x="322.5" y="126">W4</text>
+            <text x="397.5" y="126">W5</text>
+            <text x="472.5" y="126">W6</text>
+            <text x="547.5" y="126">W7</text>
+            <text x="622.5" y="126">W8</text>
+            <text x="697.5" y="126">W9</text>
+            <text x="772.5" y="126">W10</text>
+            <text x="847.5" y="126">W11</text>
+            <text x="922.5" y="126">W12</text>
+          </g>
+
+          <!-- 目标产出卡 -->
+          <rect x="20" y="150" width="176" height="140" rx="10" class="s-1" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="34" y="174" class="f-1" font-size="13" font-weight="700">① 主轴 · W1–2</text>
+          <g class="s-ink" font-size="12">
+            <text x="34" y="198">默写官方定义句</text>
+            <text x="34" y="218">CALMS 五格对应</text>
+            <text x="34" y="238">三步工作法顺序</text>
+            <text x="34" y="258">约束理论归第一步</text>
+          </g>
+          <text x="34" y="278" class="s-muted" font-size="12">坐标系建起来</text>
+
+          <rect x="212" y="150" width="176" height="140" rx="10" class="s-2" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="226" y="174" class="f-2" font-size="13" font-weight="700">② 实践 · W3–6</text>
+          <g class="s-ink" font-size="12">
+            <text x="226" y="198">CI/CD 四词分界线</text>
+            <text x="226" y="218">部署流水线默画</text>
+            <text x="226" y="238">工具链要素归位</text>
+            <text x="226" y="258">SRE 与韧性工程</text>
+          </g>
+          <text x="226" y="278" class="s-muted" font-size="12">全书最易混一段</text>
+
+          <rect x="404" y="150" width="176" height="140" rx="10" class="s-3" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="418" y="174" class="f-3" font-size="13" font-weight="700">③ 框架文化 · W7–9</text>
+          <g class="s-ink" font-size="12">
+            <text x="418" y="198">四框架各贡献什么</text>
+            <text x="418" y="218">DOWNTIME 八项</text>
+            <text x="418" y="238">文化债与成熟度</text>
+            <text x="418" y="258">安全文化判据</text>
+          </g>
+          <text x="418" y="278" class="s-muted" font-size="12">v3.4 权重 13/40</text>
+
+          <rect x="596" y="150" width="176" height="140" rx="10" class="s-4" stroke-width="1.5" fill="var(--dia-fill)"/>
+          <text x="610" y="174" class="f-4" font-size="13" font-weight="700">④ 度量演进 · W10–11</text>
+          <g class="s-ink" font-size="12">
+            <text x="610" y="198">DORA 四指标</text>
+            <text x="610" y="218">前置时间两种口径</text>
+            <text x="610" y="238">角色与领导力</text>
+            <text x="610" y="258">关键成功因素</text>
+          </g>
+          <text x="610" y="278" class="s-muted" font-size="12">回头串起整条链</text>
+
+          <rect x="788" y="150" width="176" height="140" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="802" y="174" class="f-5" font-size="13" font-weight="700">⑤ 冲刺 · W12</text>
+          <g class="s-ink" font-size="12">
+            <text x="802" y="198">八张总结页速过</text>
+            <text x="802" y="218">回忆清单逐条自测</text>
+            <text x="802" y="238">易混淆对比表重扫</text>
+          </g>
+          <text x="802" y="262" class="s-muted" font-size="12">练习题与模拟考试</text>
+          <text x="802" y="280" class="s-muted" font-size="12">尚未交付，见第七节</text>
+
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 0-4-1　12 周排期的六段，图上并作五条带。</strong>
+        六段里的「实践（W3–5）」与「自动化（W6）」在时间轴上相邻，图上合画成一条带，
+        因此看到的是五条。这张图想让你看懂的是<strong>段宽度的不均等</strong>：实践与自动化占了 4 周，
+        框架与文化占 3 周，而地基的主轴只用 2 周。宽度反映的不是章的重要性，
+        而是<strong>该段需要反复辨析的概念对数量</strong> —— 概念越容易互相混淆，排的周数越多。
+      </figcaption>
+    </figure>
+
+    <!-- ============================================================ -->
+    <h2 id="order" style="scroll-margin-top:calc(var(--header-h) + 20px)">一、这个顺序是怎么排出来的</h2>
+
+    <p>
+      不按章号 1 到 8 顺着读，理由只有一条：<strong>第 4 章和第 5 章讲的是「DevOps 与别的东西的关系」，
+      而你必须先有 DevOps 本身这个「东西」，比较才成立。</strong>
+      顺序读会让你在还不知道部署流水线长什么样的时候，去分辨 Agile、Lean、ITSM 各自贡献了什么 —— 那是空转。
+    </p>
+
+    <p>
+      主轴是三段 —— <strong>原则 → 实践 → 关系</strong>；落到排期上展开成<strong>六段</strong>，
+      前五段学新内容，末段只回扫：
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>阶段</th><th>周次</th><th>覆盖</th><th>排在这个位置的理由</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>原则</strong></td>
+            <td>W1–2</td>
+            <td>导论 + 第 1 章 + 第 2 章</td>
+            <td>三步工作法是全书的因果主轴。后面每一个实践、工具、指标，本质上都在回答「我在加强哪一步」。这条轴不先立起来，后面全是零散名词。</td>
+          </tr>
+          <tr>
+            <td><strong>实践</strong></td>
+            <td>W3–5</td>
+            <td>第 3 章</td>
+            <td>把主轴落成看得见的做法。CI/CD 家族四个词的辨析是全书最密集的易混点，单独排了整整一周（W3）。</td>
+          </tr>
+          <tr>
+            <td><strong>自动化</strong></td>
+            <td>W6</td>
+            <td>第 6 章</td>
+            <td>紧跟第 3 章而不是等到第 6 周之后 —— 部署流水线是第 3 章 CI/CD 各词的共同载体，隔太久再学要重新回忆一遍第 3 章。</td>
+          </tr>
+          <tr>
+            <td><strong>框架与文化</strong></td>
+            <td>W7–9</td>
+            <td>第 4 章 + 第 5 章</td>
+            <td>有了前面的实体，才能做关系比较。这两章在 v3.4 分布里合计 13 题，是 40 题里最大的一块，却因为「看起来都是软的东西」最常被跳过。</td>
+          </tr>
+          <tr>
+            <td><strong>度量与演进</strong></td>
+            <td>W10–11</td>
+            <td>第 7 章 + 第 8 章</td>
+            <td>度量是对前面所有内容的回看：DORA 四指标可以按本站整理的方式挂回三步工作法的前两步。放在最后学，四个指标才有东西可挂。第 8 章讲从团队到组织，同理。</td>
+          </tr>
+          <tr>
+            <td><strong>冲刺</strong></td>
+            <td>W12</td>
+            <td>复习</td>
+            <td>不学新内容，只做回扫与自测。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>本阶段划分与排序理由为本站教学整理，官方未给出任何学习顺序建议 —— 官方文件只写「建议 16 学时」。</small></p>
+
+    <!-- ============================================================ -->
+    <h2 id="weeks12" style="scroll-margin-top:calc(var(--header-h) + 20px)">二、12 周主路径</h2>
+
+    <p>
+      每周的小节都是链接，可以直接点开。「预计投入」按<strong>在职、每周可支配 5–7 小时</strong>估算，
+      逐行相加后 12 周合计约 <strong>64–72 小时</strong>：第 1–8 章正文约 60 小时（见
+      <a href="#allocation">第五节</a>的分配表），导论四节约 1 小时，W12 冲刺周 6–8 小时。
+    </p>
+    <p>
+      官方只写「建议 16 学时」，未说明是否含自学与复习；本站按课堂授课时长理解，另行估算总投入（本站推断）。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>周</th><th>本周章节</th><th>具体小节</th><th>目标产出（本周末你应该能做到）</th><th>预计投入</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>W1</strong></td>
+            <td>导论 + 第 1 章<br>认识 DevOps</td>
+            <td>
+              <a href="0.1-how-to-use.html">0.1 如何使用本资料</a> ·
+              <a href="0.2-exam-facts.html">0.2 DOFD v3.6 考试全解</a> ·
+              <a href="0.3-map-guide.html">0.3 全局知识地图导读</a> · 0.4 本页<br>
+              <a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1 定义 DevOps</a> ·
+              <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2 DevOps 为什么重要</a> ·
+              <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a> ·
+              <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4 价值、目标与干系人</a> ·
+              <a href="../ch01-exploring-devops/summary.html">1.5 本章总结与练习</a>
+            </td>
+            <td>用自己的话复述 Blueprint 那句官方定义；CALMS 五个字母各配一句官方描述；说出 DevOps <strong>不是</strong>什么（不是工具集、不是新部门）。</td>
+            <td>5–6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W2</strong></td>
+            <td>第 2 章<br>核心原则</td>
+            <td>
+              <a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a> ·
+              <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a> ·
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a> ·
+              <a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a> ·
+              <a href="../ch02-core-principles/2.5-third-way-learning.html">2.5 第三步：持续改进（实验与学习）</a> ·
+              <a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6 混沌工程</a> ·
+              <a href="../ch02-core-principles/2.7-learning-organizations.html">2.7 学习型组织</a> ·
+              <a href="../ch02-core-principles/summary.html">2.8 本章总结与练习</a>
+            </td>
+            <td>徒手画出三步的因果环并说明顺序依赖；把约束理论归到<strong>第一步</strong>、同行评审归到<strong>第二步</strong>，这两处归属不许错；混沌工程服务于<strong>第三步</strong>的实验与学习（本站教学整理）。</td>
+            <td>6–7 h</td>
+          </tr>
+          <tr>
+            <td><strong>W3</strong></td>
+            <td>第 3 章（上）<br>CI/CD 家族</td>
+            <td>
+              <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a> ·
+              <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a> ·
+              <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>
+            </td>
+            <td><strong>本路径最重的一周。</strong>持续测试 / 集成 / 交付 / 部署四个词，每个写一句只属于它自己的判据；说清左移的含义；说出持续集成的必要前提。</td>
+            <td>5–6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W4</strong></td>
+            <td>第 3 章（中）</td>
+            <td>
+              <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a> ·
+              <a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a> ·
+              <a href="../ch03-key-practices/3.6-chatops.html">3.6 ChatOps</a> ·
+              <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>
+            </td>
+            <td>说清 SRE 与韧性工程各自管什么；说出 DevSecOps 消除的是哪一段具体延迟；看板的在制品限制为什么服务于第一步。</td>
+            <td>5 h</td>
+          </tr>
+          <tr>
+            <td><strong>W5</strong></td>
+            <td>第 3 章（下）<br>v3.6 新增</td>
+            <td>
+              <a href="../ch03-key-practices/3.8-observability.html">3.8 监控与可观测性</a> ·
+              <a href="../ch03-key-practices/3.9-vsm.html">3.9 价值流管理</a> ·
+              <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a> ·
+              <a href="../ch03-key-practices/summary.html">3.11 本章总结与练习</a>
+            </td>
+            <td>三项 v3.6 增量各一句定义；说清监控与可观测性的分界；完成第 3 章总结页，把 W3–W5 三周串成一张图。</td>
+            <td>5 h</td>
+          </tr>
+          <tr>
+            <td><strong>W6</strong></td>
+            <td>第 6 章<br>自动化与工具链</td>
+            <td>
+              <a href="../ch06-automation/6.1-why-automate.html">6.1 自动化的价值与边界</a> ·
+              <a href="../ch06-automation/6.2-deployment-pipeline.html">6.2 部署流水线</a> ·
+              <a href="../ch06-automation/6.3-iac.html">6.3 基础设施即代码</a> ·
+              <a href="../ch06-automation/6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a> ·
+              <a href="../ch06-automation/6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a> ·
+              <a href="../ch06-automation/6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a> ·
+              <a href="../ch06-automation/summary.html">6.7 本章总结与练习</a>
+            </td>
+            <td>默画部署流水线的阶段划分并标出 W3 学的四个词各自停在哪一段；说出<strong>服务台事件管理系统不属于</strong>典型工具链要素，以及为什么。</td>
+            <td>5–6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W7</strong></td>
+            <td>第 4 章（上）<br>业务与技术框架</td>
+            <td>
+              <a href="../ch04-frameworks/4.1-framework-landscape.html">4.1 框架全景与彼此关系</a> ·
+              <a href="../ch04-frameworks/4.2-agile-scrum.html">4.2 Agile 与 Scrum</a> ·
+              <a href="../ch04-frameworks/4.3-lean.html">4.3 Lean 与八项浪费</a> ·
+              <a href="../ch04-frameworks/4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>
+            </td>
+            <td>每个框架用一句话说清「它贡献给 DevOps 的那一件事」，而不是复述框架本身；DOWNTIME <strong>八项</strong>浪费背全；说出对 DevOps 最关键的那几个 ITSM 流程。</td>
+            <td>6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W8</strong></td>
+            <td>第 4 章（下）</td>
+            <td>
+              <a href="../ch04-frameworks/4.5-safety-culture.html">4.5 安全文化与学习型组织</a> ·
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a> ·
+              <a href="../ch04-frameworks/4.7-continuous-funding.html">4.7 持续资金</a> ·
+              <a href="../ch04-frameworks/summary.html">4.8 本章总结与练习</a>
+            </td>
+            <td>看到「指责与恐惧、大量单点故障、频繁战情室」能立刻指向<strong>安全文化</strong>；说清价值流映射用的前置时间口径是从<strong>需求被接受</strong>算起，不是从代码提交。</td>
+            <td>5–6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W9</strong></td>
+            <td>第 5 章<br>文化、行为与运营模型</td>
+            <td>
+              <a href="../ch05-culture/5.1-defining-culture.html">5.1 什么是组织文化</a> ·
+              <a href="../ch05-culture/5.2-cultural-debt.html">5.2 文化债</a> ·
+              <a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a> ·
+              <a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a> ·
+              <a href="../ch05-culture/5.5-operating-models.html">5.5 运营模型与团队结构</a> ·
+              <a href="../ch05-culture/summary.html">5.6 本章总结与练习</a>
+            </td>
+            <td>文化债与技术债的分界写成一句；说出 Kubler-Ross 变革曲线的形状用途；推动重大变革时该找<strong>早期采用者</strong>参与规划。</td>
+            <td>6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W10</strong></td>
+            <td>第 7 章<br>度量、指标与报告</td>
+            <td>
+              <a href="../ch07-metrics/7.1-why-measure.html">7.1 为什么必须度量</a> ·
+              <a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a> ·
+              <a href="../ch07-metrics/7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a> ·
+              <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a> ·
+              <a href="../ch07-metrics/7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a> ·
+              <a href="../ch07-metrics/7.6-aiops.html">7.6 AIOps</a> ·
+              <a href="../ch07-metrics/summary.html">7.7 本章总结与练习</a>
+            </td>
+            <td>按本站整理的对应关系，说出 DORA 四个指标各自挂在三步工作法的哪一步；变更前置时间的<strong>两种起点口径</strong>各用在什么场合，说出区别。详见下面<a href="#ch07">第四节</a>。</td>
+            <td>5–6 h</td>
+          </tr>
+          <tr>
+            <td><strong>W11</strong></td>
+            <td>第 8 章<br>分享、跟随与演进</td>
+            <td>
+              <a href="../ch08-sharing/8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a> ·
+              <a href="../ch08-sharing/8.2-roles-teams.html">8.2 角色与团队</a> ·
+              <a href="../ch08-sharing/8.3-leadership.html">8.3 DevOps 领导力</a> ·
+              <a href="../ch08-sharing/8.4-getting-started.html">8.4 组织考量与如何起步</a> ·
+              <a href="../ch08-sharing/8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a> ·
+              <a href="../ch08-sharing/summary.html">8.6 本章总结与练习</a>
+            </td>
+            <td>说出关键成功因素是<strong>管理层对文化变革的承诺</strong>；说出<strong>不属于</strong> DevOps 领导力目标的那一项（用指标控制和评价员工）；说清决定采用哪些原则实践的是业务战略与目标。</td>
+            <td>5 h</td>
+          </tr>
+          <tr>
+            <td><strong>W12</strong></td>
+            <td>冲刺周<br>不学新内容</td>
+            <td>
+              八张章末总结页连续回扫：
+              <a href="../ch01-exploring-devops/summary.html">1.5</a> ·
+              <a href="../ch02-core-principles/summary.html">2.8</a> ·
+              <a href="../ch03-key-practices/summary.html">3.11</a> ·
+              <a href="../ch04-frameworks/summary.html">4.8</a> ·
+              <a href="../ch05-culture/summary.html">5.6</a> ·
+              <a href="../ch06-automation/summary.html">6.7</a> ·
+              <a href="../ch07-metrics/summary.html">7.7</a> ·
+              <a href="../ch08-sharing/summary.html">8.6</a>
+            </td>
+            <td>每张总结页的「一分钟回忆清单」逐条自测，答不上来的回到原节；易混淆对比表整体重扫一遍。<strong>本周安排见<a href="#status">第七节</a>的现状说明。</strong></td>
+            <td>6–8 h</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📖 一条执行纪律</div>
+      <p class="mb-0">
+        每周结束时如果<strong>目标产出那一列做不到</strong>，不要顺延到下周补 —— 补的往往是最难的那部分，
+        而下周的新内容又压上来。正确做法是<strong>把下周的小节砍掉一节</strong>，腾出时间把本周的产出做扎实。
+        路径的价值在于顺序，不在于把 12 周填满。
+      </p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="sprint2w" style="scroll-margin-top:calc(var(--header-h) + 20px)">三、两周冲刺路径（备选）</h2>
+
+    <p>
+      给已经报名、只剩两周的人。排序依据不是理解顺序，而是<strong>题数权重从高到低</strong> ——
+      先把分数密度最高的章拿下。权重表及其版本说明见
+      <a href="0.2-exam-facts.html#weighting">0.2 第二节 · 八大知识域题数分布</a>。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>天</th><th>章（最多题数 · v3.4）</th><th>读什么</th><th>这一段的取舍</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>D1–D3</td>
+            <td><a href="../ch03-key-practices/index.html">第 3 章 关键实践</a>（7 题）</td>
+            <td>3.1–3.10 全读，<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a> 读两遍</td>
+            <td>不做延伸阅读，只吃每节的「⑤ 考试怎么考」与「⑥ 记忆要点」两面。</td>
+          </tr>
+          <tr>
+            <td>D4–D6</td>
+            <td><a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a>（7 题）</td>
+            <td>4.1–4.7 全读，<a href="../ch04-frameworks/4.1-framework-landscape.html">4.1</a> 先读</td>
+            <td>放弃各框架的内部细节，只抓「它和 DevOps 的关系」。</td>
+          </tr>
+          <tr>
+            <td>D7–D8</td>
+            <td><a href="../ch05-culture/index.html">第 5 章 文化与运营模型</a>（6 题）</td>
+            <td>5.1–5.5</td>
+            <td>行为模型的人名理论只记结论，不记推导。</td>
+          </tr>
+          <tr>
+            <td>D9</td>
+            <td><a href="../ch01-exploring-devops/index.html">第 1 章 认识 DevOps</a>（5 题）</td>
+            <td>1.1–1.4</td>
+            <td>官方定义句必须逐字过一遍，其余略读。</td>
+          </tr>
+          <tr>
+            <td>D10–D11</td>
+            <td><a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>（5 题）</td>
+            <td>6.1–6.6，<a href="../ch06-automation/6.2-deployment-pipeline.html">6.2</a> 是主干</td>
+            <td>不追工具名，只记工具链的功能分类与哪一类不属于。</td>
+          </tr>
+          <tr>
+            <td>D12</td>
+            <td><a href="../ch02-core-principles/index.html">第 2 章 核心原则</a>（4 题）</td>
+            <td>2.1–2.7，重点 <a href="../ch02-core-principles/2.1-three-ways.html">2.1</a> 与 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3</a></td>
+            <td>只记三步的名称、顺序、归属，不展开每一步的实践清单。</td>
+          </tr>
+          <tr>
+            <td>D13</td>
+            <td><a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>（4 题）</td>
+            <td>8.1–8.5</td>
+            <td>集中在角色、领导力、关键成功因素三处。</td>
+          </tr>
+          <tr>
+            <td>D14</td>
+            <td><a href="../ch07-metrics/index.html">第 7 章 度量与报告</a>（2 题）+ 全书回扫</td>
+            <td><a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大指标</a> + 八张总结页</td>
+            <td>第 7 章只保留 DORA 四指标的名称与量的是什么，其余留到考后补。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted"><small>括号内题数为 v3.4 各知识域的最多题数，出处与版本说明见
+      <a href="0.2-exam-facts.html#weighting">0.2 第二节</a>；本表的逐日切分为本站教学整理。</small></p>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这条路的代价，说清楚</div>
+      <ul class="mb-0">
+        <li><strong>能过，但知识不成体系。</strong>把第 2 章排到第 12 天，意味着你在<strong>没有主轴</strong>的情况下先背了三章实践 —— 每一条实践都成了孤立的名词，而不是「加强第几步」的答案。</li>
+        <li><strong>迁移不到工作里。</strong>考试考的是 Bloom 1–2 的记忆与理解，两周足够；但工作中要判断「我们的瓶颈在哪、该先动哪一步」，靠的正是被这条路径压缩掉的因果链。</li>
+        <li><strong>忘得快。</strong>按权重碎片记忆的内容，考完两周基本清零。三个月路径记住的是结构，结构不容易掉。</li>
+        <li><strong>建议</strong>：即使走两周路径，考完后按 12 周路径的顺序<strong>补一遍第 2 章和第 7 章</strong>，这两章是把碎片重新串起来的线。</li>
+      </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="ch07" style="scroll-margin-top:calc(var(--header-h) + 20px)">四、关于第 7 章的特别提醒</h2>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 第 7 章：全书考试权重最低，理解权重最高</div>
+      <p>
+        <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>
+        在 v3.4 官方题数分布里<strong>最多只出 2 题</strong>，是八章里唯一的个位数占比（5%），
+        也是被最多人直接跳过的一章。
+      </p>
+      <p>
+        但 DORA 四大指标是<strong>整条因果链的枢纽</strong>：部署频率与变更前置时间量的是第一步的<strong>流动</strong>，
+        变更失败率与平均恢复时间 MTTR 量的是第二步的<strong>反馈</strong>。
+        换句话说 —— 前面六章讲的所有实践，最后都要靠这四个数字回答「到底有没有用」。
+        不学第 7 章，前六章就只是一堆无法验证的做法。<br>
+        <small class="muted">DORA 四指标与三步工作法的对应关系为本站教学整理，官方未以此形式给出。</small>
+      </p>
+      <p>
+        <strong>结论：第 7 章按理解学，不按应试时间投入。</strong>
+        本路径给它排了整整一周（W10），并把它放在第 8 章之前 —— 因为它是回看，
+        必须在前面所有内容都学完之后再学，那时四个指标才有东西可以挂上去。
+      </p>
+      <p class="mb-0">
+        <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>
+        另有一处必须弄清的差别：变更前置时间在 DORA 口径下从<strong>代码提交</strong>算起，
+        在价值流口径下从<strong>需求被接受</strong>算起，两种起点都对，考题里必须看清问的是哪一种。
+      </p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="allocation" style="scroll-margin-top:calc(var(--header-h) + 20px)">五、每章时间分配建议</h2>
+
+    <p>
+      左边三列是官方事实，右边两列是本站建议。两者<strong>刻意不一致</strong>，
+      不一致的地方在最后一列里说明了理由。总量按<strong>第 1–8 章正文 60 小时</strong>算，
+      不含导论四节（约 1 小时）与 W12 冲刺周（6–8 小时）；「≈ 小时」逐行与
+      <a href="#weeks12">第二节</a>周表的「预计投入」对齐。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:22%">章</th><th class="num" style="width:8%">最多题数<br>（v3.4）</th><th class="num" style="width:8%">考试权重</th><th class="num" style="width:10%">建议投入占比</th><th class="num" style="width:7%">≈ 小时</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="../ch01-exploring-devops/index.html">第 1 章 认识 DevOps</a></td>
+            <td class="num">5</td><td class="num">12.5%</td><td class="num">7.5%</td><td class="num">4.5</td>
+            <td>概念清晰、干扰项套路少，读透一遍即可。省下的时间给第 3、4 章。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch02-core-principles/index.html">第 2 章 核心原则</a></td>
+            <td class="num">4</td><td class="num">10%</td><td class="num">11%</td><td class="num">6.5</td>
+            <td>题数偏低有误导性：三步工作法会在后面每一章反复出现，实际累计投入远超 11%。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch03-key-practices/index.html">第 3 章 关键实践</a></td>
+            <td class="num">7</td><td class="num">17.5%</td><td class="num"><strong>26% ⇧</strong></td><td class="num">15.5</td>
+            <td><strong>体量决定，不是重要性重排。</strong>并列权重最高，同时是全书小节最多的一章（11 节），CI/CD 四词辨析单独占掉一周。排期上是 W3–W5 三周。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch04-frameworks/index.html">第 4 章 业务与技术框架</a></td>
+            <td class="num">7</td><td class="num">17.5%</td><td class="num"><strong>19% ⇧</strong></td><td class="num">11.5</td>
+            <td><strong>偏差一：权重高却常被低估。</strong>四个框架看起来「都听说过」，于是被略读；实际考的是它们与 DevOps 的<em>关系</em>，恰恰是听说过也答不上来的部分。上调 1.5 个点。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch05-culture/index.html">第 5 章 文化与运营模型</a></td>
+            <td class="num">6</td><td class="num">15%</td><td class="num">10%</td><td class="num">6</td>
+            <td>权重第三高，但考点集中在几个具名模型上，按名词过一遍效率高，一周足够，因此占比低于权重。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a></td>
+            <td class="num">5</td><td class="num">12.5%</td><td class="num">9%</td><td class="num">5.5</td>
+            <td>有工程背景的人可以压缩；无工程背景的人应该反向上调，把部署流水线画明白。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch07-metrics/index.html">第 7 章 度量与报告</a></td>
+            <td class="num">2</td><td class="num">5%</td><td class="num"><strong>9% ⇧</strong></td><td class="num">5.5</td>
+            <td><strong>偏差二：权重最低却是理解枢纽。</strong>DORA 四指标是验证前六章的唯一手段，按 5% 投入会让整套知识失去闭环。上调到 9%，理由见上面<a href="#ch07">第四节</a>。</td>
+          </tr>
+          <tr>
+            <td><a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></td>
+            <td class="num">4</td><td class="num">10%</td><td class="num">8.5%</td><td class="num">5</td>
+            <td>考点集中在角色、领导力、关键成功因素三处，其余属于常识性判断。</td>
+          </tr>
+          <tr>
+            <td><strong>合计</strong></td>
+            <td class="num"><strong>40</strong></td><td class="num"><strong>100%</strong></td><td class="num"><strong>100%</strong></td><td class="num"><strong>60</strong></td>
+            <td>上调的 15 个点（第 3 章 +8.5、第 7 章 +4、第 4 章 +1.5、第 2 章 +1）由第 1 章（−5）、第 5 章（−5）、第 6 章（−3.5）、第 8 章（−1.5）分摊，不代表这四章不重要，只代表它们单位时间的产出更高。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted"><small>
+      「最多题数」与「考试权重」两列出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      <strong>v3.6 未公开重新发布权重表</strong>，本站沿用 v3.4 分布。
+      「建议投入占比」「≈ 小时」与「说明」三列是本站教学整理，官方未给出任何时间分配建议。
+      本表的 60 小时只覆盖第 1–8 章正文，不含导论四节与 W12 冲刺周。
+    </small></p>
+
+    <!-- ============================================================ -->
+    <h2 id="review-rhythm" style="scroll-margin-top:calc(var(--header-h) + 20px)">六、复习节奏</h2>
+
+    <p>三条规则，覆盖三个不同的时间尺度。</p>
+
+    <div class="grid grid--3">
+      <div class="callout callout--info" style="margin:0">
+        <div class="callout__title">📖 每学完一章</div>
+        <p class="mb-0">
+          <strong>立刻做本章总结页，不隔夜。</strong>总结页不是正文的浓缩，它做的是跨节归位与易混淆对照 ——
+          隔了几天再做，你已经忘了哪两个概念当时让你犹豫过，对照表就失去了针对性。
+        </p>
+      </div>
+      <div class="callout callout--info" style="margin:0">
+        <div class="callout__title">📖 每两周一次</div>
+        <p class="mb-0">
+          回<a href="../../index.html">首页的全局知识地图</a>看一眼，只做一件事：
+          <strong>指着已学过的章，说出它和相邻章的连接是什么</strong>。说不出来的那条连接，就是这两周的漏洞。
+        </p>
+      </div>
+      <div class="callout callout--info" style="margin:0">
+        <div class="callout__title">📖 考前一周</div>
+        <p class="mb-0">
+          <strong>只看总结页和术语，不再回正文。</strong>这一周的目标是提取速度，不是理解深度。
+          回到正文只会让你重新陷进细节，挤掉本该用来做提取练习的时间。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 考前一周的具体做法</div>
+      <ul class="mb-0">
+        <li>八张总结页的<strong>「一分钟回忆清单」</strong>连续过一遍，能脱口而出的划掉，卡住的记下节号</li>
+        <li>卡住的节号集中回看，<strong>只看那一节的「⑤ 考试怎么考」和「⑥ 记忆要点」两面</strong></li>
+        <li>全书的<strong>易混淆对比表</strong>（各节「③ 与相邻概念的区别」那一面）整体重扫一遍，这是选择题干扰项的主要来源</li>
+        <li>DOFD 自 <strong>2025-02-03 修订后</strong>是<strong>开卷</strong>考试，但只允许带官方 Learner Workbook 与 Quick Reference Guide，
+            <strong>不允许带本站页面</strong>（完整边界见
+            <a href="0.2-exam-facts.html#openbook">0.2 第四节</a>）—— 别把「开卷」当成可以少背的理由，
+            60 分钟做 40 题，翻书的时间很有限</li>
+      </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 id="status" style="scroll-margin-top:calc(var(--header-h) + 20px)">七、现阶段的诚实说明</h2>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 第 12 周的安排目前是占位</div>
+      <p>
+        附录中已经可用的四页是：
+        <a href="../appendix/a1-glossary.html">A1 术语表（中英对照）</a> ·
+        <a href="../appendix/a2-acronyms.html">A2 缩略语速查</a> ·
+        <a href="../appendix/a3-syllabus-map.html">A3 考纲映射表</a> ·
+        <a href="../appendix/a4-sources.html">A4 官方来源与参考文献</a>。
+      </p>
+      <p>
+        尚未交付的是<strong>错题本（A5）与模拟考试（A6）</strong>，本站的练习题与模拟考试属于后续建设阶段，
+        因此这一页<strong>刻意没有给出这两处的链接</strong>。
+      </p>
+      <p>
+        <strong>现阶段第 12 周的替代方案</strong>：用八张章末总结页的
+        <strong>「一分钟回忆清单」</strong>做提取自测 —— 每条清单本身就是一道简答式自测题，
+        答不出即等同错题，把节号记下来就是你的临时错题本。
+      </p>
+      <p class="mb-0">
+        术语速记用 <a href="../appendix/a1-glossary.html">A1 术语表</a> 与各章总结页的易混淆表。
+        等 A5、A6 交付后，第 12 周会换成「模拟考 → 错题回扫 → 术语速记」的标准安排，
+        前 11 周的排期不受影响。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">📖 导论其余三节</div>
+      <p class="mb-0">
+        本页只讲排期。<a href="0.1-how-to-use.html"><strong>0.1 如何使用本资料</strong></a>讲六面结构与徽章体系怎么读，
+        <a href="0.2-exam-facts.html"><strong>0.2 DOFD v3.6 考试全解</strong></a>讲题量、时长、及格线、题数分布与开卷范围，是全站考试数字的来源中心，
+        <a href="0.3-map-guide.html"><strong>0.3 全局知识地图导读</strong></a>讲八章之间的连接关系。
+        建议在 W1 按 0.1 → 0.2 → 0.3 → 0.4 的顺序过一遍，合计约 1 小时。
+        章内其余小节可从<a href="index.html">第 0 章导论目录</a>进入。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>主路径六段：<strong>原则（W1–2）→ 实践（W3–5）→ 自动化（W6）→ 框架与文化（W7–9）→ 度量与演进（W10–11）→ 冲刺（W12）</strong></li>
+        <li>不按章号顺读的理由：<strong>第 4、5 章讲的是关系，必须先有被比较的东西</strong></li>
+        <li>最重的一周是 <strong>W3</strong>，只排三节，全用来辨析 CI/CD 家族四个词</li>
+        <li>两周冲刺按 v3.4 题数排：<strong>3、4 章（各 7）→ 5 章（6）→ 1、6 章（各 5）→ 2、8 章（各 4）→ 7 章（2）</strong>，代价是知识不成体系</li>
+        <li>两处「理解重要性 ≠ 考试权重」：<strong>第 7 章权重最低但是枢纽（v3.4 5% → 建议 9%）</strong>；<strong>第 4 章权重最高却最常被低估（v3.4 17.5% → 建议 19%）</strong></li>
+        <li>复习三节奏：<strong>学完一章立刻做总结页 · 每两周回首页看知识地图 · 考前一周只看总结页与术语</strong></li>
+        <li>练习题与模拟考试<strong>尚未交付</strong>，第 12 周暂用总结页的一分钟回忆清单替代</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：每章「最多题数」与由此换算的考试权重出自
+      <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>的 Exam Topic Areas and Question Weighting，
+      <strong>v3.6（2024-10 更新，2025-02-03 修订为开卷）未公开重新发布权重表</strong>，本站沿用 v3.4 分布并全程标注版本。
+      考试形式（<strong>40 题 / 60 分钟 / 及格 65%（26 / 40）/ 开卷，仅限官方 Learner Workbook 与
+      Quick Reference Guide / Bloom 1–2 / 无正式前置、建议 16 学时</strong>）为 DOFD 官方考试形式规定，
+      现行版本 <strong>v3.6</strong>（2024-10 更新，2025-02-03 修订为开卷），逐项出处见
+      <a href="0.2-exam-facts.html#format">0.2 第一节 · 考试形式总表</a>。
+      正文中提到的「约束理论归第一步」「同行评审归第二步」「持续集成的必要前提是自动化的单元、集成与验收测试」
+      「服务台事件管理系统不属于典型工具链要素」「指责与恐惧文化应转向安全文化」「早期采用者参与变革规划」
+      「关键成功因素是管理层对文化变革的承诺」「用指标控制和评价员工不属于 DevOps 领导力目标」
+      「决定采用哪些原则与实践的是业务战略与目标」等判断，由 <strong>DOFD v3.4 官方样题答案键</strong>确认
+      （本站只陈述结论，不复制题干与选项原文）。
+      变更前置时间的两种起点口径分别对应 DORA 度量与精益价值流两个语境，两者并存，本站在正文中已注明各自适用场合。<br>
+      <strong>本页的 12 周排期、两周冲刺排期、建议投入占比、复习节奏、所有排序理由，
+      以及「DORA 四指标对应三步工作法前两步」「混沌工程服务于第三步」两处映射，全部是本站教学整理</strong> ——
+      官方文件除「建议 16 学时」外，未给出任何学习顺序、时间分配或复习节奏的建议，也未以此形式给出上述两处映射。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
