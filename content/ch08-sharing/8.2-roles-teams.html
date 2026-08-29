@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.2 角色与团队 · DevOps Foundation 学习站</title>
+<meta name="description" content="DevOps stakeholders（干系人）、DevOps teams（团队）、DevOps roles（角色）是三个官方术语，范围一层套一层：干系人是圈，团队是框，角色是帽子。本节给出三者的包含关系图、常见角色清单与职责、以及为什么「DevOps 工程师」这个岗位名容易帮倒忙。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch08", sec:"8.2-roles-teams"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 8 章 · 分享、跟随与演进</div>
+      <h1 class="page-head__title">8.2 角色与团队</h1>
+      <div class="page-head__en">DevOps Roles and Teams</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        <strong>DevOps stakeholders</strong>、<strong>DevOps teams</strong>、<strong>DevOps roles</strong>
+        是三个各自独立列在官方术语表里的词，中文习惯把它们混着说，考试却要求分得清。
+        它们的关系是一层套一层：<strong>干系人是圈，团队是框，角色是帽子</strong>。
+        圈决定「这件事牵动谁」，框决定「谁和谁在一个组里」，帽子决定「谁对什么负责」——
+        而一个人可以同时戴好几顶帽子。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>干系人、团队、角色三个官方术语的范围差在哪，为什么不能互换着用</li>
+        <li>一个 DevOps 团队里通常有哪些角色、各自对什么负责，角色空缺会发生什么</li>
+        <li>为什么<strong>把 DevOps 做成一个岗位名</strong>反而会削弱「这是所有人的职责」这条原则</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 470" role="img" aria-label="DevOps 干系人、团队、角色三个概念的范围包含关系">
+
+          <!-- 外圈：干系人 -->
+          <rect x="20" y="28" width="860" height="300" rx="70" class="s-3" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="40" y="56" class="f-3" font-size="16" font-weight="700">DevOps 干系人 · DevOps stakeholders（圈）</text>
+          <text x="40" y="77" class="s-muted" font-size="12.5">范围最大：所有受 DevOps 影响、或能影响 DevOps 结果的人</text>
+
+          <!-- 中层：团队 -->
+          <rect x="44" y="92" width="520" height="216" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="62" y="118" class="f-1" font-size="15.5" font-weight="700">DevOps 团队 · DevOps teams（框）</text>
+          <text x="62" y="138" class="s-muted" font-size="12.5">组织单元：一群人共担同一个交付目标</text>
+
+          <!-- 内层：角色 -->
+          <rect x="64" y="152" width="480" height="140" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="80" y="176" class="f-4" font-size="15" font-weight="700">DevOps 角色 · DevOps roles（帽子）</text>
+          <text x="80" y="195" class="s-muted" font-size="12.5">职责：谁对什么负责 —— 一个人可同时承担多个</text>
+
+          <g text-anchor="middle" font-size="12.5">
+            <rect x="80"  y="208" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="132" y="230" class="s-ink">产品负责人</text>
+            <rect x="194" y="208" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="246" y="230" class="s-ink">开发</text>
+            <rect x="308" y="208" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="360" y="230" class="s-ink">测试 · 质量</text>
+            <rect x="422" y="208" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="474" y="230" class="s-ink">运维 · SRE</text>
+
+            <rect x="80"  y="250" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="132" y="272" class="s-ink">安全</text>
+            <rect x="194" y="250" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="246" y="272" class="s-ink">发布 · 自动化</text>
+            <rect x="308" y="250" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="360" y="272" class="s-ink">平台工程师</text>
+            <rect x="422" y="250" width="104" height="34" rx="7" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+            <text x="474" y="272" class="s-ink">DevOps 教练</text>
+          </g>
+
+          <!-- 团队之外、干系人之内 -->
+          <text x="590" y="112" class="s-muted" font-size="12.5">不在团队里，但同样是干系人：</text>
+          <g font-size="13.5">
+            <rect x="590" y="124" width="270" height="38" rx="8" class="s-3" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="606" y="148" class="s-ink">业务方与出资方</text>
+            <rect x="590" y="170" width="270" height="38" rx="8" class="s-3" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="606" y="194" class="s-ink">客户与最终用户</text>
+            <rect x="590" y="216" width="270" height="38" rx="8" class="s-3" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="606" y="240" class="s-ink">合规、审计与法务</text>
+            <rect x="590" y="262" width="270" height="38" rx="8" class="s-3" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+            <text x="606" y="286" class="s-ink">供应商与外部服务方</text>
+          </g>
+
+          <!-- 底部读法 -->
+          <rect x="20" y="344" width="860" height="110" rx="12" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="40" y="372" class="f-5" font-size="14" font-weight="700">三个词各自回答一个不同的问题</text>
+          <text x="40" y="398" class="s-ink" font-size="13">干系人 = 范围　问「这件事牵动谁」　答案里有客户、法务、财务，他们一行代码也不写</text>
+          <text x="40" y="422" class="s-ink" font-size="13">团队　 = 编制　问「谁和谁在一个组里」　答案是组织结构图上的一个框</text>
+          <text x="40" y="446" class="s-ink" font-size="13">角色　 = 职责　问「谁对这件事负责」　答案可以是同一个人的第三顶帽子</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-2-1　干系人、团队、角色的包含关系。</strong>
+        要看懂的是<strong>三个圈层的大小顺序，以及右侧那四个方块的位置</strong> ——
+        业务方、客户、合规、供应商都在<strong>团队之外</strong>，却仍然在<strong>干系人之内</strong>。
+        转型失败最常见的一种形态，就是把「干系人」默认等同于「团队成员」，
+        于是只把 Dev 和 Ops 拉进来开会，而真正卡住交付的那几个人从头到尾没被通知过。
+        最内层的角色方块是<strong>职责</strong>不是<strong>工位</strong>：八个方块可以由八个人担，也可以由三个人担。
+        <br><small class="muted">三者的层级包含关系为本站教学整理，官方术语表分别列出这三个词，未以此形式给出范围图；
+        图中的角色方块清单同为本站教学整理（见 kp-8-2-2）。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-8-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-2-1</div>
+        <h3 class="kp__title">干系人 · 团队 · 角色<span class="en">DevOps Stakeholders / Teams / Roles</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>三个词是三个不同粒度的单位，不是同一件事的三种说法：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">术语</th><th style="width:20%">它是什么单位</th><th>一句可复述的说法</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">DevOps 干系人 <span class="en">DevOps stakeholders</span></span></td>
+                  <td><strong>范围</strong></td>
+                  <td>所有<strong>受 DevOps 影响、或能影响 DevOps 结果</strong>的人。范围最大，向外一直延伸到业务方、客户、合规与供应商</td>
+                </tr>
+                <tr>
+                  <td><span class="term">DevOps 团队 <span class="en">DevOps teams</span></span></td>
+                  <td><strong>组织单元</strong></td>
+                  <td>一群共担<strong>同一个交付目标</strong>的人。它出现在组织结构图上，有边界、有编制</td>
+                </tr>
+                <tr>
+                  <td><span class="term">DevOps 角色 <span class="en">DevOps roles</span></span></td>
+                  <td><strong>职责</strong></td>
+                  <td>对某一类结果负责的<strong>一份责任</strong>。它不是职位名，<strong>一个人可以同时承担多个角色</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>DevOps stakeholders</em>、<em>DevOps teams</em>、<em>DevOps roles</em>
+            三个词<strong>逐字列于 DOFD v3.4 官方考纲术语表</strong>（Concept and Terminology List），均属必须掌握的名词；
+            「范围 / 组织单元 / 职责」这组归类为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这三个词之所以要分开，是因为转型现场反复出现同一种事故：
+            <strong>把「干系人」悄悄缩小成了「团队成员」，于是真正卡住交付的那些人从来没进过会议室。</strong>
+          </p>
+          <ul>
+            <li>某银行渠道系统做转型前，一个变更从提交到上生产要 <strong>11 天</strong>。
+              把 Dev 与 Ops 合成一个跨职能团队后，7 周流水线跑通，构建加测试 <strong>22 分钟</strong>绿灯。</li>
+            <li>拆开看这 11 天：<strong>团队边界内 6 天</strong>；<strong>边界外 5 天</strong> ——
+              合规评审排队 <strong>2 天</strong>、外部支付供应商的联调窗口每周只开一次<strong>平均等 2 天</strong>、
+              安全部门的例行扫描 <strong>1 天</strong>。
+              这三方<strong>一个都不在那个跨职能团队里</strong>，也<strong>一次都没被邀请</strong>参加过转型会议。</li>
+            <li>机制是这样的：团队边界被当成了改进边界 → 只优化边界内的环节 →
+              <strong>边界内从 6 天压到 1.5 天，边界外的 5 天一天没动</strong> →
+              端到端 11 天只降到 <strong>6.5 天</strong>：<strong>只降了 4 成，而团队以为自己已经做完了。</strong></li>
+            <li>把合规、供应商与安全一并识别为<strong>干系人</strong>并拉进需求评审后：
+              合规改为在需求阶段前置审查（不再占用交付路径）、供应商联调窗口改为每日（等待从 2 天降到 0.5 天）、
+              例行扫描并入流水线内与测试并行（不再单独占用时间）。
+              边界外从 5 天压到 0.5 天，端到端时间降到 <strong>2 天</strong> —— 组织结构一个字没改。</li>
+          </ul>
+          <p class="mb-0">
+            所以「干系人」这个词的价值，恰恰在于它<strong>比团队大</strong>。
+            它逼着人问一句：这条价值流上，还有谁能让它停下来？
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:19%">维度</th><th style="width:27%">干系人 stakeholders</th><th style="width:27%">团队 teams</th><th>角色 roles</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>回答的问题</strong></td>
+                  <td>这件事<strong>牵动谁</strong></td>
+                  <td><strong>谁和谁</strong>在一个组里</td>
+                  <td><strong>谁对什么</strong>负责</td>
+                </tr>
+                <tr>
+                  <td><strong>范围大小</strong></td>
+                  <td>最大，含团队之外的业务、客户、合规、供应商</td>
+                  <td>居中，有明确边界与编制</td>
+                  <td>最小，是团队内部的责任切分</td>
+                </tr>
+                <tr>
+                  <td><strong>与「人」的对应</strong></td>
+                  <td>一个人可以是干系人却<strong>不参与任何交付动作</strong></td>
+                  <td>一个人通常只属于<strong>一个</strong>交付团队</td>
+                  <td>一个人可以同时承担<strong>多个</strong>角色</td>
+                </tr>
+                <tr>
+                  <td><strong>改动它的代价</strong></td>
+                  <td>不需要改组织，只需要识别与沟通</td>
+                  <td>要动组织结构与汇报线，代价最大</td>
+                  <td>团队内部即可重新分配，代价最小</td>
+                </tr>
+                <tr>
+                  <td><strong>典型题干措辞</strong></td>
+                  <td>客户、业务方、受影响的各方</td>
+                  <td>跨职能、共担目标、团队如何组建</td>
+                  <td>职责、负责、由谁承担</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>角色不等于岗位</strong>。
+            中文里「角色」经常被当成「职位」的同义词，于是「团队里有 6 个角色」被读成「团队里要有 6 个人」。
+            官方术语 <em>DevOps roles</em> 描述的是<strong>责任的切分</strong>，
+            一个 5 人团队完全可以覆盖 8 个角色 —— 也完全可能 12 个人却有 3 个角色空着没人管。</small></p>
+          <p class="mb-0 muted"><small>本对照表的五个维度为本站教学整理，官方分别列出这三个术语，未以此形式给出三列对比。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>三个词各对应一张可以立刻做出来的清单：</p>
+          <ul>
+            <li><strong>干系人清单</strong>：沿着价值流从需求走到客户，每个环节问两句 ——
+              「谁会被这次变更影响」「谁有能力让它停下来」。
+              后一句尤其重要：<strong>能让你停下来的人，即使不在你的组织里，也是干系人</strong>。
+              常年被漏掉的是合规、审计、法务、采购、外部供应商与客服。</li>
+            <li><strong>团队边界检查</strong>：只问一句 ——
+              <strong>这个团队能不能不依赖其他团队排队，把一个变更送到客户手上？</strong>
+              答不上来，边界画错了。团队形态的对照（筒仓 / 跨职能 / 平台团队）见
+              <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>，本节不重复。</li>
+            <li><strong>角色矩阵</strong>：把职责列成一列，逐条点名负责人。
+              两种结果都要处理 —— <strong>某一行没人</strong>（角色空缺，最常见的是安全与发布），
+              <strong>某个人占了五行</strong>（他一休假，团队就停摆）。</li>
+            <li><strong>不要用「角色数」推「人数」</strong>：定编时先定职责，再看现有的人能覆盖多少，
+              最后才谈招聘。反过来做的结果是按角色名招人，招出一堆职位。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上三张清单与检查动作为本站教学整理，官方文件把
+            <em>DevOps stakeholders / teams / roles</em> 列为术语，未规定识别方法与检查清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：给描述问术语</strong>。三个词逐字都在官方术语表内，属 Bloom 1–2 的辨认题。
+              题干给一段话，问它描述的是哪一个。</li>
+            <li><strong>关键词判据</strong>：题干里出现<strong>客户、业务方、受影响的各方、能影响结果的人</strong> → 干系人；
+              出现<strong>跨职能、共担目标、如何组建</strong> → 团队；
+              出现<strong>职责、负责、由谁承担</strong> → 角色。</li>
+            <li><strong>干扰项长什么样</strong><span class="muted">（以下选项措辞为本站仿写，非官方样题原文）</span>：
+              最常见的一种是<strong>把 stakeholders 缩小成 Dev 加 Ops</strong> ——
+              一个把干系人限定为「动手做开发与运维的人」的选项，听起来很对，但它<strong>漏掉了业务与客户</strong>，
+              而 DevOps 干系人的定义边界恰恰在于「受影响或有影响」，不在于「是否动手」。
+              第二种是<strong>把 roles 说成职位名</strong>，选项列出一串岗位 title 冒充角色。</li>
+            <li><strong>排除技巧</strong>：先判断题干问的是<strong>范围、编制还是责任</strong>，三选一，再看选项。
+              凡是把「谁受影响」和「谁在干活」画等号的选项，一律先划掉。</li>
+            <li><strong>反向问法</strong>：问「以下哪一项<strong>不属于</strong> DevOps 干系人」。
+              这类题的正确答案通常是<strong>与该价值流完全无关的第三方</strong>，
+              而不是「不写代码的人」—— 不写代码恰恰是很多干系人的常态。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度、关键词判据与干扰项分析均为本站教学推断，
+            官方未公布命题规律与题型分布，仅公布考试范围为 Bloom 1–2；本站不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">干系人是圈，团队是框，角色是帽子 —— 圈最大，帽子可以一人戴好几顶。</p>
+          <p class="mb-0 muted"><small>推论：改角色最便宜（团队内部就能改），改团队最贵（要动组织结构），
+            识别干系人最容易被跳过 —— 而它偏偏是端到端时间里最大的那块。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-8-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-2-2</div>
+        <h3 class="kp__title">常见角色与职责，以及「DevOps 工程师」这个岗位名<span class="en">DevOps Roles in Practice</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>以下清单为本站教学整理，官方未给出角色清单。</strong>
+            一个能端到端交付的团队，通常需要下面这些<strong>职责</strong>都有人认领。
+            再强调一次：这是<strong>八份责任</strong>，不是八个编制。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">角色</th><th style="width:38%">对什么负责</th><th>缺了它会怎样</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>产品负责人</strong><br><small class="muted">Product Owner</small></td>
+                  <td>决定<strong>做什么、先做什么</strong>；对业务结果负责，是需求的唯一出口</td>
+                  <td>需求从四面八方进来，优先级由嗓门决定</td>
+                </tr>
+                <tr>
+                  <td><strong>开发</strong><br><small class="muted">Development</small></td>
+                  <td>实现功能，并让它<strong>可测试、可观测、可回滚</strong></td>
+                  <td>功能实现与可运维性脱钩 —— 代码写完就交出去，日志、指标与回滚路径全靠别人事后补</td>
+                </tr>
+                <tr>
+                  <td><strong>测试 · 质量</strong><br><small class="muted">Testing / Quality</small></td>
+                  <td>把质量<strong>内建到过程里</strong>：自动化测试策略、测试数据、验收标准</td>
+                  <td>质量退化成上线前的一道人工检查，左移无从谈起</td>
+                </tr>
+                <tr>
+                  <td><strong>运维 · SRE</strong><br><small class="muted">Operations ·
+                    <span class="term">站点可靠性工程 <span class="en">Site Reliability Engineering / SRE</span></span></small></td>
+                  <td>生产可用性、值班、事件响应、容量与可靠性目标</td>
+                  <td>没人为凌晨三点负责，也就没人为「好排查」写代码</td>
+                </tr>
+                <tr>
+                  <td><strong>安全</strong><br><small class="muted">Security</small></td>
+                  <td>把安全要求变成流水线里的自动检查，而不是上线前的评审会</td>
+                  <td>安全变成 Sprint 之后的一道闸门，成为新的约束</td>
+                </tr>
+                <tr>
+                  <td><strong>发布 · 自动化工程师</strong><br><small class="muted">Release / Automation</small></td>
+                  <td>部署流水线本身的建设与维护、发布节奏、回滚路径</td>
+                  <td>流水线成了没人维护的公共设施，坏了大家一起等</td>
+                </tr>
+                <tr>
+                  <td><strong>平台工程师</strong> <span class="badge badge--new">🆕 v3.6 新增</span><br><small class="muted">Platform Engineering</small></td>
+                  <td>把环境、流水线、可观测性底座做成<strong>自助服务</strong>，降低其他团队的负荷</td>
+                  <td>每个团队各造一遍轮子，或者退回集中式工单</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 教练</strong><br><small class="muted">Coach / Change agent</small></td>
+                  <td>推动实践落地与习惯改变，是<strong>过渡期</strong>角色，目标是让自己变得不必要</td>
+                  <td>转型停留在工具层，行为不变</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>DevOps roles</em> 逐字列于 DOFD v3.4 官方考纲术语表；<em>Roles</em> 是 v3.4 课程大纲
+            M8「Sharing, Shadowing and Evolving」的模块子项。
+            <strong>但官方并未公布一份角色清单</strong>，上表的八个角色、职责描述与「缺了会怎样」一列
+            <strong>均为本站教学整理</strong>。
+            其中<em>产品负责人</em>出自 Scrum，官方术语表以 <em>Scrum roles, artifacts and events</em> 一条收录
+            （见 <a href="../ch04-frameworks/4.2-agile-scrum.html">第 4 章 Agile 与 Scrum（4.2）</a>）；
+            <em>Site Reliability Engineering</em> 与 <em>DevSecOps</em> 是术语表条目；
+            <em>Platform Engineering</em> 属 v3.6 新增学习目标（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+            v3.4 的 66 条术语表未收录，展开见
+            <a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>，本节只把它当作角色清单中的一项。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            角色清单要单独讲，是因为业界普遍用另一种方式回答「谁做 DevOps」：
+            <strong>设一个叫「DevOps 工程师」的岗位</strong>。这个做法有一条可以复现的失效路径。
+          </p>
+          <ul>
+            <li>某公司招了 3 名「DevOps 工程师」，编成一个 DevOps 组，
+              负责全公司 <strong>11 个产品团队</strong>的流水线、环境与发布。</li>
+            <li>第 1 个月很顺：流水线模板统一了，环境申请有人接。
+              第 3 个月开始排队：环境申请变成工单，平均等 <strong>2.5 天</strong>。
+              第 6 个月，这个 3 人组同时挂着 <strong>60 多张待办工单</strong>，
+              而产品团队学会了一句话 —— <strong>「这个提工单给 DevOps 组」</strong>。</li>
+            <li>失效机制只有一句话：<strong>职责一旦变成岗位，其他人就有了正当理由不承担它。</strong>
+              「让开发关心运维、让运维关心交付」是 DevOps 的原则；
+              设一个岗位专门关心这件事，等于宣布其他人不必关心。
+              责任没有被合并，只是<strong>换了个部门重新转走一次</strong>。</li>
+            <li>更隐蔽的一层：这 3 个人被度量的是<strong>工单完成量</strong>，
+              于是他们的最优策略是把工单做快，而不是把工单<strong>消灭掉</strong> ——
+              而消灭工单（做成自助服务）才是平台工程要解决的事。</li>
+          </ul>
+          <p>
+            这与<a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>
+            论证的「独立 DevOps 团队」反模式是同一件事的两面：
+            <strong>5.5 讲组织形态错在哪，本节讲岗位命名错在哪。</strong>
+          </p>
+          <p class="mb-0 muted"><small>「DevOps 工程师这一岗位名称本身有争议」以及上述失效路径的分析，
+            <strong>均为本站教学整理</strong>：<em>DevOps Engineer</em> 既不在 DOFD v3.4 的 66 条官方考纲术语表内，
+            也不是 v3.4 课程大纲的模块子项；本站对这一岗位名的评价属教学整理，非官方立场。
+            本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">角色 <span class="en">role</span></th><th>对比对象是什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>岗位 / 职位 title</strong> <span class="badge badge--note">📝 教学整理</span></td>
+                  <td>是<strong>责任单位</strong>：一份对结果的承诺。可拆、可合、可一人多顶</td>
+                  <td>是<strong>人事单位</strong>：一条汇报线、一个薪档、一个招聘 JD。改动它要走 HR 流程</td>
+                </tr>
+                <tr>
+                  <td><strong>团队 <span class="en">DevOps teams</span></strong></td>
+                  <td>团队<strong>内部</strong>的责任切分，团队自己就能重新分配</td>
+                  <td>组织结构上的<strong>框</strong>，改动要动汇报线（形态对照见 5.5）</td>
+                </tr>
+                <tr>
+                  <td><strong>「DevOps 工程师」岗位</strong> <span class="badge badge--note">📝 教学整理</span></td>
+                  <td>DevOps 是<strong>所有角色共同承担</strong>的一组职责</td>
+                  <td>把这组职责收敛给一个岗位，其余人自然退出。<strong>名字越像专职，原则越被稀释</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 教练</strong> <span class="badge badge--note">📝 教学整理</span></td>
+                  <td>常规角色，随团队长期存在</td>
+                  <td><strong>过渡期</strong>角色：推动行为改变，成功的标志是自己被淘汰。它不接管交付责任</td>
+                </tr>
+                <tr>
+                  <td><strong>SRE</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>是清单里的<strong>一个角色</strong>，对生产可靠性负责</td>
+                  <td>同时也是一套<strong>工程实践</strong>（可靠性目标、错误预算式取舍），展开见
+                    <a href="../ch03-key-practices/3.4-sre-resilience.html">第 3 章 SRE 与韧性工程（3.4）</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>「团队里有 8 个角色」不等于「团队要有 8 个人」，
+            更不等于「公司要设 8 个岗位」</strong>。角色是职责的划分线，岗位是人事的划分线，两条线画在不同的图上。
+            考题里凡是把角色与职位 title 一一对应的说法，方向就已经错了。</small></p>
+          <p class="mb-0 muted"><small>本表五组对照为本站教学整理；<em>DevOps roles</em>、<em>DevOps teams</em>、
+            <em>Site Reliability Engineering</em> 是官方术语表条目，「DevOps 工程师」「DevOps 教练」不是。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>用一张三列表做一次点名：<strong>职责 → 角色 → 具体的人</strong>。三列都填满才算数。</p>
+          <ul>
+            <li><strong>先问值班</strong>：「凌晨三点这个服务挂了，谁的手机会响？」
+              这个问题一次就能测出运维 / SRE 角色到底落在谁头上，
+              也能测出<a href="../ch05-culture/5.5-operating-models.html">端到端责任（5.5）</a>是不是真的。</li>
+            <li><strong>再问否决权</strong>：「谁有权说这一版不能上？」
+              如果答案是一个团队之外的人，那么真正的闸门在团队之外，团队并没有被端到端授权。</li>
+            <li><strong>找空缺</strong>：最常年空缺的两个角色是<strong>安全</strong>与<strong>发布 / 自动化</strong>。
+              安全空缺的标准症状是「安全评审排在 Sprint 之后」——
+              对应的实践是把安全并入左移测试，见
+              <a href="../ch03-key-practices/3.5-devsecops.html">第 3 章 DevSecOps（3.5）</a>。</li>
+            <li><strong>找超载</strong>：一个人同时挂着四五个角色不一定是问题，
+              但如果这四五个角色<strong>没有第二个人能顶</strong>，它就是一个<span class="term">单点故障 <span class="en">SPOF</span></span>，
+              只是这次落在人身上而不是机器上。</li>
+            <li><strong>不要为角色而招人</strong>：先看现有成员能覆盖到哪，
+              再决定是补技能（培训、结对、轮岗）还是补人。按角色名招聘，最容易招出「DevOps 工程师」那一类岗位。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上点名方法与四个检查动作为本站教学整理，官方未规定角色分配的实施方法；
+            <em>Single Point of Failure (SPOF)</em> 是官方术语表条目，把它用于「人」的比喻是本站教学表述。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：DevOps roles 的性质</strong>。
+              问角色是什么、能不能一人多担。正确方向是<strong>职责的划分，一个人可以承担多个角色</strong>。</li>
+            <li><strong>干扰项长什么样</strong><span class="muted">（以下选项措辞为本站仿写，非官方样题原文）</span>：
+              把角色写成<strong>职位清单</strong>（一个要求「团队必须配备以下 N 个岗位」的选项），
+              或者一个把 <strong>DevOps 交给专门的「DevOps 工程师」岗位负责</strong>的选项。
+              后者是本节最需要防的一种写法 —— 它与 DevOps「跨职能协作、共同承担」的基本立场直接冲突。
+              Blueprint 中与组织形态相关的两句原文把责任落在跨职能团队上 ——
+              <em>Cross-function teams focus on business goals</em>、
+              <em>Ops work with Dev, supporting each other</em>；
+              据此判断，把责任收敛给单一岗位与官方表述方向相反<span class="muted">（本站解读）</span>。</li>
+            <li><strong>排除技巧</strong>：凡是选项里出现「<strong>由某个专门团队 / 专门岗位独自负责</strong>」的措辞，
+              在 DevOps 语境下几乎都是错误方向；正确选项通常包含<strong>共同、跨职能、协作</strong>这类词。</li>
+            <li><strong>相邻考点提醒</strong>：与角色紧邻的一条官方事实是
+              <strong>「用指标控制和评价员工」不属于 DevOps 领导力的目标</strong> ——
+              这一判断<strong>由 DOFD v3.4 官方样题答案键确认</strong>。
+              它考的是领导力而不是角色，归 <a href="8.3-leadership.html">8.3 DevOps 领导力</a>，此处只作边界提示，避免与本节混答。</li>
+            <li><strong>反向问法</strong>：问「以下哪一项<strong>不是</strong> DevOps 团队中的典型角色」。
+              注意题干问的是角色不是岗位，把「DevOps 工程师」当成标准答案填进去是常见错误。</li>
+          </ul>
+          <p class="mb-0 muted"><small>Blueprint 两句英文原文出自 PeopleCert《DevOps Foundation® Blueprint》；
+            「用指标控制和评价员工不属于 DevOps 领导力目标」由 DOFD v3.4 官方样题答案键确认，本站只陈述结论，
+            不复制题干与选项原文。其余命题角度、干扰项分析与排除技巧为本站教学推断，
+            官方未公布命题规律，仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">DevOps 是所有人的职责，不是某个人的职位。</p>
+          <p class="mb-0 muted"><small>配套判据：<strong>八个角色，不等于八个人，更不等于八个岗位。</strong>
+            清单是用来点名的 —— 每一行有没有人认领，而不是每一行要不要发一张工牌。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-8-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-2-3</div>
+        <h3 class="kp__title">团队怎么组：技能广度与规模自治<span class="en">Skill Breadth, Team Size and Autonomy</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>把角色装进团队时，有两条尺子：<strong>技能有多宽</strong>，<strong>团队有多大</strong>。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">尺子</th><th>要求</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>技能广度</strong><br><small class="muted">常被称为 T 型人才 <span class="en">T-shaped</span></small></td>
+                  <td>成员在自己的<strong>纵向深度</strong>之外，具备相邻领域的<strong>基本能力</strong> ——
+                    开发看得懂告警与日志，测试改得动流水线，运维读得懂业务代码。
+                    没有这条横杠，角色之间的交接就只是从部门之间搬进了团队内部</td>
+                </tr>
+                <tr>
+                  <td><strong>规模与自治</strong></td>
+                  <td>团队要<strong>小到能被端到端授权</strong>（一次会能拍板，不必层层报批），
+                    同时<strong>大到能覆盖必需技能</strong>（清单上的角色都有人，且关键角色不止一个人会）。
+                    这两条同时成立时，团队才谈得上自治</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>DevOps teams</em> 是 DOFD v3.4 官方考纲术语表条目；
+            <strong>但「T 型人才」不在术语表内，也不是 v3.4 课程大纲的模块子项</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，
+            它是业界用来描述技能结构的通行说法，本站引入它属<strong>教学补充</strong>。
+            「小到能被端到端授权、大到能覆盖必需技能」这组判据同为本站教学整理，官方未规定团队规模。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点是：<strong>组织结构上的交接消失了，技能结构上的交接还在。</strong>
+            合成一个团队只是把墙拆掉，墙拆了不等于路通了。
+          </p>
+          <ul>
+            <li>某 9 人跨职能团队，组织上已经端到端：产品、开发、测试、运维都在一个组。
+              但流水线只有 1 个人写得动。他休假两周，期间 <strong>6 个变更全部积压</strong>，
+              其余 8 个人只能等他回来 —— <strong>交接点从部门之间搬到了工位之间，数量没变。</strong></li>
+            <li>反过来的失效同样常见：另一个团队 <strong>24 人</strong>，技能覆盖毫无问题，
+              但任何一个跨模块的决定都要拉齐 5 个小圈子，一个决定平均<strong>走 3 天</strong>。
+              规模换来了技能，代价是<strong>把自治换掉了</strong>：这个团队什么都会，就是拍不了板。</li>
+            <li>两条尺子因此必须一起用：<strong>只看技能会把团队做大到失去自治，
+              只看规模会把团队做小到处处求人。</strong>
+              T 型的横杠正是让团队在<strong>不扩编</strong>的前提下覆盖更多角色的唯一办法。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            两条尺子的张力分析为本站教学整理。</small></p>
+        </div>
+
+        <!-- ============ 图 8-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 445" role="img" aria-label="职能筒仓下的角色分布与跨职能团队下的角色分布对照，标出跨部门交接点数量">
+              <defs>
+                <marker id="ah-82-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <!-- 左：职能筒仓 -->
+              <text x="30" y="30" class="f-5" font-size="15" font-weight="700">职能筒仓：同样的角色，分散在 5 个部门</text>
+
+              <g>
+                <rect x="40" y="56" width="200" height="42" rx="8" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+                <text x="56" y="75" class="s-ink" font-size="13.5" font-weight="650">产品部</text>
+                <text x="56" y="91" class="s-muted" font-size="12">角色：产品负责人</text>
+
+                <rect x="40" y="116" width="200" height="42" rx="8" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+                <text x="56" y="135" class="s-ink" font-size="13.5" font-weight="650">开发部</text>
+                <text x="56" y="151" class="s-muted" font-size="12">角色：开发</text>
+
+                <rect x="40" y="176" width="200" height="42" rx="8" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+                <text x="56" y="195" class="s-ink" font-size="13.5" font-weight="650">测试部</text>
+                <text x="56" y="211" class="s-muted" font-size="12">角色：测试 · 质量</text>
+
+                <rect x="40" y="236" width="200" height="42" rx="8" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+                <text x="56" y="255" class="s-ink" font-size="13.5" font-weight="650">安全部</text>
+                <text x="56" y="271" class="s-muted" font-size="12">角色：安全（上线前评审形式）</text>
+
+                <rect x="40" y="296" width="200" height="42" rx="8" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+                <text x="56" y="315" class="s-ink" font-size="13.5" font-weight="650">运维部</text>
+                <text x="56" y="331" class="s-muted" font-size="12">角色：运维 · 发布 · 值班</text>
+              </g>
+
+              <g class="s-5" stroke-width="2" fill="none">
+                <line x1="140" y1="100" x2="140" y2="112" marker-end="url(#ah-82-1)"/>
+                <line x1="140" y1="160" x2="140" y2="172" marker-end="url(#ah-82-1)"/>
+                <line x1="140" y1="220" x2="140" y2="232" marker-end="url(#ah-82-1)"/>
+                <line x1="140" y1="280" x2="140" y2="292" marker-end="url(#ah-82-1)"/>
+              </g>
+              <g class="f-5" font-size="12" font-weight="650">
+                <text x="252" y="111">跨部门交接 ①</text>
+                <text x="252" y="171">跨部门交接 ②</text>
+                <text x="252" y="231">跨部门交接 ③</text>
+                <text x="252" y="291">跨部门交接 ④</text>
+              </g>
+
+              <text x="40" y="374" class="f-5" font-size="15" font-weight="700">跨部门交接：4 处</text>
+              <text x="40" y="398" class="s-muted" font-size="12.5">每一处都是排队、上下文丢失与责任转移的发生地</text>
+              <text x="40" y="420" class="s-muted" font-size="12.5">反馈要穿过 4 道组织边界，才回得到写代码的人手上</text>
+
+              <!-- 分隔线 -->
+              <line x1="480" y1="20" x2="480" y2="425" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+              <!-- 右：跨职能团队 -->
+              <text x="512" y="30" class="f-1" font-size="15" font-weight="700">跨职能团队：同样的角色，集中在 1 个团队</text>
+
+              <rect x="512" y="52" width="420" height="250" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="532" y="80" class="f-1" font-size="14" font-weight="700">一个交付团队 · 共担同一个交付目标</text>
+
+              <g font-size="13">
+                <rect x="532" y="94" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="548" y="120" class="s-ink">产品负责人</text>
+                <rect x="729" y="94" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="745" y="120" class="s-ink">开发</text>
+
+                <rect x="532" y="146" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="548" y="172" class="s-ink">测试 · 质量</text>
+                <rect x="729" y="146" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="745" y="172" class="s-ink">运维 · SRE · 值班</text>
+
+                <rect x="532" y="198" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="548" y="224" class="s-ink">安全</text>
+                <rect x="729" y="198" width="185" height="42" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+                <text x="745" y="224" class="s-ink">发布 · 自动化</text>
+              </g>
+
+              <text x="532" y="272" class="s-ink" font-size="13">原来的 4 处交接留在了团队内部 —— 变成当面对话，不再是工单</text>
+              <text x="532" y="292" class="s-muted" font-size="12.5">前提是技能真的覆盖得住：横杠不够宽，交接只是换了位置</text>
+
+              <rect x="512" y="316" width="420" height="46" rx="10" class="s-3" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill)"/>
+              <text x="530" y="335" class="f-3" font-size="13" font-weight="650">平台团队：环境 · 流水线 · 可观测性底座（自助服务）</text>
+              <text x="530" y="353" class="s-muted" font-size="12">是能力供给，不是一道交接 —— 自助获取，不排队</text>
+
+              <text x="512" y="392" class="f-1" font-size="15" font-weight="700">跨部门交接：0 处</text>
+              <text x="512" y="416" class="s-muted" font-size="12.5">交接点没有凭空消失，是被移到了一间屋子里，代价从天变成分钟</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 8-2-2　同样的角色，两种放法。</strong>
+            要看懂的是：<strong>左右两边的交付角色一个不多一个不少，变的只是它们被装进了几个组织单元</strong>。
+            筒仓下 5 个部门之间产生 <strong>4 处跨部门交接</strong>，每一处都排队；
+            跨职能团队把同样 4 处交接<strong>移进团队内部</strong>，代价从「天」降到「分钟」。
+            右下角的虚线框是平台团队：它是<strong>额外的能力供给方，不承担交付职责</strong>，
+            所以左侧没有对应物，也不算一处交接。
+            最后一行小字是本节的关键前提 —— <strong>如果团队里只有一个人会写流水线，交接并没有消失，只是搬到了工位之间</strong>。
+            <br><small class="muted">本对照图与「4 处交接 → 0 处」的计数为本站构造的教学示例，官方未给出此类计数；
+            组织形态本身的完整对照见 <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>，
+            平台工程展开见 <a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">本节主张的做法</th><th>对照面（另一种做法 / 失效形态）</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>T 型</strong> <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+                  <td><strong>一深多广</strong>：一个专精领域 + 相邻领域的基本能力，够看懂、够接手、够顶两天</td>
+                  <td><strong>I 型</strong>：只有纵深，出了自己那格什么都不碰。团队内部照样要交接</td>
+                </tr>
+                <tr>
+                  <td><strong>全才 / 通才</strong> <span class="badge badge--note">📝 教学整理</span></td>
+                  <td>横杠是<strong>基本能力</strong>，不是同等深度。深度仍然分工</td>
+                  <td>要求人人样样精通。现实中做不到，强推的结果是样样半懂，质量整体下滑</td>
+                </tr>
+                <tr>
+                  <td><strong>跨职能团队 <span class="en">cross-functional</span></strong></td>
+                  <td>团队作为<strong>整体</strong>覆盖全部必需角色</td>
+                  <td>常被误读成「每个<strong>人</strong>都要会全部技能」。官方 Blueprint 说的是
+                    <em>Cross-function teams focus on business goals</em>，主语是团队不是个人</td>
+                </tr>
+                <tr>
+                  <td><strong>只用单边判断规模</strong> <span class="badge badge--note">📝 教学整理</span></td>
+                  <td>两条边同时用：<strong>下限由必需技能定，上限由能否端到端拍板定</strong></td>
+                  <td>只看技能 → 团队做大到失去自治，决定要靠开会拉齐；只看规模 → 团队做小到处处求人，授权给了、能力没给</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易被混淆的那一点：<strong>「跨职能」说的是团队，不是个人</strong>。
+            把它读成「每个人都要全栈」，会推出一个错误结论 —— 团队应该由全才组成。
+            实际要求低得多也现实得多：<strong>每个人多懂一层相邻领域，足以让交接变成对话</strong>。</small></p>
+          <p class="mb-0 muted"><small>本表四组对照为本站教学整理；「T 型」「I 型」「全才」均不在 DOFD 66 条术语表内，属教学补充。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>做一张技能矩阵</strong>：横轴是清单上的角色，纵轴是人，格子里填「能主导 / 能接手 / 看得懂 / 不会」。
+              找的是<strong>只有一个「能主导」的那一列</strong> —— 那是团队的<span class="term">单点故障 <span class="en">SPOF</span></span>。</li>
+            <li><strong>用休假做压力测试</strong>：不必等真出事。
+              问一句「这周谁休假会让交付停下来」，答案通常一个人就能说出来，而且团队心里早就有数。</li>
+            <li><strong>加横杠的三个便宜手段</strong>：<strong>结对</strong>（把关键技能带出第二个人）与
+              <strong>轮岗值班</strong>（让写代码的人接一次告警，胜过十次培训）——
+              这两者都是官方术语表条目
+              <span class="term">协作与沟通 <span class="en">Collaboration and communication</span></span>
+              在团队内部的具体落地形式；第三种是<strong>沉浸式训练</strong>（这两条术语的完整辨析在
+              <a href="8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a>）—— 官方术语表收录了
+              <span class="term">Dojo</span>（沉浸式实战训练场）与
+              <span class="term">沉浸式学习 <span class="en">Immersion</span></span> 两条，
+              指的正是这类脱产实战式的能力建设。</li>
+            <li><strong>规模上限的处理</strong>：团队超过能拍板的规模时，
+              正确动作是<strong>沿业务边界拆成两个各自端到端的团队</strong>，
+              而不是在内部按职能再分小组 —— 后者等于把筒仓装进了团队里。</li>
+            <li><strong>用团队健康度指标验证</strong>：自治与技能是否真的改善，可以看
+              <span class="term">员工净推荐值 <span class="en">eNPS</span></span> 与交付速度类指标的走向，
+              见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small><em>Collaboration and communication</em>、<em>Dojo</em>、<em>Immersion</em>、
+            <em>employee Net Promoter Score (eNPS)</em>、
+            <em>Single Point of Failure (SPOF)</em> 均列于 DOFD v3.4 官方考纲术语表；
+            把「结对 / 轮岗值班」归入该术语条目之下是本站教学整理；
+            上述技能矩阵、休假压力测试与拆分判据为本站教学整理，官方未规定团队技能建设方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>「T 型」不在 66 条术语表内</strong>，本站判断它不会作为术语直接命题<span class="muted">（教学推断）</span>。
+              要掌握的是<strong>DevOps teams 的特征</strong> —— 跨职能、共担业务目标、能端到端负责。</li>
+            <li><strong>命题角度</strong>：给一段团队描述，问它是否符合 DevOps 团队的特征；
+              或问组建 DevOps 团队时应当考虑什么。</li>
+            <li><strong>干扰项长什么样</strong><span class="muted">（以下选项措辞为本站仿写，非官方样题原文）</span>：
+              ① 一个把 <strong>DevOps 团队描述成专门负责自动化与工具的独立团队</strong>的选项 —— 这是反模式，
+              与官方 Blueprint 的 <em>Cross-function teams focus on business goals</em> 方向相反；
+              ② 一个要求<strong>团队成员各自掌握全部技能</strong>的选项 —— 把跨职能的主语从团队偷换成个人；
+              ③ 一个断言<strong>团队越大越能覆盖技能</strong>的选项 —— 只谈技能不谈自治，漏了另一条尺子。</li>
+            <li><strong>排除技巧</strong>：读选项时先找主语。
+              主语是<strong>团队</strong>且落点在<strong>业务目标 / 端到端</strong>的，方向对；
+              主语是<strong>个人</strong>且要求「全都会」，或者把团队定位成<strong>工具专职组</strong>的，先划掉。</li>
+            <li><strong>与 5.5 的分界</strong>：问<strong>组织形态怎么选</strong>（筒仓 / 跨职能 / 平台团队）是
+              <a href="../ch05-culture/5.5-operating-models.html">5.5</a> 的范围；
+              问<strong>职责怎么分、团队怎么配技能</strong>才是本节。两节的干扰项经常互相串用。</li>
+          </ul>
+          <p class="mb-0 muted"><small>Blueprint 原文出自 PeopleCert《DevOps Foundation® Blueprint》；
+            以上命题角度、干扰项构造与排除技巧为本站教学推断，官方未公布命题规律，
+            仅公布考试范围为 Bloom 1–2，本站不复制官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">团队小到能自己拍板，宽到不用求人 —— 两条边同时成立，才叫自治。</p>
+          <p class="mb-0 muted"><small>技能那一条的助记：<strong>横杠不够宽，交接不会消失，只会搬进屋里。</strong>
+            拆掉部门墙只是第一步，第二步是让墙两边的活儿彼此都能接得住。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>三个术语逐字都在官方 66 条术语表内</strong>：<em>DevOps stakeholders</em>、<em>DevOps teams</em>、<em>DevOps roles</em>，
+          范围一层套一层 —— <strong>干系人是圈，团队是框，角色是帽子</strong></li>
+        <li><strong>干系人 = 受影响或有影响的人</strong>，范围最大，含业务方、客户、合规与供应商；
+          把它缩成「Dev 加 Ops」是最常见的干扰项</li>
+        <li><strong>角色是职责不是岗位</strong>：一个人可以同时承担多个角色；八个角色不等于八个人，更不等于八个岗位</li>
+        <li><strong>「DevOps 工程师」这个岗位名有争议</strong>：把职责变成岗位，其他人就有理由不承担它，
+          责任只是换个部门重新转走一次<span class="muted">（本站教学整理）</span></li>
+        <li><strong>T 型 = 一深多广</strong>，是教学补充、不在术语表内；但它背后的判据要记住 ——
+          <strong>横杠不够宽，交接只是从部门之间搬到工位之间</strong></li>
+        <li><strong>团队规模两条边</strong>：小到能被端到端授权，大到能覆盖必需技能。只满足一条都不叫自治<span class="muted">（本站教学整理）</span></li>
+        <li><strong>「跨职能」的主语是团队不是个人</strong>：官方 Blueprint 写的是
+          <em>Cross-function teams focus on business goals</em>，不要读成「人人全栈」</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevOps stakeholders</em>、<em>DevOps teams</em>、<em>DevOps roles</em>、
+      <em>Site Reliability Engineering</em>、<em>DevSecOps</em>、<em>Scrum roles, artifacts and events</em>、
+      <em>Dojo</em>、<em>Immersion</em>、<em>employee Net Promoter Score (eNPS)</em>、
+      <em>Single Point of Failure (SPOF)</em>、<em>Collaboration and communication</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Roles</em> 是 v3.4 课程大纲 M8「Sharing, Shadowing and Evolving」的模块子项。
+      <strong>该术语表只列词条、不附定义，因此本页给出的每一条中文释义均为本站措辞。</strong>
+      引用的 Blueprint 原文 <em>Cross-function teams focus on business goals</em> 与
+      <em>Ops work with Dev, supporting each other to improve flow towards production and monitor results</em>
+      出自 PeopleCert《DevOps Foundation® Blueprint》。
+      「用指标控制和评价员工不属于 DevOps 领导力目标」一条<strong>由 DOFD v3.4 官方样题答案键确认</strong>，
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>；该考点归 <a href="8.3-leadership.html">8.3 DevOps 领导力</a>，本节仅作边界提示。
+      <strong>教学整理部分</strong>：三者的范围包含关系（图 8-2-1）、八个角色的清单与职责描述、
+      「DevOps 工程师岗位名有争议」的判断与失效路径分析、角色 vs 岗位 vs 团队的对照、
+      技能矩阵与休假压力测试、「小到能拍板、大到能覆盖技能」两条规模判据、
+      筒仓与跨职能团队的交接计数（图 8-2-2），官方均未以此形式给出，已分别在对应位置就地标注。
+      「T 型 / I 型 / 全才」不在 66 条术语表内，属<strong>延伸 · 非考纲</strong>的教学补充。
+      <em>Platform Engineering</em> 属 <strong>v3.6 新增学习目标</strong>（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+      v3.4 的 66 条术语表未收录。文中两个数字化案例为本站构造的教学示例，非真实调研数据。
+      组织形态对照见 <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>；
+      平台工程展开见 <a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>；
+      团队健康度指标见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+      <em>Dojo</em>、<em>Immersion</em>、<em>Collective Body of Knowledge (CBOK)</em> 三条术语的完整辨析见本章
+      <a href="8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a>，本节只用它们在团队内的落地形式。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

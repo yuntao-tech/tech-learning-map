@@ -124,13 +124,13 @@ window.SYLLABUS = {
       questions: 5,
       desc: "部署流水线是主干，IaC、云原生、工具链是支撑。VSM 平台与生成式 AI 用例是 v3.6 新增。",
       sections: [
-        { n: "6.1", slug: "6.1-why-automate", title: "自动化的价值与边界", status: "todo" },
-        { n: "6.2", slug: "6.2-deployment-pipeline", title: "部署流水线", status: "todo" },
-        { n: "6.3", slug: "6.3-iac", title: "基础设施即代码", status: "todo" },
-        { n: "6.4", slug: "6.4-cloud-containers-microservices", title: "云、容器与微服务", status: "todo" },
-        { n: "6.5", slug: "6.5-toolchain-architecture", title: "DevOps 工具链架构", status: "todo" },
-        { n: "6.6", slug: "6.6-vsm-platform-genai", title: "VSM 平台与生成式 AI 用例", status: "todo", tag: "new" },
-        { n: "6.7", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "6.1", slug: "6.1-why-automate", title: "自动化的价值与边界", status: "done" },
+        { n: "6.2", slug: "6.2-deployment-pipeline", title: "部署流水线", status: "done" },
+        { n: "6.3", slug: "6.3-iac", title: "基础设施即代码", status: "done" },
+        { n: "6.4", slug: "6.4-cloud-containers-microservices", title: "云、容器与微服务", status: "done" },
+        { n: "6.5", slug: "6.5-toolchain-architecture", title: "DevOps 工具链架构", status: "done" },
+        { n: "6.6", slug: "6.6-vsm-platform-genai", title: "VSM 平台与生成式 AI 用例", status: "done", tag: "new" },
+        { n: "6.7", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {
@@ -139,13 +139,13 @@ window.SYLLABUS = {
       questions: 2,
       desc: "考试只出 2 题，但 DORA 指标是理解整条因果链的枢纽 —— 按理解重要性学，按考试权重分配时间。",
       sections: [
-        { n: "7.1", slug: "7.1-why-measure", title: "为什么必须度量", status: "todo" },
-        { n: "7.2", slug: "7.2-dora-metrics", title: "DORA 四大指标", status: "todo" },
-        { n: "7.3", slug: "7.3-four-metric-families", title: "速度 / 质量 / 稳定性 / 文化", status: "todo" },
-        { n: "7.4", slug: "7.4-lead-vs-cycle-time", title: "前置时间 vs 周期时间", status: "todo" },
-        { n: "7.5", slug: "7.5-value-driven-metrics", title: "价值驱动指标与看板", status: "todo" },
-        { n: "7.6", slug: "7.6-aiops", title: "AIOps", status: "todo", tag: "new" },
-        { n: "7.7", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "7.1", slug: "7.1-why-measure", title: "为什么必须度量", status: "done" },
+        { n: "7.2", slug: "7.2-dora-metrics", title: "DORA 四大指标", status: "done" },
+        { n: "7.3", slug: "7.3-four-metric-families", title: "速度 / 质量 / 稳定性 / 文化", status: "done" },
+        { n: "7.4", slug: "7.4-lead-vs-cycle-time", title: "前置时间 vs 周期时间", status: "done" },
+        { n: "7.5", slug: "7.5-value-driven-metrics", title: "价值驱动指标与看板", status: "done" },
+        { n: "7.6", slug: "7.6-aiops", title: "AIOps", status: "done", tag: "new" },
+        { n: "7.7", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {
@@ -154,12 +154,12 @@ window.SYLLABUS = {
       questions: 4,
       desc: "从「团队做 DevOps」到「组织做 DevOps」。角色、领导力、起步方式与关键成功因素。",
       sections: [
-        { n: "8.1", slug: "8.1-devops-in-enterprise", title: "企业中的 DevOps", status: "todo" },
-        { n: "8.2", slug: "8.2-roles-teams", title: "角色与团队", status: "todo" },
-        { n: "8.3", slug: "8.3-leadership", title: "DevOps 领导力", status: "todo" },
-        { n: "8.4", slug: "8.4-getting-started", title: "组织考量与如何起步", status: "todo" },
-        { n: "8.5", slug: "8.5-challenges-csf", title: "挑战、风险与关键成功因素", status: "todo" },
-        { n: "8.6", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "8.1", slug: "8.1-devops-in-enterprise", title: "企业中的 DevOps", status: "done" },
+        { n: "8.2", slug: "8.2-roles-teams", title: "角色与团队", status: "done" },
+        { n: "8.3", slug: "8.3-leadership", title: "DevOps 领导力", status: "done" },
+        { n: "8.4", slug: "8.4-getting-started", title: "组织考量与如何起步", status: "done" },
+        { n: "8.5", slug: "8.5-challenges-csf", title: "挑战、风险与关键成功因素", status: "done" },
+        { n: "8.6", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {

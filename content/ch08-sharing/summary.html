@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.6 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 8 章总结：把 8.1–8.5 串成一条从企业规模化到关键成功因素的链，给出八对易混淆的分界线、官方样题答案键确认的三条本章考点、本章官方术语速查，并用一张表回顾全书八章。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch08", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 8 章 · 分享、跟随与演进</div>
+      <h1 class="page-head__title">8.6 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章五节回答的是同一个问题的五个环节：<strong>DevOps 怎样从一个团队的做法，变成整个组织持续做下去的事</strong>。
+        它也是考纲八章的最后一章 —— 这一页因此多做一件事：
+        在收束本章之外，用一张表把<strong>全书八章的版图</strong>重新摆出来。
+        本页最值得反复看的部分是<strong>官方样题答案键确认的三条本章考点</strong>：
+        全书大量「会怎么考」的说法是本站推断，那三条不是。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>8.1–8.5 是什么关系，为什么「关键成功因素」必须放在最后一节</li>
+        <li>本章哪三条结论有官方答案键背书，哪些只是本站的教学归类 —— 两者必须分清</li>
+        <li>考纲八章各自回答什么问题、题数怎么分，全书版图长什么样</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-6-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 752" role="img" aria-label="第 8 章五节串成一条链的知识地图：企业规模化、角色与团队、领导力、如何起步、挑战与关键成功因素">
+          <defs>
+            <marker id="ah-86-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-86-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <text x="16" y="28" class="s-ink" font-size="17" font-weight="700">第 8 章 · 从「团队做 DevOps」到「组织做 DevOps」的五个环节</text>
+          <text x="16" y="52" class="s-muted" font-size="13">在企业里长什么样（8.1）→ 谁来做（8.2）→ 谁来带（8.3）→ 从哪下手（8.4）→ 什么决定成败（8.5）</text>
+          <text x="16" y="76" class="s-muted" font-size="12.5">节号带虚线下划 = 可点击跳转该小节　·　左侧竖箭头 = 顺序　·　底部虚线回环 = 下一轮起步</text>
+
+          <!-- ============ 8.1 ============ -->
+          <a href="8.1-devops-in-enterprise.html">
+            <rect x="62" y="96" width="906" height="88" rx="12" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="126" r="19" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="131" class="f-1" font-size="14" font-weight="700" text-anchor="middle">8.1</text>
+            <line x1="112" y1="151" x2="160" y2="151" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="170" class="s-muted" font-size="12.5" text-anchor="middle">在企业里</text>
+            <line x1="210" y1="108" x2="210" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="126" class="s-ink" font-size="16" font-weight="700">企业中的 DevOps</text>
+            <text x="222" y="148" class="s-muted" font-size="12.5">DevOps in the Enterprise</text>
+            <text x="222" y="170" class="f-1" font-size="12" font-weight="650">官方模块子项（M8）</text>
+            <line x1="478" y1="108" x2="478" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="124" class="s-ink" font-size="13.5">一个团队跑通不等于整个企业跑通：规模一大，协调与合规成为主要成本</text>
+            <text x="490" y="148" class="s-muted" font-size="12.5">本节回答：DevOps 在企业范围内长什么样、要额外解决哪些问题</text>
+            <text x="490" y="170" class="s-muted" font-size="12.5">相关术语：Scaled Agile Framework (SAFe)（正式讲解见 4.2）</text>
+          </a>
+          <line x1="136" y1="186" x2="136" y2="206" class="s-1" stroke-width="2" marker-end="url(#ah-86-1)"/>
+
+          <!-- ============ 8.2 ============ -->
+          <a href="8.2-roles-teams.html">
+            <rect x="62" y="210" width="906" height="88" rx="12" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="240" r="19" class="s-2" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="245" class="f-2" font-size="14" font-weight="700" text-anchor="middle">8.2</text>
+            <line x1="112" y1="265" x2="160" y2="265" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="284" class="s-muted" font-size="12.5" text-anchor="middle">谁来做</text>
+            <line x1="210" y1="222" x2="210" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="240" class="s-ink" font-size="16" font-weight="700">角色与团队</text>
+            <text x="222" y="262" class="s-muted" font-size="12.5">Roles</text>
+            <text x="222" y="284" class="f-2" font-size="12" font-weight="650">考纲核心 · DevOps roles / teams</text>
+            <line x1="478" y1="222" x2="478" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="238" class="s-ink" font-size="13.5">角色是职责集合，团队是承载单元，干系人是受影响者 —— 三层不可互换</text>
+            <text x="490" y="262" class="s-muted" font-size="12.5">Dojo 与沉浸式学习 Immersion 是把能力铺开的手段，对应「分享与跟随」</text>
+            <text x="490" y="284" class="s-muted" font-size="12.5">术语：DevOps roles · DevOps teams · DevOps stakeholders</text>
+          </a>
+          <line x1="136" y1="300" x2="136" y2="320" class="s-1" stroke-width="2" marker-end="url(#ah-86-1)"/>
+
+          <!-- ============ 8.3 ============ -->
+          <a href="8.3-leadership.html">
+            <rect x="62" y="324" width="906" height="88" rx="12" class="s-3" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="354" r="19" class="s-3" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="359" class="f-3" font-size="14" font-weight="700" text-anchor="middle">8.3</text>
+            <line x1="112" y1="379" x2="160" y2="379" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="398" class="s-muted" font-size="12.5" text-anchor="middle">谁来带</text>
+            <line x1="210" y1="336" x2="210" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="354" class="s-ink" font-size="16" font-weight="700">DevOps 领导力</text>
+            <text x="222" y="376" class="s-muted" font-size="12.5">DevOps Leadership</text>
+            <text x="222" y="398" class="f-3" font-size="12" font-weight="650">官方模块子项（M8）</text>
+            <line x1="478" y1="336" x2="478" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="352" class="s-ink" font-size="13.5">领导给方向、授权与安全感；管理给计划、资源与控制 —— 不是同一件事</text>
+            <text x="490" y="376" class="s-muted" font-size="12.5">官方答案键确认：用指标控制和评价员工不属于 DevOps 领导力的目标</text>
+            <text x="490" y="398" class="s-muted" font-size="12.5">本节回答：领导要做什么、以及明确不该做什么</text>
+          </a>
+          <line x1="136" y1="414" x2="136" y2="434" class="s-1" stroke-width="2" marker-end="url(#ah-86-1)"/>
+
+          <!-- ============ 8.4 ============ -->
+          <a href="8.4-getting-started.html">
+            <rect x="62" y="438" width="906" height="88" rx="12" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="468" r="19" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="473" class="f-4" font-size="14" font-weight="700" text-anchor="middle">8.4</text>
+            <line x1="112" y1="493" x2="160" y2="493" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="512" class="s-muted" font-size="12.5" text-anchor="middle">从哪下手</text>
+            <line x1="210" y1="450" x2="210" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="468" class="s-ink" font-size="16" font-weight="700">组织考量与如何起步</text>
+            <text x="222" y="490" class="s-muted" font-size="12.5">Organizational Considerations</text>
+            <text x="222" y="512" class="f-4" font-size="12" font-weight="650">考纲核心 · 含 M8 子项 Getting Started</text>
+            <line x1="478" y1="450" x2="478" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="466" class="s-ink" font-size="13.5">决定采用哪些原则与实践的是业务战略与目标（官方答案键确认）</text>
+            <text x="490" y="490" class="s-muted" font-size="12.5">担任变革推动者的是早期采用者（官方答案键确认）</text>
+            <text x="490" y="512" class="s-muted" font-size="12.5">本站教学整理：不从工具选型倒推起步顺序，也不从高层或最抵触的人起手</text>
+          </a>
+          <line x1="136" y1="528" x2="136" y2="548" class="s-1" stroke-width="2" marker-end="url(#ah-86-1)"/>
+
+          <!-- ============ 8.5 ============ -->
+          <a href="8.5-challenges-csf.html">
+            <rect x="62" y="552" width="906" height="88" rx="12" class="s-5" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="582" r="19" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="587" class="f-5" font-size="14" font-weight="700" text-anchor="middle">8.5</text>
+            <line x1="112" y1="607" x2="160" y2="607" class="s-5" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="626" class="s-muted" font-size="12.5" text-anchor="middle">什么决定成败</text>
+            <line x1="210" y1="564" x2="210" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="582" class="s-ink" font-size="16" font-weight="700">挑战、风险与关键成功因素</text>
+            <text x="222" y="604" class="s-muted" font-size="12.5">Challenges, Risks &amp; CSF</text>
+            <text x="222" y="626" class="f-5" font-size="12" font-weight="650">官方模块子项（M8）</text>
+            <line x1="478" y1="564" x2="478" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="580" class="s-ink" font-size="13.5">挑战是先在那里的条件，风险是推进方式引来的，关键成功因素决定成败</text>
+            <text x="490" y="604" class="s-muted" font-size="12.5">官方答案键确认：关键成功因素是管理层对文化变革的承诺</text>
+            <text x="490" y="626" class="s-muted" font-size="12.5">M8 子项全称：Challenges, Risks, and Critical Success Factors</text>
+          </a>
+
+          <!-- ============ 回环 ============ -->
+          <path d="M 515 640 L 515 662 Q 515 674 503 674 L 42 674 Q 30 674 30 662 L 30 152 Q 30 140 42 140 L 56 140"
+                class="s-5" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-86-2)"/>
+          <text x="290" y="662" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">起步不是一次性动作：8.5 暴露的新挑战驱动下一轮从 8.1 重新展开</text>
+
+          <text x="16" y="700" class="s-muted" font-size="12">五节的先后顺序、各节「回答什么问题」的概括与底部回环均为本站教学整理，官方未以此形式给出章节结构图。</text>
+          <text x="16" y="720" class="s-muted" font-size="12">v3.4 课程大纲 M8 的六个官方子项：DevOps in the Enterprise · Roles · DevOps Leadership</text>
+          <text x="16" y="740" class="s-muted" font-size="12">　　Organizational Considerations · Getting Started · Challenges, Risks, and Critical Success Factors</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-6-1　第 8 章的五个环节。</strong>
+        这张图要看懂的是<strong>为什么「关键成功因素」只能放在最后</strong>：
+        前四节分别回答「长什么样、谁来做、谁来带、从哪下手」，都是<strong>可执行的动作</strong>；
+        8.5 回答的是「这些动作在什么条件下才不会白做」，它是对前四节的<strong>成立条件</strong>的追问 ——
+        官方答案键给出的那个条件是<strong>管理层对文化变革的承诺</strong>。
+        底部虚线表明这条链不是一次走完就结束：起步之后暴露的新挑战，会把讨论重新带回企业层面的规模化。
+        <br><small class="muted">五节顺序、各节概括与底部回环<strong>均为本站教学整理</strong>，官方仅列出 M8 的六个模块子项，未给出它们之间的先后关系；
+        本站把官方子项 <em>Organizational Considerations</em> 与 <em>Getting Started</em> 合并为 8.4 一节，
+        把 <em>Roles</em> 扩为「角色与团队」以承接 <em>DevOps teams</em> 一词，<strong>这两处小节切分是本站编排</strong>。
+        图中四处「官方答案键确认」仅指该句结论本身，出自 DOFD v3.4 官方样题答案键；
+        括号外的误选方向与延伸判断（含「而不是工具、预算或人员编制」这类排除表述）均为本站教学整理。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查优先级排</strong>，与下面的易混淆汇总表配合使用。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:15%">小节</th><th style="width:31%">核心结论</th><th style="width:25%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></strong><br><small class="muted">DevOps in the Enterprise</small></td>
+            <td>难题换了性质：一个团队做 DevOps 是<strong>技术题</strong>，几十个团队做 DevOps 是<strong>扩散题</strong>加<strong>共存题</strong>——要同时解决知识扩散与既有合规、采购、预算的共存</td>
+            <td>可以扩散的是做法，不能扩散的是特权</td>
+            <td>把「企业级」理解成「买更大的工具平台」；用一个试点团队的成绩推断整个组织已经转型</td>
+          </tr>
+          <tr>
+            <td><strong><a href="8.2-roles-teams.html">8.2 角色与团队</a></strong><br><small class="muted">Roles</small></td>
+            <td><strong>角色</strong>是职责集合、<strong>团队</strong>是承载这些职责的单元、<strong>干系人</strong>是被结果影响的人；能力靠 <strong>Dojo</strong> 与<strong>沉浸式学习</strong>铺开</td>
+            <td>干系人是圈，团队是框，角色是帽子 —— 圈最大，帽子可以一人戴好几顶</td>
+            <td>把三个词当同义词互换；把「设一个 DevOps 岗位」当成完成了角色设计</td>
+          </tr>
+          <tr>
+            <td><strong><a href="8.3-leadership.html">8.3 DevOps 领导力</a></strong><br><small class="muted">DevOps Leadership</small></td>
+            <td>领导者的五项动作是<strong>方向 · 障碍 · 安全 · 能力 · 示范</strong>；<strong>用指标控制和评价员工不属于领导力的目标</strong>（官方答案键确认）</td>
+            <td>把判断能力交出去，把障碍收回来 —— 顺序反了就是甩锅</td>
+            <td>把「加强度量与考核」当成领导力动作；把领导力等同于职位层级</td>
+          </tr>
+          <tr>
+            <td><strong><a href="8.4-getting-started.html">8.4 组织考量与如何起步</a></strong><br><small class="muted">Organizational Considerations · Getting Started</small></td>
+            <td>决定采用哪些原则与实践的是<strong>业务战略与目标</strong>；变革推动者来自<strong>早期采用者</strong>（两条均由官方答案键确认）</td>
+            <td>先量再动，先小再大；先找早期采用者，不找全体同意</td>
+            <td>从工具选型或成熟度分数倒推起步顺序；指望高层或说服最抵触的人来当推动者</td>
+          </tr>
+          <tr>
+            <td><strong><a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a></strong><br><small class="muted">Challenges, Risks, and Critical Success Factors</small></td>
+            <td>三个词回答三个不同问题：<strong>先在那里的阻力 / 推进方式自己引来的坑 / 什么决定成败</strong>。官方答案键确认的关键成功因素是<strong>管理层对文化变革的承诺</strong></td>
+            <td>挑战是地形，风险是走法，关键成功因素在根上</td>
+            <td>三个词混用；把「工具链齐全」「自动化覆盖率高」当成关键成功因素</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      「核心结论」中标注<strong>官方答案键确认</strong>的三处出自 <strong>DOFD v3.4 官方样题答案键</strong>，本站只陈述结论。
+      表中<strong>「记忆锚点」与「最易错点」两列，以及未标注来源的概括表述，均为本站教学整理</strong> ——
+      官方文件给出的是 M8 的六个模块子项名称与 66 条术语表词条，未以此形式给出小节结论与易错点清单。
+    </div>
+
+    <!-- ============ 易混淆汇总表 ============ -->
+    <div class="divider-label">易混淆汇总表</div>
+
+    <p>
+      本章的易混淆有一个共同特点：<strong>混淆双方在中文里常被当作近义词，在考纲里却是不同层级或不同性质的词</strong>。
+      看表的方法：遮住「分界线」一列，逐对说出分界线，说不出来的那一对就是要回去重读的地方。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:22%">易混的一对</th><th style="width:40%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>干系人 vs 团队 vs 角色</strong><br>
+              <small class="muted">DevOps stakeholders / DevOps teams / DevOps roles —— <a href="8.2-roles-teams.html">8.2</a> · 干系人正式讲解见 <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a></small></td>
+            <td><strong>角色</strong>是一组<strong>职责</strong>：一个人可以同时担任多个角色。<br>
+              <strong>团队</strong>是承载这些角色的<strong>组织单元</strong>。<br>
+              <strong>干系人</strong>是被结果<strong>影响或关注结果</strong>的人，多数不在团队里（业务、合规、客服、客户）。</td>
+            <td>三个词在日常汉语里都能说成「相关的人」。判据是<strong>问的是职责、编制，还是影响范围</strong>：
+              职责 → 角色；谁和谁坐在一起 → 团队；谁会被这件事影响 → 干系人。
+              三个英文词<strong>都在 66 条术语表内</strong>，考的往往就是这层区分</td>
+          </tr>
+          <tr>
+            <td><strong>领导 vs 管理</strong><br><small class="muted">Leadership / Management —— <a href="8.3-leadership.html">8.3</a></small></td>
+            <td><strong>领导</strong>处理<strong>方向与意愿</strong>：为什么要变、授权谁去变、出事了会不会被追责。<br>
+              <strong>管理</strong>处理<strong>计划与资源</strong>：谁做、什么时候做完、预算多少、进度对不对。
+              两者都需要，但不能互相替代。</td>
+            <td>干扰项把「更严格的进度跟踪」「更细的考核指标」写成领导力动作 —— 那些是管理动作。
+              <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>，这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              只要选项在谈<strong>控制人</strong>，方向通常就是排除项</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps 工程师岗位 vs DevOps 是所有人的职责</strong><br><small class="muted"><a href="8.2-roles-teams.html">8.2</a> · <a href="../ch05-culture/5.5-operating-models.html">5.5</a></small></td>
+            <td><strong>岗位</strong>是招聘市场上的职位名称，各家定义不同。<br>
+              <strong>职责</strong>是 DevOps 的立场：交付与运行的责任<strong>由整条价值流上的所有人共同承担</strong>，不能外包给某个头衔。</td>
+            <td>看到「设立 DevOps 工程师岗位 / 成立 DevOps 团队」就判为正确做法。
+              判据不是有没有这个头衔，而是<strong>交接是被消除了还是被增加了</strong>。
+              官方术语表收的是 <em>DevOps roles</em> 与 <em>DevOps teams</em>，
+              <strong>「DevOps 工程师」不是官方术语，也不是官方岗位名</strong></td>
+          </tr>
+          <tr>
+            <td><strong>试点 vs 全面铺开</strong><br><small class="muted">pilot / big bang —— <a href="8.4-getting-started.html">8.4</a></small></td>
+            <td><strong>试点</strong>先在一条真实价值流上跑通，目的是<strong>产出可复制的证据</strong>，代价可控。<br>
+              <strong>全面铺开</strong>同时改变所有团队，一旦方向错误<strong>没有对照组、也没有退路</strong>。</td>
+            <td>干扰项把「一次性统一全公司流程与工具」写成有决心的正确做法。
+              也别走到另一个极端：<strong>试点的价值在于之后能被复制</strong>，永远停在试点等于没有起步。
+              <span class="badge badge--note">📝 教学整理</span>「试点 / 全面铺开」是本站对起步方式的归类，
+              官方子项名为 <em>Getting Started</em>，未给出这组对照</td>
+          </tr>
+          <tr>
+            <td><strong>挑战 vs 风险</strong><br><small class="muted">Challenges / Risks —— <a href="8.5-challenges-csf.html">8.5</a></small></td>
+            <td><strong>挑战</strong>是<strong>先在那里的条件</strong>：转型开始前就存在，谁来做都会撞上，只能承认、绕开或按年拆解。<br>
+              <strong>风险</strong>是<strong>推进方式自己引来的</strong>：由「采取了哪种做法」带出的负面结果，<strong>换个做法就能不发生</strong>。</td>
+            <td>题面把两者写成同义词。判读方法：<strong>换一批人、换一种推法，它还在不在</strong> ——
+              「核心系统是遗留单体」换谁做都在，是挑战；「把转型做成一次工具采购」是被选出来的，是风险。
+              两个词都出现在官方子项名 <em>Challenges, Risks, and Critical Success Factors</em> 里，
+              <strong>并列出现说明它们不是一回事</strong>。
+              <span class="badge badge--note">📝 教学整理</span>这组区分是本站为分开两个词所做的教学收窄，
+              口径与 <a href="8.5-challenges-csf.html">8.5</a> 一致，官方未给出定义</td>
+          </tr>
+          <tr>
+            <td><strong>关键成功因素 vs 必要条件</strong><br><small class="muted">Critical Success Factors —— <a href="8.5-challenges-csf.html">8.5</a></small></td>
+            <td><strong>关键成功因素</strong>是<strong>少数几项决定成败的事</strong>，做到了才有机会成功，指向<strong>要重点投入什么</strong>。<br>
+              <strong>必要条件</strong>是<strong>没有它就不成立的门槛</strong>，指向<strong>不能缺什么</strong>。
+              关键成功因素通常也是必要条件，反过来不成立 —— 有电有网也是必要条件，但没人会说它决定 DevOps 成败。</td>
+            <td>干扰项把所有「有用的东西」都写成关键成功因素：版本控制、自动化测试、监控告警 ——
+              它们是必要条件或手段，不是那少数几项决定项。
+              官方答案键确认的关键成功因素是<strong>管理层对文化变革的承诺</strong>：
+              判据是<strong>缺了它，其他所有投入都会被慢慢磨掉</strong></td>
+          </tr>
+          <tr>
+            <td><strong>早期采用者 vs 高层管理者 vs 抵触者</strong><br><small class="muted"><a href="8.4-getting-started.html">8.4</a> · 变革曲线见 <a href="../ch05-culture/5.3-behavioral-models.html">5.3</a></small></td>
+            <td><strong>早期采用者</strong>提供的是<strong>同伴影响力</strong>：他们和多数人处境相同，做成了就有说服力。<br>
+              <strong>高层管理者</strong>提供的是<strong>承诺与授权</strong>，不是同伴影响力。<br>
+              <strong>抵触者</strong>是要争取的对象，不是起手依靠的人。</td>
+            <td><strong>推动重大变革时应参与规划并担任变革推动者的是早期采用者</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              最常见的误选是答成高层管理者，因为「关键成功因素是管理层承诺」那一条读起来很近。
+              两条不冲突：<strong>管理层给的是承诺，早期采用者干的是推动</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Dojo vs 沉浸式学习 vs CBOK</strong><br><small class="muted">Dojo / Immersion / Collective Body of Knowledge —— <a href="8.1-devops-in-enterprise.html">8.1</a> · 团队内落地见 <a href="8.2-roles-teams.html">8.2</a></small></td>
+            <td><strong>Dojo</strong> 是一个<strong>具体的训练安排</strong>：固定时长、有教练、团队带着自己手上真实的工作进场。<br>
+              <strong>沉浸式学习 <span class="en">Immersion</span></strong> 是<strong>学习方式</strong>：在真实上下文里持续投入地学。<br>
+              <strong>CBOK</strong> 是<strong>集体知识的沉淀物</strong>：把学到的东西变成组织可复用的知识体。</td>
+            <td>三者都被笼统说成「培训」。判据是<strong>问的是具体安排、学习方式，还是沉淀物</strong>。
+              另一个常见坑：把 Dojo 当成一间会议室或一次脱产培训 —— <strong>场地不是关键，带真实工作来才是</strong>。
+              三个词<strong>都在 66 条术语表内</strong>，属于容易被跳过、但可以直接命题的名词。
+              另一个陷阱：把 Dojo 当成教室式授课 —— 它的前提是<strong>用真实任务练</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）与 v3.4 课程大纲的模块子项。
+      标注为<strong>官方样题答案键确认</strong>的三处（用指标控制和评价员工不属于领导力目标、早期采用者担任变革推动者、
+      关键成功因素是管理层对文化变革的承诺）出自 <strong>DOFD v3.4 官方样题答案键</strong>，本站只陈述结论，
+      <strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>「分界线」与「诱导你选错的地方」两列为本站教学整理</strong>，用于描述命题角度与干扰项的构造方式，官方未以对照表形式给出这些区分。
+      「试点 / 全面铺开」的归类、「关键成功因素 vs 必要条件」的区分方式、以及 Dojo / Immersion / CBOK 三者的分工描述，
+      同为本站教学整理 —— <strong>官方术语表只列出词条、不附定义</strong>，这些释义都是本站措辞。
+      「DevOps 工程师」不是官方术语，也不是官方岗位名。
+    </div>
+
+    <!-- ============ 官方样题答案键确认的本章考点 ============ -->
+    <div class="divider-label">官方样题答案键确认的本章考点</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这三条不是推断，是官方确认</div>
+      <p>
+        本页与本章各节的绝大多数「命题角度」「干扰项长相」都标注为本站教学推断。下面三条不同 ——
+        它们来自 <strong>DOFD v3.4 官方样题答案键</strong>，是<strong>关于官方文件的事实陈述</strong>：
+        官方在这三个判断上给出了明确的正确答案方向。本章题数上限为 4 题，而这三条各钉住一个问句 ——
+        <strong>这是本页信息密度最高的部分</strong>。
+      </p>
+      <ul>
+        <li><strong>DevOps 的关键成功因素是「管理层对文化变革的承诺」。</strong>
+          → 见 <a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a>。
+          常见误选方向是把工具链完整度、自动化覆盖率、预算规模或资深工程师数量当成关键成功因素 ——
+          那些是手段与资源，不是决定项。
+          <span class="muted">—— 误选方向为本站教学整理，官方只确认了正确答案方向。</span></li>
+        <li><strong>「用指标控制和评价员工」不属于 DevOps 领导力的目标。</strong>
+          → 见 <a href="8.3-leadership.html">8.3 DevOps 领导力</a>。
+          这是一条<strong>「不属于」型</strong>的判断，注意别把整个「度量」都读成非领导力目标：
+          <strong>度量用于改进流动与反馈，只是不用于考核人</strong>（度量本身见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）。
+          <span class="muted">—— 括号中的辨析为本站教学整理。</span></li>
+        <li><strong>推动重大变革时，应当参与规划并担任变革推动者的是「早期采用者」。</strong>
+          → 与 <a href="8.4-getting-started.html">8.4 组织考量与如何起步</a> 直接相关，
+          模型层面的正式讲解在 <a href="../ch05-culture/5.3-behavioral-models.html">5.3 行为模型</a>。
+          常见误选方向是答成高层管理者（他们提供的是承诺与授权，不是同伴影响力），
+          或答成最抵触的那一群人（争取他们是后续动作，不是起手动作）。
+          <span class="muted">—— 误选方向为本站教学整理。</span></li>
+      </ul>
+      <p><strong>与本章直接相邻的一条</strong>（官方答案键条目，落点跨 1.3 与 8.4）：</p>
+      <ul class="mb-0">
+        <li><strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标。</strong>
+          → 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，首次讲解在
+          <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3 商业视角与 IT 视角</a>，
+          在本章落到<a href="8.4-getting-started.html">8.4</a>的起步顺序上：
+          <strong>先问业务要什么，再决定做哪些实践</strong>，而不是反过来从工具或成熟度分数倒推。</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-6-2 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 340" role="img" aria-label="第 8 章三条由官方样题答案键确认的结论记忆卡片">
+          <text x="16" y="26" class="s-ink" font-size="17" font-weight="700">DOFD v3.4 官方样题答案键确认的第 8 章三条结论</text>
+          <text x="16" y="50" class="s-muted" font-size="12.5">这三张卡是本章唯一「官方认为哪个答案对」有硬证据的部分。卡片下半的「误选方向」是本站教学整理，不是官方样题的选项。</text>
+
+          <!-- 卡片 1 -->
+          <rect x="12" y="70" width="305" height="218" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="30" y="98" class="f-1" font-size="14" font-weight="700">#9</text>
+          <text x="299" y="98" class="s-muted" font-size="12" text-anchor="end">见 8.5</text>
+          <line x1="30" y1="110" x2="299" y2="110" class="s-1" stroke-width="1.2"/>
+          <text x="30" y="140" class="s-ink" font-size="13.5">DevOps 的关键成功因素是</text>
+          <text x="30" y="164" class="s-ink" font-size="13.5">管理层对文化变革的承诺</text>
+          <line x1="30" y1="200" x2="299" y2="200" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="30" y="224" class="f-2" font-size="12">误选方向：工具链完整度、</text>
+          <text x="30" y="244" class="f-2" font-size="12">自动化覆盖率、预算规模</text>
+          <text x="30" y="264" class="f-2" font-size="12">—— 那些是手段，不是决定项</text>
+
+          <!-- 卡片 2 -->
+          <rect x="337" y="70" width="305" height="218" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="355" y="98" class="f-3" font-size="14" font-weight="700">#10</text>
+          <text x="624" y="98" class="s-muted" font-size="12" text-anchor="end">见 8.3</text>
+          <line x1="355" y1="110" x2="624" y2="110" class="s-3" stroke-width="1.2"/>
+          <text x="355" y="140" class="s-ink" font-size="13.5">用指标控制和评价员工，</text>
+          <text x="355" y="164" class="s-ink" font-size="13.5">不属于 DevOps 领导力的目标</text>
+          <line x1="355" y1="200" x2="624" y2="200" class="s-3" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="355" y="224" class="f-2" font-size="12">误选方向：把「度量」整体</text>
+          <text x="355" y="244" class="f-2" font-size="12">读成非领导力目标 —— 度量</text>
+          <text x="355" y="264" class="f-2" font-size="12">用于改进，只是不用于考核人</text>
+
+          <!-- 卡片 3 -->
+          <rect x="662" y="70" width="306" height="218" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="680" y="98" class="f-4" font-size="14" font-weight="700">#7</text>
+          <text x="950" y="98" class="s-muted" font-size="12" text-anchor="end">相关 8.4　·　讲解 5.3</text>
+          <line x1="680" y1="110" x2="950" y2="110" class="s-4" stroke-width="1.2"/>
+          <text x="680" y="140" class="s-ink" font-size="13.5">参与规划并担任变革推动者</text>
+          <text x="680" y="164" class="s-ink" font-size="13.5">的，是早期采用者</text>
+          <line x1="680" y1="200" x2="950" y2="200" class="s-4" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="680" y="224" class="f-2" font-size="12">误选方向：答成高层管理者</text>
+          <text x="680" y="244" class="f-2" font-size="12">（他们给的是承诺与授权），</text>
+          <text x="680" y="264" class="f-2" font-size="12">或答成最抵触的那一群人</text>
+
+          <text x="16" y="316" class="s-muted" font-size="12.5">三条均出自 DOFD v3.4 官方样题答案键，本站只陈述结论，不复制题干与选项原文；#9 / #10 / #7 为本站对该答案键条目的内部编号，不是官方题号。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-6-2　本章三条官方确认结论的记忆卡片。</strong>
+        这张图要看懂的是<strong>三条各钉住一个不同的问句</strong>：
+        #9 钉住「什么决定成败」，#10 钉住「领导力不做什么」，#7 钉住「变革由谁来推」。
+        本章题数上限是 4 题，而官方背书的判断有三条 —— <strong>把这三张卡背下来，本章有硬证据的部分就已经拿住</strong>。
+        另需注意 #9 与 #7 容易互相干扰：<strong>管理层给的是承诺，早期采用者干的是推动</strong>，两条不冲突。
+        <br><small class="muted">卡片下半的误选方向是本站教学整理；「把三张卡背下来就拿住大半」这类备考判断同为本站推断 ——
+        官方只给出模块题数上限，未公布命题规律，样题答案键也不代表真题必考同题。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章展开或点名、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目。
+      本章还有几个看着很像官方术语、其实<strong>不在</strong>术语表内的主题词，见下方单独列表。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:30%">官方术语</th><th style="width:19%">固定中文</th><th style="width:11%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>DevOps roles</em></td><td>DevOps 角色</td><td>8.2</td><td>职责的集合，不是头衔；一个人可以同时担任多个角色</td></tr>
+          <tr><td><em>DevOps teams</em></td><td>DevOps 团队</td><td>8.2</td><td>承载角色的组织单元；判据是交接被消除还是被增加</td></tr>
+          <tr><td><em>DevOps stakeholders</em></td><td>DevOps 干系人</td><td>8.2<br><small class="muted">正式讲解见 <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a></small></td><td>被结果影响或关注结果的人，多数不在团队里</td></tr>
+          <tr><td><em>Organizational considerations</em></td><td>组织考量</td><td>8.4</td><td>起步前必须先摆平的组织侧约束：结构、流程、合规、既有承诺</td></tr>
+          <tr><td><em>Collaboration and communication</em></td><td>协作与沟通</td><td>8.1 · 8.2</td><td>角色与团队设计的落脚点，也是领导力最直接的作用面</td></tr>
+          <tr><td><em>Dojo</em></td><td>Dojo<br><small class="muted">不译，指沉浸式实战训练场</small></td><td>8.1 · 8.2 · 8.3</td><td>一段有教练陪同、团队带着自己真实工作集中投入的训练期，是 Immersion 的具体承载形式</td></tr>
+          <tr><td><em>Immersion</em></td><td>沉浸式学习</td><td>8.1 · 8.2 · 8.3</td><td>在真实上下文中持续投入地学，与课堂式培训相对</td></tr>
+          <tr><td><em>Collective Body of Knowledge (CBOK)</em></td><td>集体知识体</td><td>8.1</td><td>把个体经验沉淀成组织可复用的知识，是「分享」的产出物</td></tr>
+          <tr><td><em>Scaled Agile Framework (SAFe)</em></td><td>规模化敏捷框架 SAFe</td><td>8.1<br><small class="muted">正式讲解见 <a href="../ch04-frameworks/4.2-agile-scrum.html">4.2</a></small></td><td>企业规模化语境下最常被并提的既有框架，本章只点名</td></tr>
+          <tr><td><em>employee Net Promoter Score (eNPS)</em></td><td>员工净推荐值 eNPS</td><td>8.2<br><small class="muted">正式讲解见<a href="../ch07-metrics/index.html">第 7 章</a></small></td><td>文化类指标；用于观察组织健康，不是用来给个人打分</td></tr>
+          <tr><td><em>Organizational culture</em></td><td>组织文化</td><td>8.3 · 8.5<br><small class="muted">正式讲解见 <a href="../ch05-culture/5.1-defining-culture.html">5.1</a></small></td><td>本章关键成功因素指向的对象：管理层承诺要承诺的正是它的变革</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称</strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。
+      <strong>「本章出处」与「一句话定位」两列为本站教学整理</strong> ——
+      官方术语表只逐条列出术语名，<strong>未标注每条术语分属哪个模块</strong>，
+      因此把这些术语挂到具体小节是本站的编排结果，不是官方归属；
+      其中 <em>Collective Body of Knowledge (CBOK)</em> 与 <em>employee Net Promoter Score (eNPS)</em>
+      两条落在本章属本站按主题相关性作的编排，官方未指明其模块归属。
+      <strong>该术语表只列词条、不附定义</strong>，因此本表每一条中文释义都是本站措辞，不是官方逐字定义；
+      「集体知识体」与「员工净推荐值」为本站译名。
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这几个主题词不在 66 条官方术语表内</div>
+      <p>本章最容易踩的一类错，是把下面这些词当成「考纲核心术语」。它们各有各的准确说法：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:32%">主题词</th><th style="width:13%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><em>DevOps in the Enterprise</em><br>企业中的 DevOps（8.1 英文名）</td>
+              <td>8.1</td>
+              <td>是 <strong>v3.4 课程大纲 M8 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                本节点名的术语表条目是 <em>Scaled Agile Framework (SAFe)</em>、
+                <em>Collective Body of Knowledge (CBOK)</em>、<em>Collaboration and communication</em>、
+                <em>Immersion</em> 与 <em>Dojo</em></td>
+            </tr>
+            <tr>
+              <td><em>DevOps Leadership</em><br>DevOps 领导力（8.3 英文名）</td>
+              <td>8.3</td>
+              <td>是 <strong>v3.4 课程大纲 M8 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                本站 8.3 页头因此标 <span class="badge badge--plain">📘 官方模块子项</span>，不标「⭐ 考纲核心」</td>
+            </tr>
+            <tr>
+              <td><em>Getting Started</em><br>如何起步</td>
+              <td>8.4</td>
+              <td>是 <strong>M8 的官方模块子项</strong>，<strong>不在术语表内</strong>。
+                同一节里的 <em>Organizational considerations</em> 既是 M8 子项名，也是 66 条术语表词条；
+                <em>Getting Started</em> 只是子项名</td>
+            </tr>
+            <tr>
+              <td><em>Challenges, Risks, and Critical Success Factors</em><br>挑战、风险与关键成功因素</td>
+              <td>8.5</td>
+              <td>是 <strong>M8 的官方模块子项</strong>（也是本章篇幅最大的一个子项名），<strong>不在术语表内</strong>。
+                「关键成功因素是管理层对文化变革的承诺」这一判断则由官方样题答案键确认</td>
+            </tr>
+            <tr>
+              <td><em>Roles</em><br>角色（8.2 官方子项名）</td>
+              <td>8.2</td>
+              <td>官方 M8 子项写作 <em>Roles</em>，术语表里的写法是 <strong><em>DevOps roles</em></strong>。
+                本站小节名扩为「角色与团队」以同时承接 <em>DevOps teams</em>，<strong>这一扩写是本站编排</strong></td>
+            </tr>
+            <tr>
+              <td>「DevOps 工程师」<br><em>DevOps Engineer</em></td>
+              <td>8.2</td>
+              <td><strong>既不在术语表，也不在任何模块子项内</strong> —— 是招聘市场上的岗位名，各家定义不同。
+                官方措辞是 <em>DevOps roles</em> / <em>DevOps teams</em>
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td>「早期采用者」<br><em>Early adopters</em></td>
+              <td>8.4 · <a href="../ch05-culture/5.3-behavioral-models.html">5.3</a></td>
+              <td><strong>不是 66 条术语表条目</strong>，但<strong>「担任变革推动者的是早期采用者」这一判断由 DOFD v3.4 官方样题答案键确认</strong> ——
+                词不在术语表，不代表结论不会考</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>判定依据：DOFD v3.4 官方考纲 66 条术语表逐字比对 + v3.4 课程大纲 M8 模块子项。
+        徽章口径：主题词逐字出现在 66 条术语表内才标「⭐ 考纲核心」，只出现在 v3.4 课程大纲模块子项内则标「📘 官方模块子项」。</small></p>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>本章<strong>最多题数 4</strong> 出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；v3.6 未公开重新发布权重表。
+      <strong>10% 与「并列第 6」为本站按 4 ÷ 40 与八章题数排序计算所得</strong>，官方未给出占比与名次表述；
+      「3 条官方答案键确认的结论」出自 <strong>DOFD v3.4 官方样题答案键</strong>，与 Examination Requirements 不是同一份文件。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">4</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">10%</div><div class="stat__k">4 ÷ 40，按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">并列第 6</div><div class="stat__k">与第 2 章同为 4 题</div></div>
+      <div class="stat"><div class="stat__v">3</div><div class="stat__k">官方答案键确认的结论</div></div>
+    </div>
+
+    <p>
+      全卷 40 题、及格线 <strong>26 / 40</strong>，允许错 14 题。本章按上限出到 4 题，占比不高，
+      但它有一个别的章节没有的特点：<strong>官方样题答案键在本章范围内确认了三个判断方向</strong> ——
+      数量上接近本章的题数上限，是本章少数有硬证据的部分。
+      把图 8-6-2 那三张卡背准，再分清易混淆表里的几组层级词，本章的确定性部分就已经拿住。
+      <span class="muted"><small>—— 「数量上接近题数上限」与「确定性部分已经拿住」为本站备考推断；
+      官方只给出模块题数上限，未公布命题规律与题目分布，样题答案键也不代表真题必考同题。</small></span>
+    </p>
+
+    <!-- ============ 全书八章回顾 ============ -->
+    <div class="divider-label">全书八章回顾</div>
+
+    <p>
+      这是考纲内容的最后一章。下表把八章重新摆在一起：<strong>每章回答一个不同的问题，合起来才是完整的 DevOps Foundation 版图</strong>。
+      题数一列即 v3.4 的权重分布，八章相加正好 40 题。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:22%">章</th><th style="width:26%">本章回答什么问题</th><th style="width:8%" class="num">题数</th><th>一句话核心</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="../ch01-exploring-devops/index.html">1　认识 DevOps</a></strong><br><small class="muted">Exploring DevOps</small></td>
+            <td>DevOps 是什么、为什么会出现</td>
+            <td class="num">5</td>
+            <td>官方定义句出自 Blueprint：IT 组织中的各方协同工作，使计划中的工作快速流动、获得反馈并持续改进</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch02-core-principles/index.html">2　核心原则</a></strong><br><small class="muted">Core DevOps Principles</small></td>
+            <td>这些做法为什么有效</td>
+            <td class="num">4</td>
+            <td>三步工作法：流动 → 反馈 → 持续改进，是全书的因果主轴；约束理论只服务于第一步</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch03-key-practices/index.html">3　关键实践</a></strong><br><small class="muted">Key DevOps Practices</small></td>
+            <td>具体要做哪些事</td>
+            <td class="num">7</td>
+            <td>并列权重最高。CI/CD 家族最易混，判据是那道人工闸门在不在</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch04-frameworks/index.html">4　业务与技术框架</a></strong><br><small class="muted">Business &amp; Technology Frameworks</small></td>
+            <td>借用了哪些已有体系</td>
+            <td class="num">7</td>
+            <td>并列权重最高。Agile / ITSM / Lean / 安全文化 / 学习型组织 / 持续资金 六个子项 —— DevOps 不是从零发明的</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch05-culture/index.html">5　文化、行为与运营模型</a></strong><br><small class="muted">Culture, Behaviors &amp; Operating Models</small></td>
+            <td>人和结构要怎么变</td>
+            <td class="num">6</td>
+            <td>文化是真实发生的行为，不是墙上的标语；团队结构会持续生产文化</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch06-automation/6.5-toolchain-architecture.html">6　自动化与工具链架构</a></strong><br><small class="muted">Automation &amp; Architecting DevOps Toolchains</small></td>
+            <td>用什么把它跑起来</td>
+            <td class="num">5</td>
+            <td>自动化服务于流动；工具链是手段，不是目标</td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ch07-metrics/index.html">7　度量、指标与报告</a></strong><br><small class="muted">Measurement, Metrics &amp; Reporting</small></td>
+            <td>怎么知道有没有变好</td>
+            <td class="num">2</td>
+            <td>题数最少但位置关键：速度、质量、稳定性、文化四类指标，度量用于改进而非考核</td>
+          </tr>
+          <tr>
+            <td><strong>8　分享、跟随与演进</strong><br><small class="muted">Sharing, Shadowing and Evolving　·　本章</small></td>
+            <td>怎么在整个组织里持续下去</td>
+            <td class="num">4</td>
+            <td>官方依据是 Blueprint 的 CALMS-S：领导者与团队分享想法与技能，改善沟通、协作与绩效。落到角色、领导力、起步方式与关键成功因素上，成败的决定项是管理层对文化变革的承诺</td>
+          </tr>
+          <tr>
+            <td><strong>合计</strong></td>
+            <td>—</td>
+            <td class="num"><strong>40</strong></td>
+            <td>及格线 26 / 40（65%），60 分钟，Bloom 1–2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      <strong>题数、模块英文名与考试形式</strong>（40 题 / 60 分钟 / 及格 65% 即 26 题 / Bloom 1–2）出自
+      <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；<strong>v3.6 未公开重新发布权重表</strong>，
+      本页仍以 v3.4 的分布作为唯一可引用依据。10% 与「并列第 6」由题数上限 4 ÷ 40 与上表排序计算得到，
+      是<strong>占比上限与本站算出的名次</strong>，官方未给出占比与名次表述。
+      第 1 章一行引用的定义句、第 8 章一行引用的 CALMS-S 描述句
+      （<em>S: Sharing - Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>）
+      均为 <strong>PeopleCert DevOps Foundation Blueprint</strong> 逐字原文，两处中译为本站译文。
+      <strong>「本章回答什么问题」与「一句话核心」两列为本站教学整理</strong> ——
+      官方给出的是模块名称、模块子项与题数上限，未以此形式概括各模块。
+      第 2、3 章两行中的「约束理论只服务于第一步」由 DOFD v3.4 官方样题答案键确认；
+      后者中持续交付与持续部署的两条归属同由答案键确认，而「人工闸门在不在」这一判据表述为本站教学整理，
+      详见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3 约束理论</a>与
+      <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>做自测更有效：
+        遮住「分界线」一列，逐对说出分界线；说不出来的那一对，就是要回去重读的小节。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文；
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 4 题</strong>，占全卷 40 题的 <strong>10%</strong>，与第 2 章并列第 6（来源：DOFD v3.4 Examination Requirements，2022-05；官方给的是每模块题数上限，不是固定配额）</li>
+        <li>官方答案键确认的<strong>三条</strong>：<strong>关键成功因素 = 管理层对文化变革的承诺</strong>（8.5）；<strong>用指标控制和评价员工不属于领导力目标</strong>（8.3）；<strong>担任变革推动者的是早期采用者</strong>（8.4 / 5.3）</li>
+        <li>三层不可互换：<strong>角色</strong>是职责集合、<strong>团队</strong>是承载单元、<strong>干系人</strong>是受影响者 —— 三个英文词都在 66 条术语表内</li>
+        <li><strong>领导 vs 管理</strong>：领导给方向、授权与安全感，管理给计划、资源与控制。选项在谈<strong>控制人</strong>时，方向通常是排除项</li>
+        <li>「<strong>DevOps 工程师</strong>」不是官方术语也不是官方岗位名；DevOps 的责任由整条价值流上的所有人共担，判据是<strong>交接被消除还是被增加</strong></li>
+        <li><strong>挑战</strong>（先在那里的条件，换谁做都在）/ <strong>风险</strong>（推进方式自己引来的，换个做法就能避免）/ <strong>关键成功因素</strong>（少数几项决定成败的事）—— 三个词回答三个不同问题，别混用</li>
+        <li>全书八章共 <strong>40 题</strong>：5 / 4 / 7 / 7 / 6 / 5 / 2 / 4，及格 <strong>26 题</strong>，Bloom 1–2（DOFD v3.4 Examination Requirements，2022-05）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数、八章权重分布与考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题 / Bloom 1–2）出自
+      <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，并同时说明 <strong>v3.6 未公开重新发布权重表</strong>。<br>
+      v3.4 课程大纲 <strong>M8 的六个官方模块子项</strong>为 <em>DevOps in the Enterprise</em>、<em>Roles</em>、<em>DevOps Leadership</em>、
+      <em>Organizational Considerations</em>、<em>Getting Started</em>、<em>Challenges, Risks, and Critical Success Factors</em>；
+      其中 <em>Organizational Considerations</em> 同时逐字收录于 66 条术语表（术语表写法为 <em>Organizational considerations</em>），
+      <strong>其余五者不在 66 条术语表内</strong>。<br>
+      <em>DevOps roles</em>、<em>DevOps teams</em>、<em>DevOps stakeholders</em>、<em>Organizational considerations</em>、
+      <em>Collaboration and communication</em>、<em>Dojo</em>、<em>Immersion</em>、<em>Collective Body of Knowledge (CBOK)</em>、
+      <em>Scaled Agile Framework (SAFe)</em>、<em>employee Net Promoter Score (eNPS)</em>、
+      <em>Organizational culture</em> 均列于
+      <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，出自 DOFD v3.4 Examination Requirements（2022-05）；
+      <strong>该术语表只列出词条、不附定义</strong>，因此本页术语速查表里的每一条中文释义都是本站措辞，不是官方逐字定义。<br>
+      本页高亮的<strong>三条结论由 DOFD v3.4 官方样题答案键确认</strong>：
+      DevOps 的关键成功因素是管理层对文化变革的承诺；用指标控制和评价员工不属于 DevOps 领导力的目标；
+      推动重大变革时参与规划并担任变革推动者的是早期采用者。
+      另引用<strong>一条相邻结论</strong>：决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标
+      （首次讲解在 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3</a>）。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。<br>
+      全书回顾表中第 1 章一行的定义句与第 8 章一行的 CALMS-S 描述句
+      （<em>S: Sharing - Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>）
+      均出自 <strong>PeopleCert DevOps Foundation Blueprint</strong> 正文，属官方原文，中译为本站译文；
+      本章 8.1 的原则依据即这一句。<br>
+      <strong>本站教学整理部分</strong>：图 8-6-1 的五节顺序与底部回环、把官方子项 <em>Organizational Considerations</em> 与
+      <em>Getting Started</em> 合并为 8.4、把 <em>Roles</em> 扩写为「角色与团队」、
+      一页纸复习表的「记忆锚点」与「最易错点」两列、易混淆汇总表的「分界线」与「诱导你选错的地方」两列、
+      术语速查表的「本章出处」与「一句话定位」两列（含 <em>CBOK</em> 与 <em>eNPS</em> 两条落在本章的编排）、
+      图 8-6-2 中的「误选方向」、「试点 / 全面铺开」与「关键成功因素 vs 必要条件」两组对照、
+      「并列第 6」这一名次、以及全书回顾表的「本章回答什么问题」与「一句话核心」两列，
+      官方均未以此形式给出，已在各自下方就地标注。
+      「DevOps 工程师」与「早期采用者」不在 66 条术语表内，已就地标注。
+      本页不含任何官方样题原文，练习题上线后将标注「仿真题，非官方真题」。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

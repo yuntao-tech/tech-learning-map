@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.1 为什么必须度量 · DevOps Foundation 学习站</title>
+<meta name="description" content="度量把「改进有没有发生」从感觉变成可验证的事实。本节讲清 CALMS 的 M 为什么指向信任、DevOps metrics 是什么、以及度量最常见的三种误用：考核个人、只看单一指标、度量不可行动的东西。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.1-why-measure"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.1 为什么必须度量</h1>
+      <div class="page-head__en">The Importance of Measurement</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+      </div>
+      <p class="page-head__lede">
+        <strong>先说清一件事，好安排你的时间。</strong>
+        这一章在官方题数分布里是<strong>全书最低的一档，最多 2 题</strong>（占 40 题的 5%）。
+        <span class="muted"><small>DOFD v3.4 Examination Requirements（2022-05）；v3.6 未公开重新发布权重表。</small></span>
+      </p>
+      <p class="page-head__lede">
+        但同一批指标又是理解整条 DevOps 因果链的枢纽 ——
+        缩小批量为什么能降低变更失败率、约束在哪里、反馈有没有变快，最后都要落到数字上。
+        所以本章<strong>按理解学，不按应试投入时间</strong>：读懂即可，
+        把重复刷题的时间留给第 3、4 章（各 7 题）。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>为什么 CALMS 把 Measurement 与 Culture 并列单列一格 —— 官方描述句为什么把 <em>trust</em>（信任）写在绩效改进之前</li>
+        <li><span class="en">DevOps metrics</span> 与传统的职能产出报表，差别到底在哪一层</li>
+        <li>度量最常见的三种误用 —— 为什么<strong>同一个指标</strong>用于学习是好指标，用于考核就会腐化</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 600" role="img" aria-label="同一个团队、同一套指标，在用于学习与用于考核两种用途下，上报数据真实性的不同演变">
+          <defs>
+            <marker id="ah-71-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-71-b" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 左栏表头 -->
+          <rect x="30" y="16" width="430" height="52" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="245" y="40" class="f-1" font-size="16" font-weight="700" text-anchor="middle">度量用于学习</text>
+          <text x="245" y="59" class="s-muted" font-size="12.5" text-anchor="middle">指标是团队自己看的镜子</text>
+
+          <!-- 右栏表头 -->
+          <rect x="500" y="16" width="430" height="52" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="715" y="40" class="f-5" font-size="16" font-weight="700" text-anchor="middle">度量用于考核</text>
+          <text x="715" y="59" class="s-muted" font-size="12.5" text-anchor="middle">指标是交给上级的成绩单</text>
+
+          <!-- 左栏四步 -->
+          <rect x="30" y="88"  width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="30" y="168" width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="30" y="248" width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="30" y="328" width="430" height="56" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <g>
+            <text x="48" y="111" class="s-ink" font-size="13.5" font-weight="650">部署频率从每周 4 次掉到 1 次</text>
+            <text x="48" y="131" class="s-muted" font-size="12.5">团队自己先看见这个数字</text>
+            <text x="48" y="191" class="s-ink" font-size="13.5" font-weight="650">公开真实数字，当场追问原因</text>
+            <text x="48" y="211" class="s-muted" font-size="12.5">没有人因为数字难看被问责</text>
+            <text x="48" y="271" class="s-ink" font-size="13.5" font-weight="650">查出瓶颈：测试环境申请要等 3 天</text>
+            <text x="48" y="291" class="s-muted" font-size="12.5">指标指向了一个可以动手的对象</text>
+            <text x="48" y="351" class="f-1" font-size="13.5" font-weight="700">排掉等待，频率真实回到每周 5 次</text>
+            <text x="48" y="371" class="s-muted" font-size="12.5">数字变好，是因为现实变好了</text>
+          </g>
+
+          <!-- 右栏四步 -->
+          <rect x="500" y="88"  width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="500" y="168" width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="500" y="248" width="430" height="56" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <rect x="500" y="328" width="430" height="56" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <g>
+            <text x="518" y="111" class="s-ink" font-size="13.5" font-weight="650">部署频率被写进季度绩效考核</text>
+            <text x="518" y="131" class="s-muted" font-size="12.5">数字直接关系到评级与奖金</text>
+            <text x="518" y="191" class="s-ink" font-size="13.5" font-weight="650">把一次发布拆成 5 次空发布</text>
+            <text x="518" y="211" class="s-muted" font-size="12.5">数字达标，交付内容一模一样</text>
+            <text x="518" y="271" class="s-ink" font-size="13.5" font-weight="650">故障不再上报，先私下修好再说</text>
+            <text x="518" y="291" class="s-muted" font-size="12.5">坏消息在到达指标之前就被过滤掉</text>
+            <text x="518" y="351" class="f-5" font-size="13.5" font-weight="700">报表全绿，交付速度没有任何变化</text>
+            <text x="518" y="371" class="s-muted" font-size="12.5">组织失去了对现实的感知能力</text>
+          </g>
+
+          <!-- 箭头 -->
+          <g stroke-width="2" fill="none">
+            <line x1="245" y1="70"  x2="245" y2="84"  class="s-1" marker-end="url(#ah-71-a)"/>
+            <line x1="245" y1="146" x2="245" y2="164" class="s-1" marker-end="url(#ah-71-a)"/>
+            <line x1="245" y1="226" x2="245" y2="244" class="s-1" marker-end="url(#ah-71-a)"/>
+            <line x1="245" y1="306" x2="245" y2="324" class="s-1" marker-end="url(#ah-71-a)"/>
+            <line x1="715" y1="70"  x2="715" y2="84"  class="s-5" marker-end="url(#ah-71-b)"/>
+            <line x1="715" y1="146" x2="715" y2="164" class="s-5" marker-end="url(#ah-71-b)"/>
+            <line x1="715" y1="226" x2="715" y2="244" class="s-5" marker-end="url(#ah-71-b)"/>
+            <line x1="715" y1="306" x2="715" y2="324" class="s-5" marker-end="url(#ah-71-b)"/>
+          </g>
+
+          <!-- 下方趋势图 -->
+          <text x="30" y="414" class="s-ink" font-size="13.5" font-weight="700">上报数据的真实性（同一个团队，同一套指标 · 示意趋势）</text>
+          <line x1="560" y1="410" x2="592" y2="410" class="s-1" stroke-width="3"/>
+          <text x="600" y="414" class="f-1" font-size="12.5" font-weight="650">用于学习</text>
+          <line x1="700" y1="410" x2="732" y2="410" class="s-5" stroke-width="3"/>
+          <text x="740" y="414" class="f-5" font-size="12.5" font-weight="650">用于考核</text>
+
+          <g class="s-stroke" stroke-width="1" stroke-dasharray="5 5">
+            <line x1="70" y1="428" x2="900" y2="428"/>
+            <line x1="70" y1="548" x2="900" y2="548"/>
+          </g>
+          <g class="s-muted" font-size="12" text-anchor="end">
+            <text x="62" y="432">真实性高</text>
+            <text x="62" y="552">真实性低</text>
+          </g>
+
+          <polyline points="150,438 400,435 650,433 870,431" class="s-1" stroke-width="3" fill="none"/>
+          <polyline points="150,438 400,464 650,494 870,517" class="s-5" stroke-width="3" fill="none"/>
+          <g class="f-1"><circle cx="150" cy="438" r="4"/><circle cx="400" cy="435" r="4"/><circle cx="650" cy="433" r="4"/><circle cx="870" cy="431" r="4"/></g>
+          <g class="f-5"><circle cx="400" cy="464" r="4"/><circle cx="650" cy="494" r="4"/><circle cx="870" cy="517" r="4"/></g>
+
+          <text x="884" y="427" class="f-1" font-size="12.5" font-weight="700">仍然可信</text>
+          <text x="884" y="521" class="f-5" font-size="12.5" font-weight="700">已不可信</text>
+
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="150" y="568">引入指标时</text>
+            <text x="400" y="568">3 个月</text>
+            <text x="650" y="568">6 个月</text>
+            <text x="866" y="568">12 个月</text>
+          </g>
+          <text x="480" y="588" class="s-muted" font-size="12" text-anchor="middle">横轴为示意时间轴，两条曲线为示意趋势，非调研数据</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-1-1　同一套指标，两种用途，两种结局。</strong>
+        要看懂的不是「考核不好」，而是<strong>指标的用途会反过来改变数据本身</strong>：
+        左边每一步都在追问现实，数字最终变好是因为现实变好了；
+        右边每一步团队的反应都完全理性 —— 面对成绩单，优化数字比优化现实便宜得多。
+        下方曲线是这条差异的后果：<strong>用于考核的那一侧，先失去的不是绩效，是组织看见真相的能力</strong>。
+        指标一旦不可信，后面所有分析都建立在假数据上。
+        <br><small class="muted">本图的四步链条与真实性曲线为<strong>本站教学整理</strong>，曲线为示意趋势，非调研数据；
+        官方未给出此类对照。本图的立论出发点是官方原文：Blueprint 的 CALMS 把
+        <em>M: Measurement</em> 与 <em>C: Culture</em> 并列为同一层的五格之一，
+        且 M 格逐字写着度量 <em>support trust and performance improvement</em> ——
+        度量与文化同级、且先支撑信任，因此指标的用途属于文化问题，不是工具问题。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-1-1</div>
+        <h3 class="kp__title">度量的必要性<span class="en">The Importance of Measurement</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>度量 <span class="en">Measurement</span> 是把「改进有没有发生」从主观判断变成可验证事实的机制。</strong>
+            它是 <span class="term">CALMS <span class="en">Culture · Automation · Lean · Measurement · Sharing</span></span>
+            五个字母里的 <strong>M</strong>，与文化、自动化、精益、共享并列为一格 —— 不是附属于自动化的一个工具选项。
+          </p>
+          <p>
+            Blueprint 对 CALMS 中 Measurement 一格的描述句（官方原文）：
+          </p>
+          <p>
+            <em>Value-driven metrics for people, process and technology support trust and performance improvement.</em>
+          </p>
+          <p>
+            本站译文：<em>面向价值的、覆盖人 / 流程 / 技术的指标，支撑信任与绩效改进。</em>
+          </p>
+          <p>
+            这句官方描述里有两个词值得逐字读：一个是 <em>value-driven metrics</em>（价值驱动指标，见
+            <a href="7.5-value-driven-metrics.html">7.5</a>），另一个是 <strong><em>trust</em>（信任）</strong>。
+            <strong>官方明确把「支撑信任」写在「绩效改进」前面 —— 度量的第一个产出不是绩效数字，
+            是一个所有人都认的共同事实。</strong>
+            开发说部署很慢、运维说需求变得太快，两边都没有说谎 —— 他们只是在各自的位置上看见了不同的一段。
+            指标先让双方看同一张图，改进才有可能开始。
+          </p>
+          <div class="src-note">
+            <em>CALMS</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>；
+            五个字母的展开 <em>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</em>
+            与上面引用的 M 格描述句 <em>Value-driven metrics for people, process and technology support
+            trust and performance improvement.</em> 均为<strong>官方原文</strong>，
+            出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>。中文为本站译文。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>没有度量的组织不是「不改进」，而是<strong>永远无法确认自己改进了没有</strong>。三个典型现场：</p>
+          <ul>
+            <li><strong>改进汇报只剩形容词。</strong>某平台团队花一个季度重构了构建脚本，
+              季度复盘上的结论是「流水线顺畅多了」。追问快了多少，没有人答得上来 ——
+              重构前没有留下任何基线数字。<strong>这个季度的投入既无法证明有效，也无法证明无效，
+              于是下个季度要不要继续投，只能靠谁在会上更有说服力。</strong></li>
+            <li><strong>争论「哪个环节更慢」只能靠嗓门。</strong>同一家公司，开发说「运维批个环境要一周」，
+              运维说「开发提的需求三天一变」。会开了四次，结论取决于谁资历更深、谁在会上更强势。
+              一旦把工单时间戳拉出来，发现真正的大头是<strong>两次交接之间的排队等待，两边都不在里面</strong> ——
+              这个答案靠吵架永远吵不出来。</li>
+            <li><strong>回滚之后没人知道是不是真的更糟。</strong>一次改版上线后投诉变多，团队连夜回滚。
+              但「投诉变多」是每天 3 条变成 5 条，还是本来就在波动区间内？没有基线，
+              <strong>这次回滚是止损还是误杀，永远是一笔糊涂账</strong>，而下一次谁也不敢再改。</li>
+          </ul>
+          <p>
+            这三个场景的共同机制是同一个：<strong>没有数字，「改进」和「感觉在改进」无法区分</strong>。
+            度量做的事非常朴素 —— 它把「谁说得对」这个吵不完的问题，
+            换成「数字是多少」这个<strong>可以回答的问题</strong>。
+          </p>
+          <p class="mb-0 muted"><small>以上三个场景为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">度量 <span class="en">Measurement</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>监控 <span class="en">Monitoring</span></strong></td>
+                  <td>回答<strong>「一段时间里趋势往哪走」</strong>：为改进决策提供依据，面向<strong>周与季度</strong></td>
+                  <td>回答<strong>「现在有没有坏」</strong>：为止损告警提供依据，面向<strong>秒与分钟</strong>。监控可以全绿，趋势可以在恶化</td>
+                </tr>
+                <tr>
+                  <td><strong>报告 <span class="en">Reporting</span></strong></td>
+                  <td>是<strong>取数与定义</strong>：这个数字代表什么、怎么算出来的</td>
+                  <td>是<strong>呈现与分发</strong>：给谁看、多久看一次、看到之后谁负责。报告做得再漂亮，救不了一个定义错的指标</td>
+                </tr>
+                <tr>
+                  <td><strong>成熟度模型自评</strong><br><small class="muted">见 <a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a></small></td>
+                  <td><strong>定量的结果</strong>：现实发生了什么，数据由系统产生</td>
+                  <td><strong>定性的自评</strong>：组织认为自己处在哪一级，答案由人给出。<strong>两者必须互相校验</strong> —— 自评三级而部署频率是一季一次，说明自评失真</td>
+                </tr>
+                <tr>
+                  <td><strong>KPI / 绩效考核</strong></td>
+                  <td>用途是<strong>学习</strong>：数字变差是调查的起点</td>
+                  <td>用途是<strong>评价</strong>：数字变差是追责的起点。同一个数字，两种用途，采集到的真实性完全不同（见图 7-1-1）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>度量不是监控。</strong>
+            很多团队装了一整面告警墙，就认为自己「有度量了」。
+            告警墙回答的是此刻系统健不健康，它<strong>不会告诉你这个季度交付变快了还是变慢了</strong> ——
+            那是两套完全不同的数据、不同的周期、不同的读者。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出该四项对照；
+            <em>Monitoring and Observability</em> 属 v3.6 新增学习目标（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+            <em>Organizational maturity models</em> 为 v3.4 课程大纲 M5 模块子项。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>要不要立一个新指标，先过三问。三问过不了就不要立 —— 立了也没人看：</p>
+          <ul>
+            <li><strong>问一：这个数字变差了，我下一步会做什么不同的事？</strong>
+              答不出具体动作，这个指标就是装饰。「代码总行数」变多了你会做什么？没有答案，所以它不该出现在看板上。</li>
+            <li><strong>问二：谁看这个数字，多久看一次？</strong>
+              没有固定读者的指标会在两个月内变成脏数据 —— 采集断了也没人发现。</li>
+            <li><strong>问三：数据是自动采出来的，还是人手工填的？</strong>
+              手工填的数字，填的人一定知道领导想看什么。<strong>采集路径上有人经手，指标就已经开始失真。</strong></li>
+          </ul>
+          <p>
+            顺序上还有一条：<strong>先量端到端，再量局部</strong>。
+            先把「一个变更从提出到用户可用」整段时间量出来，再往里拆各环节耗时。
+            反过来做的团队会陷入局部最优 —— 每个环节的数字都在变好，端到端时间纹丝不动，
+            这正是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>反复警告的情形。
+          </p>
+          <div class="src-note">
+            「立指标三问」与「先端到端后局部」的顺序建议均为<strong>本站教学整理</strong>，
+            官方 v3.4 课程大纲 M7 列出 <em>The Importance of Measurement</em> 这一子项，但未规定立指标的检查清单。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最经典的一个考点：CALMS 里的 M 展开成什么。</strong>
+              正确答案是 <strong>Measurement</strong>。<em>CALMS</em> 逐字列于 DOFD v3.4 官方考纲术语表，
+              五个字母的展开是可以直接考的名词题。</li>
+            <li><strong>干扰项长什么样</strong>：M 位上最常见的三个替换是
+              <strong>Monitoring</strong>（听起来更「技术」，但监控是 Measurement 的一种手段，不是那一格的名字）、
+              <strong>Metrics</strong>（词根相近，但 CALMS 用的是 Measurement 这个行为词）、
+              <strong>Management</strong>（把五格拽回传统管理语汇）。
+              L 位上则常被换成 <em>Learning</em> —— 正确是 <strong>Lean</strong>。</li>
+            <li><strong>第二个角度：度量在 DevOps 里的目的。</strong>
+              方向永远是<strong>支撑信任与绩效改进</strong> —— Blueprint 的 M 格描述句逐字写的是
+              <em>support trust and performance improvement</em>，<strong>trust 排在 performance 前面</strong>。
+              凡是把度量的目的写成「便于对团队或个人进行评价、排名、问责」的选项，方向都是反的 ——
+              <strong>「用指标控制和评价员工不属于 DevOps 领导力的目标」这一判断由 DOFD v3.4 官方样题答案键确认</strong>
+              （详见 <a href="../ch08-sharing/8.3-leadership.html">第 8 章 DevOps 领导力（8.3）</a>）。</li>
+            <li><strong>排除技巧</strong>：读选项时找<strong>受词</strong>。
+              指标的受词是<strong>流程与系统</strong>（流动、质量、稳定性）→ 方向对；
+              受词是<strong>人</strong>（谁做得多、谁出错多）→ 方向错。这一条判据在本章和第 8 章通用。</li>
+            <li><strong>时间分配提示</strong>：本章 v3.4 最多出 <strong>2 题</strong>
+              （DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。
+              名词性考点就是 CALMS 的 M、以及本章后面几节的四个指标名 —— 记住即可，不必深挖。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项构造方式与排除技巧均为<strong>本站教学推断</strong>；
+            涉及官方样题答案键之处只陈述结论，<strong>不复制任何题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">改进如果不能被验证，就只是一种感觉。</p>
+          <p class="mb-0 muted"><small>配一条判据：<strong>度量的第一个产出是共同事实，不是绩效数字</strong> ——
+            Blueprint 的 M 格把 <em>trust</em> 写在 <em>performance improvement</em> 之前，
+            先让所有人看同一张图，然后才谈改进。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-1-2</div>
+        <h3 class="kp__title">DevOps 指标<span class="en">DevOps metrics</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevOps 指标 <span class="en">DevOps metrics</span></span>
+            是<strong>面向整条价值流端到端结果</strong>的一组指标：它衡量的是
+            「工作从想法到用户手上，流得多快、结果多好、坏了多久能恢复、人怎么样」，
+            <strong>而不是某个岗位、某个工具、某个阶段各自的产出量</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个限定</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>观察单位是价值流</strong></td><td>一条<span class="term">价值流 <span class="en">Value stream</span></span>从头到尾算一个整体，跨过所有职能边界。开发交给测试那一刻的等待，同样算在里面</td></tr>
+                <tr><td><strong>衡量结果不衡量产出</strong></td><td>看的是「用户拿到了什么、系统撑不撑得住」，不是「谁写了多少、谁跑了多少条用例」</td></tr>
+                <tr><td><strong>成组使用</strong></td><td>速度类与稳定性类互为约束，单独看任何一个都会被优化到失真 —— 这是本章反复出现的一条铁律</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>DevOps metrics</strong> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。
+            <strong>上面这句中文定义与三个限定为本站措辞</strong>。
+            具体有哪四个指标见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a>，四大类划分见 <a href="7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a>，前置时间与周期时间的区别见 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>，本节不展开。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要替换掉的东西有一个很具体的样子：<strong>一叠按职能切分、张张全绿的报表。</strong>
+          </p>
+          <ul>
+            <li>某公司的月度 IT 例会上有三张报表：开发报「本迭代完成 <strong>42 个故事点</strong>，达成率 105%」；
+              测试报「执行 <strong>1,800 条用例</strong>，缺陷发现率同比提升」；
+              运维报「生产可用率 <strong>99.95%</strong>，全年无重大事故」。三张全部达标。</li>
+            <li>同一个月，业务方提出的那个结算页改版，<strong>从提出到用户可用等了 11 周</strong>。
+              把时间摊开看：真正在写代码的 6 天，跑测试的 3 天，其余 <strong>60 多天全部是等待</strong> ——
+              等排期、等测试环境、等变更窗口、等安全评审排队。</li>
+            <li>关键在于：<strong>这 60 天不落在任何一张报表里。</strong>
+              每张报表都只统计本职能「手上握着这件事」的那段时间，
+              而时间几乎全花在<strong>交接处</strong> —— 一个所有人都不负责统计的地方。</li>
+          </ul>
+          <p>
+            DevOps metrics 的解法不是「再加几个指标」，而是<strong>换一个观察单位</strong>：
+            从「每个职能各报各的」换成「一个变更走完全程算一次」。
+            观察单位一换，那 60 天就无处可藏 —— 按<strong>精益价值流口径</strong>（从需求被接受起算）
+            它整段被算进变更前置时间；按 <strong>DOFD / DORA 口径</strong>（从代码提交起算）
+            则从提交之后的那一段开始计入。<strong>两种口径都对，起点不同是因为量的东西不同，
+            完整辨析见 <a href="7.4-lead-vs-cycle-time.html">7.4</a></strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">DevOps metrics</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>职能产出指标</strong><br><small class="muted">故事点、代码行数、用例条数、工单关闭数</small></td>
+                  <td>观察单位是<strong>一条价值流</strong>，跨越所有职能</td>
+                  <td>观察单位是<strong>一个职能 / 一个岗位</strong>。全部达标与业务毫无改善可以同时成立</td>
+                </tr>
+                <tr>
+                  <td><strong>项目进度报告</strong></td>
+                  <td>问<strong>「流动状况如何」</strong>：持续的、可比较的时间序列</td>
+                  <td>问<strong>「计划完成了几成」</strong>：一次性的、对齐承诺的快照。项目结束，指标也就没了</td>
+                </tr>
+                <tr>
+                  <td><strong>服务可用率 / SLA</strong></td>
+                  <td>覆盖<strong>速度 + 质量 + 稳定性 + 文化</strong>四个方向（官方 M7 子项措辞，展开见本章 <a href="7.3-four-metric-families.html">7.3</a>）</td>
+                  <td>只覆盖<strong>稳定性</strong>一个方向。可用率 99.99% 完全可以靠「一年不发版」做到</td>
+                </tr>
+                <tr>
+                  <td><strong>个人绩效指标</strong></td>
+                  <td>归属对象是<strong>团队与系统</strong></td>
+                  <td>归属对象是<strong>个人</strong>。一旦落到个人头上，指标就会开始被优化而不是被改善（见 kp-7-1-3）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>DevOps metrics 不是「更多的指标」，是「换一个观察单位」。</strong>
+            把原来那三张报表原样保留、再加四个新指标上去，得到的是五张报表，
+            <strong>交接处的等待依旧没有被任何一个数字覆盖</strong>。换单位才是重点，加数量不是。</small></p>
+          <p class="mb-0 muted"><small>分两层看来源：其中<strong>「速度 / 质量 / 稳定性 / 文化」四个方向出自
+            DOFD v3.4 课程大纲 M7 模块子项 <em>DevOps Metrics - Speed, Quality, Stability, Culture</em></strong>，
+            属官方模块构成，不是本站发明。<strong>本表的四项对照关系为本站教学整理</strong> ——
+            官方术语表列出 <em>DevOps metrics</em> 一词，未给出与职能指标、SLA、个人绩效的对照；
+            表中「故事点」「SLA」等不属 DOFD 66 条术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选指标的顺序，比选哪几个指标更重要：</p>
+          <ul>
+            <li><strong>先确定业务目标，再倒推指标。</strong>
+              目标是「抢占新市场窗口」，第一顺位就是交付速度；目标是「保住支付通道口碑」，第一顺位就是稳定性。
+              <strong>「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」这一判断由 DOFD v3.4 官方样题答案键确认</strong>
+              —— 同一条逻辑对选指标同样成立（见 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3 业务与 IT 视角</a>）<span class="muted">（把该判断延用到选指标是本站的推论）</span>。</li>
+            <li><strong>一次只上一小组，不上大盘。</strong>
+              四个端到端指标就足够启动。一口气铺三十个指标的看板，两个月后没有人会打开它。</li>
+            <li><strong>让数据从工具里自己长出来。</strong>
+              提交时间戳来自代码仓库，部署记录来自流水线，故障时间来自事件系统。
+              <strong>只要还需要有人每周手工填一张表，这套指标的寿命就以季度计。</strong></li>
+            <li><strong>与定性自评互相校验。</strong>
+              把指标结果放到<a href="../ch05-culture/5.4-maturity-models.html">5.4 组织成熟度模型</a>的自评旁边看：
+              成熟度是<strong>组织认为自己在哪一级</strong>，指标是<strong>现实的定量结果</strong>。
+              两者对不上时，先信数字 —— 差距本身就是最有价值的改进入口。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条选指标顺序为<strong>本站教学整理</strong>，官方未规定指标的选取流程。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：术语识别。</strong>
+              <em>DevOps metrics</em> 是 66 条术语表条目，Bloom 1–2 层级最可能的问法是
+              <strong>「以下哪一项属于 / 不属于 DevOps 指标」</strong>。
+              正确方向永远指向<strong>端到端的流动与结果</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：最典型的一类是<strong>把职能产出量伪装成指标</strong> ——
+              代码行数、故事点完成率、用例执行条数、工单关闭数、单人提交次数。
+              它们读起来都很像「IT 指标」，但受词是<strong>某个职能或某个人</strong>，不是价值流。
+              另一类是只覆盖单一维度的<strong>服务可用率</strong>，它是稳定性的一部分，不能代表整组。</li>
+            <li><strong>命题角度二：度量的对象。</strong>
+              选项若写「用于衡量个人生产力 / 用于团队之间排名」，方向都是反的 ——
+              <strong>「用指标控制和评价员工不属于 DevOps 领导力的目标」由 DOFD v3.4 官方样题答案键确认</strong>。</li>
+            <li><strong>排除技巧</strong>：把每个选项的主语换成「一个变更」再读一遍。
+              「一个变更走完全程要多久」读得通 → 是 DevOps 指标；
+              「一个变更写了多少行代码」读起来就荒谬 → 那是产出量，不是指标。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项构造方式与排除技巧均为<strong>本站教学推断</strong>；
+            涉及官方样题答案键之处只陈述结论，不复制题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">量的是「一个变更走完全程」，不是「一个人干了多少」。</p>
+          <p class="mb-0 muted"><small>补一句判据：<strong>凡是能靠「一年不发版」做到的漂亮数字，都不是合格的 DevOps 指标。</strong>
+            这条能一次筛掉可用率、缺陷密度、变更成功率等一大半单维干扰项。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-1-3</div>
+        <h3 class="kp__title">度量的三种误用</h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            度量失败的原因几乎从不是「指标选错了」，而是<strong>指标的用法错了</strong>。三种误用：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">误用</th><th>一句话</th></tr></thead>
+              <tbody>
+                <tr><td><strong>用指标考核个人</strong></td><td>人会去优化<strong>指标</strong>，而不是指标背后的<strong>结果</strong> —— 而且优化指标通常便宜得多</td></tr>
+                <tr><td><strong>只看单一指标</strong></td><td>任何一个指标单独拿出来都能被压到好看，代价落在没被看的那一个上</td></tr>
+                <tr><td><strong>度量不可行动的东西</strong></td><td>数字知道了，也不知道下一步该改什么。它只消耗注意力，不产生改进</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            三条合起来是同一句话：<strong>同一个指标，用于学习是好指标，用于考核就会腐化</strong>（见图 7-1-1）。
+          </p>
+          <div class="src-note">
+            这三条误用的<strong>归类方式为本站教学整理</strong>，官方 v3.4 课程大纲 M7 未以此形式列出度量的失效模式。
+            但其中第一条的方向有官方依据：<strong>「用指标控制和评价员工不属于 DevOps 领导力的目标」
+            由 DOFD v3.4 官方样题答案键确认</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这三条要单独讲，是因为它们<strong>不是执行不到位，而是度量做得越认真、越容易踩上</strong>。
+            一个具体的机制：
+          </p>
+          <ul>
+            <li>某公司把<strong>平均恢复时间 MTTR</strong> 写进各值班小组的季度考核，目标「压到 1 小时以内」。
+              指标本身没有任何问题 ——
+              <strong>MTTR（平均恢复时间）衡量的是从故障发生到服务恢复的平均时长</strong>，
+              这个词逐字就在官方术语表里。</li>
+            <li>三个月后 MTTR 从 <strong>4.2 小时降到 51 分钟</strong>，报表非常漂亮。
+              但同期业务侧感知到的中断时长<strong>一分钟都没有减少</strong>。</li>
+            <li>原因是：报障渠道从工单系统迁移到了私聊。小故障不再开单，先私下修好；
+              必须开单的，也等基本定位清楚了再补一张。
+              问题出在取数口径 —— <strong>这家公司的 MTTR 取的是工单从开到关的时间戳</strong>，
+              于是被考核的不是恢复过程本身，而是<strong>记录恢复的那条通道</strong> —— 而通道比现实好改得多。</li>
+            <li>更贵的后果在后面：这家公司同时失去了故障数据。
+              下一年想做可靠性投资立项，翻出来的历史故障全是「51 分钟就修好的小问题」，
+              <strong>立项被驳回，理由是「看不出有什么问题」。</strong></li>
+          </ul>
+          <p>
+            三种误用的共同机制是同一个：<strong>指标是现实的一个投影，而投影比现实容易改变。</strong>
+            只要改投影的收益高于改现实，理性的人一定先改投影 —— 这不是道德问题，是激励设计问题。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。
+            <em>Mean Time to Repair/Recover (MTTR)</em> 逐字列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <!-- ============ 图 7-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 452" role="img" aria-label="只考核单一指标时的代偿行为与被牺牲的对象：只压部署频率与只压变更失败率的两种副作用">
+              <defs>
+                <marker id="ah-71-c" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+                <marker id="ah-71-d" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 左：只压部署频率 -->
+              <rect x="30" y="20" width="430" height="54" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="245" y="52" class="f-3" font-size="15.5" font-weight="700" text-anchor="middle">只考核一个指标：部署频率 ↑</text>
+
+              <rect x="30" y="96" width="430" height="112" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="48" y="118" class="s-ink" font-size="13" font-weight="700">团队完全理性的反应</text>
+              <text x="48" y="142" class="s-ink" font-size="13">· 把一次真实发布拆成多次空发布</text>
+              <text x="48" y="166" class="s-ink" font-size="13">· 跳过耗时的非功能测试以赶次数</text>
+              <text x="48" y="190" class="s-ink" font-size="13">· 来不及走流水线的变更手工上生产</text>
+
+              <rect x="30" y="230" width="430" height="92" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="48" y="252" class="f-5" font-size="13" font-weight="700">真正被牺牲的东西</text>
+              <text x="48" y="278" class="s-ink" font-size="13">· 变更失败率与 MTTR 一起恶化</text>
+              <text x="48" y="302" class="s-ink" font-size="13">· 部署次数上升，交付吞吐纹丝不动</text>
+
+              <!-- 右：只压变更失败率 -->
+              <rect x="500" y="20" width="430" height="54" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="715" y="52" class="f-2" font-size="15.5" font-weight="700" text-anchor="middle">只考核一个指标：变更失败率 ↓</text>
+
+              <rect x="500" y="96" width="430" height="112" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="518" y="118" class="s-ink" font-size="13" font-weight="700">团队完全理性的反应</text>
+              <text x="518" y="142" class="s-ink" font-size="13">· 增加审批层级，能不发就不发</text>
+              <text x="518" y="166" class="s-ink" font-size="13">· 攒够一批再发，风险摊进大版本</text>
+              <text x="518" y="190" class="s-ink" font-size="13">· 悄悄改窄失败定义：回滚了不算失败</text>
+
+              <rect x="500" y="230" width="430" height="92" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="518" y="252" class="f-5" font-size="13" font-weight="700">真正被牺牲的东西</text>
+              <text x="518" y="278" class="s-ink" font-size="13">· 变更前置时间拉长，批量重新变大</text>
+              <text x="518" y="302" class="s-ink" font-size="13">· 失败率数字下降，单次故障影响面更大</text>
+
+              <!-- 箭头 -->
+              <g stroke-width="2" fill="none">
+                <line x1="245" y1="76" x2="245" y2="92" class="s-3" marker-end="url(#ah-71-c)"/>
+                <line x1="245" y1="210" x2="245" y2="226" class="s-3" marker-end="url(#ah-71-c)"/>
+                <line x1="715" y1="76" x2="715" y2="92" class="s-2" marker-end="url(#ah-71-d)"/>
+                <line x1="715" y1="210" x2="715" y2="226" class="s-2" marker-end="url(#ah-71-d)"/>
+              </g>
+
+              <!-- 结论 -->
+              <rect x="30" y="346" width="900" height="86" rx="12" class="s-4" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="48" y="374" class="f-4" font-size="14.5" font-weight="700">同一条结论：任何单一指标都可以被优化到好看，代价一定落在没被看的那一个上</text>
+              <text x="48" y="400" class="s-ink" font-size="13">速度类与稳定性类必须成组读 —— 一组约束另一组，代偿行为才会立刻暴露在另一个数字上</text>
+              <text x="48" y="422" class="s-muted" font-size="12.5">四个指标的定义见 7.2；四大类的完整划分见 7.3</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-1-2　单一指标优化的副作用。</strong>
+            这张图要看懂的是<strong>中间那一层</strong>：团队的反应没有一条是不理性的，
+            在只考核一个数字的前提下，它们全都是最省力的正确解。
+            所以问题不出在团队，出在<strong>只挂了一个数字</strong>。
+            左右两栏互为对方的解药 —— 把两个数字同时挂上去，左栏的空发布会立刻推高失败率，
+            右栏的攒批会立刻压低部署频率，<strong>代偿行为在另一个指标上无处可藏</strong>。
+            <br><small class="muted">本图的代偿行为与后果链条为<strong>本站教学整理</strong>，官方未给出此类副作用分析；
+            图中 <em>Deployment frequency</em>、<em>Change failure rate</em>、<em>MTTR</em>、<em>Change lead time</em>
+            四个术语均逐字列于 DOFD v3.4 官方考纲术语表。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">度量的三种误用</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>指标选错了</strong></td>
+                  <td>错在<strong>用法</strong>：部署频率、MTTR、变更失败率都是官方术语表里的正经指标，
+                    出问题的是<strong>挂它的方式</strong> —— 挂在个人头上、单独挂一个、挂了没有下一步</td>
+                  <td>错在<strong>选择</strong>：把职能产出量（代码行数、故事点、用例条数）当成 DevOps 指标。
+                    这类问题<strong>换掉指标就能修好</strong>，误用换不掉，得改挂法</td>
+                </tr>
+                <tr>
+                  <td><strong>无度量</strong><br><small class="muted">见 kp-7-1-1 ② 面</small></td>
+                  <td>组织<strong>看见的是假的</strong>，且历史数据被一起污染 ——
+                    上文那家公司做可靠性投资立项时，翻出来的故障全是「51 分钟的小问题」，<strong>立项被驳回</strong></td>
+                  <td>组织<strong>什么都看不见</strong>：改进无法验证，争论靠嗓门。
+                    它不产生错误结论，也不销毁证据。<strong>误用比无度量更贵</strong>，就贵在这一点上</td>
+                </tr>
+                <tr>
+                  <td><strong>监控告警误报</strong></td>
+                  <td>是<strong>激励设计</strong>问题：人在理性地响应考核方式。
+                    调阈值、换工具一概无效，只能改指标挂给谁、挂几个、挂了配不配行动</td>
+                  <td>是<strong>信噪比</strong>问题：系统在如实报告，只是门槛设错。
+                    <strong>调阈值、加抑制规则就能修</strong>，不涉及任何人的动机</td>
+                </tr>
+                <tr>
+                  <td><strong>古德哈特定律</strong><br><small class="muted">见本 kp ④ 面延伸</small></td>
+                  <td>是按<strong>挂法</strong>做的三分类：挂人头 / 挂单个 / 挂了没有下一步 ——
+                    每一条对应一个可执行的防护动作</td>
+                  <td>是一句<strong>通用表述</strong>：度量一旦成为目标就不再是好度量。
+                    它描述现象，不给分类也不给修法；且<strong>不在考纲内</strong>，不会成为考点</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>误用常被和「无度量」放在同一档打发掉</strong> ——
+            「反正数据都不准」。但两者的后果不是一个量级：<strong>无度量是看不见，误用是看见假的</strong>，
+            而且在看见假的同时，把本来可以用来立项、复盘、论证的历史数据一并销毁。</small></p>
+          <p class="mb-0 muted"><small>本对照表为<strong>本站教学整理</strong>，官方未以此形式给出度量的失效模式；
+            表中 <em>Deployment frequency</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
+            <em>Change failure rate</em> 逐字列于 DOFD v3.4 官方考纲术语表，
+            <em>Goodhart's Law</em> 与「告警误报」不在该表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把三条误用翻成四条可执行的防护：</p>
+          <ul>
+            <li><strong>指标属于团队，不属于个人。</strong>看板上不出现人名，不做人均排名。
+              需要评价个人时用别的机制 —— <strong>指标不是那个机制</strong>。</li>
+            <li><strong>永远成组挂。</strong>至少一个速度类配一个稳定性类。
+              上线新指标时先问一句：<strong>「有人想把这个数字刷好看，最省力的做法是什么？那个做法会让哪个数字变差？」</strong>
+              如果答案是「不会让任何数字变差」，说明这一组还不完整。</li>
+            <li><strong>每个指标配一句行动语。</strong>写在指标旁边，例如
+              「变更前置时间超过 5 天 → 拉一次<span class="term">价值流映射 <span class="en">Value stream mapping</span></span>看等待在哪」
+              （<strong>此处用精益价值流口径</strong>，见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>）。写不出这句话就不要挂。</li>
+            <li><strong>数据自动采集，人不经手。</strong>凡是需要人手工填报的字段，都要假设它已经被优化过。
+              这一条同时保护了指标与填报的人。</li>
+          </ul>
+          <div class="callout callout--ext">
+            <div class="callout__title">🧭 延伸：古德哈特定律 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+            <p>
+              <strong>「当一个度量变成目标，它就不再是一个好的度量。」</strong>
+              这是本节三种误用背后的一句通用表述，源自经济学中的 <span class="en">Goodhart's Law</span>。
+            </p>
+            <p>
+              它解释了为什么问题不在指标本身：指标之所以有效，正因为它此前<strong>没有被瞄准</strong>。
+              一旦成为被追逐的目标，人的行为就会重新围绕它排列，它与现实之间的对应关系随之断开。
+            </p>
+            <p class="mb-0"><small class="muted">古德哈特定律<strong>不在 DOFD v3.4 的 66 条术语表内，也不是 v3.4 课程大纲的模块子项</strong>，
+              属本站为帮助理解引入的延伸知识，<strong>不会作为考点出现</strong>。</small></p>
+          </div>
+          <p class="mb-0 muted"><small>以上四条防护为<strong>本站教学整理</strong>，官方未规定指标的治理规则。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>「用指标控制和评价员工」不属于 DevOps 领导力的目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              凡是把度量的目的写成「监督、控制、评价、排名人员」的选项，可以直接判为反方向。</li>
+            <li><strong>干扰项长什么样</strong>：这类题的其余选项通常是三条正向表述 ——
+              「建立信任」「支撑持续改进」「让团队看见自身表现」，读起来都对；
+              <strong>唯一那个把受词从「流程 / 系统」换成「员工」的，就是要选的异类。</strong>
+              另一种写法更隐蔽：用「问责 <span class="en">accountability</span>」「透明度」这类正面词包装
+              「让每个人的产出可被逐一比较」，本质仍是评价个人。</li>
+            <li><strong>排除技巧</strong>：先给每个选项圈出<strong>受词</strong>，再按两分法处理 ——
+              受词是<strong>流程、系统、价值流、团队</strong> → 正向；
+              受词是<strong>个人</strong> → 反向。这条技巧和 kp-7-1-1 的是同一条，两处都能用。</li>
+            <li><strong>本节的其余内容基本不直接命题。</strong>
+              「三种误用」是本站的归类，古德哈特定律明确不在考纲。
+              它们的作用是让你在读到「度量的目的是什么」这类题时，<strong>一眼看出方向</strong>，
+              而不是需要单独背诵的考点。本章共 2 题，不必在这里加码。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上干扰项构造方式与排除技巧均为<strong>本站教学推断</strong>；
+            涉及官方样题答案键之处只陈述结论，<strong>不复制任何题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">指标一旦变成成绩单，报上来的就不再是现实。</p>
+          <p class="muted"><small>三条误用的口诀：<strong>不挂人头、不挂单个、不挂没有下一步的</strong>。</small></p>
+          <p class="mb-0 muted"><small>一句反向自查：想让某个数字变好看，最省力的做法是什么？
+            如果那个做法对用户毫无价值，说明这组指标还缺一个用来约束它的伙伴。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>考试权重提示</strong>：本章 v3.4 最多 <strong>2 题</strong>，全书最低（DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。<strong>读懂即可，不要在这一章堆应试时间</strong></li>
+        <li><strong>CALMS 的 M = Measurement</strong>，不是 Monitoring / Metrics / Management。M 与 C: Culture 同级并列。Blueprint 的 M 格原文是 <em>Value-driven metrics for people, process and technology support <strong>trust</strong> and performance improvement</em> —— <strong>trust 写在 performance 之前</strong>，度量的第一个产出是共同事实，不是绩效数字</li>
+        <li><strong>度量的必要性</strong>：改进不能被验证就只是感觉；「哪个环节更慢」靠嗓门吵不出答案。度量把它换成一个<strong>可以回答的问题</strong></li>
+        <li><strong><span class="en">DevOps metrics</span></strong>（官方术语表条目）量的是<strong>一个变更走完全程</strong>，不是某个职能的产出量。换观察单位，不是加指标数量</li>
+        <li><strong>三种误用</strong>：考核个人（人优化指标不优化结果）、只看单一指标（速度上去稳定性崩了）、度量不可行动的东西（知道了也不知道改什么）</li>
+        <li><strong>官方确认</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（DOFD v3.4 官方样题答案键确认）。判方向就看<strong>受词是流程还是人</strong></li>
+        <li><strong>度量 ≠ 监控 ≠ 成熟度自评</strong>：监控看此刻有没有坏，度量看一段时间趋势，成熟度是定性自评 —— 自评与数字对不上时先信数字（见 <a href="../ch05-culture/5.4-maturity-models.html">5.4</a>）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevOps metrics</em>、<em>CALMS</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
+      <em>Deployment frequency</em>、<em>Change failure rate</em>、<em>Change lead time</em>、<em>Value stream mapping</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>；
+      该表<strong>只列词条、不附定义</strong>，因此本节给出的每一条中文释义均为本站措辞。
+      本节主题 <em>The Importance of Measurement</em> 是 <strong>DOFD v3.4 课程大纲 M7 模块的首个子项</strong>；
+      同一模块的子项 <em>DevOps Metrics - Speed, Quality, Stability, Culture</em> 同为官方模块构成，
+      本节「速度 / 质量 / 稳定性 / 文化」四方向的措辞即出自它。
+      题数分布「本章最多 2 题」出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      CALMS 五个字母的展开 <em>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</em>
+      以及 kp-7-1-1 ① 面引用的 M 格描述句
+      <em>Value-driven metrics for people, process and technology support trust and performance improvement.</em>
+      均为<strong>官方原文</strong>，出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>，中文为本站译文；
+      「trust 排在 performance improvement 之前」是对该原文语序的陈述。
+      <strong>一条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「用指标控制和评价员工<strong>不属于</strong> DevOps 领导力的目标」；
+      另引「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」同样出自该答案键，
+      本站把它延用到「选指标」是本站推论。本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「学习用途 vs 考核用途」对照与真实性曲线（图 7-1-1）、
+      单一指标副作用链条（图 7-1-2）、度量 / 监控 / 报告 / 成熟度自评四项对照、
+      立指标三问、选指标四条顺序、三种误用的归类与四条防护、各面中的命题角度与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为<strong>本站构造的教学示例</strong>，非真实调研数据。
+      <em>Goodhart's Law</em>（古德哈特定律）与「故事点」「SLA」等词<strong>不在 66 条术语表内</strong>，属延伸补充。
+      <em>Monitoring and Observability</em> 属 <strong>v3.6 新增学习目标</strong>（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。
+      四个指标的定义见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a>，
+      四大类指标划分见 <a href="7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a>，
+      变更前置时间与周期时间的区别见 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>
+      （<strong>变更前置时间有两种口径并存：DORA 口径从代码提交起算，精益价值流口径从需求被接受起算，
+      两者都对，7.4 逐条辨析</strong>）；
+      价值驱动指标与看板见 <a href="7.5-value-driven-metrics.html">7.5</a>，AIOps 见 <a href="7.6-aiops.html">7.6</a>；
+      DevOps 领导力见 <a href="../ch08-sharing/index.html">第 8 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.3 DevOps 领导力 · DevOps Foundation 学习站</title>
+<meta name="description" content="DevOps 领导力的工作对象是系统与条件，不是个人绩效。本节讲透官方样题答案键确认的一条排除项——用指标控制和评价员工不属于 DevOps 领导力的目标，给出它切断学习链路的因果链，并对照管理与领导的分工。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch08", sec:"8.3-leadership"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 8 章 · 分享、跟随与演进</div>
+      <h1 class="page-head__title">8.3 DevOps 领导力</h1>
+      <div class="page-head__en">DevOps Leadership</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这一节有一条<strong>可以直接当判据用的官方事实</strong>：
+        <strong>用指标控制和评价员工，不属于 DevOps 领导力的目标</strong>。
+        它不是道德劝诫，而是一条机制判断 —— 一旦指标变成给人打分的工具，
+        人就会先保护自己的分数，再考虑说不说实话；数据一旦失真，
+        领导者赖以做决策的那条学习链路就在源头被切断了。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>官方为什么把「用指标控制和评价员工」明确排除在 DevOps 领导力目标之外，机制是什么</li>
+        <li><strong>管理</strong>与<strong>领导</strong>各负责什么，转型中缺的通常是哪一侧</li>
+        <li>领导者具体要做哪五件事，以及三种「看起来在推动转型、实际上什么都没变」的失败姿势</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="用指标考核个人形成的恶性循环：考核到人、隐瞒问题、数据失真、决策失据、加严考核，并标出官方把它排除在领导力目标之外">
+          <defs>
+            <marker id="ah-83-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+            <marker id="ah-83-5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 节点 1 -->
+          <rect x="230" y="46" width="200" height="60" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="330" y="72" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">用指标考核和评价个人</text>
+          <text x="330" y="93" class="s-muted" font-size="12" text-anchor="middle">指标与绩效、排名、奖金挂钩</text>
+
+          <!-- 节点 2 -->
+          <rect x="425" y="176" width="190" height="64" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="520" y="202" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">先保护分数，后说实话</text>
+          <text x="520" y="223" class="s-muted" font-size="12" text-anchor="middle">问题被压住 · 事故被改名</text>
+
+          <!-- 节点 3 -->
+          <rect x="351" y="368" width="190" height="64" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="446" y="394" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">遥测与报告失真</text>
+          <text x="446" y="415" class="s-muted" font-size="12" text-anchor="middle">数字变好，现实没变</text>
+
+          <!-- 节点 4 -->
+          <rect x="119" y="368" width="190" height="64" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="214" y="394" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">决策失据，改进打偏</text>
+          <text x="214" y="415" class="s-muted" font-size="12" text-anchor="middle">照着假数据去优化</text>
+
+          <!-- 节点 5 -->
+          <rect x="45" y="176" width="190" height="64" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="140" y="202" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">结果继续变差</text>
+          <text x="140" y="223" class="s-muted" font-size="12" text-anchor="middle">于是把考核加得更严</text>
+
+          <!-- 环形箭头 -->
+          <g class="s-5" stroke-width="2.2" fill="none">
+            <line x1="425" y1="104" x2="492" y2="172" marker-end="url(#ah-83-1)"/>
+            <line x1="510" y1="240" x2="480" y2="364" marker-end="url(#ah-83-1)"/>
+            <line x1="347" y1="400" x2="315" y2="400" marker-end="url(#ah-83-1)"/>
+            <line x1="186" y1="366" x2="158" y2="244" marker-end="url(#ah-83-1)"/>
+            <line x1="176" y1="174" x2="248" y2="110" marker-end="url(#ah-83-1)"/>
+          </g>
+
+          <!-- 环心说明 -->
+          <text x="330" y="226" class="f-5" font-size="16" font-weight="700" text-anchor="middle">越考核，越看不见</text>
+          <text x="330" y="252" class="s-muted" font-size="13" text-anchor="middle">循环每转一圈，真实信息就少一层</text>
+          <text x="330" y="276" class="s-muted" font-size="13" text-anchor="middle">领导者最后是对着一份假地图做决策</text>
+
+          <!-- 官方判定 -->
+          <rect x="640" y="46" width="300" height="146" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="660" y="74" class="f-1" font-size="14" font-weight="700">官方判定 · 排除项</text>
+          <text x="660" y="102" class="s-ink" font-size="13.5">用指标<tspan font-weight="700">控制和评价员工</tspan></text>
+          <text x="660" y="126" class="s-ink" font-size="13.5"><tspan font-weight="700">不属于</tspan> DevOps 领导力的目标</text>
+          <text x="660" y="156" class="s-muted" font-size="12">由 DOFD v3.4 官方样题答案键确认</text>
+          <text x="660" y="176" class="s-muted" font-size="12">本站只陈述结论，不复制题干与选项</text>
+
+          <!-- 被切断的链路 -->
+          <rect x="640" y="212" width="300" height="220" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="660" y="240" class="f-3" font-size="14" font-weight="700">被这个循环切断的链路</text>
+          <text x="660" y="270" class="s-ink" font-size="13.5">① 问题被如实说出来</text>
+          <text x="660" y="298" class="s-ink" font-size="13.5">② 团队自己诊断出原因</text>
+          <text x="660" y="326" class="s-ink" font-size="13.5">③ 团队自己发起改进</text>
+          <text x="660" y="354" class="s-ink" font-size="13.5">④ 局部发现推广成全局改进</text>
+          <text x="660" y="386" class="s-muted" font-size="12">这四条链路是本站据排除项</text>
+          <text x="660" y="404" class="s-muted" font-size="12">反推的教学整理，官方未逐条列出</text>
+          <line x1="620" y1="212" x2="636" y2="252" class="s-3" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah-83-5)"/>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-3-1　把指标用在人身上，会关掉领导者的眼睛。</strong>
+        这张图要看懂的不是「考核不好」，而是<strong>因果的方向</strong>：
+        考核落到个人身上之后，最先受损的不是士气，而是<strong>信息的真实性</strong>；
+        信息一失真，右侧那条「暴露问题 → 自我诊断 → 自我改进 → 全局推广」的链路整条断掉，
+        领导者再想改进也只能对着假数据动手，于是把考核加得更严 —— 环就闭合了。
+        <br><small class="muted">左侧五节点的因果链、以及右侧①—④这条链路，均为<strong>本站教学整理</strong>；
+        图中唯一的官方事实是右上角那一条：用指标控制和评价员工不属于 DevOps 领导力的目标（DOFD v3.4 官方样题答案键确认）。
+        指标本身的定义与用法见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-8-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-3-1</div>
+        <h3 class="kp__title">DevOps 领导力的目标与那条官方排除项<span class="en">Goals of DevOps Leadership</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevOps 领导力 <span class="en">DevOps Leadership</span></span>
+            的工作对象是<strong>系统与条件</strong>，不是个人绩效：
+            领导者负责让组织具备<strong>自我诊断、自我改进、并把局部改进扩散到全局</strong>的能力，
+            而不是负责给每个人的表现打分。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">方向</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>改进自我诊断能力</strong></td><td>团队能自己看出「问题出在哪一环」，不必等领导指出。领导者提供的是数据、可观测性与时间，不是结论</td></tr>
+                <tr><td><strong>激发自我改进</strong></td><td>改进的发起者是做这件事的人。领导者的作用是让改进不需要审批、不需要争取，是日常动作的一部分</td></tr>
+                <tr><td><strong>局部发现 → 全局改进</strong></td><td>一个团队学到的东西要变成全组织的资产。这正是第 8 章「分享」的主线</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0"><span class="badge badge--warn">⚠️ 易混淆</span>
+            <strong>官方排除项</strong>：用指标<strong>控制和评价员工</strong><strong>不属于</strong> DevOps 领导力的目标
+            —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。</p>
+          <div class="src-note">
+            <em>DevOps Leadership</em> 是 <strong>DOFD v3.4 课程大纲 M8 模块</strong>的子项，
+            但<strong>不在</strong> DOFD v3.4 官方考纲术语表（Concept and Terminology List）的 66 条之内，故本节页头标「📘 官方模块子项」。
+            表下<strong>那条排除项是官方事实</strong>（DOFD v3.4 官方样题答案键确认）；
+            <strong>表中三行的措辞与归纳是本站教学整理</strong> —— 官方确认的是那条排除项，
+            本站据此把领导力的目标反推并整理成三个正向方向，官方未以这三条的形式逐字列出。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这条排除项要解决的痛点非常具体：<strong>一套本来用来照亮问题的指标，被拿去给人打分之后，会反过来把问题藏起来。</strong>
+          </p>
+          <ul>
+            <li>某公司把四个交付指标（<strong>部署频率</strong>、<strong>变更前置时间</strong>、<strong>变更失败率</strong>、<strong>平均恢复时间 MTTR</strong>）
+              拆到人头，进季度绩效，团队之间还拉了排名榜。</li>
+            <li>三个月后账面全线变好：部署频率涨了 <strong>3.4 倍</strong>，变更失败率从 12% 降到 <strong>2%</strong>。
+              实际发生的是 —— 一个改动被拆成 6 个空提交去刷部署次数；
+              线上问题在工单里被写成「配置调整」，不计入变更失败；
+              MTTR 的计时起点被从「监控告警」改成「确认是事故」，中间那 40 分钟蒸发了。</li>
+            <li>同一季度<strong>用户侧的故障投诉翻了一倍</strong>。管理层看到的是一份漂亮报表，
+              于是决定「机制有效，明年指标再加码」。</li>
+          </ul>
+          <p>
+            机制链条只有五步，且每一步都是理性反应：
+            <strong>考核到个人 → 先保护分数再说实话 → 遥测与报告失真 → 决策失据 → 结果变差 → 加严考核</strong>。
+            它与<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>要求的
+            「坏消息能被安全地说出来」<strong>方向完全相反</strong>：
+            安全文化让问题在小的时候浮上来，个人考核让问题一直沉在水下，直到变成事故。
+          </p>
+          <p>
+            长期看，这个循环的产物就是<a href="../ch05-culture/5.2-cultural-debt.html">第 5 章 文化债（5.2）</a>：
+            没人愿意第一个说出坏消息，改进只能等到事故之后被迫发生。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            上述五步因果链亦为本站教学整理；官方确认的只有「用指标控制和评价员工不属于 DevOps 领导力的目标」这一结论。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">DevOps 领导力的目标</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>用指标评价个人</strong><br><small class="muted">官方排除项</small></td>
+                  <td>指标指向<strong>系统与工作方式</strong>：这条价值流哪里在排队</td>
+                  <td>指标指向<strong>人</strong>：谁的数字更好看。结果是数字被优化，问题被隐藏</td>
+                </tr>
+                <tr>
+                  <td><strong>度量本身 <span class="en">DevOps metrics</span></strong></td>
+                  <td>是<strong>用途</strong>问题：同一组数字，用来诊断还是用来评价</td>
+                  <td>是<strong>定义</strong>问题：测什么、怎么算、多久看一次（见<a href="../ch07-metrics/index.html">第 7 章</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>管理层对文化变革的承诺</strong></td>
+                  <td>是领导者的<strong>日常动作</strong>：方向、障碍、安全、能力、示范</td>
+                  <td>是组织层面的<strong>关键成功因素</strong>，由 DOFD v3.4 官方样题答案键确认，展开归 <a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a>一节</td>
+                </tr>
+                <tr>
+                  <td><strong>组织文化 <span class="en">Organizational culture</span></strong></td>
+                  <td>是<strong>施力点</strong>：领导者能直接改变的是条件与激励</td>
+                  <td>是<strong>结果</strong>：文化是人在这些条件下反复做出选择后沉淀的产物（见<a href="../ch05-culture/5.1-defining-culture.html">第 5 章 定义文化（5.1）</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>官方排除的不是「度量」，而是「把度量用于控制和评价员工」</strong>。
+            DevOps 高度依赖度量 —— <em>DevOps metrics</em> 就在官方 66 条术语表内，第 7 章整章在讲它。
+            考场上看到「指标」两个字就想选「不对」的人，会在正向题上全军覆没。
+            <strong>判断的落点是指标的用途，不是指标的存在。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表的四组维度为本站教学整理，官方未以此形式给出；
+            表中「管理层对文化变革的承诺是关键成功因素」与「用指标控制和评价员工不属于领导力目标」两条结论出自 DOFD v3.4 官方样题答案键。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把指标留在「诊断」这一侧，有四个可执行的判断动作：</p>
+          <ul>
+            <li><strong>指标归团队，不归个人</strong>：报表的最小粒度是价值流或团队。
+              一旦某张看板能按人名排序，它就已经越界了。</li>
+            <li><strong>看趋势，不看排名</strong>：问「这条曲线上个月为什么翘起来」，不问「谁排最后」。
+              排名天然制造隐瞒，趋势天然制造提问。</li>
+            <li><strong>指标「太漂亮」时先查定义</strong>：变更失败率降到接近零、MTTR 突然减半，
+              第一反应应该是<strong>去看计时起点和分类口径有没有被改过</strong>，而不是发喜报。
+              指标被优化的速度永远快过系统被改善的速度。</li>
+            <li><strong>把坏消息变成有回报的行为</strong>：谁先报出问题，谁得到的是支援而不是问责记录。
+              这是<a href="../ch04-frameworks/4.5-safety-culture.html">安全文化（4.5）</a>在领导者日程上的具体落法。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这四项判断动作为本站教学整理，官方文件把 <em>DevOps Leadership</em> 列为模块子项，
+            未规定具体的指标治理清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>用指标控制和评价员工，不属于 DevOps 领导力的目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              这是本节最高价值的考点，可以直接当判据用。</li>
+            <li><strong>命题角度</strong>：典型是<strong>反向题</strong> —— 四个选项里三个是领导力真正的目标，
+              问哪一个<strong>不是</strong>。题干里的「except / not / 不属于」是这一题型的标志。</li>
+            <li><strong>干扰项长什么样</strong>：反向题的三个陪跑选项一般都是<strong>正面的、指向系统与能力的表述</strong>，
+              读起来都对；唯一指向<strong>对人的评价</strong>的那一个才是要选的答案。
+              （本条为本站教学推断，官方未公布命题规律，本站不复制样题的题干与选项。）</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：看每个选项<strong>动词作用在谁身上</strong>。
+              作用在<strong>系统、流程、能力、工作方式</strong>上 → 是领导力目标；
+              作用在<strong>人的评价、排名、奖惩</strong>上 → 不是。一刀切得干净，不需要犹豫。</li>
+            <li><strong>另一种陷阱</strong>：把选项写成「<strong>用指标衡量改进效果</strong>」。
+              这是对的，别误杀 —— 衡量的是<strong>改进</strong>，不是<strong>员工</strong>。差别只在宾语。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            官方未公布命题规律与题型分布，命题角度分析为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">指标照的是系统，不是人；一旦拿它给人打分，人就先修分数、后修系统。</p>
+          <p class="mb-0 muted"><small>一句话推论：领导力目标题的正确选项，宾语一定是<strong>能力、流程、改进</strong>；
+            排除项的宾语是<strong>员工</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-8-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-3-2</div>
+        <h3 class="kp__title">领导力 vs 管理：转型缺的通常是哪一侧<span class="en">Leadership vs Management</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>管理关注「把事情做对」</strong> —— 计划、协调、控制、纠偏，产出的是可预测性；
+            <strong>领导关注「做对的事」</strong> —— 方向、动机、变革，产出的是新的走法。
+            两者不是好坏之分，一次转型两样都需要；<strong>但组织里通常不缺管理，缺的是领导</strong>。
+          </p>
+          <p class="mb-0">
+            与之配套的是一组姿态上的对照：
+            <span class="term">服务型领导 <span class="en">Servant Leadership</span></span>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            问「你被什么挡住了，我能移开什么」；
+            <strong>指挥控制</strong>问「进度到哪了，为什么没按计划」。
+            前者把自己放在团队<strong>下游</strong>负责清障，后者把自己放在<strong>上游</strong>负责下指令。
+          </p>
+          <div class="src-note">
+            「领导 vs 管理」这一组对照、以及「服务型领导 vs 指挥控制」的姿态对比，均为<strong>本站教学整理</strong>，
+            官方未以此形式给出。<em>Servant Leadership</em> 与 <em>Command and Control</em> 既不在
+            DOFD v3.4 官方考纲术语表的 66 条内，也不是 v3.4 课程大纲的模块子项，属延伸补充。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一组对照要解决的痛点是：<strong>很多转型把领导的活儿，全部当成管理的活儿在做，于是动作齐全、方向没动。</strong>
+          </p>
+          <ul>
+            <li>某企业 CTO 在全员会上宣布启动 DevOps 转型，成立 12 人的「DevOps 平台组」，
+              买了工具链，制定了迁移路线图，每两周一次进度评审。<strong>全是管理动作，一个不少。</strong></li>
+            <li>18 个月后，流水线建成，构建时间从 40 分钟降到 9 分钟。
+              但<strong>部署频率几乎没变</strong> —— 因为上生产仍然要走那张有 <strong>11 个签字</strong>的发布审批表，
+              这张表属于风控与运维总监，从来没被列进转型范围。</li>
+            <li>复盘时的结论很刺眼：<strong>组织花 18 个月把「构建」这一段做得飞快，
+              却没有人动过真正的约束。</strong>因为动它需要的是<strong>决策方式的改变</strong>，
+              那是领导的活儿，不是项目经理排得出来的任务。</li>
+          </ul>
+          <p>
+            这正是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>的现场版：
+            <strong>在非约束环节上的改进都是幻觉</strong>。
+            而识别并撤掉「11 个签字」这种组织级约束，几乎从不属于任何一个团队的权限范围 ——
+            只有领导者能做，也只有领导者做了，转型才越过工具层。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 8-3-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 920 434" role="img" aria-label="管理与领导的职责对照，并标出转型中通常缺的是领导一侧">
+              <defs>
+                <marker id="ah-83-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 表头 -->
+              <rect x="200" y="20" width="340" height="44" rx="9" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="370" y="48" class="f-4" font-size="16" font-weight="700" text-anchor="middle">管理 Management</text>
+
+              <rect x="550" y="20" width="340" height="44" rx="9" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="720" y="48" class="f-3" font-size="16" font-weight="700" text-anchor="middle">领导 Leadership</text>
+
+              <text x="115" y="48" class="s-muted" font-size="13" text-anchor="middle">对照维度</text>
+
+              <!-- 行分隔线 -->
+              <g class="s-stroke" stroke-width="1" opacity="0.55">
+                <line x1="30" y1="126" x2="890" y2="126"/>
+                <line x1="30" y1="182" x2="890" y2="182"/>
+                <line x1="30" y1="238" x2="890" y2="238"/>
+                <line x1="30" y1="294" x2="890" y2="294"/>
+              </g>
+              <line x1="545" y1="76" x2="545" y2="348" class="s-stroke" stroke-width="1.4" opacity="0.7"/>
+
+              <!-- 行 1 -->
+              <text x="115" y="103" class="s-muted" font-size="13" text-anchor="middle">关注点</text>
+              <text x="216" y="103" class="s-ink" font-size="15">把事情做对</text>
+              <text x="566" y="103" class="s-ink" font-size="15">做对的事</text>
+
+              <!-- 行 2 -->
+              <text x="115" y="159" class="s-muted" font-size="13" text-anchor="middle">核心问题</text>
+              <text x="216" y="159" class="s-ink" font-size="15">怎么做 · 谁来做 · 何时做完</text>
+              <text x="566" y="159" class="s-ink" font-size="15">为什么做 · 往哪个方向走</text>
+
+              <!-- 行 3 -->
+              <text x="115" y="215" class="s-muted" font-size="13" text-anchor="middle">典型动作</text>
+              <text x="216" y="215" class="s-ink" font-size="15">计划 · 协调 · 控制 · 纠偏</text>
+              <text x="566" y="215" class="s-ink" font-size="15">定方向 · 移障碍 · 造安全 · 做示范</text>
+
+              <!-- 行 4 -->
+              <text x="115" y="271" class="s-muted" font-size="13" text-anchor="middle">产出</text>
+              <text x="216" y="271" class="s-ink" font-size="15">可预测性与秩序</text>
+              <text x="566" y="271" class="s-ink" font-size="15">变革的方向与动机</text>
+
+              <!-- 行 5 -->
+              <text x="115" y="327" class="s-muted" font-size="13" text-anchor="middle">缺了会怎样</text>
+              <text x="216" y="327" class="s-ink" font-size="15">混乱 · 重复劳动 · 长期救火</text>
+              <text x="566" y="327" class="s-ink" font-size="15">有流程没方向，转型停在工具层</text>
+
+              <!-- 底部结论条 -->
+              <rect x="200" y="360" width="340" height="54" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="370" y="384" class="s-muted" font-size="13.5" text-anchor="middle">这一侧组织里通常不缺</text>
+              <text x="370" y="404" class="s-muted" font-size="12.5" text-anchor="middle">项目制企业的看家本领</text>
+
+              <rect x="550" y="360" width="340" height="54" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="720" y="384" class="f-3" font-size="14.5" font-weight="700" text-anchor="middle">转型中缺的几乎总是这一侧</text>
+              <text x="720" y="404" class="s-muted" font-size="12.5" text-anchor="middle">工具能买，方向与安全买不到</text>
+              <line x1="720" y1="336" x2="720" y2="356" class="s-3" stroke-width="2" marker-end="url(#ah-83-3)"/>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 8-3-2　两列都要有，缺的总是右边那一列。</strong>
+            要看懂的是最后两行：<strong>管理缺位的症状是「乱」，领导缺位的症状是「顺，但没往前走」</strong>。
+            后者更危险，因为它一切指标看起来都在改善 —— 流水线更快、迭代更准时、评审更规范 ——
+            只是价值流的真正约束一次都没被碰过。右下角那一格是本节的落点。
+            <br><small class="muted">本对照表为<strong>本站教学整理</strong>，官方未以此形式给出。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">领导（Leadership）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>管理 <span class="en">Management</span></strong></td>
+                  <td>问<strong>「往哪走、为什么」</strong>，改变的是方向与规则本身</td>
+                  <td>问<strong>「怎么按时做完」</strong>，在既定方向与既定规则内求最优</td>
+                </tr>
+                <tr>
+                  <td><strong>指挥控制 <span class="en">Command &amp; Control</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>信息<strong>自下而上</strong>：现场最先知道问题，领导者的任务是让它能上来</td>
+                  <td>信息<strong>自上而下</strong>：决定在上面做，下面执行。坏消息上行等于自曝，于是不上行</td>
+                </tr>
+                <tr>
+                  <td><strong>授权 <span class="en">Empowerment</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>给出<strong>方向 + 权限 + 时间 + 安全</strong>，并持续参与</td>
+                  <td>只给权限。缺了后三样的「授权」实际上是<strong>甩锅</strong>：出事时责任在下，改不动时资源在上</td>
+                </tr>
+                <tr>
+                  <td><strong>角色与团队</strong></td>
+                  <td>是一种<strong>行为</strong>，任何岗位都能做，不依赖头衔</td>
+                  <td>是一种<strong>结构安排</strong>：谁在哪个团队、承担什么职责（展开归 <a href="8.2-roles-teams.html">8.2 角色与团队</a>一节）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>这不是「领导好、管理坏」</strong>。
+            没有管理，转型会退化成一堆互不相干的试验；没有领导，转型会退化成一个准时交付的工具项目。
+            真正的判断句只有一句：<strong>看这次转型有没有改变过「决策是怎么做出来的」</strong>——
+            没改过，那就只做了管理。</small></p>
+          <p class="mb-0 muted"><small>本表四组对照均为本站教学整理；<em>Servant Leadership</em>、<em>Command and Control</em>、
+            <em>Empowerment</em> 三词不在 DOFD v3.4 官方考纲术语表的 66 条内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一位领导者是在做领导还是在做管理，看三件可观察的事：</p>
+          <ul>
+            <li><strong>看他的日历</strong>：进度评审占了几成，去现场看价值流占了几成。
+              日历是最诚实的优先级声明 —— 从不出现在改进讨论里的人，说什么都不算数。</li>
+            <li><strong>看他撤过什么</strong>：转型半年，他<strong>删掉了哪一道审批、哪一份报表、哪一场例会</strong>。
+              一件都说不出来，说明只做了加法。加法是管理，减法才是领导。</li>
+            <li><strong>看坏消息怎么到他这儿</strong>：是团队主动报的，还是从事故报告里知道的。
+              后者意味着信息链路已经断了，此时任何指标都不可信（回到 <a href="#kp-8-3-1">kp-8-3-1</a> 那个循环）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这三条观察判据为本站教学整理，官方文件未给出领导力的评估方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先说清边界</strong>：DOFD v3.4 官方考纲术语表<strong>没有</strong> <em>Leadership vs Management</em> 这样的条目，
+              不要期待考试直接考这组对照。它在本站的作用是<strong>帮你识别选项的性质</strong>。</li>
+            <li><strong>真正会考的邻近考点</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong>
+              —— 这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认，展开归 <a href="8.5-challenges-csf.html">8.5</a> 一节。
+              注意它强调的是<strong>「对文化变革」的承诺</strong>，不是对预算、工具或组织架构的承诺。</li>
+            <li><strong>干扰项长什么样</strong>：把纯管理动作包装成领导力 ——
+              「制定详细的转型计划」「设立 DevOps 专职团队」「引入统一的工具链」「加强进度跟踪」。
+              这四类读起来都很正面，但它们改变的是<strong>执行方式</strong>，不是<strong>方向与文化</strong>。</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：问自己「这个选项做完之后，<strong>决策是怎么做出来的</strong>变了吗」。
+              没变的，都是管理项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            官方未公布命题规律与题型分布，此处的命题角度分析为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">管理让事情不出错，领导让做的是对的事——转型缺的几乎总是后者。</p>
+          <p class="mb-0 muted"><small>一个字的助记：<strong>管理做加法（加计划、加流程、加工具），领导做减法（撤审批、撤报表、撤例会）。</strong>
+            半年下来说不出撤了什么，就是只做了管理。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-8-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-3-3</div>
+        <h3 class="kp__title">领导者的五项动作与三种常见失败<span class="en">What DevOps Leaders Actually Do</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            把 kp-8-3-1 的三个目标落到日常，领导者具体要做五件事：
+            <strong>设定方向与 why、移除障碍与约束、创造安全、投资于人的能力、示范新的行为</strong>。
+            五项都是<strong>可观察的动作</strong>，不是态度。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">动作</th><th>具体是什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>设定方向与 why</strong></td><td>先说清「为什么要变」，再说「怎么变」。
+                  <span class="term">黄金圈 <span class="en">Golden Circle</span></span>
+                  <span class="badge badge--core">⭐ 考纲核心</span> 的 <strong>why</strong> 代表组织的<strong>目的、事业与信念</strong>
+                  —— 这一条由 DOFD v3.4 官方样题答案键确认，模型展开见<a href="../ch05-culture/5.3-behavioral-models.html">第 5 章 行为模型（5.3）</a></td></tr>
+                <tr><td><strong>移除障碍与约束</strong></td><td>团队自己撤不掉的东西才需要领导者：跨部门审批、共享环境排队、
+                  预算年度化、组织级的单点故障。识别方法见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论（2.3）</a></td></tr>
+                <tr><td><strong>创造安全</strong></td><td>让坏消息可以被安全地说出来，让事后复盘无指责。
+                  见<a href="../ch04-frameworks/4.5-safety-culture.html">安全文化（4.5）</a></td></tr>
+                <tr><td><strong>投资于人的能力</strong></td><td>把学习变成有预算、有时间的正式安排：
+                  <span class="term">Dojo <span class="en">Dojo</span></span><span class="badge badge--core">⭐ 考纲核心</span>（沉浸式实战训练场）、
+                  <span class="term">沉浸式学习 <span class="en">Immersion</span></span><span class="badge badge--core">⭐ 考纲核心</span>、
+                  <span class="term">改进型 Kata <span class="en">Improvement kata</span></span><span class="badge badge--core">⭐ 考纲核心</span></td></tr>
+                <tr><td><strong>示范新的行为</strong></td><td>自己先按新规则做决策：公开自己的错误、参加复盘、
+                  接受被数据推翻。团队判断转型真假，看的是这一项</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>把领导者的职责归纳为这五项动作，是本站教学整理</strong>，官方未以此形式给出。
+            表中 <em>Golden Circle</em>、<em>Dojo</em>、<em>Immersion</em>、<em>Improvement kata</em>
+            四词均列于 DOFD v3.4 官方考纲术语表；「黄金圈的 why 代表目的、事业与信念」由 DOFD v3.4 官方样题答案键确认。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这份清单存在的理由，是三种<strong>看起来很像在推动转型、实际上什么都没发生</strong>的姿势 ——
+            它们的共同点是：<strong>领导者要求了变化，但自己的行为一格没动。</strong>
+          </p>
+          <ul>
+            <li><strong>宣布转型，然后回去开自己的会。</strong>
+              某集团 CIO 在年会宣布「三年内实现 DevOps」，之后 14 个月里没有出现在任何一次改进讨论上，
+              季度经营会的议程一字未改。团队的解读非常准确：<strong>这是一次口号，不是一次转型。</strong></li>
+            <li><strong>要求团队改变，但自己的决策方式不变。</strong>
+              要求团队小批量、快反馈、自主决策；同时坚持所有超过 5 人日的工作要报到自己这里排优先级。
+              结果是团队学会了把工作拆成 4.5 人日，<strong>批量没变小，只是被切碎报账。</strong></li>
+            <li><strong>把 DevOps 授权给一个团队，然后不再过问。</strong>
+              成立平台组、给了预算、说「你们放手做」。而平台组要动的每一样东西 ——
+              发布审批、环境预算、安全评审排期 —— <strong>都不在他们的权限内</strong>。
+              半年后平台组交出一份「阻塞项清单」，而当初授权的人已经不在这条线上。</li>
+          </ul>
+          <p>
+            三种失败的机制是同一个：<strong>领导者把转型当成一件可以委托出去的事</strong>。
+            但需要领导者亲自做的那部分 —— 撤规则、给时间、改自己的决策方式 —— 恰恰是<strong>唯一不能委托的部分</strong>。
+          </p>
+          <p class="mb-0 muted"><small>以上三个案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「三种常见失败」的归纳为本站教学整理。</small></p>
+        </div>
+
+        <!-- ============ 图 8-3-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 920 402" role="img" aria-label="领导者的五项动作与团队因此获得的能力的对应关系，以及三种常见失败">
+              <defs>
+                <marker id="ah-83-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="195" y="34" class="f-1" font-size="15" font-weight="700" text-anchor="middle">领导者做的事</text>
+              <text x="705" y="34" class="f-3" font-size="15" font-weight="700" text-anchor="middle">团队因此获得的</text>
+
+              <!-- 行 1 -->
+              <rect x="30" y="50" width="330" height="46" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="46" y="79" class="s-ink" font-size="14.5">① 设定方向与 why（Golden Circle）</text>
+              <rect x="520" y="50" width="370" height="46" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="536" y="79" class="s-ink" font-size="14.5">知道为什么做，能自己做取舍</text>
+              <line x1="364" y1="73" x2="514" y2="73" class="s-1" stroke-width="2" marker-end="url(#ah-83-4)"/>
+
+              <!-- 行 2 -->
+              <rect x="30" y="108" width="330" height="46" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="46" y="137" class="s-ink" font-size="14.5">② 移除障碍与组织级约束</text>
+              <rect x="520" y="108" width="370" height="46" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="536" y="137" class="s-ink" font-size="14.5">流动不再被审批与排队卡住</text>
+              <line x1="364" y1="131" x2="514" y2="131" class="s-1" stroke-width="2" marker-end="url(#ah-83-4)"/>
+
+              <!-- 行 3 -->
+              <rect x="30" y="166" width="330" height="46" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="46" y="195" class="s-ink" font-size="14.5">③ 创造安全，让坏消息能上来</text>
+              <rect x="520" y="166" width="370" height="46" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="536" y="195" class="s-ink" font-size="14.5">问题在还小的时候就被暴露</text>
+              <line x1="364" y1="189" x2="514" y2="189" class="s-1" stroke-width="2" marker-end="url(#ah-83-4)"/>
+
+              <!-- 行 4 -->
+              <rect x="30" y="224" width="330" height="46" rx="9" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="46" y="253" class="s-ink" font-size="14.5">④ 投资于人：Dojo · 沉浸式学习</text>
+              <rect x="520" y="224" width="370" height="46" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="536" y="253" class="s-ink" font-size="14.5">具备自我诊断与自我改进的能力</text>
+              <line x1="364" y1="247" x2="514" y2="247" class="s-1" stroke-width="2" marker-end="url(#ah-83-4)"/>
+
+              <!-- 行 5 -->
+              <rect x="30" y="282" width="330" height="46" rx="9" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="46" y="311" class="s-ink" font-size="14.5">⑤ 自己先示范新的行为</text>
+              <rect x="520" y="282" width="370" height="46" rx="9" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="536" y="311" class="s-ink" font-size="14.5">相信这次是真的 —— 否则前四项归零</text>
+              <line x1="364" y1="305" x2="514" y2="305" class="s-1" stroke-width="2" marker-end="url(#ah-83-4)"/>
+
+              <!-- 底部失败带 -->
+              <rect x="30" y="344" width="860" height="44" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="46" y="362" class="f-5" font-size="13" font-weight="700">三种常见失败（本站教学整理）</text>
+              <text x="46" y="380" class="s-muted" font-size="12.5">宣布转型后回去开自己的会　·　要求团队改变但自己的决策方式不变　·　把 DevOps 授权给一个团队后不再过问</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 8-3-3　五项动作各自换来一样东西，第五项决定前四项算不算数。</strong>
+            要看懂的是右列不是「好处清单」，而是<strong>能力清单</strong> ——
+            每一项动作换来的都是团队<strong>自己能做某件事</strong>的能力，而不是领导者替他们做了某件事。
+            第 ⑤ 行单独加粗：如果领导者自己的决策方式没变，团队会正确地把前四项读成表演，右列全部作废。
+            <br><small class="muted">五项动作与三种失败的归纳为<strong>本站教学整理</strong>；
+            <em>Golden Circle</em>、<em>Dojo</em>、<em>Immersion</em> 为 DOFD v3.4 官方考纲术语表条目。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">领导者的动作</th><th style="width:38%">真正的做法</th><th>常被误当成它的替代品</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>设定方向与 why</strong></td>
+                  <td>说清目的、事业与信念，让团队能在没人指挥时自己判断</td>
+                  <td><strong>发一份转型路线图</strong>：给的是 what 和 when，唯独没有 why。团队只能按图执行，遇到图上没写的情况就停住</td>
+                </tr>
+                <tr>
+                  <td><strong>移除障碍与约束</strong></td>
+                  <td>撤掉一道审批、砍掉一份报表、打通一次预算</td>
+                  <td><strong>成立一个专门团队去「推动」</strong>：把障碍原封不动留着，只是多派了人去撞它</td>
+                </tr>
+                <tr>
+                  <td><strong>投资于人的能力</strong></td>
+                  <td>给出<strong>带薪的、被保护的学习与改进时间</strong></td>
+                  <td><strong>采购一批线上课程</strong>：预算花了，但学习被安排在「不影响交付」的时间里，也就是不存在的时间里</td>
+                </tr>
+                <tr>
+                  <td><strong>示范行为</strong></td>
+                  <td>自己按新规则做决策，公开自己被数据推翻的时刻</td>
+                  <td><strong>在全员会上强调转型的重要性</strong>：讲话是免费的，行为不是。团队只看后者</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「授权」不等于「撒手」</strong>。
+            真正的授权是<strong>方向 + 权限 + 时间 + 安全</strong>四样一起给，并且持续参与；
+            只给一句「你们放手做」而不撤掉挡路的规则，本质上是把无法完成的任务转移给了下级。
+            考试与实践中最常见的领导力失败，都是这一种。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出真做法与替代品的对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            五项动作里，<strong>最难也最能证伪的一项是「真的给出时间」</strong>。
+            <a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步 · 持续改进（2.5）</a>里那句通行阐述
+            <strong>把改进日常工作置于日常工作之上</strong> —— 这句话在组织里能不能成立，
+            不取决于团队的觉悟，取决于<strong>有没有人在容量分配上替它挡住业务需求</strong>。这只有领导者能做。
+          </p>
+          <ul>
+            <li><strong>把改进时间写进容量规划，而不是写进倡议</strong>：
+              每个迭代固定留出一块用于偿还技术债与文化债、做实验、做复盘落项。
+              写进容量表的东西才会被排期，写进邮件的不会。</li>
+            <li><strong>领导者的动作是「保护」，不是「安排」</strong>：
+              这块时间一定会在某个赶工的迭代被人提议挪用。
+              <strong>第一次被挪用，这项制度就结束了</strong> —— 挡住它是领导者的活儿。</li>
+            <li><strong>用「撤掉了什么」做转型的进度指标</strong>：每季度盘一次撤掉的审批、报表、例会。
+              比「完成了多少个转型任务」诚实得多。</li>
+            <li><strong>让分享成为被承认的工作</strong>：内部分享、Dojo 带教、复盘写作要占用工时且计入产出，
+              否则「把局部发现转化为全局改进」只能靠个别人的业余热情。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四项落地做法为本站教学整理；
+            「把改进日常工作置于日常工作之上」<strong>不是 DOFD 官方术语表条目</strong>，
+            属第三步的通行教学阐述（本站教学整理，口径见 2.5）；
+            官方未规定改进时间的具体比例或分配方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的两条（都可能借领导力场景出现）</strong>：
+              <strong>Golden Circle 的「why」代表组织的目的、事业与信念</strong>；
+              <strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>
+              —— 两条均由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              第二条的展开归 <a href="8.4-getting-started.html">8.4 组织考量与如何起步</a>一节，也可参见
+              <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 业务与 IT 视角（1.3）</a>。</li>
+            <li><strong>命题角度</strong>：给一段领导者行为的描述，问它体现了什么 / 缺了什么。
+              判断落点始终是<strong>「他改变的是自己的行为，还是别人的行为」</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「由领导者决定改进优先级并下达」</strong>（把自我改进换成了指令）、
+              <strong>「设立指标考核各团队的转型进度」</strong>（正是 kp-8-3-1 那条官方排除项的变体）、
+              <strong>「成立专职团队全权负责 DevOps」</strong>（把不可委托的部分委托掉了）。
+              三个都写得很像正面做法。</li>
+            <li><strong>排除技巧（本站教学整理）</strong>：凡是选项做完之后
+              <strong>「决定权仍然在原来那个人手里」</strong>，就不是领导力的正确做法。
+              领导力的动作方向是<strong>把判断能力交出去</strong>，同时<strong>把障碍收回来自己处理</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            官方未公布命题规律与题型分布，此处命题角度分析为本站教学推断。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">把判断能力交出去，把障碍收回来——顺序反了就是甩锅。</p>
+          <p class="muted"><small>五项动作口诀：<strong>方向 · 障碍 · 安全 · 能力 · 示范</strong>。前四项是给团队的，第五项是给自己的。</small></p>
+          <p class="mb-0 muted"><small>时间那一条单独记：<strong>改进时间不写进容量表，就等于不存在</strong>；
+            第一次被挪用而没人挡住，这项制度就结束了。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>本节最高价值考点</strong>：<strong>用指标控制和评价员工，不属于 DevOps 领导力的目标</strong>
+          （<strong>DOFD v3.4 官方样题答案键确认</strong>）。反向题的标志词是「不属于 / not / except」</li>
+        <li><strong>为什么冲突</strong>：考核到人 → 先保护分数再说实话 → 数据失真 → 决策失据 → 加严考核。
+          它切断了「暴露问题 → 自我诊断 → 自我改进 → 全局推广」这条链路（因果链为本站教学整理）</li>
+        <li><strong>别误杀「指标」</strong>：官方排除的是<strong>用途</strong>不是<strong>存在</strong>。
+          判断看宾语 —— 作用在<strong>系统 / 流程 / 改进</strong>上是对的，作用在<strong>员工评价</strong>上不是</li>
+        <li><strong>领导 vs 管理</strong>：管理把事情做对（计划 · 协调 · 控制），领导做对的事（方向 · 动机 · 变革）。
+          两者都要，<strong>转型缺的几乎总是后者</strong>（此对照为本站教学整理）</li>
+        <li><strong>五项动作</strong>：<strong>方向 · 障碍 · 安全 · 能力 · 示范</strong>。
+          其中「Golden Circle 的 why 代表目的、事业与信念」由 DOFD v3.4 官方样题答案键确认（展开见 5.3）</li>
+        <li><strong>三种常见失败</strong>：宣布转型后回去开自己的会；要求团队改变但自己的决策方式不变；
+          把 DevOps 授权给一个团队后不再过问。共同点：<strong>把不可委托的部分委托掉了</strong>（本站教学整理）</li>
+        <li><strong>与第三步的接口</strong>：「把改进日常工作置于日常工作之上」要成立，
+          领导者必须<strong>真的把改进时间写进容量规划并挡住挪用</strong>
+          （此句非官方术语，属教学补充，见 <a href="../ch02-core-principles/2.5-third-way-learning.html">2.5</a>）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevOps Leadership</em> 是 <strong>DOFD v3.4 课程大纲 M8 模块
+      <em>Sharing, Shadowing and Evolving</em> 的官方子项</strong>，但不在 DOFD v3.4 官方考纲术语表
+      （Concept and Terminology List）的 66 条之内，故页头标「📘 官方模块子项」。
+      本节内提及的 <em>Golden Circle</em>、<em>Dojo</em>、<em>Immersion</em>、<em>Improvement kata</em>、
+      <em>DevOps metrics</em>、<em>Organizational culture</em>、<em>Deployment frequency</em>、
+      <em>Change lead time</em>、<em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+      均列于该 66 条术语表。
+      <strong>由 DOFD v3.4 官方样题答案键确认的四条结论</strong>：
+      「用指标控制和评价员工<strong>不属于</strong> DevOps 领导力的目标」（本节主考点）、
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」（展开归 <a href="8.5-challenges-csf.html">8.5</a>）、
+      「Golden Circle 的 <strong>why</strong> 代表组织的<strong>目的、事业与信念</strong>」（展开见
+      <a href="../ch05-culture/5.3-behavioral-models.html">5.3</a>）、
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」（展开归 <a href="8.4-getting-started.html">8.4</a>）。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>本站教学整理部分</strong>：领导力三个正向目标方向的措辞与归纳、「考核 → 隐瞒 → 失真 → 失据 → 加严」
+      恶性循环（图 8-3-1）、「领导 vs 管理」对照（图 8-3-2）、领导者五项动作与团队能力映射（图 8-3-3）、
+      三种常见失败、各面中的干扰项分析与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例为本站构造的教学示例，非真实调研数据。
+      <strong>延伸 · 非考纲</strong>：<em>Servant Leadership</em>、<em>Command and Control</em>、<em>Empowerment</em>
+      三词既不在 66 条术语表内，也不是 v3.4 课程大纲子项，本节仅作对照使用。
+      指标的定义与用法见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+      行为模型（黄金圈、变革曲线、冲突模式）的展开见<a href="../ch05-culture/5.3-behavioral-models.html">第 5 章 行为模型（5.3）</a>；
+      安全文化见<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>；
+      关键成功因素归本章 <a href="8.5-challenges-csf.html">8.5</a> 一节。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

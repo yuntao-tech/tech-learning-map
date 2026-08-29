@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.3 速度 / 质量 / 稳定性 / 文化 · DevOps Foundation 学习站</title>
+<meta name="description" content="DOFD v3.4 课程大纲 M7 把 DevOps 指标切成速度、质量、稳定性、文化四类。本节逐类给出典型指标与它回答的问题，说明为什么四类必须一起看，以及为什么文化类是唯一的先行指标。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.3-four-metric-families"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.3 速度 / 质量 / 稳定性 / 文化</h1>
+      <div class="page-head__en">Speed, Quality, Stability and Culture</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        DOFD v3.4 课程大纲 M7 模块的子项逐字写作
+        <em>DevOps Metrics - Speed, Quality, Stability, Culture</em> ——
+        这四类不是四个可选的观察角度，而是<strong>必须同时挂在墙上的四块表</strong>。
+        只盯一块，另外三块一定会被悄悄压下去。
+        其中<strong>文化类是唯一会提前变坏的那一类</strong>：士气的下滑通常发生在交付指标恶化之前。
+        <br><span class="muted"><small>官方子项只列出四类名称，未说明四类之间的先后关系；
+        「文化类先行」为本站教学整理。</small></span>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>四类指标各自回答什么问题，每类的典型指标是哪几个，<strong>Velocity 该放进哪一类</strong></li>
+        <li>为什么「只优化一类」必然把另外三类压下去 —— 以及这根跷跷板<strong>只在把单一指标当考核目标时</strong>才出现</li>
+        <li>为什么<strong>文化类是先行指标</strong>，以及 eNPS 持续下滑说明了什么</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 920 470" role="img" aria-label="四类指标的四象限雷达图：均衡形态与只优化速度形态的对比">
+          <!-- 网格环 -->
+          <g fill="none" class="s-stroke" stroke-width="1.2" opacity="0.55">
+            <polygon points="280,197 333,250 280,303 227,250"/>
+            <polygon points="280,143 387,250 280,357 173,250"/>
+            <polygon points="280,90 440,250 280,410 120,250"/>
+          </g>
+          <!-- 轴 -->
+          <g class="s-stroke" stroke-width="1.2" opacity="0.7">
+            <line x1="280" y1="90" x2="280" y2="410"/>
+            <line x1="120" y1="250" x2="440" y2="250"/>
+          </g>
+
+          <!-- 轴标签 -->
+          <text x="280" y="52" class="f-1" font-size="16" font-weight="700" text-anchor="middle">速度</text>
+          <text x="280" y="72" class="s-muted" font-size="12" text-anchor="middle">Speed　部署频率 · 变更前置时间</text>
+
+          <text x="452" y="244" class="f-2" font-size="16" font-weight="700">质量</text>
+          <text x="452" y="264" class="s-muted" font-size="12">Quality</text>
+          <text x="452" y="280" class="s-muted" font-size="12">缺陷逃逸 · 返工</text>
+
+          <text x="280" y="436" class="f-4" font-size="16" font-weight="700" text-anchor="middle">稳定性</text>
+          <text x="280" y="456" class="s-muted" font-size="12" text-anchor="middle">Stability　变更失败率 · MTTR</text>
+
+          <text x="108" y="244" class="f-3" font-size="16" font-weight="700" text-anchor="end">文化</text>
+          <text x="108" y="264" class="s-muted" font-size="12" text-anchor="end">Culture</text>
+          <text x="108" y="280" class="s-muted" font-size="12" text-anchor="end">eNPS · 留存</text>
+
+          <!-- 形态 A：均衡 -->
+          <polygon points="280,135 395,250 280,365 165,250" class="s-1" stroke-width="3" fill="none"/>
+          <!-- 形态 B：只优化速度 -->
+          <polygon points="280,90 334,250 280,295 229,250" class="s-5" stroke-width="3" fill="none" stroke-dasharray="8 6"/>
+
+          <!-- 图例 -->
+          <rect x="560" y="44" width="340" height="104" rx="10" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <line x1="582" y1="88" x2="622" y2="88" class="s-1" stroke-width="3"/>
+          <text x="636" y="93" class="s-ink" font-size="13">四类均衡：每类都停在及格线以上</text>
+          <line x1="582" y1="124" x2="622" y2="124" class="s-5" stroke-width="3" stroke-dasharray="8 6"/>
+          <text x="636" y="129" class="s-ink" font-size="13">只优化速度：另外三类被压到低位</text>
+
+          <!-- 读法面板 -->
+          <rect x="560" y="172" width="340" height="252" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="582" y="202" class="f-5" font-size="15" font-weight="700">这张图的读法</text>
+          <text x="582" y="232" class="s-ink" font-size="13">把「速度」这一根轴拉满时，图形不会变大，</text>
+          <text x="582" y="256" class="s-ink" font-size="13">而是朝一个方向抽长 —— 覆盖面积反而更小。</text>
+          <text x="582" y="286" class="s-ink" font-size="13">稳定性被压低 = 变更失败率与 MTTR 一起上升；</text>
+          <text x="582" y="310" class="s-ink" font-size="13">质量被压低 = 缺陷逃逸到生产，返工吃掉产能；</text>
+          <text x="582" y="334" class="s-ink" font-size="13">文化被压低 = 团队在赶工中透支，人开始流失。</text>
+          <text x="582" y="368" class="f-5" font-size="13" font-weight="700">目标不是把四根轴都拉满，</text>
+          <text x="582" y="390" class="f-5" font-size="13" font-weight="700">而是让这个四边形不塌向任何一侧。</text>
+          <text x="582" y="414" class="s-muted" font-size="12">本站教学示意图，形状不代表任何实测数据</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-3-1　四类指标的形状，而不是高度。</strong>
+        要看懂的是：<strong>虚线那个形态在「速度」这根轴上的数字是全场最好看的，但它是一个塌掉的图形</strong>。
+        单看一份只报部署频率的周报，团队的表现是在变好；把四类摆在一起看，才能发现另外三根轴同时缩了回去。
+        四类指标的价值不在各自的绝对值，而在<strong>它们互相牵制形成的形状</strong>。
+        <br><small class="muted">四类分法出自 DOFD v3.4 课程大纲 M7 模块子项 <em>DevOps Metrics - Speed, Quality, Stability, Culture</em>；
+        把它画成四象限雷达、以及「形状不塌」这一读法，是本站教学整理，官方未给出此类图示。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-3-1</div>
+        <h3 class="kp__title">速度 · 质量 · 稳定性三类指标<span class="en">Speed, Quality, Stability</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            官方把 <span class="term">DevOps 指标 <span class="en">DevOps metrics</span></span> 分成四个家族。
+            每个家族<strong>回答一个不同的问题</strong>，指标之所以属于这一族，是因为它答的是这一族的问题：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">家族</th><th style="width:30%">它回答的问题</th><th>典型指标</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>速度<br><span class="en">Speed</span></strong></td>
+                  <td>一个想法<strong>多快能走完全程</strong>？多久向生产环境送出一次？</td>
+                  <td><span class="term">部署频率 <span class="en">Deployment frequency</span></span> ·
+                      <span class="term">变更前置时间 <span class="en">Change lead time</span></span> ·
+                      <span class="term">周期时间 <span class="en">Cycle time</span></span></td>
+                </tr>
+                <tr>
+                  <td><strong>质量<br><span class="en">Quality</span></strong></td>
+                  <td>送出去的东西<strong>对不对</strong>？有多少工作量是在返工？</td>
+                  <td>缺陷逃逸率 · 自动化测试覆盖与通过率 · 返工比例</td>
+                </tr>
+                <tr>
+                  <td><strong>稳定性<br><span class="en">Stability</span></strong></td>
+                  <td>东西上线之后<strong>系统还站不站得住</strong>？坏了多久能好？</td>
+                  <td><span class="term">变更失败率 <span class="en">Change failure rate</span></span> ·
+                      <span class="term">平均恢复时间 <span class="en">MTTR</span></span> · 可用性 · 事故数</td>
+                </tr>
+                <tr>
+                  <td><strong>文化<br><span class="en">Culture</span></strong></td>
+                  <td>做这些事的<strong>人还撑得住吗</strong>？（本节 kp-7-3-2 展开）</td>
+                  <td><span class="term">员工净推荐值 <span class="en">employee Net Promoter Score (eNPS)</span></span> ·
+                      敬业度 · <span class="term">变革疲劳 <span class="en">Change fatigue</span></span> · 留存率</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>DevOps metrics</em>、<em>Deployment frequency</em>、<em>Change lead time</em>、
+            <em>Cycle time</em>、<em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
+            <em>employee Net Promoter Score (eNPS)</em>、<em>Change fatigue</em> 均列于 DOFD v3.4 官方考纲术语表
+            （Concept and Terminology List）。<strong>「缺陷逃逸率」「返工比例」「可用性」「事故数」「敬业度」「留存率」不在这 66 条内</strong>，
+            是本站为填充各家族所列的常见工程指标，属教学整理。
+            四类的名称出自 DOFD v3.4 课程大纲 M7 子项；<strong>官方仅给出四类名称，未列出各类下的具体指标，
+            本表的指标归族为本站教学整理</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            分家族的意义，只有在<strong>有人拿单一数字给团队打分</strong>时才显出来。
+          </p>
+          <ul>
+            <li>某支付团队的季度目标被定成一句话：<strong>「部署频率翻倍」</strong>。
+              目标达成得很漂亮 —— 从每周 6 次涨到每周 13 次。
+              代价是团队把原本一次能发完的变更<strong>拆成三次分批部署</strong>，
+              后两次纯粹是为了把计数器推上去。</li>
+            <li>同一个季度里没人报的三个数字：变更失败率从 <strong>7% 升到 18%</strong>；
+              生产缺陷从每月 4 个涨到 11 个；<strong>值班轮换从 6 人缩到 4 人</strong>，
+              另外两人在季度末提出转岗。</li>
+            <li>机制并不神秘：<strong>速度是最容易被单独拉动的一类</strong>，
+              因为拉动它不需要能力提升，只需要减少检查、拆细批次、把风险留给下游。
+              另外三类恰恰是<strong>「省掉的那部分」的账单</strong>，而账单要过一两个季度才寄到。</li>
+          </ul>
+          <p class="mb-0">
+            所以四家族分法首先是一个<strong>防止指标被单点滥用的结构</strong>：
+            每报一个速度数字，就必须同时报出它的对账数字。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">易混的一对</th><th style="width:38%">左边</th><th>右边</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>质量 vs 稳定性</strong></td>
+                  <td><strong>质量</strong>：交出去的东西<strong>本身对不对</strong>。
+                      在<strong>上线前后都可能测出来</strong>，典型是缺陷逃逸率、返工比例</td>
+                  <td><strong>稳定性</strong>：交出去<strong>之后系统的表现</strong>。
+                      只有真实运行才产生数据，典型是变更失败率、MTTR、可用性</td>
+                </tr>
+                <tr>
+                  <td><strong>周期时间 vs 变更前置时间</strong></td>
+                  <td><strong>周期时间</strong> <span class="en">Cycle time</span>：从<strong>开始动手</strong>到<strong>在生产上可用</strong>，<strong>不含开工前的排队</strong></td>
+                  <td><strong>变更前置时间</strong> <span class="en">Change lead time</span>：从<strong>变更被接受、进入待办</strong>到<strong>在生产上可用</strong>，<strong>含开工前的排队</strong>。终点与前者相同，差别只在起点<br>
+                      <small class="muted">两者的精确起止点与差值算法见本章 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>，本节只做归族</small></td>
+                </tr>
+                <tr>
+                  <td><strong>Velocity vs 速度类指标</strong><br><span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td><strong>Velocity</strong> 是 <span class="term">Scrum</span> 的<strong>产能度量</strong>：
+                      一个团队一个 Sprint 完成多少故事点。它<strong>只在同一团队内纵向可比</strong>，
+                      不能跨团队横比，也不描述价值流的流动</td>
+                  <td>DevOps 的速度类指标度量的是<strong>工作在价值流里流动得多快</strong>
+                      （部署频率 · 变更前置时间 · 周期时间），单位是时间或频次，<strong>不是工作量</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>四家族 vs DORA 四指标</strong><br><span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+                  <td><strong>四家族</strong>是<strong>分类框架</strong>：告诉你一块看板应该有哪几个区</td>
+                  <td><strong>DORA 四指标</strong>是<strong>一组具体指标</strong>，正好落在速度与稳定性两族内。
+                      定义见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a><br>
+                      <small class="muted">四个指标本身逐条列于官方术语表，但<strong>「DORA」这一名称与「四大指标」的成组说法
+                      不在 DOFD v3.4 术语表与课程大纲子项内</strong>，本站只用它作为这组指标的通行称呼</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Velocity 是官方术语表里的词，但它不是 DevOps 的速度类指标</strong>。
+            两边的中文都能说成「速度」，于是很多人把 Velocity 当成流动快慢的度量往看板上放。
+            判据只有一句：<strong>Velocity 的单位是「一个 Sprint 干了多少活」，速度类指标的单位是「一件事走完要多久 / 多久发一次」</strong>。
+            前者是产能，后者是流动。</small></p>
+          <p class="mb-0 muted"><small><em>Velocity</em>、<em>Scrum</em>、<em>Cycle time</em>、<em>Change lead time</em> 均列于 DOFD v3.4 官方考纲术语表；
+            本表中的中文释义与四组对照均为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把四家族当作<strong>报表的配额规则</strong>，而不是一份指标清单。三条可以直接执行的动作：</p>
+          <ul>
+            <li><strong>每类至少一个，且成对呈现</strong>：报部署频率就必须同屏报变更失败率，
+              报变更前置时间就必须同屏报缺陷逃逸率。<strong>让单独拉动一类的做法在报表上无处藏身</strong>。</li>
+            <li><strong>先给每类定一条底线，再谈优化</strong>：底线是「不许比现在更差」。
+              速度目标只有在另外三类不越过底线时才算达成 —— 这一条写进目标定义，比事后追责有效。</li>
+            <li><strong>把 Velocity 从 DevOps 看板上拿下来</strong>：它属于团队自己做迭代规划的工具。
+              一旦被拿去横向比较团队，团队会把故事点估大 —— 数字上涨，交付没变。</li>
+            <li><strong>质量类要区分「测出来的」和「漏出去的」</strong>：测试通过率高不等于质量好，
+              可能只是测试太浅。<strong>真正说明问题的是缺陷逃逸率</strong> —— 有多少缺陷是用户先发现的。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这四条执行动作为本站教学整理，官方文件给出四类的分法，未规定报表形式、指标配额或阈值。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最主要的命题角度：给指标问家族</strong>。给出一个指标名，问它属于哪一类。
+              判据：<strong>带时间或频次单位的 → 速度；描述缺陷与返工的 → 质量；
+              描述失败、恢复、可用的 → 稳定性；描述人的 → 文化</strong>。</li>
+            <li><strong>最经典的干扰项：变更失败率</strong>。名字里有「失败」，很多人归到质量类。
+              它度量的是<strong>已经上了生产的变更导致服务降级的比例</strong>，属<strong>稳定性</strong>。
+              分界线是<strong>「有没有跨过生产这条线」</strong>。</li>
+            <li><strong>第二种干扰项：Velocity</strong>。题干问「下面哪个是度量交付速度的 DevOps 指标」，
+              选项里放一个 Velocity。它是<strong>Scrum 的产能度量</strong>，虽然同在官方术语表内，
+              但不是描述价值流流动的指标。<strong>看到 Velocity 先想 Sprint 和故事点，别想流水线。</strong></li>
+            <li><strong>第三种：把四类写成三类或五类</strong>。官方子项逐字是
+              <em>Speed, Quality, Stability, Culture</em> —— <strong>四类，且文化在内</strong>。
+              少了 Culture 的选项可以直接排除。</li>
+            <li><strong>排除技巧</strong>：先给每个选项贴上「它度量的对象是什么」——
+              时间、缺陷、服务、人。四个对象对应四个家族，一一对上就不会错。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项分析与排除技巧均为本站教学推断；
+            不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">四个家族，四个对象：时间、缺陷、服务、人。</p>
+          <p class="mb-0 muted"><small>两条防混口诀：<strong>「跨过生产线的失败算稳定性，没跨过的缺陷算质量」</strong>；
+            <strong>「Velocity 说的是干了多少活，速度类说的是多久干完」</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-3-2</div>
+        <h3 class="kp__title">文化类指标：eNPS 与 Change fatigue<span class="en">Culture metrics: eNPS and Change fatigue</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            文化类指标度量的对象是<strong>做交付的那群人</strong>：他们还愿不愿意留下来、还有没有余力接住下一次变革。
+            官方术语表里属于这一族的有两个词：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">指标</th><th style="width:36%">一句话定义</th><th>它在说什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>eNPS</strong><br><span class="en">employee Net Promoter Score</span></td>
+                  <td>问「你有多大可能把这里推荐给朋友」，用<strong>推荐者比例减去贬损者比例</strong>，取值 −100 到 +100</td>
+                  <td>一个<strong>会用脚投票的信号</strong>：员工是否愿意用自己的声誉为这个组织背书</td>
+                </tr>
+                <tr>
+                  <td><strong>Change fatigue</strong><br><span class="en">变革疲劳</span></td>
+                  <td>变革推得<strong>太多、太密、且看不到收尾</strong>，导致人对新变革不再有反应</td>
+                  <td>不是不敬业，是<strong>已经被前几轮变革耗空了</strong>：新倡议一来，先默认它会不了了之</td>
+                </tr>
+                <tr>
+                  <td>敬业度 · 留存率<br><span class="en">engagement · retention</span></td>
+                  <td>参与调查得分、自愿离职率、关键岗位保有率</td>
+                  <td>比 eNPS 慢半拍，但更硬 —— 人已经走了，就不是态度问题了</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>employee Net Promoter Score (eNPS)</em> 与 <em>Change fatigue</em> 均列于
+            DOFD v3.4 官方考纲术语表。上表中的中文释义与「它在说什么」一栏为本站措辞；
+            eNPS 的「推荐者减贬损者」算法是通行的调研方法，不在 DOFD 文件内，属本站教学整理。
+            「敬业度」「留存率」不在 66 条术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            文化不度量的组织，<strong>只会在离职面谈里第一次听说真相</strong>。而那时候，信息已经没有用了。
+          </p>
+          <ul>
+            <li>某平台团队一年内连续推了四轮变革：换 CI 工具、拆微服务、引入值班轮换、上安全扫描门禁。
+              每一轮单独看都是对的。<strong>四轮之间没有一次收尾复盘，前一轮的旧流程也没关掉。</strong></li>
+            <li>第五轮变革启动时，团队的反应不是反对，是<strong>沉默</strong> ——
+              会开完了，没人提问，也没人开始做。这就是 <strong>Change fatigue</strong> 的典型样子：
+              <strong>抵抗是有能量的，疲劳没有。</strong></li>
+            <li>如果只看交付看板，这半年的数字是好看的：变更还在发，事故数没涨。
+              直到三个月后<strong>两名核心成员同月离职</strong>，值班表排不满，
+              变更失败率才开始爬升 —— <strong>而这时候能改的东西已经不多了</strong>。</li>
+          </ul>
+          <p>
+            为什么必须把「人」列进度量范围：CALMS 的 <strong>M（Measurement）</strong>
+            所覆盖的对象<strong>不止技术</strong>，还包括流程与人。
+            不度量人，等于承认组织有四分之一的状态从来不看。
+            <span class="muted">CALMS 及其 <em>M: Measurement</em> 为 PeopleCert DevOps Foundation Blueprint 逐字条目（见
+            <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">第 1 章 CALMS（1.4）</a>）；
+            <strong>「度量覆盖 people、process 与 technology 三者」这一表述属本站教学整理</strong>。</span>
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">易混的一对</th><th style="width:38%">左边</th><th>右边</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Change fatigue</strong> vs <strong>变革抵抗</strong></td>
+                  <td><strong>疲劳</strong>：人不再有反应。表现是沉默、不提问、新倡议无人认领</td>
+                  <td><strong>抵抗</strong>：人有明确反对意见。表现是争论、提条件、公开质疑。
+                      <strong>抵抗是可以对话的，疲劳不能</strong> —— 处理方式完全不同<br>
+                      <small class="muted">变革中的情绪阶段见 <a href="../ch05-culture/5.3-behavioral-models.html">第 5 章 行为模型（5.3）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>eNPS</strong> vs <strong>员工满意度调查</strong></td>
+                  <td>问的是<strong>「你愿不愿意把别人拉进来」</strong> —— 一个有代价的承诺</td>
+                  <td>问的是<strong>「你满不满意」</strong> —— 没有代价，容易给出客气的高分</td>
+                </tr>
+                <tr>
+                  <td><strong>eNPS</strong> vs <strong>留存率</strong></td>
+                  <td><strong>先行</strong>：分数掉下去时，人还在</td>
+                  <td><strong>滞后</strong>：数字动的时候，人已经走了。留存率是结果，不是预警</td>
+                </tr>
+                <tr>
+                  <td><strong>文化类指标</strong> vs <strong>文化债</strong></td>
+                  <td>是<strong>仪表</strong>：读出当前的数值与趋势</td>
+                  <td>是<strong>负债本身</strong>：回避的冲突、没修的信任在持续计息。
+                      <strong>eNPS 连续下滑，通常就是文化债在结算利息</strong>，见
+                      <a href="../ch05-culture/5.2-cultural-debt.html">第 5 章 文化债（5.2）</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Change fatigue 不是「团队不配合」</strong>。
+            把疲劳读成抵抗，处理动作就会变成加大宣贯、加强考核 —— 那是往已经空了的账户上再取一笔，
+            会把 eNPS 压得更低。<strong>疲劳的解法是减少并发变革、给上一轮收尾，不是加压。</strong></small></p>
+          <p class="mb-0 muted"><small><em>Change fatigue</em>、<em>employee Net Promoter Score (eNPS)</em>、<em>Cultural debt</em>
+            均列于 DOFD v3.4 官方考纲术语表；上表四组对照与「先行 / 滞后」的划分为本站教学整理，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>文化类指标最难的不是采集，是<strong>不把它用歪</strong>。四条底线：</p>
+          <ul>
+            <li><strong>只看趋势，不看绝对值</strong>：eNPS 的绝对分受行业、地区、问卷措辞影响极大，跨组织比毫无意义。
+              有意义的只有一件事 —— <strong>它相对上一季度是升还是降</strong>。</li>
+            <li><strong>永远聚合到团队以上，绝不下钻到个人</strong>：一旦有人相信分数会追溯到具体填写者，
+              数据就在下一次采集时永久失真。<strong>官方样题答案键确认「用指标控制和评价员工」不属于
+              DevOps 领导力的目标</strong> —— 这条对文化指标尤其致命。</li>
+            <li><strong>给 Change fatigue 找可观察的迹象，而不是直接问</strong>：
+              同时在推的变革倡议数量、上一轮变革有没有正式收尾、
+              新倡议宣布后<strong>多少天内有人主动认领</strong>、会上提问数是否归零。
+              这些比问卷更早、更诚实。</li>
+            <li><strong>下滑要触发动作，否则采集就是形式</strong>：约定一个明确规则 ——
+              eNPS 连续两个周期下降，就必须<strong>先冻结一轮新变革</strong>，把在推的倡议收尾一个再开新的。
+              没有触发动作的文化指标，只会成为周报上一个没人看的数字。</li>
+          </ul>
+          <p class="mb-0 muted"><small>四条底线、Change fatigue 的可观察迹象清单与「连续两期下降即冻结」的触发规则均为本站教学整理，
+            官方文件把 <em>eNPS</em> 与 <em>Change fatigue</em> 列为术语，未规定采集方式、阈值或处置流程。
+            「用指标控制和评价员工不属于 DevOps 领导力的目标」这一条<strong>由 DOFD v3.4 官方样题答案键确认</strong>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>用指标控制和评价员工，不属于 DevOps 领导力的目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。凡是把指标用于考核个人、
+              排名员工、追责的选项，都是错误方向。</li>
+            <li><strong>eNPS 的归族题</strong>：问 eNPS 度量的是什么。正确方向是<strong>员工 / 文化维度</strong>。
+              干扰项通常写成「客户满意度」——<strong>NPS 的原始形态确实是问客户的，
+              但 eNPS 的第一个字母 e 就是 employee</strong>，这是最省力的排除点。</li>
+            <li><strong>Change fatigue 的情境题</strong>：题干描述一个团队对新倡议毫无反应、变革一个接一个没有收尾。
+              正确方向是<strong>变革疲劳</strong>。干扰项常给「缺乏领导力承诺」「技能不足」「抵制变革」——
+              <strong>「抵制」是有反应的，题干说的是没反应</strong>，这一字之差就是分界线。</li>
+            <li><strong>反向问法</strong>：问「下列哪一项<strong>不是</strong> DevOps 指标应有的用途」。
+              指向个人绩效评价的那一项就是答案。</li>
+            <li><strong>排除技巧</strong>：看到文化类的题，先判断选项<strong>对准的是组织还是个人</strong>。
+              DOFD 的文化取向一致对准组织与系统，<strong>凡是把矛头指向个人的选项，几乎都是干扰项</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>第一条为 DOFD v3.4 官方样题答案键确认的结论，本站只陈述结论，不复制题干与选项原文；
+            其余命题角度、干扰项构造方式与排除技巧为本站教学推断，官方未公布命题规律。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">eNPS 里的 e 是 employee；分数掉的时候，人还没走。</p>
+          <p class="mb-0 muted"><small>Change fatigue 的一句话辨认：<strong>抵抗会吵，疲劳会静。</strong>
+            会议上突然没人提问，比任何一份问卷都更早。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-3-3</div>
+        <h3 class="kp__title">四类必须一起看 · 文化是先行指标<span class="en">Reading the four families together</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            四个家族之间存在<strong>互相牵制的张力</strong>，因此任何一类单独读出来的结论都不可信：
+          </p>
+          <ul>
+            <li><strong>速度 ⇄ 稳定性</strong>：只优化速度会牺牲稳定；只优化稳定会退回「不敢发布」。
+              两者互为对方的<strong>刹车</strong>，必须成对读。
+              <br><small class="muted">注意这不等于「快与稳只能二选一」：跷跷板出现在<strong>把单一指标当成考核目标</strong>时；
+              改的是系统本身（缩小批量、加强自动化）时，速度与稳定性会<strong>同向变好</strong> ——
+              见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a>「速度与稳定性不是取舍」。</small></li>
+            <li><strong>质量是前两者的前提</strong>：质量塌了，速度会被返工吃掉，稳定性会被缺陷拖垮。
+              它不与谁对冲，它是地基。</li>
+            <li><strong>文化是先行灯</strong>：另外三类都是<strong>滞后指标</strong> ——
+              事情已经发生了才被记录。<strong>只有文化类会在交付指标恶化之前先动。</strong></li>
+          </ul>
+          <p class="mb-0">
+            所以一块合格的 DevOps 看板不是四个数字的堆叠，而是<strong>四类之间的一致性检查</strong>：
+            速度上涨而稳定性不变，是真的改进；速度上涨伴随文化下滑，是在预支。
+          </p>
+          <div class="src-note">
+            四家族分法出自 <strong>DOFD v3.4 课程大纲 M7 模块子项</strong>
+            <em>DevOps Metrics - Speed, Quality, Stability, Culture</em>。
+            <strong>「速度与稳定性互为刹车」「质量是前提」「文化是先行指标」这三条关系，以及「一致性检查」的读法，
+            均为本站教学整理</strong>，官方文件列出四类，未说明四类之间的相互关系。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            单类优化会走向两个方向相反、但同样糟糕的终点：
+          </p>
+          <ul>
+            <li><strong>只看速度的终点</strong>：一家电商把「周部署次数」挂上大屏并纳入团队考核。
+              半年后部署次数翻了一倍，<strong>变更失败率从 6% 涨到 21%</strong>，
+              周末救火成了常态。速度的数字买单的是稳定性和人。</li>
+            <li><strong>只看稳定的终点</strong>：同一家公司随后把考核换成「季度事故为零」。
+              事故确实降到零 —— 因为团队开始<strong>攒批发布、能不改就不改</strong>，
+              变更前置时间从 5 天涨到 34 天。<strong>最稳定的系统是不变更的系统，这一点毫无价值。</strong></li>
+            <li><strong>两次摆动的共同点</strong>：都是<strong>把一个指标从家族里单独拎出来考核</strong>。
+              指标一旦成为目标，团队优化的就不再是它想代表的东西，而是它本身。</li>
+          </ul>
+          <p>
+            <strong>文化类为什么值钱：它是四类里唯一的先行指标。</strong>
+            上面两次摆动中，最早出现的信号都不是变更失败率，而是团队在会上不再提问、
+            值班表越来越难排、eNPS 从两位数掉到个位数 —— <strong>这些通常领先交付指标一到两个季度</strong>。
+          </p>
+          <p class="mb-0 muted"><small>两段案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「文化类领先交付指标一到两个季度」为本站教学推断的量级判断，官方文件未给出时序关系。</small></p>
+        </div>
+
+        <!-- ============ 图 7-3-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 430" role="img" aria-label="文化类指标作为先行指标的时间线：士气下滑先于离职率上升，再先于交付与稳定性指标恶化">
+              <defs>
+                <marker id="ah-73-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+                <marker id="ah-73-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <!-- 泳道标签 -->
+              <text x="18" y="72" class="f-3" font-size="15" font-weight="700">文化类</text>
+              <text x="18" y="94" class="s-muted" font-size="12">先行 · 最早变坏</text>
+
+              <text x="18" y="184" class="f-5" font-size="15" font-weight="700">人员类</text>
+              <text x="18" y="206" class="s-muted" font-size="12">中间信号</text>
+
+              <text x="18" y="296" class="f-1" font-size="15" font-weight="700">交付 / 稳定性类</text>
+              <text x="18" y="318" class="s-muted" font-size="12">滞后 · 最后变坏</text>
+
+              <!-- 阶段 1 -->
+              <rect x="190" y="44" width="250" height="72" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="206" y="74" class="s-ink" font-size="14" font-weight="650">eNPS 从 +28 掉到 +4</text>
+              <text x="206" y="98" class="s-muted" font-size="12.5">会上不再有人提问 · 新倡议无人认领</text>
+
+              <!-- 阶段 2 -->
+              <rect x="470" y="156" width="300" height="72" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="486" y="186" class="s-ink" font-size="13.5" font-weight="650">自愿离职 2 人 · 值班轮换 6 人缩到 4 人</text>
+              <text x="486" y="210" class="s-muted" font-size="12.5">留下的人开始拒绝接新变更</text>
+
+              <!-- 阶段 3 -->
+              <rect x="560" y="268" width="350" height="72" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="576" y="298" class="s-ink" font-size="13.5" font-weight="650">变更失败率 8% → 19%，MTTR 42min → 3.5h</text>
+              <text x="576" y="322" class="s-muted" font-size="12.5">此刻才被交付指标看见 —— 已经晚了两个季度</text>
+
+              <!-- 传导箭头 -->
+              <path d="M315 118 L470 150" class="s-3" stroke-width="2.5" fill="none" marker-end="url(#ah-73-1)"/>
+              <path d="M620 230 L700 262" class="s-5" stroke-width="2.5" fill="none" marker-end="url(#ah-73-2)"/>
+
+              <!-- 时间轴 -->
+              <line x1="190" y1="370" x2="920" y2="370" class="s-stroke" stroke-width="1.8"/>
+              <g class="s-stroke" stroke-width="1.8">
+                <line x1="200" y1="364" x2="200" y2="376"/>
+                <line x1="440" y1="364" x2="440" y2="376"/>
+                <line x1="680" y1="364" x2="680" y2="376"/>
+                <line x1="900" y1="364" x2="900" y2="376"/>
+              </g>
+              <g class="s-muted" font-size="12.5" text-anchor="middle">
+                <text x="200" y="392">第 0 月</text>
+                <text x="440" y="392">第 3 月</text>
+                <text x="680" y="392">第 6 月</text>
+                <text x="900" y="392">第 9 月</text>
+              </g>
+
+              <text x="190" y="418" class="s-muted" font-size="12.5">时间线上的数字为本站构造的教学示例，用于说明先后顺序，非调研数据</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-3-2　文化类指标为什么是先行灯。</strong>
+            要看懂的是<strong>三条泳道的水平错位</strong>：同一件事，在文化类指标上第 0 月就有读数，
+            在人员类上第 3 月才显形，到交付与稳定性类上已经是第 6 月之后。
+            只盯最下面那条泳道的组织，<strong>拿到的永远是一份迟到两个季度的报告</strong>；
+            而在第 0 月那个格子里，可以做的动作还很多 —— 减少并发变革、给上一轮收尾、把值班负担摊平。
+            <br><small class="muted">泳道时序为本站教学整理，官方文件未给出各类指标之间的先后关系。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">易混的一对</th><th style="width:38%">左边</th><th>右边</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>先行指标 vs 滞后指标</strong></td>
+                  <td><strong>先行</strong>：在结果发生<strong>之前</strong>就会动，读到时还来得及改。四类里只有文化类是</td>
+                  <td><strong>滞后</strong>：记录<strong>已经发生</strong>的事实。速度、质量、稳定性都属于这一边 ——
+                      它们准确，但永远迟到</td>
+                </tr>
+                <tr>
+                  <td><strong>四类一起读 vs 只看 DORA 四指标</strong></td>
+                  <td><strong>四类一起读</strong>：看板要有四个区，其中一个区量的是<strong>人</strong></td>
+                  <td><strong>只看 DORA 四指标</strong>：四个指标全部落在<strong>速度与稳定性两族</strong>内，
+                      质量与文化两个区是空的。指标本身没问题，问题是拿它当整块看板<br>
+                      <small class="muted">「DORA」这一名称与「四大指标」的成组说法不在 DOFD v3.4 术语表与课程大纲子项内
+                      <span class="badge badge--ext">🧭 延伸 · 非考纲</span>，四个指标本身在术语表内</small></td>
+                </tr>
+                <tr>
+                  <td><strong>一致性检查 vs 单指标阈值告警</strong></td>
+                  <td><strong>一致性检查</strong>：看几类之间的<strong>方向是否对得上</strong> ——
+                      速度升而稳定性平是改进，速度升而文化降是预支</td>
+                  <td><strong>单指标阈值告警</strong>：给每个数字划一条线，越线才响。
+                      速度靠透支稳定性换来时，<strong>没有任何一条线被越过</strong>，所以它什么也发现不了</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>文化类不是「软指标」，它是四类里唯一在事情变坏之前就会动的那一类</strong>。
+            很多人把它当成锦上添花、有余力再做的东西，于是砍掉的恰恰是唯一的预警灯，
+            只留下三块<strong>只会记录已发生事实</strong>的仪表。</small></p>
+          <p class="mb-0 muted"><small>「先行 / 滞后」的划分、上表三组对照与「一致性检查」这一读法均为本站教学整理，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>先把四类各自的<strong>失真方式与对账指标</strong>摆开，这张表是下面配额规则的依据：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">家族</th><th style="width:19%">先行 / 滞后</th><th style="width:31%">被单独考核时的失真方式</th><th>拿什么跟它对账</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>速度</strong></td>
+                  <td><strong>滞后</strong></td>
+                  <td>拆细批次刷部署次数 · 跳过检查换取时长</td>
+                  <td>配<strong>变更失败率</strong>（稳定性）—— 跨族对冲</td>
+                </tr>
+                <tr>
+                  <td><strong>质量</strong></td>
+                  <td><strong>滞后</strong></td>
+                  <td>把测试写浅换取通过率 · 只统计已发现缺陷</td>
+                  <td>配<strong>返工占用的产能与变更前置时间</strong>（速度）—— 跨族对冲：
+                      测试写浅当期省下的时间，会在下个周期以返工的形式还回来<br>
+                      <small class="muted">同族内还要用<strong>缺陷逃逸率</strong>对账「测试通过率」，
+                      通过率高不等于质量好</small></td>
+                </tr>
+                <tr>
+                  <td><strong>稳定性</strong></td>
+                  <td><strong>滞后</strong></td>
+                  <td>少发布甚至不发布 · 把事故降级成「已知问题」不计数</td>
+                  <td>配<strong>部署频率与变更前置时间</strong>（速度）—— 跨族对冲</td>
+                </tr>
+                <tr>
+                  <td><strong>文化</strong></td>
+                  <td><strong>先行</strong></td>
+                  <td>下钻到个人后问卷立刻失真 · 只报分不报动作</td>
+                  <td>配<strong>并发变革数与值班负担</strong>，读趋势不读绝对值</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>按这张表把四类做成<strong>一页四格</strong>，每一格配一条读法规则：</p>
+          <ul>
+            <li><strong>四格同屏，不许分页</strong>：分开呈现等于允许只看一格。
+              一页放不下就削减指标数量，<strong>而不是拆成四页</strong>。</li>
+            <li><strong>每格只放一个主指标 + 一个配对指标</strong>：速度格放部署频率与变更失败率，
+              稳定性格放 MTTR 与变更前置时间。<strong>让每个数字身边站着它的对手</strong>。</li>
+            <li><strong>文化格放在左上角，不放在角落</strong>：位置即优先级。
+              它是先行灯，被放在最后一格就等于没装。</li>
+            <li><strong>约定三条一致性检查</strong>：速度升 + 稳定性平 = 真改进；
+              速度升 + 稳定性降 = 在借债；<strong>交付三类都平稳但文化在降 = 债正在积累，只是还没到期</strong>。
+              第三条最容易被忽略，也最值钱。</li>
+            <li><strong>指标用于改进系统，不用于评价人</strong>：这是使用四家族的前提。
+              一旦指标带上考核，四类会同时失真 —— 而<strong>失真最快的是文化类</strong>，
+              因为它靠自愿如实回答。</li>
+          </ul>
+          <p class="mb-0 muted"><small>上表的失真方式与对账指标、这份四格看板设计与三条一致性检查规则均为本站教学整理，
+            官方文件未规定报表形式与判读规则。
+            「指标不用于评价员工」这一原则方向<strong>由 DOFD v3.4 官方样题答案键确认</strong>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最主要的命题角度：单一指标陷阱</strong>。题干描述一个组织只优化某一类指标、
+              另一类同时恶化，问该怎么办。正确方向永远是<strong>平衡地度量多个维度</strong>，
+              而不是把那一个指标继续推高，也不是干脆放弃度量。</li>
+            <li><strong>官方已确认的两条</strong>：
+              <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>；
+              <strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong> ——
+              两条均由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              它们合起来给出一个稳定的答题取向：<strong>文化维度不是附属品，指标不是考核工具</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：一类是<strong>「再加大力度」型</strong>
+              （速度不够就再提高部署频率目标），它把病因当药方；
+              另一类是<strong>「用文化替代度量」型</strong>（文化的东西没法量化，靠感觉就行），
+              它与 CALMS 的 M 直接冲突。<strong>两类都错，但错的方向相反。</strong></li>
+            <li><strong>四类名称题</strong>：官方子项逐字是 <em>Speed, Quality, Stability, Culture</em>。
+              把 Culture 换成 Cost、Compliance、Capacity 的选项都是干扰项 —— <strong>第四类是人，不是钱</strong>。</li>
+            <li><strong>排除技巧</strong>：凡是<strong>只谈一个维度</strong>的选项，在四家族的题里几乎都不是答案；
+              凡是<strong>把指标指向个人</strong>的选项，一律排除。</li>
+          </ul>
+          <p class="mb-0 muted"><small>两条「官方已确认」为 DOFD v3.4 官方样题答案键确认的结论，本站只陈述结论，
+            不复制题干与选项原文；命题角度、干扰项分类与排除技巧为本站教学推断，官方未公布命题规律。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">速度和稳定性互为刹车，质量是它们的地基，文化是它们的先行灯。</p>
+          <p class="muted"><small>一句话推论：<strong>三块滞后表告诉你已经发生了什么，一块先行灯告诉你正在发生什么。</strong>
+            砍掉文化类，等于只留下事后记录。</small></p>
+          <p class="mb-0 muted"><small>形状口诀：<strong>看四边形塌不塌，不看哪根轴最长。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方四类逐字</strong>：<em>DevOps Metrics - Speed, Quality, Stability, Culture</em>
+          —— 四类，<strong>Culture 在内</strong>（DOFD v3.4 课程大纲 M7 模块子项）。
+          <strong>四个度量对象</strong>：时间（速度）· 缺陷（质量）· 服务（稳定性）· 人（文化）</li>
+        <li><strong>典型指标</strong>：速度 = 部署频率 / 变更前置时间 / 周期时间；质量 = 缺陷逃逸率 / 测试通过率 / 返工比例；
+          稳定性 = 变更失败率 / MTTR / 可用性 / 事故数；文化 = eNPS / 敬业度 / Change fatigue / 留存率
+          <span class="muted">（官方只给四类名称，各指标的归族为本站教学整理）</span></li>
+        <li><strong>两个归族陷阱</strong>：<strong>Velocity</strong> 是 Scrum 的产能度量、在官方术语表内，但<strong>不是</strong> DevOps 的流动速度指标；
+          <strong>变更失败率</strong>跨过了生产这条线，属<strong>稳定性</strong>不属质量（归族为本站教学整理）</li>
+        <li><strong>四类必须一起看</strong>：只看速度牺牲稳定，只看稳定退回不敢发布；<strong>最稳定的系统是不变更的系统</strong>（本站教学整理）</li>
+        <li><strong>文化类是唯一的先行指标</strong>：士气下滑通常先于交付指标恶化；eNPS 持续下滑往往是<a href="../ch05-culture/5.2-cultural-debt.html">文化债（5.2）</a>在计息（本站教学整理）</li>
+        <li><strong>官方样题答案键确认两条</strong>：用指标控制和评价员工<strong>不属于</strong> DevOps 领导力的目标；DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong></li>
+        <li><strong>考试权重提示</strong>：本章 v3.4 最多 <strong>2 题</strong>，全书最低（DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。<strong>四家族按理解学，别按应试投入时间</strong></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本节主题「速度 / 质量 / 稳定性 / 文化」四类分法出自
+      <strong>DOFD v3.4 课程大纲 M7 模块子项</strong>逐字表述
+      <em>DevOps Metrics - Speed, Quality, Stability, Culture</em>。
+      <em>DevOps metrics</em>、<em>Deployment frequency</em>、<em>Change lead time</em>、<em>Cycle time</em>、
+      <em>Velocity</em>、<em>Scrum</em>、<em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
+      <em>employee Net Promoter Score (eNPS)</em>、<em>Change fatigue</em>、<em>Cultural debt</em>、
+      <em>Testing (unit, acceptance, integration)</em>、<em>CALMS</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）</strong>；
+      该表<strong>只列词条不附定义</strong>，因此本页所有中文释义均为本站措辞。
+      CALMS 的 <em>M: Measurement</em> 为 <strong>PeopleCert DevOps Foundation Blueprint</strong> 逐字条目。
+      <strong>两条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「用指标控制和评价员工<strong>不属于</strong> DevOps 领导力的目标」、
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」——
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      题数分布「本章最多 2 题」出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      <br><strong>教学整理部分</strong>：<strong>各指标的归族（含「变更失败率归稳定性」「Velocity 不属速度类」）
+      —— 官方仅给出四类名称，未列出各类下的具体指标</strong>、
+      四家族与「时间 / 缺陷 / 服务 / 人」四个度量对象的对应、
+      四象限雷达读法（图 7-3-1）、先行与滞后泳道时序（图 7-3-2）、
+      「速度与稳定性互为刹车 · 质量是地基 · 文化是先行灯」三条关系、
+      各家族被单独考核时的失真方式与对账指标清单、一页四格看板设计与三条一致性检查、
+      「度量覆盖 people、process 与 technology 三者」这一表述、eNPS 的「推荐者减贬损者」算法，
+      以及各面中的命题角度分析、干扰项构造与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      「缺陷逃逸率」「返工比例」「可用性」「事故数」「敬业度」「留存率」「测试覆盖率」<strong>不在 66 条术语表内</strong>；
+      <strong>「DORA」这一名称与「四大指标」的成组说法同样不在 66 条术语表与 v3.4 课程大纲子项内</strong>，
+      本站只用它作为这组指标的通行称呼，四个指标本身各自列于该表。
+      文中三处数字化案例均为本站构造的教学示例，非真实调研数据。
+      <br><strong>边界</strong>：DORA 四大指标的定义与阈值见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a>；
+      变更前置时间与周期时间的精确起止点见本章 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>
+      （<strong>起点口径全章统一取「被接受、进入待办」／「开始动手」，终点同为「在生产上可用」</strong>）；
+      看板与价值驱动指标见本章 <a href="7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a>；
+      度量的必要性与三种误用见本章 <a href="7.1-why-measure.html">7.1 为什么必须度量</a>；
+      指标与三步工作法的对应见 <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法（2.1）</a>；
+      文化债见 <a href="../ch05-culture/5.2-cultural-debt.html">第 5 章 文化债（5.2）</a>，
+      变革中的行为模型见 <a href="../ch05-culture/5.3-behavioral-models.html">第 5 章 行为模型（5.3）</a>；
+      DevOps 领导力与关键成功因素见<a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.4 云、容器与微服务 · DevOps Foundation 学习站</title>
+<meta name="description" content="云消除「等环境」，容器消除「环境不一样」，微服务消除「等别人一起发布」。三者互相放大收益、但不是硬性依赖，最终全部落在同一件事上：独立部署能力。本节同时讲清微服务的代价——函数调用变成网络调用之后要付的账。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.4-cloud-containers-microservices"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.4 云、容器与微服务</h1>
+      <div class="page-head__en">Cloud, Containers, and Microservices</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这三个词经常被当成同一件事的三种说法，其实它们各自拆掉的是一堵<strong>不同的墙</strong>：
+        云拆掉「等环境」，容器拆掉「环境不一样」，微服务拆掉「等别人一起发布」。
+        三层各拆一堵墙，<strong>越往上越依赖下层已经打好的地基</strong> ——
+        不是技术上必须，而是缺了下层收益会被抵消：没有云的弹性容量，容器的「随用随起」仍要排队等机器；
+        没有容器的环境一致性，微服务只会让部署对象从 1 个变成 40 个。
+        而最上面那一层要付的账，是把单体内部的函数调用换成了<strong>网络调用</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>云、容器、微服务分别消除了哪一个具体约束，为什么顺序颠倒过来收益会被抵消</li>
+        <li>微服务的真正意义为什么是<strong>组织层面</strong>的——它买到的是「不用等别人就能发布」</li>
+        <li>把函数调用变成网络调用之后，新增的代价有哪些；什么时候<strong>不该</strong>上微服务</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 540" role="img" aria-label="云、容器、微服务三层依赖关系，以及每一层各自消除的约束">
+          <defs>
+            <marker id="ah-64-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+          </defs>
+
+          <text x="490" y="30" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">自下而上读 = 收益放大关系　·　自上而下读 = 各层收益</text>
+
+          <!-- 列标题 -->
+          <text x="176" y="52" class="s-muted" font-size="12" text-anchor="middle">这一层是什么</text>
+          <text x="450" y="52" class="s-muted" font-size="12" text-anchor="middle">它把什么变成了「按需可得」</text>
+          <text x="775" y="52" class="s-muted" font-size="12" text-anchor="middle">它消除的约束</text>
+
+          <!-- 第 3 层：微服务 -->
+          <rect x="60" y="62" width="870" height="104" rx="12" class="s-3" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <line x1="300" y1="70" x2="300" y2="158" class="s-stroke" stroke-width="1"/>
+          <line x1="612" y1="70" x2="612" y2="158" class="s-stroke" stroke-width="1"/>
+          <text x="80" y="98" class="f-3" font-size="16" font-weight="700">微服务</text>
+          <text x="80" y="120" class="s-muted" font-size="12">Microservices</text>
+          <text x="80" y="146" class="s-muted" font-size="12">经 API 通信的自治服务</text>
+          <text x="318" y="100" class="s-ink" font-size="13.5">部署单元　——　一个服务可以</text>
+          <text x="318" y="124" class="s-ink" font-size="13.5">单独构建、单独发布、单独回滚</text>
+          <text x="318" y="148" class="s-muted" font-size="12">不必等其他 39 个服务一起走</text>
+          <text x="630" y="100" class="f-3" font-size="13.5" font-weight="700">「等别人一起发布」</text>
+          <text x="630" y="124" class="s-ink" font-size="13">发布火车 · 全员回归 · 统一窗口</text>
+          <text x="630" y="148" class="s-muted" font-size="12">这是一个组织约束，不是技术约束</text>
+
+          <!-- 箭头 2→3 -->
+          <line x1="140" y1="196" x2="140" y2="168" class="s-2" stroke-width="2.2" marker-end="url(#ah-64-1)"/>
+          <text x="164" y="190" class="s-muted" font-size="12">没有一致且秒级可启的运行单元，拆成 40 个服务只会把部署难度乘以 40</text>
+
+          <!-- 第 2 层：容器 -->
+          <rect x="60" y="204" width="870" height="104" rx="12" class="s-2" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <line x1="300" y1="212" x2="300" y2="300" class="s-stroke" stroke-width="1"/>
+          <line x1="612" y1="212" x2="612" y2="300" class="s-stroke" stroke-width="1"/>
+          <text x="80" y="240" class="f-2" font-size="16" font-weight="700">容器</text>
+          <text x="80" y="262" class="s-muted" font-size="12">Containers</text>
+          <text x="80" y="288" class="s-muted" font-size="12">应用 + 依赖打成一个镜像</text>
+          <text x="318" y="242" class="s-ink" font-size="13.5">运行环境　——　同一个镜像</text>
+          <text x="318" y="266" class="s-ink" font-size="13.5">在开发机、测试、生产上完全一致</text>
+          <text x="318" y="290" class="s-muted" font-size="12">启动以秒计，可随用随起、随停随扔</text>
+          <text x="630" y="242" class="f-2" font-size="13.5" font-weight="700">「环境不一样」</text>
+          <text x="630" y="266" class="s-ink" font-size="13">在我机器上是好的 · 装机手册漂移</text>
+          <text x="630" y="290" class="s-muted" font-size="12">同时让临时环境便宜到可以用完就删</text>
+
+          <!-- 箭头 1→2 -->
+          <line x1="140" y1="338" x2="140" y2="310" class="s-2" stroke-width="2.2" marker-end="url(#ah-64-1)"/>
+          <text x="164" y="332" class="s-muted" font-size="12">没有按需容量，容器「随用随起」的收益会被机器排队吞掉 —— 仍然要走工单</text>
+
+          <!-- 第 1 层：云 -->
+          <rect x="60" y="346" width="870" height="104" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <line x1="300" y1="354" x2="300" y2="442" class="s-stroke" stroke-width="1"/>
+          <line x1="612" y1="354" x2="612" y2="442" class="s-stroke" stroke-width="1"/>
+          <text x="80" y="382" class="f-1" font-size="16" font-weight="700">云</text>
+          <text x="80" y="404" class="s-muted" font-size="12">Cloud</text>
+          <text x="80" y="430" class="s-muted" font-size="12">计算 / 存储 / 网络按需自助获取</text>
+          <text x="318" y="384" class="s-ink" font-size="13.5">基础设施容量　——　申请即得，</text>
+          <text x="318" y="408" class="s-ink" font-size="13.5">用多少付多少，不用了立刻释放</text>
+          <text x="318" y="432" class="s-muted" font-size="12">扩容与缩容都变成一次 API 调用</text>
+          <text x="630" y="384" class="f-1" font-size="13.5" font-weight="700">「等环境」</text>
+          <text x="630" y="408" class="s-ink" font-size="13">采购 · 上架 · 工单 · 排期</text>
+          <text x="630" y="432" class="s-muted" font-size="12">价值流里最经典的一段纯等待</text>
+
+          <!-- 底部结论条 -->
+          <rect x="60" y="470" width="870" height="54" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="80" y="494" class="f-5" font-size="13.5" font-weight="700">三层加起来只买到一件东西：独立部署能力 —— 也就是第一步 · 流动</text>
+          <text x="80" y="514" class="s-muted" font-size="12">跳过下层直接做上层，不会得到收益，只会把下层的问题按服务数量放大一遍</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-4-1　三层各拆一堵墙。</strong>
+        要看懂的是<strong>最右边那一列</strong>：三层消除的是三个互不相同的约束，
+        所以任何一层都替代不了另一层。<strong>向上的箭头是收益放大关系，不是技术上的硬性依赖</strong> ——
+        跳过下层不会 404，只会让上层的收益被下层的问题吃掉：没有按需容量，容器的「随用随起」仍要排队；
+        没有容器的环境一致性，微服务的部署成本按服务数量翻倍。
+        底部一条则指出三层的收益最终汇成同一个出口：<strong>独立部署能力</strong>，
+        对应<a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>。
+        <br><small class="muted">本图的三层分工与「各自消除哪个约束」的归纳为本站教学整理，官方未以此形式给出层次图；
+        <em>Containers</em>、<em>Microservices</em> 为 DOFD v3.4 官方考纲术语表条目，
+        <em>Cloud, Containers, and Microservices</em> 是 v3.4 课程大纲 M6 模块的子项名。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-4-1</div>
+        <h3 class="kp__title">云与容器：把环境从约束变成参数<span class="en">Cloud &amp; Containers</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">云 <span class="en">Cloud</span></span>
+            是<strong>按需自助获取</strong>计算、存储与网络资源的方式：不需要提前采购，用多少付多少，不用了立刻释放。
+          </p>
+          <p>
+            <span class="term">容器 <span class="en">Containers</span></span>
+            是把应用<strong>连同它的全部运行依赖</strong>打包成一个可移植镜像的方式：
+            同一个镜像在任何支持容器的机器上启动，得到的运行环境完全相同，启动时间以秒计。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">本节涉及的官方术语表条目</th><th>本站释义</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Containers</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>把应用与其依赖打包在一起、共享宿主机内核、可秒级启停的<strong>标准化运行单元</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Microservices</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>把应用拆成一组小而自治、<strong>可独立部署</strong>、通过 API 通信的服务（见 kp-6-4-2）</td>
+                </tr>
+                <tr>
+                  <td><strong>Open source</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>源代码公开、允许自由使用与修改的软件。云原生这一层的运行时、编排、构建工具<strong>绝大多数是开源的</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Application Programming Interface (API)</strong> <span class="badge badge--core">⭐ 考纲核心</span></td>
+                  <td>系统之间约定好的<strong>调用契约</strong>：只暴露能做什么，不暴露里面怎么做（见 kp-6-4-2）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>四条均逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。
+            <strong>Cloud 一词本身不在这 66 条内</strong>，但 <em>Cloud, Containers, and Microservices</em>
+            是 v3.4 课程大纲 M6 模块的子项名，属官方模块构成。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>这两样东西解决的是价值流里最不体面的一段：<strong>纯等待</strong>。</p>
+          <ul>
+            <li><strong>等环境</strong>：某企业内部系统要做一次性能压测，需要一套与生产同规格的环境。
+              流程是提工单 → 容量评审 → 采购 → 上架 → 装机 → 交付，<strong>历时 9 周</strong>。
+              代码早在第 1 周就写完了，剩下 8 周价值流上什么也没发生。</li>
+            <li><strong>环境不一样</strong>：等到环境交付，压测跑不起来。
+              测试环境是运维照着一份 2019 年的装机手册配的，生产是另一位同事三年前手工调的，
+              两边的中间件小版本、内核参数、时区都不同。<strong>排查这个差异又花了 5 天</strong>，
+              最后结论是「在我机器上是好的」。</li>
+          </ul>
+          <p>
+            云把第一段从 9 周压到分钟级：申请资源变成一次 API 调用。
+            容器把第二段直接删掉：<strong>各环境装的不是「按同一份手册配出来的机器」，而是同一个镜像本身</strong>。
+            差异没有被管理，是没有机会产生。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，周期数字用于说明机制，非真实调研数据。
+            官方可引用的相关数据是：<strong>供应与部署时间下降最多 90%</strong>
+            （DOFD v3.4 Course Description，与整体 IT 成本下降 15–25%、变更失败率下降 50–70% 并列给出）。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <p>先分清本节自己这两个词的分工：<strong>云回答「有没有机器」</strong>，容量按需可得；
+            <strong>容器回答「机器上跑的是不是同一个东西」</strong>，环境一致。
+            <small class="muted">在自建机房里也可以用容器，在云上也可以完全不用容器 —— 两者互不蕴含。</small></p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">云与容器</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>虚拟机 <span class="en">Virtual Machine</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>容器<strong>共享宿主机内核</strong>，只打包应用与依赖，镜像小、启动以秒计</td>
+                  <td>虚拟机<strong>自带一整套操作系统</strong>，启动以分钟计，镜像动辄数 GB<br><small class="muted">「容器是更轻的虚拟机」是个方便但不准确的说法，两者的隔离边界不在同一层</small></td>
+                </tr>
+                <tr>
+                  <td><strong>基础设施即代码 <span class="en">Infrastructure as Code / IaC</span></strong><br><small class="muted"><span class="badge badge--plain">📘 官方模块子项</span></small></td>
+                  <td>是<strong>被管理的对象</strong>：资源和运行单元本身</td>
+                  <td>是<strong>管理方式</strong>：用版本化的代码去声明这些资源该长什么样。云把资源变成 API 可调用之后，IaC 的收益被放大到整条价值流；但 IaC 本身在自建环境同样成立<br><small class="muted">IaC 虽不在 66 条术语表内，但 <em>infrastructure-as-code</em> 逐字出现在 Blueprint 的 CALMS-A 描述句里，属官方文件正文点名的内容，故标「📘 官方模块子项」；展开见本章 <a href="6.3-iac.html">6.3 基础设施即代码</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>容器编排 <span class="en">Kubernetes</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>容器是<strong>单个运行单元</strong>的规格</td>
+                  <td>编排系统解决「几千个容器怎么调度、扩缩、自愈」<br><small class="muted">Kubernetes 不在 DOFD 66 条术语表内，本节只点名，展开见延伸章</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>云和容器解决的不是同一个问题，却常被合起来叫「上云」</strong>。
+            把虚拟机整机搬到云上（俗称「搬迁」），拿到的只有第一层收益 —— 资源来得快了，
+            <strong>环境漂移一点没少</strong>，因为搬过去的还是那些手工配出来的机器。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，表中仅 <em>Containers</em> 逐字列于 DOFD v3.4 官方考纲术语表；
+            Cloud、Virtual Machine、Infrastructure as Code、Kubernetes 均未收录于 66 条。
+            其中 <em>infrastructure-as-code</em> <strong>逐字写在 PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句里</strong>
+            （<em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>），
+            属官方文件正文点名的内容，因此判「📘 官方模块子项」而非「🧭 延伸 · 非考纲」；官方未以此形式给出该对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>让镜像成为唯一制品</strong>：测试、预发、生产装的是<strong>同一个镜像</strong>，
+              只换注入的配置。这正是本章
+              <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a>
+              里「制品只构建一次」那条要求的落地方式 —— 容器让它从纪律变成了默认行为。</li>
+            <li><strong>把环境当耗材</strong>：每个待评审的分支自动起一套临时环境，合并后自动销毁。
+              这在按需容量之前是不敢想的，因为一套环境要占一台长期存在的机器。</li>
+            <li><strong>用开源看住供应链</strong>：<span class="term">开源 <span class="en">Open source</span></span>
+              让这一层的准入门槛几乎降到零，但镜像里打进去的每一个开源组件都是<strong>你的依赖，也是你的攻击面</strong>。
+              把依赖扫描放进流水线，属于
+              <a href="../ch03-key-practices/3.5-devsecops.html">第 3 章 DevSecOps（3.5）</a>的范围。</li>
+            <li><strong>先量「等待」，再决定投入</strong>：如果一套环境两小时就能拿到，
+              把云的弹性再调一倍并不会缩短端到端交付时间。<strong>先确认「等环境」真的是当前约束</strong>，
+              判断方法见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条工程做法为本站教学整理，官方文件把
+            <em>Cloud, Containers, and Microservices</em> 列为 M6 模块子项，未规定具体实施清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：术语识别</strong>。<em>Containers</em> 与 <em>Open source</em>
+              都是官方术语表条目，Bloom 1–2 的考法就是「给一段描述，问它是哪个词」或「这个词的正确描述是哪一项」。
+              容器的关键描述词是<strong>「打包应用与依赖」「可移植 / 一致」「轻量 / 共享内核」</strong>。</li>
+            <li><strong>干扰项长什么样（一）</strong>：把容器说成
+              <strong>「自带完整操作系统的轻量虚拟机」</strong>。
+              这句话前半截听着对，<strong>「自带操作系统」是虚拟机的特征</strong>，一出现就可以划掉。</li>
+            <li><strong>干扰项长什么样（二）</strong>：把 Open source 说成
+              <strong>「免费，因此不需要许可与安全管理」</strong>。开源指的是<strong>源代码可获取、可修改</strong>，
+              与「免费」和「免责」都不是一回事。选项里出现「因为免费所以…」的因果句，基本都是干扰项。</li>
+            <li><strong>干扰项长什么样（三）</strong>：把云的收益写成
+              <strong>「消除了对基础设施的管理需要」</strong>。云改变的是<strong>获取方式</strong>，
+              不是让基础设施消失。凡是把某项实践描述成「从此不再需要 X」的绝对句，先怀疑。</li>
+            <li><strong>排除技巧</strong>：这一组题的正确项几乎都在讲<strong>「一致性」与「按需」</strong>；
+              干扰项则倾向于讲<strong>「更快」「更便宜」「不再需要」</strong>。快和省是结果，不是定义。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项构造与排除技巧均为本站教学推断；
+            官方仅公布考试范围为 Bloom 1–2。以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">云给你机器，容器保证每台机器上跑的是同一个东西。</p>
+          <p class="mb-0 muted"><small>一句话推论：只上云不用容器，等待变短了但漂移还在；
+            只用容器不上云，环境一致了但仍然要排队等机器。<strong>两个约束要分别拆。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-4-2</div>
+        <h3 class="kp__title">微服务与 API：买到的是「不用等别人」<span class="en">Microservices &amp; API</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">微服务 <span class="en">Microservices</span></span>
+            是一种架构风格：把一个应用拆成<strong>一组小而自治的服务</strong>，
+            每个服务围绕一项业务能力构建，<strong>可以独立构建、独立部署、独立回滚</strong>，
+            服务之间只通过明确定义的
+            <span class="term">应用程序接口 <span class="en">Application Programming Interface / API</span></span>
+            通信。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个不能少的限定词</th><th>去掉它会变成什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>围绕业务能力</strong></td><td>去掉它，拆出来的是「前端服务 / 后端服务 / 数据库服务」这种<strong>按技术分层的切法</strong> —— 加一个字段仍然要三个组一起改</td></tr>
+                <tr><td><strong>可独立部署</strong></td><td>去掉它，就只是<strong>拆成了多个模块然后一起发布</strong>，付了分布式的代价却没拿到收益</td></tr>
+                <tr><td><strong>只经 API 通信</strong></td><td>去掉它（比如两个服务共用一张数据库表），边界就是假的 —— <strong>改表结构又变回全员协调</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Microservices</em> 与
+            <em>Application Programming Interface (API)</em> 均逐字列于 DOFD v3.4 官方考纲术语表；
+            上表「三个限定词」的拆解为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            微服务解决的痛点，<strong>发生在会议室里，不在服务器上</strong>。
+          </p>
+          <ul>
+            <li>某支付平台的单体系统，<strong>40 名工程师分 6 个小组</strong>共用一个代码库、一条发布火车。
+              客服提了个两行代码的文案修正，走完流程用了 <strong>17 天</strong>：
+              等下一个双周发布窗口（9 天）、等 6 个组的回归测试全绿（5 天）、等发布评审（3 天）。</li>
+            <li>更贵的是<strong>连坐</strong>：某次发布因为营销模块的一个空指针整体回滚，
+              同一批车上另外 5 个组<strong>毫无关系的变更也被一起退了回来</strong>，下个窗口重来。
+              于是各组学会了「反正要等，那就多攒一点一起上」—— 批量越攒越大。</li>
+            <li>把这 6 个域拆成独立部署的服务之后，文案修正当天就上了生产。
+              <strong>变的不是代码质量，是「一次发布要协调多少人」。</strong></li>
+          </ul>
+          <p>
+            所以微服务的意义是<strong>组织层面</strong>的：它让一个团队<strong>不必与全体协调即可发布</strong>。
+            这正是<a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>
+            要的东西 —— 缩小批量、缩短端到端交付时间，靠的不是让每个人打字更快，而是<strong>拆掉「一起发布」这个同步点</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，人数与天数用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 6-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 980 560" role="img" aria-label="发布一个两行改动时，单体与微服务两条协调路径的对比，以及微服务省掉的与新增的代价">
+              <defs>
+                <marker id="ah-64-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-64-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <text x="490" y="28" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">同一个改动：两行文案　·　两条协调路径</text>
+
+              <!-- 左列标题 -->
+              <rect x="30" y="44" width="440" height="40" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="250" y="70" class="f-5" font-size="15" font-weight="700" text-anchor="middle">单体　Monolith</text>
+              <!-- 右列标题 -->
+              <rect x="510" y="44" width="440" height="40" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="730" y="70" class="f-3" font-size="15" font-weight="700" text-anchor="middle">微服务　Microservices</text>
+
+              <!-- 左侧步骤 -->
+              <rect x="30" y="100" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="48" y="129" class="s-ink" font-size="13.5">① 改 2 行代码　—　耗时 10 分钟</text>
+
+              <rect x="30" y="164" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="48" y="193" class="s-ink" font-size="13.5">② 触发<tspan font-weight="700">整个应用</tspan>的构建与全量回归</text>
+
+              <rect x="30" y="228" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="48" y="257" class="s-ink" font-size="13.5">③ 等下一个<tspan font-weight="700">发布窗口</tspan>，与其他 5 组的变更同车</text>
+
+              <rect x="30" y="292" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="48" y="321" class="s-ink" font-size="13.5">④ 6 个组共同参加发布评审与上线值守</text>
+
+              <rect x="30" y="356" width="440" height="46" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="48" y="378" class="f-5" font-size="13.5" font-weight="700">⑤ 任一模块出事 → 整体回滚，全车一起退</text>
+              <text x="48" y="396" class="s-muted" font-size="12">无关的 5 组变更陪葬，下个窗口重来</text>
+
+              <g class="s-5" stroke-width="2" fill="none">
+                <line x1="250" y1="148" x2="250" y2="160" marker-end="url(#ah-64-2)"/>
+                <line x1="250" y1="212" x2="250" y2="224" marker-end="url(#ah-64-2)"/>
+                <line x1="250" y1="276" x2="250" y2="288" marker-end="url(#ah-64-2)"/>
+                <line x1="250" y1="340" x2="250" y2="352" marker-end="url(#ah-64-2)"/>
+              </g>
+
+              <!-- 右侧步骤 -->
+              <rect x="510" y="100" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="528" y="129" class="s-ink" font-size="13.5">① 改 2 行代码　—　耗时 10 分钟</text>
+
+              <rect x="510" y="164" width="440" height="46" rx="9" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="528" y="193" class="s-ink" font-size="13.5">② 只构建、只回归<tspan font-weight="700">这一个服务</tspan></text>
+
+              <rect x="510" y="228" width="440" height="46" rx="9" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="528" y="250" class="f-3" font-size="13.5" font-weight="700">③ 本组自行发布 —— 不需要任何跨组同步点</text>
+              <text x="528" y="268" class="s-muted" font-size="12">当天上线；出事只回滚这一个服务</text>
+
+              <rect x="510" y="292" width="440" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="528" y="321" class="s-ink" font-size="13.5">④ 前提：API 契约不变　—　变了要考虑兼容期</text>
+
+              <rect x="510" y="356" width="440" height="46" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="528" y="385" class="s-ink" font-size="13.5">⑤ 前提：跨服务链路可观测，否则出事看不见</text>
+
+              <g class="s-3" stroke-width="2" fill="none">
+                <line x1="730" y1="148" x2="730" y2="160" marker-end="url(#ah-64-3)"/>
+                <line x1="730" y1="212" x2="730" y2="224" marker-end="url(#ah-64-3)"/>
+              </g>
+
+              <!-- 底部：省掉了什么 -->
+              <rect x="30" y="420" width="440" height="118" rx="11" class="s-3" stroke-width="2.2" fill="var(--dia-fill)"/>
+              <text x="48" y="446" class="f-3" font-size="13.5" font-weight="700">微服务省掉了什么</text>
+              <text x="48" y="470" class="s-ink" font-size="13">· 发布窗口这个跨组同步点</text>
+              <text x="48" y="492" class="s-ink" font-size="13">· 全量回归与全员上线值守</text>
+              <text x="48" y="514" class="s-ink" font-size="13">· 连坐式整体回滚</text>
+              <text x="48" y="532" class="s-muted" font-size="12">省下的全部是「协调成本」，不是「代码量」</text>
+
+              <!-- 底部：新增了什么 -->
+              <rect x="510" y="420" width="440" height="118" rx="11" class="s-5" stroke-width="2.2" fill="var(--dia-fill)"/>
+              <text x="528" y="446" class="f-5" font-size="13.5" font-weight="700">又新增了什么代价</text>
+              <text x="528" y="470" class="s-ink" font-size="13">· 函数调用变成网络调用：会超时、会失败</text>
+              <text x="528" y="492" class="s-ink" font-size="13">· 一个事务变成跨服务的数据一致性问题</text>
+              <text x="528" y="514" class="s-ink" font-size="13">· 调试要跨服务追链路；API 要维护版本兼容</text>
+              <text x="528" y="532" class="s-muted" font-size="12">这一列就是可观测性成为刚需的原因</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-4-2　省掉的是协调，付出的是分布式。</strong>
+            要看懂的是<strong>底部两个方框的对称关系</strong>：左边省掉的三项<strong>全是跨组同步点</strong>，
+            没有一项是「写代码变轻松了」；右边新增的三项<strong>全是分布式系统固有的难题</strong>。
+            右列第 ④⑤ 步是刻意画成「前提」而不是「步骤」的 —— 它们不发生在这次发布里，
+            但只要缺席，第 ③ 步的「当天上线」就会变成「当天上线、第二天出事、第三天才发现」。
+            <br><small class="muted">本对比路径为本站教学整理，步骤划分与耗时描述取自本节 kp-6-4-2 ② 面的构造示例，非真实调研数据；
+            官方未以此形式给出单体与微服务的路径对比。可观测性展开见
+            <a href="../ch03-key-practices/3.8-observability.html">第 3 章 监控与可观测性（3.8）</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">微服务</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>松耦合架构</strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>是<strong>一种手段</strong>：用进程与网络边界强制解耦</td>
+                  <td>是<strong>要达成的目标属性</strong>：改一处不牵动其他处、发一处不必等其他处<br><small class="muted">真正带来收益的是松耦合与独立部署能力。<strong>模块化良好的单体同样可以很松耦合</strong>，微服务只是达成它的一条路</small></td>
+                </tr>
+                <tr>
+                  <td><strong>单体 <span class="en">Monolith</span></strong></td>
+                  <td>部署单元<strong>有很多个</strong>，各自独立发布</td>
+                  <td>部署单元<strong>只有一个</strong>，任何改动都要整体发布<br><small class="muted">单体不等于「没有模块」，它可以内部结构清晰，只是<strong>不能分开发</strong></small></td>
+                </tr>
+                <tr>
+                  <td><strong>容器 <span class="en">Containers</span></strong></td>
+                  <td>是<strong>架构决策</strong>：系统被切成几块、边界画在哪</td>
+                  <td>是<strong>打包与运行方式</strong><br><small class="muted">单体可以装进一个容器；微服务也可以不用容器直接跑。<strong>两者常同时出现，但不是同一件事</strong></small></td>
+                </tr>
+                <tr>
+                  <td><strong>API</strong></td>
+                  <td>是被切分出来的<strong>服务本身</strong></td>
+                  <td>是服务之间的<strong>契约</strong>：只承诺「能做什么」，不暴露「里面怎么做」<br><small class="muted">API 稳定，双方就能各自演进；API 一变，独立部署的前提立刻失效</small></td>
+                </tr>
+                <tr>
+                  <td><strong>康威定律 <span class="en">Conway's Law</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>是<strong>架构侧</strong>的切分</td>
+                  <td>指出<strong>系统结构会趋同于组织沟通结构</strong>：架构边界与团队边界互相决定<br><small class="muted">推论：6 个组共管 1 个部署单元时，架构自然会长成单体。<strong>不在 DOFD 66 条术语表内</strong>，组织形态的展开见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型（5.5）</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把「微服务」本身当成目标</strong>。
+            官方术语表收录的是 <em>Microservices</em> 这个词，但让端到端交付时间下降的从来不是服务的数量，
+            而是<strong>「一次发布需要协调多少人」这个数字变成了 1</strong>。
+            如果拆完之后 40 个服务仍然一起发版，那只是把一个单体拆成了 40 份的分布式单体 —— 代价全付了，收益一分没拿。</small></p>
+          <p class="mb-0 muted"><small>「微服务是手段、松耦合与独立部署能力是目标」这一区分，以及「分布式单体」这一说法，
+            均为本站教学整理；官方术语表列出 <em>Microservices</em> 与 <em>API</em>，
+            未收录 Monolith、松耦合、康威定律等词，也未以此形式给出该对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>用一个问题验收拆分</strong>：<strong>这个服务能不能在不通知任何其他团队的前提下，
+              今天单独发布并单独回滚？</strong>答不上「能」，这次拆分就没有兑现收益，只兑现了代价。</li>
+            <li><strong>边界按业务能力画，不按技术分层画</strong>：「订单」「计价」「风控」是能力；
+              「Web 层」「服务层」「数据层」是分层。<strong>按分层拆，加一个字段还是要三个组一起动</strong>。</li>
+            <li><strong>一个服务一份数据</strong>：两个服务共用一张表，等于用数据库把它们又焊死了。
+              数据共享要走 API，不走表。</li>
+            <li><strong>API 要有兼容期</strong>：新增字段可以随时发，删改字段必须先并行支持新旧两版，
+              等调用方全部迁完再下线旧版。<strong>没有兼容期的 API，就没有独立部署。</strong></li>
+            <li><strong>先看组织，再看架构</strong>：一个服务由多个团队共同拥有，等于把跨组同步点从发布环节挪到了代码环节。
+              服务与团队的归属关系不清楚时，先别拆。</li>
+            <li><strong>把重复的运维负担收成平台</strong>：40 个服务各自搭一套构建、部署、监控，
+              认知负荷会压垮业务团队。这正是<a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>
+              要解决的问题。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上六条实施判据为本站教学整理，官方文件把
+            <em>Cloud, Containers, and Microservices</em> 列为 M6 模块子项，未规定拆分方法或验收标准。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：微服务的定义与收益</strong>。
+              正确项的关键词几乎必然包含<strong>「小而自治」「围绕业务能力」「可独立部署」「通过 API 通信」</strong>
+              中的一到两个。看到「独立部署」，方向基本就定了。</li>
+            <li><strong>干扰项长什么样（一）</strong>：<strong>「微服务降低了系统的整体复杂度」</strong>。
+              这是本节最需要防的一句 —— 它读起来很顺，但方向是反的：
+              微服务<strong>把复杂度从代码内部搬到了服务之间</strong>，总量不降反升（见 kp-6-4-3）。</li>
+            <li><strong>干扰项长什么样（二）</strong>：<strong>「服务拆得越小越好」</strong>。
+              micro 指的是<strong>自治的粒度</strong>，不是尺寸竞赛（本站释义 —— 官方术语表只列词条、不附定义）。
+              凡是「越…越好」的绝对句都可疑。</li>
+            <li><strong>干扰项长什么样（三）</strong>：把微服务与容器<strong>划等号</strong>，
+              或说「采用容器即实现了微服务」。两者常同时出现，但一个是架构决策、一个是打包方式。</li>
+            <li><strong>API 的考法</strong>：正确描述强调<strong>「定义好的接口 / 契约」「隐藏内部实现」</strong>；
+              干扰项常把 API 说成「一种编程语言」「一个数据库连接」或「一份用户手册」。</li>
+            <li><strong>排除技巧</strong>：这一组题的正确项讲的是<strong>「自治 / 独立 / 契约」</strong>；
+              干扰项讲的是<strong>「更简单 / 更小 / 更省 / 就是某个工具」</strong>。
+              <strong>凡是把架构风格等同于某个具体工具的选项，先划掉。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>DOFD v3.4 官方样题答案键中<strong>没有直接涉及本节主题的条目</strong>，
+            因此本面不引用任何「官方样题确认」的结论。官方也未公布命题规律与题型分布，
+            以上命题角度、干扰项构造与排除技巧均为本站教学推断；官方仅公布考试范围为 Bloom 1–2。
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">微服务买到的不是「更小的代码」，是「不用等别人就能发布」。</p>
+          <p class="mb-0 muted"><small>配套的一句反问：<strong>拆完之后，一次发布还需要协调几个团队？</strong>
+            答案不是 1，就说明边界画错了 —— 服务数量增加了，同步点一个也没少。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-4-3</div>
+        <h3 class="kp__title">代价与取舍：什么时候不该上微服务<span class="en">Microservices Trade-offs</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            拆成微服务，本质上是把<strong>单体内部的一次函数调用，换成了一次网络调用</strong>。
+            这一换，就把<strong>分布式系统的全部固有难题</strong>一并买了进来：
+            调用会超时、会失败、会重复；一个事务变成跨服务的一致性问题；一次报错要跨若干服务追链路。
+          </p>
+          <p class="mb-0">
+            这不是「实施不当」造成的，而是<strong>选择这条路必然附带的账单</strong>。
+            它不会因为技术更好而消失，只会因为工具更好而变得可以承受。
+          </p>
+          <div class="src-note">
+            <em>Microservices</em> 是 DOFD v3.4 官方考纲术语表条目，
+            <em>Cloud, Containers, and Microservices</em> 是 v3.4 课程大纲 M6 模块子项。
+            <strong>但「微服务的代价清单」与本知识点的全部取舍判据，是本站教学整理</strong> ——
+            官方文件把这三者列为需要掌握的概念，未讨论其适用条件与副作用。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一面要解决的痛点，出现在<strong>拆分成功之后</strong>：发布确实变快了，
+            但<strong>「出了事没人说得清是哪儿」</strong>成了新常态。
+          </p>
+          <ul>
+            <li><strong>网络会失败</strong>：某电商的下单链路跨 7 个服务。促销当晚下单成功率跌到 88%，
+              各服务自己的健康检查<strong>全部是绿的</strong> —— 因为每个服务只知道自己没崩，
+              不知道自己调下游时超时重试了三次。排查用了 <strong>3 小时 20 分</strong>，
+              最后定位在第 5 跳的一个连接池配置。<br>
+              在单体里，这段逻辑本来是一次函数调用，<strong>根本不存在超时这种失败模式</strong>。</li>
+            <li><strong>数据一致性从「免费」变成「要设计」</strong>：单体里「扣库存 + 建订单」是一个数据库事务，
+              要么全成要么全不成。拆开之后这变成两次跨服务调用，
+              第二次失败时第一次<strong>已经生效了</strong> —— 必须自己设计补偿或对账。</li>
+            <li><strong>调试跨越了进程边界</strong>：单体里一个堆栈就能看到全貌；
+              微服务里同一个请求的痕迹散在 7 份日志里，没有贯穿全链路的标识就拼不起来。</li>
+          </ul>
+          <p>
+            这就是<strong>可观测性成为刚需而不是加分项的原因</strong>：
+            单体时代「看日志」够用，微服务时代不够。
+            展开见<a href="../ch03-key-practices/3.8-observability.html">第 3 章 监控与可观测性（3.8）</a>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，服务跳数、成功率与排查耗时用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:36%">单体内的函数调用</th><th>微服务间的网络调用</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>失败模式</strong></td>
+                  <td>要么正常返回，要么抛异常。<strong>没有第三种</strong></td>
+                  <td>还有超时、部分成功、重复投递、下游雪崩。<strong>「不知道成没成」是常态</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>延迟</strong></td>
+                  <td>纳秒级，可以忽略不计</td>
+                  <td>毫秒级且<strong>抖动</strong>。链路一长，尾延迟按跳数累积</td>
+                </tr>
+                <tr>
+                  <td><strong>数据一致性</strong></td>
+                  <td>一个数据库事务解决，<strong>免费</strong></td>
+                  <td>跨服务，需要自行设计补偿、幂等或对账。<strong>要写代码，也要写运维预案</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>调试</strong></td>
+                  <td>一个堆栈看到全貌</td>
+                  <td>要跨服务串链路，<strong>没有可观测性等于摸黑</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>改接口的成本</strong></td>
+                  <td>编译器会告诉你哪里坏了，<strong>改完一起发</strong></td>
+                  <td>没有编译器兜底，要靠 API 兼容期与契约测试；<strong>发布顺序本身成了一个约束</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>换来了什么</strong></td>
+                  <td>—</td>
+                  <td><strong>独立部署</strong>：一个团队不必等其他团队就能上线</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「微服务让系统更简单」</strong>。
+            恰恰相反 —— 单个服务的代码变简单了，<strong>系统的总复杂度上升了</strong>，
+            只是被<strong>搬到了服务之间</strong>，换来了可以独立发布的位置。
+            微服务是一笔<strong>交易</strong>，不是一次优化：用运行期的复杂度，换开发期与发布期的自治。</small></p>
+          <p class="mb-0 muted"><small>本对照表与「这是一笔交易而非优化」的判断为本站教学整理，官方未以此形式给出该对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>先判断这笔交易划不划算。</strong>以下四种情况，微服务的协调成本高于收益：</p>
+          <ul>
+            <li><strong>团队规模小</strong>：一共 8 个人、一个团队。「不用等别人发布」这个收益<strong>本来就不存在</strong>，
+              因为根本没有别人。拆完只剩代价。</li>
+            <li><strong>领域边界还没稳定</strong>：新业务前期，边界每两个月就要重画一次。
+              在单体里挪一个模块是一次重构，<strong>在微服务里挪一次边界是一场跨服务的数据迁移</strong>。
+              边界没想清楚之前，单体里改边界便宜得多。</li>
+            <li><strong>缺可观测性与部署自动化</strong>：还在手工部署、只有零散日志时拆成 20 个服务，
+              得到的是 20 份手工部署和 20 份看不懂的日志。<strong>先补下层，再动架构</strong>（见图 6-4-1）。</li>
+            <li><strong>约束根本不在这里</strong>：如果<strong>精益价值流口径</strong>下的前置时间大头是需求排期或审批
+              （该口径从需求被接受起算，含需求排队；DORA 口径的 <em>Change lead time</em> 从代码提交起算，不含这一段），
+              拆服务一天也省不下来。先做<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论（2.3）</a>
+              意义上的定位，别对着非约束环节做优化。</li>
+          </ul>
+          <p>更稳妥的次序（本站教学建议）：</p>
+          <ul class="mb-0">
+            <li><strong>先做模块化单体</strong>：在一个部署单元内部把边界画清楚、把数据分开。
+              边界画对了，将来拆才便宜；边界画错了，先拆只会把错误固化成网络协议。</li>
+            <li><strong>按痛点逐个剥离</strong>：哪个模块最常改、最需要独立发布节奏，就先把哪个拿出来。
+              <strong>不要一次性重写</strong>。</li>
+            <li><strong>每剥离一个，验收一次</strong>：它能否独立发布并独立回滚？出事时能否在链路上定位到它？
+              两个都答「能」，再剥下一个。</li>
+          </ul>
+          <div class="src-note">
+            「四种不该上微服务的情形」与「模块化单体优先」的实施次序，均为<strong>本站教学整理</strong>，
+            官方文件未讨论微服务的适用条件，也未给出演进路径。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：微服务带来的收益是什么</strong>。
+              正确方向永远指向<strong>「可独立部署 / 各团队自治 / 支持更频繁的小批量发布」</strong>，
+              也就是最终落回<strong>流动</strong>。</li>
+            <li><strong>干扰项长什么样（一）</strong>：<strong>「降低了系统整体复杂度」「减少了测试工作量」</strong>。
+              这两句都把代价说反了 —— 微服务增加的正是集成测试与运行期的复杂度。</li>
+            <li><strong>干扰项长什么样（二）</strong>：<strong>「消除了对监控的需要」</strong>
+              或类似的「从此不再需要 X」句式。方向恰好相反：微服务让可观测性<strong>更加</strong>必要。</li>
+            <li><strong>干扰项长什么样（三）</strong>：把三者的功劳<strong>互相张冠李戴</strong> ——
+              说「容器实现了独立部署能力」或「微服务保证了环境一致性」。
+              <strong>各自的归属见图 6-4-1，一层对一堵墙，不要串。</strong></li>
+            <li><strong>反向问法</strong>：问微服务<strong>不能</strong>带来什么，或采用微服务<strong>需要什么前提</strong>。
+              前者选「更简单 / 更省事」类；后者选与<strong>自动化部署、监控与可观测性、团队自治</strong>相关的项。</li>
+            <li><strong>排除技巧</strong>：这一组题里，凡是承诺<strong>「更简单」「更省」「不再需要」</strong>的选项，
+              几乎都是干扰项；承诺<strong>「更自治」「更快发布」「更小批量」</strong>的，几乎都是正确方向。</li>
+          </ul>
+          <p class="mb-0 muted"><small>DOFD v3.4 官方样题答案键中<strong>没有直接涉及本节主题的条目</strong>，
+            本面不引用任何「官方样题确认」的结论。官方未公布命题规律与题型分布，
+            以上命题角度、干扰项构造与排除技巧均为本站教学推断；官方仅公布考试范围为 Bloom 1–2。
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">微服务不让系统变简单，它把复杂度搬到能被独立发布的位置。</p>
+          <p class="muted"><small>一句话代价：<strong>函数调用变成了网络调用</strong> ——
+            于是有了超时、有了跨服务一致性、有了追链路，这就是可观测性从加分项变成刚需的原因。</small></p>
+          <p class="mb-0 muted"><small>不该拆的四种情形，按「人、边界、地基、约束」记：
+            <strong>人少（没有别人要等）· 边界不稳（挪一次要迁数据）· 地基没打（无自动化与可观测性）· 约束不在这（省不下时间）</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>一层拆一堵墙</strong>：云拆「等环境」，容器拆「环境不一样」，微服务拆「等别人一起发布」——
+          三者<strong>自下而上互相放大收益</strong>（不是硬性依赖），跳级只会放大下层的问题（层次归纳为本站教学整理）</li>
+        <li><strong>四个术语表条目</strong>：<em>Containers</em>、<em>Microservices</em>、<em>Open source</em>、
+          <em>Application Programming Interface (API)</em> 均逐字列于 DOFD v3.4 官方考纲术语表；
+          <strong>Cloud 一词本身不在 66 条内</strong>，但属 M6 模块子项名</li>
+        <li><strong>容器 ≠ 轻量虚拟机</strong>：容器<strong>共享宿主机内核</strong>，不自带操作系统。
+          选项里出现「自带完整操作系统」即可划掉</li>
+        <li><strong>微服务的意义在组织层面</strong>：可独立构建、独立部署、独立回滚，
+          <strong>一次发布需要协调的团队数变成 1</strong> —— 直接服务于第一步 · 流动</li>
+        <li><strong>手段不等于目标</strong>：带来收益的是<strong>松耦合与独立部署能力</strong>，微服务只是达成它的一种手段；
+          拆了却仍要一起发版，就是「分布式单体」（此说法为本站教学整理）</li>
+        <li><strong>代价一句话</strong>：函数调用变成<strong>网络调用</strong> ——
+          超时与部分失败、跨服务数据一致性、跨服务链路调试。<strong>这就是可观测性成为刚需的原因</strong></li>
+        <li><strong>不该上微服务的四种情形</strong>：团队小 · 领域边界未稳 · 缺自动化与可观测性 · 约束根本不在这里
+          （四条判据为本站教学整理，官方未讨论适用条件）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Containers</em>、<em>Microservices</em>、<em>Open source</em>、
+      <em>Application Programming Interface (API)</em> 四条均逐字列于
+      DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）；
+      该术语表<strong>只列词条、不附定义</strong>，因此本页给出的每一条中文释义均为本站措辞。
+      <em>Cloud, Containers, and Microservices</em> 是 DOFD v3.4 课程大纲 M6 模块
+      <em>Automation &amp; Architecting DevOps Toolchains</em> 的子项名（该模块在
+      DOFD v3.4 Examination Requirements（2022-05）中最多出 5 题；<strong>v3.6 未公开重新发布权重表</strong>）。
+      「供应与部署时间下降最多 90%」出自 <strong>DOFD v3.4 Course Description</strong>，
+      与整体 IT 成本下降 15–25%、变更失败率下降 50–70% 并列给出，引用时须带 v3.4 版本号。
+      <strong>教学整理部分</strong>：三层「各消除一个约束」的层次归纳（图 6-4-1）、
+      单体与微服务的协调路径对比（图 6-4-2）、云 / 容器 / 虚拟机 / IaC 对照表、
+      微服务「三个限定词」拆解、「微服务是手段、松耦合与独立部署能力是目标」这一区分、
+      「分布式单体」说法、函数调用与网络调用的代价对照表、
+      「四种不该上微服务的情形」与「模块化单体优先」的演进次序，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      <strong>关于考点</strong>：DOFD v3.4 官方样题答案键中没有直接涉及本节主题的条目，
+      因此本节各「⑤ 考试怎么考」面<strong>未引用任何官方样题结论</strong>；
+      官方亦未公布命题规律与题型分布，各面的命题角度与干扰项分析均为本站教学推断，
+      官方公布的范围为 Bloom 1–2。以上不复制任何官方样题的题干与选项原文。
+      <strong>延伸内容</strong>：虚拟机、Kubernetes、康威定律均不在 DOFD 66 条术语表内，本节仅点名并已就地标注，
+      容器编排展开见延伸章。
+      <strong>基础设施即代码的档位</strong>：IaC 同样不在 66 条术语表内，但 <em>infrastructure-as-code</em>
+      逐字出现在 <strong>PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句</strong>中，
+      属官方文件正文点名的内容，因此在本页对照表中标
+      <span class="badge badge--plain">📘 官方模块子项</span>，不作延伸内容处理。
+      <strong>相关章节</strong>：可观测性见<a href="../ch03-key-practices/3.8-observability.html">第 3 章 监控与可观测性（3.8）</a>，
+      平台工程见<a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>，
+      「制品只构建一次」的展开见本章 <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a>，
+      依赖与镜像的安全扫描见<a href="../ch03-key-practices/3.5-devsecops.html">第 3 章 DevSecOps（3.5）</a>，
+      约束定位见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，
+      流动见<a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>，
+      组织形态见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型（5.5）</a>，
+      度量与前置时间见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+      基础设施即代码、部署流水线与工具链架构分别见本章 <a href="6.3-iac.html">6.3 基础设施即代码</a>、<a href="6.2-deployment-pipeline.html">6.2 部署流水线</a> 与 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

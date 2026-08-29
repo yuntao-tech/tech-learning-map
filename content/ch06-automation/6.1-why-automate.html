@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.1 自动化的价值与边界 · DevOps Foundation 学习站</title>
+<meta name="description" content="CALMS 中的 A 是 Automation。本节把自动化的收益整理为一致性、速度、快速恢复与释放判断力四项，讲清它们各自的机制与常见误读，并给出自动化的四条边界与「值不值得自动化」的判据：频率 × 单次耗时 × 出错代价。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.1-why-automate"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链</div>
+      <h1 class="page-head__title">6.1 自动化的价值与边界</h1>
+      <div class="page-head__en">The Value and Limits of Automation</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        CALMS 里的 <strong>A 是 Automation</strong>，但这一节有一半篇幅在讲它的反面。
+        Blueprint 给 A 的原话是「CI/CD 工具链与基础设施即代码带来自动化、<strong>一致性、速度与快速恢复</strong>」；
+        但同一套自动化也能把一个坏流程原封不动地加速，
+        把今天的组织边界浇筑成明天拆不动的水泥。
+        真正的判断题从来不是<strong>「这一步能不能自动化」</strong>，而是<strong>「这一步值不值得」</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>CALMS 里的 A 到底承诺了什么 —— 自动化带来的四项收益各自靠<strong>什么机制</strong>产生作用</li>
+        <li>自动化的四条边界在哪，为什么「自动化一切」是个陷阱</li>
+        <li>面对具体的一步操作，用什么判据决定它<strong>值不值得</strong>自动化</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 430" role="img" aria-label="自动化的四项收益，以及自动化服务于第一步流动的位置关系">
+          <defs>
+            <marker id="ah-61-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <!-- 官方引文带 -->
+          <rect x="30" y="18" width="900" height="62" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="48" y="42" class="f-1" font-size="13" font-weight="700">PeopleCert DevOps Foundation Blueprint · BENEFITS 逐字原文</text>
+          <text x="48" y="66" class="s-ink" font-size="13">Improved release cadence, velocity, throughput, efficiency and stability, quality, security and team satisfaction.</text>
+
+          <!-- 卡 1 · 一致性 -->
+          <rect x="30" y="104" width="204" height="158" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="46" y="134" class="f-1" font-size="15.5" font-weight="700">① 一致性</text>
+          <text x="46" y="155" class="s-muted" font-size="12">Consistency</text>
+          <line x1="46" y1="166" x2="218" y2="166" class="s-stroke" stroke-width="1"/>
+          <text x="46" y="188" class="s-ink" font-size="12.5">手工 = 每次重新演绎</text>
+          <text x="46" y="208" class="s-ink" font-size="12.5">自动 = 同一份指令重放</text>
+          <text x="46" y="228" class="s-ink" font-size="12.5">副产品：失败可复现</text>
+          <text x="46" y="252" class="s-muted" font-size="12">官方词 · CALMS-A</text>
+
+          <!-- 卡 2 · 速度 -->
+          <rect x="262" y="104" width="204" height="158" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="278" y="134" class="f-2" font-size="15.5" font-weight="700">② 交付速度</text>
+          <text x="278" y="155" class="s-muted" font-size="12">前置时间 · 部署频率</text>
+          <line x1="278" y1="166" x2="450" y2="166" class="s-stroke" stroke-width="1"/>
+          <text x="278" y="188" class="s-ink" font-size="12.5">省的不是执行时间</text>
+          <text x="278" y="208" class="s-ink" font-size="12.5">是排队等人的时间</text>
+          <text x="278" y="228" class="s-ink" font-size="12.5">事件发生即开始</text>
+          <text x="278" y="252" class="s-muted" font-size="12">官方词 · CALMS-A</text>
+
+          <!-- 卡 3 · 快速恢复 -->
+          <rect x="494" y="104" width="204" height="158" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="510" y="134" class="f-3" font-size="15.5" font-weight="700">③ 快速恢复</text>
+          <text x="510" y="155" class="s-muted" font-size="12">Fast recovery</text>
+          <line x1="510" y1="166" x2="682" y2="166" class="s-stroke" stroke-width="1"/>
+          <text x="510" y="188" class="s-ink" font-size="12.5">回滚与部署同一条路</text>
+          <text x="510" y="208" class="s-ink" font-size="12.5">因此被同样频繁执行</text>
+          <text x="510" y="228" class="s-ink" font-size="12.5">MTTR 下降</text>
+          <text x="510" y="252" class="s-muted" font-size="12">官方词 · CALMS-A</text>
+
+          <!-- 卡 4 · 释放人力 -->
+          <rect x="726" y="104" width="204" height="158" rx="10" class="s-4" stroke-width="2" stroke-dasharray="6 4" fill="var(--dia-fill-2)"/>
+          <text x="742" y="134" class="f-4" font-size="15.5" font-weight="700">④ 释放判断力</text>
+          <text x="742" y="155" class="s-muted" font-size="12">本站表述</text>
+          <line x1="742" y1="166" x2="914" y2="166" class="s-stroke" stroke-width="1"/>
+          <text x="742" y="188" class="s-ink" font-size="12.5">重复交给机器</text>
+          <text x="742" y="208" class="s-ink" font-size="12.5">例外与权衡留给人</text>
+          <text x="742" y="228" class="s-ink" font-size="12.5">旁证：team satisfaction</text>
+          <text x="742" y="252" class="s-muted" font-size="12">本站教学整理</text>
+
+          <!-- 手段 → 目的 -->
+          <rect x="30" y="286" width="250" height="52" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="155" y="318" class="s-ink" font-size="14.5" font-weight="650" text-anchor="middle">自动化（手段）</text>
+
+          <line x1="282" y1="312" x2="306" y2="312" class="s-1" stroke-width="2" marker-end="url(#ah-61-1)"/>
+
+          <rect x="310" y="286" width="290" height="52" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="455" y="308" class="s-ink" font-size="13.5" text-anchor="middle">更短的变更前置时间（DORA 口径）</text>
+          <text x="455" y="328" class="s-ink" font-size="13.5" text-anchor="middle">更小的批量 · 更快的反馈</text>
+
+          <line x1="602" y1="312" x2="626" y2="312" class="s-1" stroke-width="2" marker-end="url(#ah-61-1)"/>
+
+          <rect x="630" y="286" width="300" height="52" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="780" y="318" class="f-1" font-size="15" font-weight="700" text-anchor="middle">第一步 · 流动（目的）</text>
+
+          <!-- 边界带 -->
+          <rect x="30" y="360" width="900" height="54" rx="10" class="s-5" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill)"/>
+          <text x="48" y="384" class="f-5" font-size="13.5" font-weight="700">边界</text>
+          <text x="48" y="406" class="s-ink" font-size="13">同样这四项收益，作用在一个坏流程上时，得到的是更快、更一致、也更难被发现的浪费。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-1-1　自动化承诺了什么，又服务于什么。</strong>
+        这张图要让你看懂两件事。
+        第一，顶部引文带是 Blueprint <em>BENEFITS</em> 一栏的<strong>官方逐字原文</strong>，
+        它列出的是 <em>velocity</em>、<em>quality</em>、<em>stability</em>、<em>team satisfaction</em> 这一类收益词；
+        下面<strong>四张卡是本站把这些收益按「靠什么机制产生作用」重新组织后的结果</strong>，
+        官方并未以「四项收益」这种形式给出；但前三张卡的收益词本身是官方原文 ——
+        <em>consistency</em>、<em>velocity</em>、<em>fast recovery</em> 逐字写在 Blueprint 的 CALMS-A 描述句里，
+        只有第四项（虚线框）连收益词都是本站补的。
+        第二，中间那条链说明<strong>自动化在因果上处于「手段」的位置</strong>，终点是
+        <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>；
+        一次没有缩短前置时间、没有缩小批量的自动化投入，只是给组织增加了一份新的待维护资产。
+        <br><small class="muted">引文带出自 PeopleCert DevOps Foundation Blueprint 的 <em>BENEFITS</em> 一栏，
+        前三张卡的收益词出自同一份 Blueprint 的 CALMS-A 描述句，均为官方原文；
+        四张卡的分项编排、机制表述与底部边界带为<strong>本站教学整理</strong>，官方未以此形式给出。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-1-1</div>
+        <h3 class="kp__title">CALMS 中的 A：自动化的位置<span class="en">CALMS — the “A” is Automation</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">CALMS</span> 是 DevOps 五要素的助记结构，
+            Blueprint 逐字写作 <strong>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</strong>，
+            并为每个字母配了一句描述。<strong>A 格的描述句逐字是</strong>：
+          </p>
+          <p>
+            <em>“A: Automation - CI/CD toolchains, and infrastructure-as-code enable automation,
+            consistency, velocity and fast recovery.”</em>
+            <br><small class="muted">出自 PeopleCert DevOps Foundation Blueprint，官方原文；中译为本站译文：
+            CI/CD 工具链与基础设施即代码带来自动化、一致性、速度与快速恢复。</small>
+          </p>
+          <p>
+            这一句里有三个信息量很大的点：官方<strong>逐字点名了 CI/CD 工具链与 infrastructure-as-code</strong>
+            这两类载体；官方给 A 的收益词是 <em>consistency</em>、<em>velocity</em>、<em>fast recovery</em>；
+            以及 <strong>A</strong> 指的不是「买了哪些工具」，而是<strong>把价值流上可重复的步骤交给机器执行，
+            使这些步骤不再需要人照着文档做</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">字母</th><th style="width:26%">官方逐字</th><th>一句话</th></tr></thead>
+              <tbody>
+                <tr><td><strong>C</strong></td><td>Culture</td><td>协作、信任、可以安全说出坏消息 —— 见<a href="../ch05-culture/5.1-defining-culture.html">第 5 章 什么是组织文化（5.1）</a></td></tr>
+                <tr><td><strong>A</strong></td><td><strong>Automation</strong></td><td><strong>本节主题</strong>：可重复的步骤由机器执行，人只处理例外与判断</td></tr>
+                <tr><td><strong>L</strong></td><td>Lean</td><td>消除浪费、缩小批量 —— 见<a href="../ch04-frameworks/4.3-lean.html">第 4 章 Lean 与浪费（4.3）</a></td></tr>
+                <tr><td><strong>M</strong></td><td>Measurement</td><td>没有度量就没有改进依据 —— 见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a></td></tr>
+                <tr><td><strong>S</strong></td><td>Sharing</td><td>把学习扩散出团队边界 —— 见<a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>CALMS</strong> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+            五个字母的展开 <em>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</em>
+            <strong>以及五格各自的描述句</strong>（含上面引的 A 格全句）
+            均出自 PeopleCert DevOps Foundation Blueprint 逐字原文，属官方原文，不是本站表述。
+            表中「一句话」一列是本站为串联各章所写的提示语。
+            <strong>Automation</strong> 一词的考纲归属见页尾来源标注。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            自动化要解决的痛点，不是「手工太慢」，而是<strong>「手工的结果不可预测」</strong>。
+            这两件事导致的后果完全不同。
+          </p>
+          <ul>
+            <li>某支付网关团队的生产部署手册有 <strong>63 步</strong>。同一份手册交给三个人执行，
+              得到三种结果：一个人漏掉了缓存预热，一个人用了本地缓存的旧配置模板，
+              第三个人做对了但多花了 90 分钟。<strong>测试环境完全正常，生产上少了一个环境变量。</strong></li>
+            <li>因为结果不可预测，组织的应对不是「减少步骤」，而是<strong>「加更多人工检查」</strong>：
+              双人复核、发布前对表会、发布后逐项确认。手册从 63 步涨到 81 步。</li>
+            <li>每次发布锁定两名资深工程师 5 小时 —— 而这两个人同时是<strong>唯一能排查生产故障的人</strong>。
+              发布窗口内一旦出事，组织里没有第二组人可以同时处理。</li>
+          </ul>
+          <p>
+            自动化打断的正是这个循环：<strong>结果不可预测 → 增加人工检查 → 步骤更多、更依赖具体的人 → 结果更不可预测</strong>。
+            机器执行的价值不在于快，而在于<strong>它每次执行的是同一份指令</strong>，
+            于是「这次为什么和上次不一样」这个问题第一次有了答案。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，步骤数与耗时用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">自动化 Automation</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>工具链 <span class="en">DevOps toolchain</span></strong></td>
+                  <td>是一种<strong>流程状态</strong>：这一步不需要人照着文档做</td>
+                  <td>是一组<strong>资产</strong>：工具装上了、买了许可证，不等于流程自动了。工具链的组成与架构见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></td>
+                </tr>
+                <tr>
+                  <td><strong>CI/CD</strong></td>
+                  <td>范围更广：构建、测试、环境准备、部署、恢复、合规检查都算</td>
+                  <td>是自动化<strong>在交付路径上的一段具体实现</strong>。做了 CI/CD 不代表环境准备和恢复也自动化了</td>
+                </tr>
+                <tr>
+                  <td><strong>脚本化</strong></td>
+                  <td>含「<strong>由事件自动触发</strong>」这一层：提交发生了，流水线自己就开始跑</td>
+                  <td>只是把手工步骤写进了文件。仍然要有人登录跳板机、找到那个脚本、按回车</td>
+                </tr>
+                <tr>
+                  <td><strong>无人值守</strong></td>
+                  <td>指<strong>常规路径</strong>不需要人干预</td>
+                  <td>指<strong>任何情况</strong>都不需要人。自动化从不承诺后者 —— 例外仍然回到人手上，只是例外变少了</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「有脚本」和「自动化」之间隔着一个触发者</strong>。
+            一个团队可以有 200 个写得很好的脚本，但每一个都要人登录去执行 ——
+            这条价值流在流动的意义上仍然是手工的，因为每一步都要排队等一个有空的人。
+            这与<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付 vs 持续部署（3.3）</a>里的触发者判据是同一个思路。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该区分；
+            <em>DevOps toolchain</em> 列于 DOFD v3.4 官方考纲术语表，「脚本化」「无人值守」两词不在术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>决定「先自动化哪一步」时，顺序比技术选型重要得多：</p>
+          <ul>
+            <li><strong>先画价值流，再选自动化对象</strong>。用
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>
+              量出每一步的<strong>等待时间</strong>。绝大多数团队会发现最长的一段不是执行，是交接与排队。</li>
+            <li><strong>不要自动化非约束环节</strong>。按
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，
+              提升非约束环节不会提升整体产出，只会在约束前面堆更多在制品 ——
+              这是自动化投资最常见的一种白花钱方式。</li>
+            <li><strong>第一顺位通常不是构建，而是环境准备</strong>。构建往往早就自动化了；
+              真正每次都出问题、每次都难以复现的，是环境与配置的差异。</li>
+            <li><strong>判据只有一句</strong>：这一步里还有没有「人看着文档做」的动作。有，就还没自动化完。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条实施顺序为本站教学整理，官方文件把 <em>Automation</em> 列为 M6 模块子项，未规定实施次序。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>CALMS 五个字母的展开是可直接命题的</strong>（CALMS 列于官方术语表）。
+              A = <strong>Automation</strong>。干扰项的构造方式很固定：换一个同样以该字母开头的 DevOps 常见词 ——
+              A 换成 <em>Agile</em> / <em>Analytics</em>，L 换成 <em>Learning</em>（正确是 <em>Lean</em>），
+              M 换成 <em>Monitoring</em>（正确是 <em>Measurement</em>），S 换成 <em>Security</em>（正确是 <em>Sharing</em>）。
+              <strong>五个词全部背成英文原词</strong>，就不会被这类干扰项拿下。</li>
+            <li><strong>第二类问法：给一个字母，问它代表哪一要素；或给一段描述，问它落在哪个字母上</strong>。
+              最容易被张冠李戴的三组：<strong>「消除浪费、缩小批量」→ L 而不是 M</strong>（它听起来像效率指标）；
+              <strong>「把学习扩散到其他团队」→ S 而不是 C</strong>（它听起来像文化）；
+              <strong>「用数据判断改进是否有效」→ M 而不是 A</strong>（它常和工具链一起出现）。
+              先把描述归到<strong>动作</strong>上，再找字母，比反过来可靠。</li>
+            <li><strong>官方已确认的一条</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong> ——
+              由 <strong>DOFD v3.4 官方样题答案键</strong>确认，因此问「关键成功因素」时
+              「引入自动化工具」「加大工具链投资」是标准干扰项（另一条相关的官方结论见
+              <a href="#kp-6-1-3">kp-6-1-3 的第五面</a>）。</li>
+            <li><strong>排除技巧</strong>：基础级考试里，凡是把某项<strong>技术或工具</strong>说成「DevOps 成功的决定因素」的选项，
+              优先级都要往后放；正确答案通常落在<strong>文化、原则、业务目标</strong>这一侧。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项构造方式与排除技巧均为本站教学推断；
+            涉及官方样题答案键之处只陈述结论，<strong>不复制任何题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">CALMS 的 A 不问「买了什么工具」，只问「这一步还要不要人看着文档做」。</p>
+          <p class="mb-0 muted"><small>五个词按官方英文背：<strong>Culture · Automation · Lean · Measurement · Sharing</strong>。
+            中文顺口但容易在考场上换成近义词，英文原词不会。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-1-2</div>
+        <h3 class="kp__title">自动化的四项收益及其机制<span class="en">The Benefits of Automation</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            Blueprint 的 <em>BENEFITS</em> 一栏逐字列出了 DevOps 带来的收益：
+          </p>
+          <p><em>Improved release cadence, velocity, throughput, efficiency and stability, quality, security and team satisfaction.</em></p>
+          <p>
+            本站译文：发布节奏、速度、吞吐、效率与稳定性、质量、安全以及团队满意度都得到改善。
+          </p>
+          <p>
+            Blueprint 另有一句<strong>专门讲自动化</strong>的官方原文，即 CALMS 的 A 格描述句：
+            <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>
+            它逐字点名了三项收益 —— <strong>consistency（一致性）、velocity（速度）、fast recovery（快速恢复）</strong>。
+          </p>
+          <p>
+            所以下表四项里，<strong>前三项的收益词是官方原文</strong>，第四项「释放判断力」是本站补的；
+            官方两处都只给<strong>收益词</strong>，没有逐项说明每项收益<strong>靠什么机制</strong>产生，
+            <strong>「机制」一列与「四项」这种编排属本站教学整理</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">收益</th><th style="width:44%">机制（它靠什么产生作用）</th><th>来源</th></tr></thead>
+              <tbody>
+                <tr><td><strong>一致性</strong></td><td>机器每次执行的是<strong>同一份指令</strong>，不是一次重新演绎<br><small class="muted">（机制表述为本站教学整理）</small></td><td><strong>官方原文</strong>：CALMS-A 逐字 <em>consistency</em>；BENEFITS 另有 <em>stability</em>、<em>quality</em></td></tr>
+                <tr><td><strong>交付速度</strong></td><td>省下的主要是<strong>排队等人的时间</strong>，不是执行时间<br><small class="muted">（机制表述为本站教学整理）</small></td><td><strong>官方原文</strong>：CALMS-A 逐字 <em>velocity</em>；BENEFITS 另有 <em>release cadence</em>、<em>throughput</em></td></tr>
+                <tr><td><strong>快速恢复</strong></td><td>恢复动作走和部署<strong>同一条被反复执行的路径</strong><br><small class="muted">（机制表述为本站教学整理）</small></td><td><strong>官方原文</strong>：CALMS-A 逐字 <em>fast recovery</em>；BENEFITS 另有 <em>stability</em></td></tr>
+                <tr><td><strong>释放判断力</strong></td><td>重复交给机器，<strong>例外与权衡</strong>留给人</td><td><strong>本站教学整理</strong>；旁证为 BENEFITS 逐字词 <em>team satisfaction</em></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>consistency</em>、<em>velocity</em>、<em>fast recovery</em> 逐字出自
+            <strong>PeopleCert DevOps Foundation Blueprint</strong> 的 <strong>CALMS-A 描述句</strong>；
+            <em>stability</em>、<em>quality</em>、<em>team satisfaction</em> 等词逐字出自同一份 Blueprint 的 <em>BENEFITS</em> 一栏。
+            这些都是官方原文。
+            <strong>把它们编排成四项、补上第四项「释放判断力」、并为每项配一条机制，属本站教学整理</strong>，
+            官方未以此形式给出。
+            另需分清：66 条官方考纲术语表中的 <em>Velocity</em> 是<strong>独立词条</strong>，指敏捷语境下的<strong>团队速率</strong>
+            （一个迭代内完成的工作量），与本表所说的<strong>交付速度</strong>（端到端前置时间与部署频率）<strong>不是同一含义</strong>；
+            该词条的展开见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>四项收益各自对应一个具体的、可以在团队里指认出来的痛点：</p>
+          <ul>
+            <li><strong>一致性 —— 痛点是「不可复现的失败」。</strong>
+              手工步骤每执行一次都是一次重新演绎，人的记忆、疲劳、手边配置模板的版本各不相同。
+              于是生产上出现一个测试环境从没出现过的错误，排查半天，最后重试一次好了 —— 没人知道原因。
+              <strong>不可复现的失败无法修复，只能被容忍。</strong>
+              自动化把「每次都一样」变成前提，故障才第一次变成可调查对象。</li>
+            <li><strong>速度 —— 痛点是「队列时间」，不是执行时间。</strong>
+              一个只需 4 分钟的配置变更，因为要提工单等运维排期，实际耗时 2 天。
+              把这 4 分钟优化到 2 分钟毫无意义；<strong>把「等一个有空的人」这一段消掉，才是那 2 天的来源</strong>。
+              这直接连回<a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>：
+              流动关心的是端到端的前置时间，等待段通常远大于执行段。
+              <br><small class="muted">官方量化参考：<strong>供应与部署时间下降最多 90%</strong>
+              （DOFD v3.4 Course Description，2022-06）—— 这是 v3.4 课程描述给出的收益区间，v3.6 未重新发布该数据。</small></li>
+            <li><strong>快速恢复 —— 痛点是「回滚脚本半年没跑过」。</strong>
+              人工恢复要求人在最大压力下，临场执行一套从没演练过的步骤。
+              自动化让恢复走和日常部署同一条路径，因此它被同样频繁地执行、同样早地暴露问题，
+              <span class="term">平均恢复时间 <span class="en">MTTR</span></span>随之下降。</li>
+            <li><strong>释放判断力 —— 痛点是「资深工程师的一周」。</strong>
+              重复操作会优先占满最有经验的人的时间，因为只有他们做得对。
+              结果是组织里最该做架构判断、最该分析故障模式的人，一周有三天在按流程点按钮。
+              <span class="muted">（本项因果为本站教学整理）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>「4 分钟变更等 2 天」为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:18%">收益</th><th style="width:26%">它回答的问题</th><th style="width:24%">对应的指标方向</th><th>最常见的误读</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>一致性</strong></td>
+                  <td>结果<strong>可不可预测</strong></td>
+                  <td>变更失败率 ↓</td>
+                  <td>当成「质量」的同义词。它先解决的其实是<strong>可复现</strong>，质量是可复现之后才有的</td>
+                </tr>
+                <tr>
+                  <td><strong>交付速度</strong></td>
+                  <td>从提交到可用<strong>要多久</strong></td>
+                  <td>变更前置时间（DORA 口径）↓ · 部署频率 ↑</td>
+                  <td>以为是「机器执行得比人快」。实际主要省的是<strong>等待</strong>，不是执行</td>
+                </tr>
+                <tr>
+                  <td><strong>快速恢复</strong></td>
+                  <td>出事后<strong>多久回到可用</strong></td>
+                  <td>MTTR ↓</td>
+                  <td>以为等于「不出事」。快速恢复解决的是<strong>出事之后的时长</strong>；官方另有 v3.4 Course Description 给出的<strong>变更失败率下降 50–70%</strong>，两者不冲突 —— 自动化缩短恢复、同时降低变更失败率，但<strong>不承诺杜绝故障</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>释放判断力</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>人的时间<strong>投在哪</strong></td>
+                  <td>—（文化侧）</td>
+                  <td>以为等于「减员」。实际是把资深工程师从<strong>执行位挪到判断位</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「恢复得快」和「不出事」是两件事</strong>。
+            官方给的是<strong>程度性</strong>的收益 —— <em>stability</em>、<em>quality</em>（Blueprint <em>BENEFITS</em> 逐字）与
+            <strong>变更失败率下降 50–70%</strong>（DOFD v3.4 Course Description，2022-06），
+            <strong>没有任何一处写成「杜绝故障」「消除缺陷」这类绝对表述</strong>。
+            把「上了自动化就不会出事」当成收益，既错在事实上，也错在考点上 ——
+            这一误读几乎是所有「以下哪项<strong>不是</strong>自动化收益」类问法的落点。</small></p>
+          <p class="mb-0 muted"><small>本对照表（四项收益的问题域、指标方向与误读）为本站教学整理，官方未以此形式给出；
+            表中 <em>Change failure rate</em>、<em>Change lead time</em>、<em>Deployment frequency</em>、<em>MTTR</em>
+            四个指标名均列于 DOFD v3.4 官方考纲术语表，其展开见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            自动化上线之后，用<strong>四项收益各自的可观察证据</strong>去验收，而不是用「我们上了流水线」来交差：
+          </p>
+          <ul>
+            <li><strong>一致性</strong>：随机挑两个同角色的环境做配置比对，<strong>差异条数应趋近 0</strong>。
+              还有一个更硬的指标：上季度的生产故障里，有多少条最终归因为「环境不一致」。</li>
+            <li><strong>速度</strong>：拆开变更前置时间，<strong>单独量等待段</strong>。
+              如果只有执行段变短、等待段没动，说明自动化装在了错的位置上。
+              这里按 <strong>DOFD / DORA 口径</strong>的 <em>Change lead time</em>（从代码提交算到在生产运行）拆段；
+              若要把需求排队也算进来，用的是<strong>精益价值流口径</strong>（从需求被接受起算），两者不可混用
+              （见 <a href="6.6-vsm-platform-genai.html">6.6</a> kp-6-6-1 ④ 与<a href="../ch07-metrics/index.html">第 7 章</a>）。</li>
+            <li><strong>快速恢复</strong>：定期演练回滚并计时。<strong>没演练过的回滚路径等于不存在</strong>，
+              因为真出事时没人敢按。</li>
+            <li><strong>释放判断力</strong>：统计团队上周花在重复操作上的小时数，看它是不是在下降。
+              下降的那部分时间去了哪里，才是这项投资真正的产出。</li>
+          </ul>
+          <p class="mb-0">
+            四项指标一项都没动，就说明这次自动化只产生了一样东西：<strong>一份新的、需要长期维护的脚本资产</strong>。
+          </p>
+          <p class="mb-0 muted"><small>这份验收清单为本站教学整理，官方文件给出收益词，未规定验收方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方措辞就是判据</strong>：Blueprint <em>BENEFITS</em> 一栏的逐字收益词 ——
+              <strong>release cadence, velocity, throughput, efficiency, stability, quality, security, team satisfaction</strong>
+              —— 可以直接对照选项。选项措辞落在这几个词上，方向就对。
+              <br>问的若是<strong>自动化</strong>本身带来什么，还有一句更贴题的官方原文可用：CALMS-A 描述句逐字写
+              <strong>automation, consistency, velocity and fast recovery</strong>，
+              并逐字点名 <strong>CI/CD toolchains</strong> 与 <strong>infrastructure-as-code</strong> 这两类载体。</li>
+            <li><strong>干扰项长什么样</strong>：把听起来同样正面、但官方没写的收益塞进来 ——
+              <strong>「降低人力成本 / 减少人员」「替代测试人员」「不再需要人工干预」</strong>。
+              这三种写法都很像对的，但官方收益词里一个都没有。
+              <br><strong>注意别排错人</strong>：含<strong>「降低变更失败率」「提升质量与稳定性」</strong>的选项<strong>不是</strong>干扰项 ——
+              <em>quality</em> 与 <em>stability</em> 逐字写在 Blueprint <em>BENEFITS</em> 里，
+              <strong>变更失败率下降 50–70%</strong> 逐字写在 DOFD v3.4 Course Description（2022-06）里。</li>
+            <li><strong>反向问法</strong>：问自动化<strong>不</strong>保证什么。
+              正确方向是<strong>「不保证流程本身是对的」</strong>与<strong>「不保证杜绝故障」</strong> ——
+              官方给的是<strong>下降幅度</strong>，不是<strong>归零</strong>。</li>
+            <li><strong>数字型题干</strong>：若出现量化收益，可对照 v3.4 官方课程描述给出的三个区间 ——
+              整体 IT 成本下降 <strong>15–25%</strong>、变更失败率下降 <strong>50–70%</strong>、
+              供应与部署时间下降<strong>最多 90%</strong>（DOFD v3.4 Course Description，2022-06）。
+              引用时必须带版本，v3.6 未重新发布这组数据。</li>
+            <li><strong>排除技巧</strong>：选项里含<strong>绝对词</strong>（「完全消除」「不再需要任何人」「杜绝」）的，先往后放。
+              官方收益词全部是<strong>程度性</strong>的。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律，以上命题角度、干扰项构造与排除技巧均为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">官方收益词全是<strong>程度性</strong>的：质量与稳定性会改善、变更失败率会下降 50–70% —— 但「杜绝故障」不在里面。</p>
+          <p class="mb-0 muted"><small>三个机制一句话记：<strong>一致性靠「重放同一份指令」，交付速度靠「消掉排队」，快速恢复靠「恢复走常走的路」</strong>。
+            四项这种编排与第四项「释放判断力」是本站教学整理，前三项的收益词本身是官方原文；
+            考场上遇到官方措辞题，按 CALMS-A 的 <em>consistency / velocity / fast recovery</em> 与 Blueprint <em>BENEFITS</em> 的逐字收益词对答案。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-1-3</div>
+        <h3 class="kp__title">自动化的边界与「值不值得」判据<span class="en">The Limits of Automation</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>自动化有四条边界。它们不是「技术做不到」，而是<strong>技术做到了反而更糟</strong>的四种情形：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:28%">边界</th><th>它的意思</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 自动化不改善流程本身</strong></td><td>自动化一个坏流程，得到的是<strong>更快地产出坏结果</strong>；更糟的是浪费不再疼，于是再也没人提出删掉它</td></tr>
+                <tr><td><strong>② 自动化固化当前假设</strong></td><td>脚本里写死了今天的组织边界、今天的环境规模、今天的审批人。组织想变时，<strong>自动化成了阻力</strong></td></tr>
+                <tr><td><strong>③ 自动化本身是会腐烂的资产</strong></td><td>脚本要维护、凭据要轮换、依赖会过期。<strong>无人认领的自动化在关键时刻失效，比没有它更危险</strong></td></tr>
+                <tr><td><strong>④ 判断类工作不该自动化</strong></td><td>需要上下文、权衡与共识的工作 —— 优先级排序、根因归属、设计评审的<strong>结论</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            由此得到本节的核心判据：正确的问题不是「这一步<strong>能不能</strong>自动化」，而是「这一步<strong>值不值得</strong>」——
+            <strong>频率 × 单次耗时 × 出错代价</strong>，与<strong>建设成本 + 长期维护成本</strong>比大小。
+          </p>
+          <div class="src-note">
+            这四条边界与「频率 × 单次耗时 × 出错代价」判据均为<strong>本站教学整理</strong>。
+            DOFD v3.4 课程大纲把 <em>Automation</em> 列为 M6 模块子项，
+            <strong>官方未给出自动化的适用性边界，也未给出此类判据</strong>。
+            其中边界 ① 与精益「先消除浪费、再谈加速」的思路一致（见<a href="../ch04-frameworks/4.3-lean.html">第 4 章 Lean 与浪费（4.3）</a>），
+            但这一表述本身仍属本站措辞。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这四条边界不是理论洁癖，它们对应的是一类<strong>被当成成功案例的失败</strong>。
+          </p>
+          <p>
+            某企业交付团队用两个季度建了一套「全自动发布平台」，把原来 12 天的发布流程压到 3 天出头，
+            当年被评为最佳实践。一年之后：
+          </p>
+          <ul>
+            <li><strong>对应边界 ①</strong>：流程里原有的三道审批一道没少，只是各自从 2 天缩到几小时。
+              <strong>因为不疼了，再没有人提出删掉它们。</strong>
+              自动化之前，这三道审批是全公司抱怨最多的事；自动化之后，它们变成了「已经解决的问题」。
+              <strong>浪费没有被消除，而是被自动化保护了起来。</strong></li>
+            <li><strong>对应边界 ②</strong>：平台里写死了「预发环境固定三台机器」和「审批人是运维经理」。
+              公司改组成产品线自治之后，脚本改不动，于是<strong>团队开始迁就脚本</strong> ——
+              新产品线被要求也设一个「运维经理」角色，只为了让审批节点能走通。</li>
+            <li><strong>对应边界 ③</strong>：建平台的两个人转岗，镜像基线过期无人升级。
+              一次生产事故中，自动回滚流水线报错退出 —— 而团队里<strong>已经没有人会手工回滚了</strong>，
+              因为那份手册两年没人看过。当晚的恢复时间比自动化之前更长。</li>
+            <li><strong>对应边界 ④</strong>：同一个团队后来把「事故根因归属」也做成了自动判定规则 ——
+              规则按<strong>最后一次变更的提交人</strong>归因。于是每次事故的根因都指向那个改动最多的团队，
+              而真实原因（容量规划没有跟上流量增长）<strong>连续三次没有被记录下来</strong>。
+              没人质疑结论，因为它是系统给出的、每次都一致的。
+              <strong>判断被自动化之后，得到的不是更快的结论，而是被固化的错误结论</strong> ——
+              而且因为一致，它比人给出的错误结论更难被推翻。</li>
+          </ul>
+          <p class="mb-0">
+            这四件事共同说明一件事：<strong>自动化会把它包住的那个流程冻结起来</strong>。
+            流程是好的，冻结就是收益；流程是坏的，冻结就是把问题变成了地基。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，天数与情节用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 6-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 980 452" role="img" aria-label="同一条含三次无谓审批的发布流程，人工执行、直接自动化、先删浪费再自动化三种处理方式的对比">
+              <text x="30" y="28" class="s-ink" font-size="14" font-weight="700">同一条含三次无谓审批的发布流程，三种处理方式</text>
+
+              <!-- 图例 -->
+              <rect x="560" y="16" width="14" height="14" rx="3" class="s-5" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="580" y="28" class="s-muted" font-size="12">无谓审批（浪费）</text>
+              <rect x="700" y="16" width="14" height="14" rx="3" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="720" y="28" class="s-muted" font-size="12">必要环节</text>
+
+              <!-- 时间刻度 -->
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="190" y="44">0</text>
+                <text x="343" y="44">3 天</text>
+                <text x="495" y="44">6 天</text>
+                <text x="648" y="44">9 天</text>
+                <text x="800" y="44">12 天</text>
+              </g>
+              <line x1="190" y1="54" x2="800" y2="54" class="s-stroke" stroke-width="1.5"/>
+
+              <!-- ===== 行 1 ===== -->
+              <text x="24" y="92" class="s-ink" font-size="13.5" font-weight="700">① 人工执行</text>
+              <text x="24" y="112" class="s-muted" font-size="12">浪费可见 · 每次都疼</text>
+
+              <rect x="190" y="70" width="102" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="292" y="70" width="101" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="393" y="70" width="102" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="495" y="70" width="102" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="597" y="70" width="101" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="698" y="70" width="102" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <g class="s-ink" font-size="12.5" text-anchor="middle">
+                <text x="241" y="94">开发</text>
+                <text x="342" y="94">审批 A</text>
+                <text x="444" y="94">测试</text>
+                <text x="546" y="94">审批 B</text>
+                <text x="647" y="94">审批 C</text>
+                <text x="749" y="94">部署</text>
+              </g>
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="241" y="126">2 天</text>
+                <text x="342" y="126">2 天</text>
+                <text x="444" y="126">2 天</text>
+                <text x="546" y="126">2 天</text>
+                <text x="647" y="126">2 天</text>
+                <text x="749" y="126">2 天</text>
+              </g>
+              <text x="822" y="90" class="f-5" font-size="12.5" font-weight="700">12 天</text>
+              <text x="822" y="108" class="s-muted" font-size="12">遗留浪费环节 3 处</text>
+              <text x="190" y="146" class="s-muted" font-size="12.5">三次审批各占 2 天，痛感明显 —— 但至少它是可见的，随时可以被提出来删掉</text>
+
+              <!-- ===== 行 2 ===== -->
+              <text x="24" y="192" class="s-ink" font-size="13.5" font-weight="700">② 自动化这个流程</text>
+              <text x="24" y="212" class="s-muted" font-size="12">看起来缩短了 73%</text>
+
+              <rect x="190" y="176" width="102" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="292" y="176" width="15" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="307" y="176" width="10" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="317" y="176" width="15" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="332" y="176" width="15" height="38" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <rect x="347" y="176" width="6" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="241" y="200" class="s-ink" font-size="12.5" text-anchor="middle">开发</text>
+              <text x="822" y="196" class="f-2" font-size="12.5" font-weight="700">3.2 天</text>
+              <text x="822" y="214" class="s-muted" font-size="12">遗留浪费环节 3 处</text>
+
+              <text x="190" y="234" class="s-ink" font-size="12.5">三次审批仍在流程里，只是各自从 2 天缩到几小时 —— 环节一个也没少</text>
+              <text x="190" y="254" class="f-5" font-size="12.5" font-weight="650">不疼了 → 没人再提删除 → 浪费被永久固化，还多出三份要长期维护的审批脚本</text>
+
+              <!-- ===== 行 3 ===== -->
+              <text x="24" y="294" class="s-ink" font-size="13.5" font-weight="700">③ 先删浪费</text>
+              <text x="24" y="314" class="s-ink" font-size="13.5" font-weight="700">　 再自动化</text>
+              <text x="24" y="334" class="s-muted" font-size="12">只保留 1 次合规审批</text>
+
+              <rect x="190" y="278" width="102" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="292" y="278" width="10" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="302" y="278" width="6" height="38" class="s-3" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="308" y="278" width="6" height="38" class="s-stroke s-fill2" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="241" y="302" class="s-ink" font-size="12.5" text-anchor="middle">开发</text>
+              <text x="822" y="298" class="f-3" font-size="12.5" font-weight="700">2.4 天</text>
+              <text x="822" y="316" class="s-muted" font-size="12">遗留浪费环节 0 处</text>
+
+              <text x="190" y="340" class="f-3" font-size="12.5">审批 A、C 被认定为无谓交接后直接删除；剩下的一次是合规要求，删不掉，把它自动化</text>
+
+              <!-- 结论带 -->
+              <rect x="30" y="358" width="920" height="82" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="48" y="384" class="f-1" font-size="13.5" font-weight="700">这张图的要点不是 ② 和 ③ 只差 0.8 天</text>
+              <text x="48" y="408" class="s-ink" font-size="13">而是 ② 把三个不该存在的环节固化成了三份需要长期维护的脚本，并且从此不会再有人想起要删掉它们。</text>
+              <text x="48" y="430" class="s-muted" font-size="12">本图为本站构造的教学示例，天数用于说明机制，非真实调研数据。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-1-2　自动化一个坏流程，会发生什么。</strong>
+            对比要看的不是条形长度，而是<strong>最右侧那一列「遗留浪费环节」</strong>：
+            ① 和 ② 都是 3 处，只有 ③ 是 0 处。
+            ② 在任何一份汇报材料里都是成功的（12 天 → 3.2 天，缩短 73%），
+            但它<strong>没有消除任何一处浪费，只是让浪费不再疼</strong> ——
+            而不疼的浪费就不会有人再提议删除。这是自动化最典型、也最难被察觉的一种失败方式。
+            <br><small class="muted">本图与其中的三种处理方式为本站教学整理，官方未给出此类对比；
+            「先消除浪费、再谈加速」的顺序思路见<a href="../ch04-frameworks/4.3-lean.html">第 4 章 Lean 与浪费（4.3）</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">「这一步值不值得自动化」</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>「能不能自动化」</strong></td>
+                  <td>问<strong>投入产出</strong>：频率 × 单次耗时 × 出错代价，是否盖得住建设与维护成本</td>
+                  <td>问<strong>技术可行性</strong>。技术上几乎一切都能自动化，所以这个问题几乎总是答「能」，<strong>因而没有任何筛选力</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>「自动化一切」</strong></td>
+                  <td>承认存在一类工作，<strong>自动化的净收益为负</strong></td>
+                  <td>把自动化当成目的本身。结果是脚本库膨胀，维护成本反过来吞掉收益</td>
+                </tr>
+                <tr>
+                  <td><strong>消除浪费 <span class="en">Lean</span></strong></td>
+                  <td>是在流程<strong>定型之后</strong>加速它</td>
+                  <td>先问「这一步该不该存在」。两者<strong>有严格先后</strong>：先删，再自动化剩下的</td>
+                </tr>
+                <tr>
+                  <td><strong>「人工闸门该不该留」</strong></td>
+                  <td>问的是<strong>某一步的执行方式</strong></td>
+                  <td>问的是<strong>某一步的决策归属</strong>。见<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付 vs 持续部署（3.3）</a>：闸门挡的是业务与合规的决定时，它该留</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「能自动化」和「该自动化」是两个不同的问题，而工程师的本能只回答前一个</strong>。
+            更隐蔽的是第三行 —— <strong>自动化与消除浪费之间存在顺序</strong>：
+            顺序对了，自动化在放大改进；顺序反了，自动化在给浪费提速，并把它藏起来（图 6-1-2 的 ②）。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该区分；
+            <em>Waste</em>、<em>Lean thinking</em>、<em>Lean production</em> 列于 DOFD v3.4 官方考纲术语表，
+            「值不值得自动化」这一提法本身不是官方术语。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            把判据画成一张矩阵，就能一眼看出哪些格子该投入、哪一格投入了会亏。
+          </p>
+
+          <!-- ============ 图 6-1-3 ============ -->
+          <figure class="dia">
+            <div class="dia__frame">
+              <svg viewBox="0 0 880 546" role="img" aria-label="自动化决策矩阵：横轴为执行频率，纵轴为单次出错代价，四个象限分别给出结论">
+                <text x="30" y="26" class="s-ink" font-size="14" font-weight="700">自动化决策矩阵：执行频率 × 单次出错代价</text>
+                <text x="30" y="46" class="s-muted" font-size="12">本站教学整理 —— 官方未给出此类判定矩阵</text>
+
+                <!-- 象限底色 -->
+                <rect x="190" y="70" width="300" height="170" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <rect x="490" y="70" width="300" height="170" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+                <rect x="190" y="240" width="300" height="170" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+                <rect x="490" y="240" width="300" height="170" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+                <!-- 左上：低频 × 高代价 -->
+                <text x="206" y="102" class="f-1" font-size="15.5" font-weight="700">值得自动化</text>
+                <text x="206" y="128" class="s-ink" font-size="12.5">生产数据库迁移、证书轮换</text>
+                <text x="206" y="150" class="s-ink" font-size="12.5">灾备切换演练</text>
+                <text x="206" y="178" class="s-muted" font-size="12">一年只做两次，但手滑一次</text>
+                <text x="206" y="198" class="s-muted" font-size="12">就是一次生产事故</text>
+                <text x="206" y="222" class="s-muted" font-size="12">代价项单独就撑得起这笔投入</text>
+
+                <!-- 右上：高频 × 高代价 -->
+                <text x="506" y="102" class="f-3" font-size="15.5" font-weight="700">优先自动化</text>
+                <text x="506" y="128" class="s-ink" font-size="12.5">部署、回滚、发布</text>
+                <text x="506" y="150" class="s-ink" font-size="12.5">环境准备与配置下发</text>
+                <text x="506" y="178" class="s-muted" font-size="12">三个因子同时为高</text>
+                <text x="506" y="198" class="s-muted" font-size="12">这里是自动化投入的第一顺位</text>
+                <text x="506" y="222" class="s-muted" font-size="12">也是 CI/CD 主要覆盖的区域</text>
+
+                <!-- 左下：低频 × 低代价 -->
+                <text x="206" y="272" class="f-5" font-size="15" font-weight="700">不要自动化 —— 收益为负</text>
+                <text x="206" y="298" class="s-ink" font-size="12.5">一次性数据修补、临时报表</text>
+                <text x="206" y="320" class="s-ink" font-size="12.5">只用一次的迁移脚本</text>
+                <text x="206" y="348" class="s-muted" font-size="12">建设加长期维护的成本</text>
+                <text x="206" y="368" class="s-muted" font-size="12">高于它这辈子能省下的时间</text>
+                <text x="206" y="392" class="s-muted" font-size="12">写进文档，手工做完即可</text>
+
+                <!-- 右下：高频 × 低代价 -->
+                <text x="506" y="272" class="f-2" font-size="15.5" font-weight="700">值得自动化</text>
+                <text x="506" y="298" class="s-ink" font-size="12.5">代码检查、单元测试、构建</text>
+                <text x="506" y="320" class="s-ink" font-size="12.5">日常巡检、报表生成</text>
+                <text x="506" y="348" class="s-muted" font-size="12">单次只省几分钟</text>
+                <text x="506" y="368" class="s-muted" font-size="12">但一天几十次，累积可观</text>
+                <text x="506" y="392" class="s-muted" font-size="12">频率项主导</text>
+
+                <!-- 轴 -->
+                <text x="178" y="104" class="s-muted" font-size="12" text-anchor="end">高</text>
+                <text x="178" y="394" class="s-muted" font-size="12" text-anchor="end">低</text>
+                <text x="60" y="240" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle" transform="rotate(-90 60 240)">单次出错代价 →</text>
+                <text x="190" y="430" class="s-muted" font-size="12" text-anchor="start">低（一年几次）</text>
+                <text x="790" y="430" class="s-muted" font-size="12" text-anchor="end">高（每天多次）</text>
+                <text x="490" y="452" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">执行频率 →</text>
+
+                <!-- 底部带 -->
+                <rect x="30" y="468" width="820" height="66" rx="10" class="s-4" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+                <text x="48" y="494" class="f-4" font-size="13.5" font-weight="700">矩阵之外还有一条线：需要判断与上下文的工作，落在哪一格都不该自动化</text>
+                <text x="48" y="518" class="s-ink" font-size="13">优先级排序、事故根因归属、设计评审的结论 —— 可以自动化它们的准备工作，不能自动化结论本身。</text>
+              </svg>
+            </div>
+            <figcaption>
+              <strong>图 6-1-3　值不值得自动化：两个维度定位。</strong>
+              这张图要让你看懂的是<strong>左下角那一格</strong> ——
+              其余三格的结论都是「做」，只有低频 × 低代价这一格<strong>自动化的净收益为负</strong>：
+              建设加上长期维护的成本，高于它一辈子能省下的时间。
+              另外两格的「值得」理由并不相同：<strong>左上靠代价项撑起，右下靠频率项累积</strong>，
+              判断时要分清是哪个因子在起作用。
+              底部虚线带是这张矩阵管不到的一类工作 —— 需要判断与上下文的活动，
+              可以自动化它的准备（拉数据、生成时间线），但结论必须由人给出。
+              <br><small class="muted">本矩阵、四格结论与底部一条线均为本站教学整理，官方未给出此类判定工具。</small>
+            </figcaption>
+          </figure>
+
+          <p><strong>动手前的四个问题</strong>，顺序不能换：</p>
+          <ol>
+            <li><strong>这一步该不该存在？</strong>——
+              能删就先删。跳过这一问直接自动化，就落进图 6-1-2 的 ② 里去了。</li>
+            <li><strong>这一年会执行多少次？</strong>—— 频率项。一年两次和一天二十次，是完全不同的两笔账。</li>
+            <li><strong>手滑一次的代价是什么？</strong>—— 代价项。低频也可以因为这一项而值得自动化。</li>
+            <li><strong>半年后依赖过期了，谁来修？</strong>——
+              <strong>这一问没有具体人名，就不要开始</strong>。维护成本的常见形态：
+              脚本本身、凭据轮换、依赖升级、被自动化系统的接口变更、以及新人不再具备手工执行的能力。</li>
+          </ol>
+          <p class="mb-0">
+            还有一条常被忽略的收尾动作：<strong>被自动化的流程要留一份仍然可执行的手工路径</strong>，
+            并且定期演练。边界 ③ 的那个夜晚就毁在这一条上。
+          </p>
+          <p class="mb-0 muted"><small>这四个问题、其顺序与「保留可执行手工路径」的建议均为本站教学整理，官方未规定自动化的实施前提。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：场景型「下一步该做什么」</strong>。
+              题干描述一个组织的现状，问最该采取的行动。
+              当场景里存在<strong>明显的流程浪费</strong>（多余审批、反复交接、等待排队）时，
+              正确方向通常是<strong>先改流程、先消除浪费</strong>，而不是「引入自动化工具」。</li>
+            <li><strong>官方已确认的一条</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条正面支持本节的判据：<strong>取舍来自业务，不来自技术可行性或团队偏好</strong>。</li>
+            <li><strong>另一条官方已确认的</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong>
+              —— 同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              问「关键成功因素」时，「更好的自动化工具」「更完整的工具链」是标准干扰项。</li>
+            <li><strong>干扰项长什么样</strong>：把「<strong>自动化一切可以自动化的</strong>」写成一个听起来完全正面的选项。
+              它读起来很像 DevOps 的口号，但与「消除浪费」「按业务目标取舍」相冲突。
+              另一类是把<strong>某个具体工具或技术</strong>放进选项 —— 基础级考试的正确答案倾向落在
+              <strong>原则性表述</strong>（价值、流动、文化、消除浪费）上，而不是工具化表述。</li>
+            <li><strong>排除技巧</strong>：选项里出现<strong>绝对词</strong>（「所有」「一切」「完全消除人工」「杜绝」）时先降优先级；
+              出现<strong>「先……再……」的顺序表述</strong>时提高优先级 —— 基础级考试很偏爱有先后逻辑的答案。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律、题型分布与逐题分级，以上命题角度、干扰项构造与排除技巧均为本站教学推断；
+            两条官方样题答案键只陈述结论，<strong>不复制任何题干与选项原文</strong>。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">自动化一个坏流程，只是让坏结果来得更快 —— 先删掉这一步，再自动化剩下的。</p>
+          <p class="muted"><small>三问口诀：<strong>多久做一次？做一次多久？做错一次多贵？</strong>
+            三个数乘起来，再跟「谁来维护它」比大小。</small></p>
+          <p class="mb-0 muted"><small>反向锚点：<strong>自动化会把它包住的流程冻结起来</strong>。
+            好流程冻结是收益，坏流程冻结是把问题变成地基。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>CALMS 的 A = Automation</strong>（Blueprint 逐字 <em>A: Automation</em>；<em>CALMS</em> 列于 DOFD v3.4 官方考纲术语表）。五个词按英文背：Culture · Automation · Lean · Measurement · Sharing</li>
+        <li><strong>A 格描述句（官方原文，值得背）</strong>：<em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>
+          —— 出自 PeopleCert DevOps Foundation Blueprint。两类载体：<strong>CI/CD 工具链</strong>与<strong>基础设施即代码</strong>；
+          三项收益：<strong>consistency / velocity / fast recovery</strong>。<em>infrastructure-as-code</em> 就是靠这一句进入官方文件正文的</li>
+        <li><strong>官方收益词</strong>（PeopleCert Blueprint <em>BENEFITS</em> 逐字）：<em>release cadence, velocity, throughput, efficiency and stability, quality, security and team satisfaction</em>。全部是<strong>程度性</strong>表述 —— 配合 v3.4 Course Description 的<strong>变更失败率下降 50–70%</strong>，可知官方承诺的是<strong>下降</strong>，<strong>「杜绝故障」不在里面</strong></li>
+        <li><strong>四项收益及其机制</strong>（前三项收益词为 CALMS-A 官方原文，四项这种编排与机制表述为本站教学整理）：一致性靠「重放同一份指令」，交付速度靠「消掉排队等待」，快速恢复靠「恢复走和部署同一条常走的路」，释放判断力以 <em>team satisfaction</em> 为旁证。另注意：66 条术语表里的 <em>Velocity</em> 指敏捷的<strong>团队速率</strong>，不是这里的交付速度</li>
+        <li><strong>自动化是手段，流动是目的</strong>：不缩短前置时间、不缩小批量的自动化，只是新增了一份待维护资产；自动化非约束环节不提升整体产出（见 2.2、2.3）</li>
+        <li><strong>四条边界</strong>（本站教学整理）：不改善流程本身 / 固化当前组织边界与假设 / 自身是会腐烂的资产 / 判断类工作不该自动化</li>
+        <li><strong>判据</strong>（本站教学整理）：不是「能不能」，是「值不值得」——<strong>频率 × 单次耗时 × 出错代价</strong> vs <strong>建设 + 长期维护成本</strong>。低频 × 低代价那一格，净收益为负</li>
+        <li><strong>两条官方样题答案键旁证</strong>：关键成功因素是<strong>管理层对文化变革的承诺</strong>；决定哪些原则与实践最有益的是<strong>业务战略与目标</strong> —— 都不是工具，也不是自动化本身（DOFD v3.4 官方样题答案键确认）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>CALMS</em>、<em>DevOps toolchain</em>、<em>Waste</em>、<em>Lean thinking</em>、<em>Lean production</em>、
+      <em>Change failure rate</em>、<em>Change lead time</em>、<em>Deployment frequency</em>、
+      <em>Mean Time to Repair/Recover (MTTR)</em>、<em>Constraint</em>、<em>Flow</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）。
+      <strong>Automation</strong> 是 v3.4 课程大纲 <strong>M6 Automation &amp; Architecting DevOps Toolchains</strong> 的模块子项，
+      单独一词<strong>未</strong>收录于 66 条术语表；<em>infrastructure-as-code</em>（IaC）也未收录于 66 条术语表，
+      但<strong>逐字出现在 Blueprint 的 CALMS-A 描述句</strong>里，属官方文件正文点名的内容，
+      因此按 <span class="badge badge--plain">📘 官方模块子项</span> 对待，其展开见本章 <a href="6.3-iac.html">6.3 基础设施即代码</a>。
+      <strong>官方原文</strong>：<em>C: Culture / A: Automation / L: Lean / M: Measurement / S: Sharing</em>、
+      CALMS-A 的完整描述句
+      <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>、
+      以及 <em>BENEFITS</em> 一栏的
+      <em>Improved release cadence, velocity, throughput, efficiency and stability, quality, security and team satisfaction.</em>，
+      均出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>；中译为本站译文。
+      量化收益「供应与部署时间下降最多 90%」等三个区间出自 <strong>DOFD v3.4 Course Description（2022-06）</strong>，
+      v3.6 未重新发布该组数据。
+      <strong>两条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」、
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」——
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：把官方收益词编排为「一致性 / 交付速度 / 快速恢复 / 释放判断力」四项这一分法、
+      第四项收益「释放判断力」及其因果表述、四项收益的机制与误读对照表、
+      自动化与工具链 / CI/CD / 脚本化 / 无人值守的四行对照、四条边界、
+      「频率 × 单次耗时 × 出错代价」判据与决策矩阵（图 6-1-3）、
+      坏流程自动化的三行对比（图 6-1-2）、动手前的四个问题与验收清单，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      66 条官方考纲术语表只列词条、不附定义，本页给出的每一条中文释义均为本站措辞。
+      部署流水线见本章 <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a>，工具链的组成与架构见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>，本节均不展开。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

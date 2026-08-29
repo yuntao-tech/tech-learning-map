@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.3 基础设施即代码 · DevOps Foundation 学习站</title>
+<meta name="description" content="基础设施即代码（Infrastructure as Code / IaC）用版本控制中的声明式代码定义和创建基础设施，切断配置漂移。本节讲清声明式与命令式的分界、幂等性为什么是关键属性，以及基础设施变成代码之后获得的四项能力。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.3-iac"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.3 基础设施即代码</h1>
+      <div class="page-head__en">Infrastructure as Code</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        自动化流水线可以把代码构建、测试、部署得毫无差错，
+        然后把它装到一台<strong>没人说得清是怎么变成今天这样</strong>的服务器上。
+        基础设施即代码 <span class="en">Infrastructure as Code / IaC</span> 处理的正是这一段：
+        <strong>把「环境应该长什么样」写成版本控制中的声明式代码，环境由代码生成，而不是由人手工点出来。</strong>
+        它要杀死的敌人只有一个 —— <strong>配置漂移</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>配置漂移是怎么在没有任何人犯错的情况下积累出来的，IaC 从哪一刀切断它</li>
+        <li>声明式与命令式的分界到底在哪里，为什么<strong>幂等性</strong>是 IaC 的关键属性而不是附带好处</li>
+        <li>基础设施变成代码之后，具体获得了哪四项原本只属于应用代码的能力</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-3-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 540" role="img" aria-label="上半部分展示三台手工搭建的服务器在半年内漂移成三个不同状态，下半部分展示基础设施即代码如何用声明文件与收敛引擎切断漂移">
+          <defs>
+            <marker id="ah-63-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <!-- ===== 路径 A ===== -->
+          <text x="30" y="28" class="f-5" font-size="15" font-weight="700">路径 A · 手工搭建 —— 没有人犯错，差异照样累积</text>
+
+          <!-- Day 0 与第 6 个月的刻度 -->
+          <path d="M150 74 L150 282" class="s-muted" stroke-width="1.5" fill="none" stroke-dasharray="5 5"/>
+          <path d="M720 74 L720 282" class="s-muted" stroke-width="1.5" fill="none" stroke-dasharray="5 5"/>
+          <text x="150" y="64" class="s-muted" font-size="12" text-anchor="middle">Day 0 · 照同一份手册装出来</text>
+          <text x="720" y="64" class="s-muted" font-size="12" text-anchor="middle">第 6 个月</text>
+
+          <!-- 三条时间轴 -->
+          <g class="s-stroke" stroke-width="1.8" fill="none">
+            <line x1="150" y1="96"  x2="716" y2="96"/>
+            <line x1="150" y1="176" x2="716" y2="176"/>
+            <line x1="150" y1="256" x2="716" y2="256"/>
+          </g>
+
+          <text x="40" y="101" class="s-ink" font-size="15" font-weight="650">web-01</text>
+          <text x="40" y="181" class="s-ink" font-size="15" font-weight="650">web-02</text>
+          <text x="40" y="261" class="s-ink" font-size="15" font-weight="650">web-03</text>
+
+          <!-- 漂移事件点 -->
+          <g class="f-5">
+            <circle cx="264" cy="96"  r="6"/>
+            <circle cx="468" cy="96"  r="6"/>
+            <circle cx="352" cy="176" r="6"/>
+            <circle cx="612" cy="176" r="6"/>
+            <circle cx="556" cy="256" r="6"/>
+          </g>
+          <g class="s-ink" font-size="12" text-anchor="middle">
+            <text x="264" y="82">排障时装了个调试包</text>
+            <text x="468" y="82">手工调大了连接数</text>
+            <text x="352" y="162">热修复改过 nginx 配置</text>
+            <text x="612" y="162">补丁只打在这一台</text>
+            <text x="556" y="242">重启后一个服务没起来</text>
+          </g>
+
+          <!-- 三个结果 -->
+          <rect x="744" y="72"  width="196" height="48" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="744" y="152" width="196" height="48" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="744" y="232" width="196" height="48" rx="9" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <g text-anchor="middle">
+            <text x="842" y="94"  class="f-5" font-size="15" font-weight="700">雪花 #1</text>
+            <text x="842" y="112" class="s-muted" font-size="12">多一个包，连接数不同</text>
+            <text x="842" y="174" class="f-5" font-size="15" font-weight="700">雪花 #2</text>
+            <text x="842" y="192" class="s-muted" font-size="12">配置与补丁都不一样</text>
+            <text x="842" y="254" class="f-5" font-size="15" font-weight="700">雪花 #3</text>
+            <text x="842" y="272" class="s-muted" font-size="12">少一个进程在跑</text>
+          </g>
+
+          <text x="30" y="304" class="s-ink" font-size="13">这五处差异<tspan font-weight="700">没有一处写在文档里</tspan> —— 故障无法复现，「在我这台能跑」成立，回滚只能靠某个人的记忆。</text>
+
+          <!-- 分隔 -->
+          <line x1="30" y1="318" x2="930" y2="318" class="s-muted" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+          <!-- ===== 路径 B ===== -->
+          <text x="30" y="346" class="f-1" font-size="15" font-weight="700">路径 B · 基础设施即代码 —— 把「应该长什么样」写进版本控制</text>
+
+          <rect x="30"  y="380" width="210" height="70" rx="10" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <text x="135" y="408" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">声明文件</text>
+          <text x="135" y="430" class="s-muted" font-size="12" text-anchor="middle">在版本控制里 · 可评审</text>
+
+          <rect x="270" y="380" width="250" height="70" rx="10" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <text x="395" y="404" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">执行引擎：读实际 → 比差异</text>
+          <text x="395" y="426" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">→ 只补差异（收敛）</text>
+
+          <line x1="244" y1="415" x2="266" y2="415" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-63-1)"/>
+
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="524" y1="415" x2="556" y2="382" marker-end="url(#ah-63-1)"/>
+            <line x1="524" y1="415" x2="556" y2="424" marker-end="url(#ah-63-1)"/>
+            <line x1="524" y1="415" x2="556" y2="466" marker-end="url(#ah-63-1)"/>
+          </g>
+
+          <rect x="560" y="364" width="160" height="36" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="560" y="406" width="160" height="36" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="560" y="448" width="160" height="36" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <g text-anchor="middle" class="f-3" font-size="15" font-weight="650">
+            <text x="640" y="387">web-01</text>
+            <text x="640" y="429">web-02</text>
+            <text x="640" y="471">web-03</text>
+          </g>
+
+          <rect x="740" y="364" width="200" height="120" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="756" y="388" class="f-3" font-size="13" font-weight="700">漂移被切断在这里</text>
+          <text x="756" y="412" class="s-ink" font-size="12.5">· 三台由同一份代码生成</text>
+          <text x="756" y="434" class="s-ink" font-size="12.5">· 差异只可能来自代码差异</text>
+          <text x="756" y="456" class="s-ink" font-size="12.5">· 手工改动会在下一次</text>
+          <text x="766" y="474" class="s-ink" font-size="12.5">应用时被覆盖回去</text>
+
+          <text x="30" y="512" class="s-muted" font-size="12.5">代价也在这里：<tspan class="s-ink" font-weight="650">改动的唯一入口变成代码</tspan>。绕过代码直接登机器改，改动会消失 —— 这不是副作用，是设计目的。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-3-1　配置漂移的形成，与 IaC 切下去的那一刀。</strong>
+        要看懂的是上半部分那五个点：<strong>每一个单看都是合理的、必要的、当时正确的操作</strong>，
+        没有任何一步是「有人犯错」。漂移不是纪律问题，是<strong>手工路径的结构性产物</strong> ——
+        只要修改是就地发生的、没有留在一份共同的定义里，三台机器就必然越走越远。
+        下半部分说明 IaC 的切法不是「禁止改」，而是<strong>把改动的入口从机器搬到代码</strong>：
+        实际状态每次都被拉回声明状态，于是差异只能来自代码里能看见的差异。
+        <br><small class="muted">本图为本站教学整理，用于说明漂移的形成机制与 IaC 的介入点；
+        「雪花服务器」「收敛」等表述与图中时间线均为本站措辞与构造示例，DOFD 官方文件未以此形式给出该图示。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-3-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-3-1</div>
+        <h3 class="kp__title">基础设施即代码<span class="en">Infrastructure as Code / IaC</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">基础设施即代码 <span class="en">Infrastructure as Code / IaC</span></span>
+            是<strong>用版本控制中的声明式代码来定义和创建基础设施</strong>的实践：
+            服务器、网络、负载均衡器、数据库实例、权限策略应该处于什么状态，
+            全部写成文件，由工具读取这些文件把环境<strong>生成</strong>出来 ——
+            而不是有人登录控制台点一遍，或者跑一份只能用一次的脚本。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个要件</th><th>缺了它就不算 IaC</th></tr></thead>
+              <tbody>
+                <tr><td><strong>写成代码</strong></td><td>环境的定义是<strong>文本文件</strong>，可以被 diff、被搜索、被复制。控制台上的点击留不下任何可比对的东西</td></tr>
+                <tr><td><strong>放进版本控制</strong></td><td>和应用代码一样有提交历史、作者、评审记录。<strong>「谁在什么时候为什么改了这台机器」有唯一答案</strong></td></tr>
+                <tr><td><strong>声明目标状态</strong></td><td>描述的是<strong>「环境要成为什么样」</strong>，不是「先做这步再做那步」。这一条是下一个知识点的全部内容</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>档位说明</strong>：<em>Infrastructure as Code</em> <strong>不在</strong>
+            DOFD v3.4 官方考纲术语表（Concept and Terminology List）的 66 条内，
+            也不是 v3.4 课程大纲 M6 的具名子项，因此<strong>不标「⭐ 考纲核心」</strong>；
+            但它<strong>逐字出现在 PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句</strong>里 ——
+            <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>
+            —— 属官方文件正文点名的内容，因此本节判
+            <span class="badge badge--plain">📘 官方模块子项</span>，<strong>不判「🧭 延伸 · 非考纲」</strong>。
+            上表「三个要件」的拆法是本站教学整理，官方未给出 IaC 的定义句。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点有一个专门的名字：<strong>配置漂移</strong>。
+            漂移的可怕之处在于 —— <strong>它不需要任何人犯错就会发生</strong>。
+          </p>
+          <ul>
+            <li>某支付网关有三台 web 服务器，上线那天照同一份 21 步安装手册装出来，完全一致。
+              半年里发生了五件事：排障时在 web-01 上装了个抓包工具；一次促销前手工把 web-01 的连接数上限调大；
+              一次线上热修复直接改了 web-02 的配置文件；一个安全补丁在 web-02 上打了、另外两台漏了；
+              web-03 某次重启后有个辅助进程没起来，没人发现。
+              <strong>五件事没有一件是错误操作</strong>，但半年后这三台机器已经是三台不同的机器。</li>
+            <li>账单在故障那天到达：某个请求只在特定机器上超时，<strong>在测试环境永远复现不出来</strong>；
+              排查花了 <strong>4 小时 20 分</strong>，最后发现是 web-01 那次手工调大的连接数与新版本的连接池配置冲突。
+              而当初调这个数的人已经离职，<strong>没有任何一条记录说明它为什么被改成那个值</strong>。</li>
+            <li>回滚同样卡住：要把环境退回到「上周那个能用的样子」，
+              但「上周那个样子」不存在于任何地方 —— 只存在于三台机器当时的磁盘上，而磁盘已经被改过了。</li>
+          </ul>
+          <p>
+            IaC 的介入点不是「让人别手工改」，那是纪律要求，纪律会失效。
+            它是<strong>结构性的</strong>：把环境的唯一权威定义搬进代码仓库，
+            环境每次都从这份定义重新生成或收敛回去。
+            于是<strong>手工改动不再是「不该做的事」，而是「做了也留不住的事」</strong> ——
+            想让改动活下来，只能改代码。
+          </p>
+          <p class="mb-0 muted"><small>本案例与其中的数字为<strong>本站构造的教学示例</strong>，用于说明漂移的累积机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">基础设施即代码</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>手工搭建 + 运行手册</strong></td>
+                  <td>定义在<strong>仓库里</strong>，执行者是工具。手册的内容变成了可执行的文件</td>
+                  <td>定义在<strong>文档里</strong>，执行者是人。文档会过期，而没人知道它什么时候过期的</td>
+                </tr>
+                <tr>
+                  <td><strong>一次性安装脚本</strong></td>
+                  <td>描述<strong>目标状态</strong>，可以反复执行，第二次执行不会破坏第一次的结果</td>
+                  <td>描述<strong>一串动作</strong>，通常只能在干净机器上跑一次，重跑会报错或产生重复配置</td>
+                </tr>
+                <tr>
+                  <td><strong>部署流水线 <span class="en">Deployment pipeline</span></strong></td>
+                  <td>管的是<strong>「应用要跑在什么样的环境上」</strong>，产出是环境本身</td>
+                  <td>管的是<strong>「代码怎么变成能上生产的制品并送出去」</strong>，产出是可发布制品与部署动作。<br><small class="muted">部署流水线见本章 <a href="6.2-deployment-pipeline.html">6.2</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>容器与云服务</strong></td>
+                  <td>是一种<strong>做法</strong>：不管底下是虚拟机、容器还是云资源，都用代码声明</td>
+                  <td>是一类<strong>技术载体</strong>。用了容器和云，照样可以手工点出一堆雪花环境。<br><small class="muted">容器、微服务与云见本章 <a href="6.4-cloud-containers-microservices.html">6.4</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>具体工具</strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>是<strong>概念</strong>，考试考的是这一层</td>
+                  <td>Terraform、Ansible、CloudFormation、Pulumi 等是实现手段。<br><small class="muted">这些工具名不在 DOFD 66 条术语表内，本节只点名不展开，具体工具归延伸章</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「我们的环境是用脚本装的」不等于「我们做了 IaC」</strong>。
+            判据不是有没有自动化工具，而是三条 —— <strong>环境的权威定义在不在版本控制里、它描述的是状态还是步骤、实际环境会不会被拉回这份定义</strong>。
+            三条缺一，得到的只是「更快的手工」，漂移照旧。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，DOFD 官方文件未以此形式给出该组区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把一个已经在跑的环境挪进 IaC，不是一次性重写，而是几个可以分别落地的动作：</p>
+          <ul>
+            <li><strong>先接管新环境，再接管老环境</strong>：从今天起，新建的环境一律由代码生成。
+              存量的三台雪花先不动 —— 先让「正确路径」存在，再逐台收编，否则容易变成一个永远做不完的迁移项目。</li>
+            <li><strong>同一份代码，不同参数出多套环境</strong>：开发、测试、预发、生产用<strong>同一份定义</strong>，
+              只在规格与容量参数上不同。这一条与本章 <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a> 的
+              「制品只构建一次」是同一个道理：<strong>让上生产之前的每一次执行，都是对生产路径本身的演练</strong>。</li>
+            <li><strong>把变更预览当成评审材料</strong>：应用之前先生成一份「将要发生什么改动」的差异清单，
+              评审的人看的是这份清单，而不是工单里的一句自然语言描述。</li>
+            <li><strong>定期做销毁重建演练</strong>：环境能不能从零重建出来，是 IaC 唯一诚实的验收标准。
+              没演练过的重建能力，等于没有。</li>
+            <li><strong>把手工改动当缺陷处理</strong>：发现实际环境与代码不一致，要问的不是「谁改的」，而是
+              <strong>「为什么改这个东西必须绕过代码」</strong> —— 那通常意味着代码里少了一个可配置项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条落地动作为本站教学整理，官方文件未规定 IaC 的实施步骤或验收清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最主要的命题角度：归属</strong>。IaC 被问到时，几乎都是问它属于 CALMS 的哪一个字母、
+              或属于哪个知识域。答案方向是 <strong>A: Automation</strong>（自动化）与
+              <strong>M6 Automation &amp; Architecting DevOps Toolchains</strong>。
+              这不是推断：Blueprint 的 A 格描述句<strong>逐字把 infrastructure-as-code 与 CI/CD toolchains 并列写在一起</strong>
+              （<em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>），
+              归属题按这句对答案即可。
+              <span class="muted">该句出自 PeopleCert DevOps Foundation Blueprint，官方原文。</span></li>
+            <li><strong>第二种角度：定义辨认</strong>。给一段描述问是什么实践。
+              题干里的钥匙词是<strong>「用代码 / 用版本控制的文件来定义环境」</strong>。
+              只要出现「环境的定义被提交进代码仓库」这类表述，方向就是 IaC。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>持续集成 / 持续部署</strong>（它们管应用代码的流转，不管环境的定义）、
+              <strong>容器化</strong>（这是技术载体，不是「把定义写成代码」这件事）、
+              <strong>具体工具名</strong>（问的是实践名时，工具名一律不是答案）。
+              还有一类是把 IaC 说成<strong>「一种自动化部署脚本」</strong> —— 少了「版本控制中的声明式定义」这半句，就不成立。</li>
+            <li><strong>排除技巧</strong>：先分清题干在说<strong>应用</strong>还是<strong>环境</strong>。
+              说的是代码怎么合并、构建、测试、上生产 → 是 CI/CD 家族；
+              说的是机器、网络、资源怎么被创建成某个样子 → 是 IaC。这一刀能切掉大部分干扰项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>IaC 无官方样题答案键条目，以上命题角度、干扰项构造与排除技巧均为本站教学推断；
+            官方仅公布考试范围为 Bloom 1–2，本站不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">环境不是搭出来的，是从代码里长出来的。</p>
+          <p class="mb-0 muted"><small>反向自查一句：<strong>如果这台机器现在被删掉，能不能在没有任何人回忆的情况下把它重建出来？</strong>
+            答不上来，就还没有 IaC。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-3-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-3-2</div>
+        <h3 class="kp__title">声明式 vs 命令式，与幂等性<span class="en">Declarative vs Imperative · Idempotence</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">声明式 <span class="en">Declarative</span></span>
+            描述<strong>「我要的是什么状态」</strong>；
+            <span class="term">命令式 <span class="en">Imperative</span></span>
+            描述<strong>「按什么顺序做哪些动作」</strong>。
+          </p>
+          <p>
+            由此得到 IaC 的关键属性 ——
+            <span class="term">幂等性 <span class="en">Idempotence</span></span>：
+            <strong>同一份定义执行十次，结果与执行一次完全相同。</strong>
+            第一次执行会把环境改成目标状态，之后每一次执行都会发现「已经是了」，于是什么都不做。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">声明式引擎的三步</th><th>为什么这三步保证了幂等</th></tr></thead>
+              <tbody>
+                <tr><td><strong>读取实际状态</strong></td><td>先看环境现在是什么样，而不是假设它是干净的</td></tr>
+                <tr><td><strong>与声明比对</strong></td><td>算出差异集合。差异为空，说明无事可做</td></tr>
+                <tr><td><strong>只补差异（收敛）</strong></td><td>执行的动作由差异决定，不由脚本行数决定。<strong>所以执行次数不影响结果</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>本知识点为<strong>本站教学补充</strong>，
+            目的是解释 IaC「声明式」这一要件为什么成立，不作为考纲名词记忆。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点出现在自动化已经做了一半之后：<strong>脚本写出来了，但没人敢跑第二遍。</strong>
+          </p>
+          <ul>
+            <li>某团队为初始化环境写了一份 <strong>240 行的 shell 脚本</strong>，第一次在全新机器上跑得很漂亮。
+              问题从第二次开始：安装命令遇到已安装的包直接非零退出，
+              追加配置的那几行把同一段配置<strong>又写了一遍</strong>，服务起不来。
+              于是脚本顶部逐渐长出一句注释：<strong>「仅限全新机器，勿重复执行」</strong>。</li>
+            <li>更麻烦的是<strong>半途失败</strong>。某次跑到第 137 行网络抖动中断，前 136 行已经生效。
+              修好网络之后没人敢重跑整份脚本，只能有人打开脚本<strong>肉眼数到第 137 行</strong>，
+              把剩下的命令一条条手工执行。<strong>这一刻自动化就已经失效了</strong> ——
+              最关键的恢复动作重新回到了手工。</li>
+            <li>团队的补救办法通常是在每条命令前加 <em>if</em> 判断：先检查装没装、改没改、起没起。
+              加到后来会发现一件事：<strong>脚本正在缓慢地重写成一个声明式引擎</strong>，
+              只是这个引擎又慢又不完整，而且没人维护得动。</li>
+          </ul>
+          <p>
+            声明式的价值就在这里：<strong>它把「现在是什么状态」的判断责任，从写脚本的人转移给了引擎</strong>。
+            人只需要写清楚想要什么，不需要穷举环境可能处在的所有中间状态 ——
+            而中间状态的数量，恰恰是手工脚本永远写不完的原因。
+          </p>
+          <p class="mb-0 muted"><small>本案例与其中的行数为<strong>本站构造的教学示例</strong>，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 6-3-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 520" role="img" aria-label="同一个目标状态下，命令式与声明式在重复执行和部分失败后重试两种情形中的行为差异对照">
+              <!-- 共同目标 -->
+              <rect x="30" y="16" width="880" height="44" rx="9" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="470" y="44" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">同一个目标状态：装上 nginx　·　监听 8080　·　开机自启</text>
+
+              <!-- 列头 -->
+              <text x="410" y="90" class="f-5" font-size="15" font-weight="700" text-anchor="middle">命令式 Imperative —— 写「怎么做」</text>
+              <text x="750" y="90" class="f-3" font-size="15" font-weight="700" text-anchor="middle">声明式 Declarative —— 写「要什么」</text>
+
+              <!-- 行 1 -->
+              <rect x="30"  y="104" width="200" height="176" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="130" y="176" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">情形一</text>
+              <text x="130" y="202" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">再执行一次</text>
+              <text x="130" y="226" class="s-muted" font-size="12" text-anchor="middle">环境已经是目标状态</text>
+
+              <rect x="250" y="104" width="320" height="176" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <g class="s-ink" font-size="13">
+                <text x="266" y="134">安装命令遇到已装的包 → 报错退出</text>
+                <text x="266" y="160">追加配置行 → 出现两份 8080 监听</text>
+                <text x="266" y="186">服务起不来，环境反而被跑坏了</text>
+                <text x="266" y="212">结果取决于机器当前处于什么状态</text>
+              </g>
+              <text x="266" y="252" class="f-5" font-size="15" font-weight="700">不幂等：跑两次 ≠ 跑一次</text>
+
+              <rect x="590" y="104" width="320" height="176" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <g class="s-ink" font-size="13">
+                <text x="606" y="134">读取实际状态 → 与声明比对</text>
+                <text x="606" y="160">差异为空 → 不执行任何动作</text>
+                <text x="606" y="186">环境保持不变，输出「0 处改动」</text>
+                <text x="606" y="212">第 2 次、第 10 次结果完全相同</text>
+              </g>
+              <text x="606" y="252" class="f-3" font-size="15" font-weight="700">幂等：执行次数不影响结果</text>
+
+              <!-- 行 2 -->
+              <rect x="30"  y="294" width="200" height="176" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="130" y="366" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">情形二</text>
+              <text x="130" y="392" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">跑到一半失败</text>
+              <text x="130" y="416" class="s-muted" font-size="12" text-anchor="middle">修好之后要继续</text>
+
+              <rect x="250" y="294" width="320" height="176" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <g class="s-ink" font-size="13">
+                <text x="266" y="324">前 6 步已生效，第 7 步中断</text>
+                <text x="266" y="350">重跑 = 把前 6 步原样再做一遍</text>
+                <text x="266" y="376">只能靠人判断该从第几步接着跑</text>
+                <text x="266" y="402">补救是加满 if 判断 ——</text>
+                <text x="266" y="424">脚本越写越像一个声明式引擎</text>
+              </g>
+              <text x="266" y="452" class="f-5" font-size="15" font-weight="700">恢复动作退回手工</text>
+
+              <rect x="590" y="294" width="320" height="176" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <g class="s-ink" font-size="13">
+                <text x="606" y="324">重新应用同一份定义即可</text>
+                <text x="606" y="350">引擎重新读实际状态、重算差异</text>
+                <text x="606" y="376">只补仍有差异的那一部分</text>
+                <text x="606" y="402">不需要知道上次停在哪一步</text>
+              </g>
+              <text x="606" y="452" class="f-3" font-size="15" font-weight="700">恢复动作 = 再收敛一次</text>
+
+              <text x="30" y="500" class="s-muted" font-size="12.5">分界不在文件格式：<tspan class="s-ink" font-weight="650">用 YAML 把命令排成一列，仍然是命令式</tspan>。真正的分界是 —— 执行前有没有「读实际状态、算差异」这一步。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-3-2　同一个目标，两种写法在两种情形下分道扬镳。</strong>
+            要看懂的是：<strong>两种写法在「第一次、全新机器、全程顺利」时表现一模一样</strong>，
+            差别只在这两列情形里才暴露出来 —— 而这两种情形恰恰是生产环境的常态。
+            右列之所以能安然重跑，不是因为它写得更好，而是因为
+            <strong>它把「现在是什么状态」这个判断交给了引擎，而不是交给写脚本的人去穷举</strong>。
+            底部那句是最常见的误解：<strong>声明式是一种执行模型，不是一种文件格式</strong>。
+            <br><small class="muted">本对照为本站教学整理，用于解释 IaC「声明式」要件。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:39%">声明式</th><th>命令式</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>代码里写的是</strong></td>
+                  <td><strong>目标状态</strong>：「要有一个监听 8080 的 nginx」</td>
+                  <td><strong>动作序列</strong>：「装包 → 改配置 → 重启 → 设开机自启」</td>
+                </tr>
+                <tr>
+                  <td><strong>谁负责判断当前状态</strong></td>
+                  <td><strong>引擎</strong>。人只写终点</td>
+                  <td><strong>写代码的人</strong>。得预先想清楚环境可能处在的每一种情况</td>
+                </tr>
+                <tr>
+                  <td><strong>重复执行</strong></td>
+                  <td>无差异则不动作，结果稳定 —— <strong>幂等</strong></td>
+                  <td>可能报错、可能产生重复配置，结果取决于起始状态</td>
+                </tr>
+                <tr>
+                  <td><strong>部分失败后重试</strong></td>
+                  <td>重新应用一次，引擎自己补齐缺口</td>
+                  <td>需要人定位断点，从中间接着跑</td>
+                </tr>
+                <tr>
+                  <td><strong>什么时候反而更合适</strong></td>
+                  <td>长期存在、需要反复维持一致的环境</td>
+                  <td>一次性的迁移、切换、数据订正等<strong>有明确先后顺序的过程</strong>，本来就不该幂等</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「用 YAML / JSON 写的就是声明式」是错的</strong>。
+            文件格式与执行模型无关 —— 一份把 shell 命令按顺序排成列表的 YAML，
+            仍然是彻头彻尾的命令式。判断只看一件事：
+            <strong>执行时有没有「先读取实际状态、再计算差异」这一步</strong>。有，才是声明式；没有，换什么格式都还是在按顺序做动作。</small></p>
+          <p class="mb-0 muted"><small>本对照表与「格式 ≠ 执行模型」这一判据均为本站教学整理，官方文件未以此形式给出该区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>幂等性的验收方法只有一个动作</strong>：连着执行两次，
+              <strong>第二次必须报告「0 处改动」</strong>。第二次还在改东西，说明这份定义里混进了命令式的成分，
+              或者有一段配置在被反复覆写。这是一个几分钟就能做完、却极少有人做的检查。</li>
+            <li><strong>用「预览差异」代替「读代码猜后果」</strong>：应用之前先输出「将新增什么、修改什么、销毁什么」。
+              评审时最该盯的是<strong>销毁清单</strong> —— 大多数 IaC 事故都是某个改动意外让引擎决定「先删了再建」。</li>
+            <li><strong>把顺序性的事情留给命令式，不要硬掰</strong>：数据库结构迁移、一次性的数据订正、
+              新旧系统切换，这些天然有先后顺序、执行一次就该结束的过程，
+              强行写成声明式只会得到一个别扭的东西。<strong>两种范式并存是正常状态，不是妥协。</strong></li>
+            <li><strong>把偏差检测变成定期任务</strong>：定期执行一次「只看不改」的比对，
+              把实际环境与代码之间的差异报出来。这份报告就是<strong>配置漂移的仪表盘</strong>，
+              它的读数长期为零，才说明前一个知识点讲的那道口子真的被堵住了。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条工程动作为本站教学整理，官方文件未规定 IaC 的实施方法或验收标准。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先说清楚边界</strong>：<em>declarative</em>、<em>imperative</em>、<em>idempotence</em>
+              这三个词<strong>不在 DOFD v3.4 官方考纲术语表 66 条内</strong>，
+              基础级考试<strong>不会要求单独定义它们</strong>。学它们是为了理解 IaC 与自动化，不是为了背名词。</li>
+            <li><strong>它真正的出题形态</strong>：藏在对<strong>自动化</strong>的理解题里。
+              题干若强调「自动化过程应当<strong>可重复、可反复执行、结果一致</strong>」，
+              指向的就是这里的幂等性，答案方向通常落在 <strong>Automation</strong> 或 IaC 上，
+              而不是某个具体工具或某条流水线阶段。</li>
+            <li><strong>干扰项长什么样</strong>：最典型的一种是把<strong>「自动化」等同于「写了脚本」</strong> ——
+              选项描述一个「把手工步骤录成脚本」的做法，读起来完全像自动化，
+              但它缺少可重复执行这一层。另一类是把<strong>「快」当成自动化的目的</strong>：
+              自动化的第一价值是<strong>一致与可重复</strong>，快是它的结果。</li>
+            <li><strong>排除技巧</strong>：遇到描述自动化做法的选项，问一句
+              <strong>「这个做法执行第二次会发生什么」</strong>。
+              答案是「和第一次一样」的那个选项，方向基本正确；
+              答案是「会出错 / 得看情况」的，通常就是被设计出来的干扰项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上出题形态、干扰项构造与排除技巧均为本站教学推断；
+            官方仅公布考试范围为 Bloom 1–2。本站不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">声明式说要什么，命令式说怎么做；跑十次和跑一次一样，才叫幂等。</p>
+          <p class="mb-0 muted"><small>一句话自检：<strong>敢不敢现在就把这份定义再执行一遍？</strong>
+            敢，是声明式；心里先咯噔一下，那就还是命令式。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-3-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-3-3</div>
+        <h3 class="kp__title">基础设施获得代码的能力，与不可变基础设施<span class="en">Version Control · Review · Test · Rollback · Immutable Infrastructure</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            IaC 真正的收益不在「省了几次点击」，而在于：
+            <strong>基础设施一旦是代码，它就自动继承了整套已经为代码建好的工程能力。</strong>
+            这套能力早就存在，只是过去从来轮不到服务器享用。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">继承来的能力</th><th style="width:39%">应用代码上早就有</th><th>基础设施因此获得</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>版本历史</strong></td>
+                  <td>每一行改动都有作者、时间、提交说明</td>
+                  <td>「这台机器为什么是现在这个样子」有一条可追溯的记录链，而不是靠人回忆</td>
+                </tr>
+                <tr>
+                  <td><strong>代码评审</strong></td>
+                  <td>合入主干前由另一个人看过</td>
+                  <td>环境变更进入<strong>同一套同行评审流程</strong>，评审对象是具体差异，不是工单里的一句话</td>
+                </tr>
+                <tr>
+                  <td><strong>自动化测试</strong></td>
+                  <td>静态检查、单元测试、策略校验</td>
+                  <td>环境定义可以被检查：命名规范、必需标签、禁止公网暴露、加密是否开启</td>
+                </tr>
+                <tr>
+                  <td><strong>回滚</strong></td>
+                  <td>回退到上一个版本重新构建</td>
+                  <td>回退到上一个版本的定义<strong>重新应用</strong>，环境回到那个已知可用的状态</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            顺着这条路再走一步，就得到
+            <span class="term">不可变基础设施 <span class="en">Immutable Infrastructure</span></span>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>：
+            <strong>需要变更时不在原地修改，而是用新版本的定义造一台新的、把流量切过去、销毁旧的。</strong>
+            服务器从「需要长期照料的宠物」变成「用完即弃的一次性单元」。
+          </p>
+          <p class="mb-0 muted"><small>本知识点为<strong>本站教学补充</strong>，
+            <em>Immutable Infrastructure</em> 只点到概念，不作为考纲名词记忆。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点是<strong>基础设施长期活在工程纪律之外</strong>：
+            同一家公司里，改一行应用代码要过评审、跑测试、留记录；
+            而改一台生产服务器的内核参数，可能只需要一次 SSH。
+          </p>
+          <ul>
+            <li>某电商在大促前夜，为了扛住流量，有人在生产机上手工调整了一组内核网络参数，当晚确实扛住了。
+              三个月后同一批机器扩容，新机器<strong>没有这组参数</strong> —— 因为它从来没被写下来过。
+              新机器在流量高峰时表现异常，排查从应用层查起，
+              <strong>花了两天才有人想起「那天晚上好像改过什么」</strong>。</li>
+            <li>更常见的是<strong>回滚失败</strong>：一次配置变更导致故障，决定回滚。
+              可「回滚」在这里意味着有人凭记忆把参数改回去 ——
+              而记忆里通常只有「改了什么」，没有「原来是什么」。
+              <strong>回滚变成了另一次未经评审的变更。</strong></li>
+            <li>再往下是<strong>就地修改的累积效应</strong>：一台跑了三年、被无数次就地升级、打补丁、
+              临时改配置的服务器，没有人能说清它现在的完整状态，
+              于是没有人敢重装它 —— <strong>它变成了一台不能死也不能重建的机器</strong>。</li>
+          </ul>
+          <p>
+            四项能力回答前两条，不可变基础设施回答第三条：
+            <strong>只要每次变更都是「造新的、换掉旧的」，就地修改的历史就永远无法累积</strong>，
+            机器的年龄被强制维持在很短的区间内，它是怎么来的永远只有一个答案 —— 那份定义。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，用于说明就地修改的累积代价，非真实事件。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">维度</th><th style="width:39%">可变基础设施（就地修改）</th><th>不可变基础设施（重建替换）</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>变更方式</strong></td>
+                  <td>登上这台机器，把它改成新样子</td>
+                  <td>按新定义造一台新的，切流量，销毁旧的</td>
+                </tr>
+                <tr>
+                  <td><strong>漂移</strong></td>
+                  <td>随时间累积，且不可见</td>
+                  <td><strong>没有累积的时间</strong> —— 机器活不到能漂移的岁数</td>
+                </tr>
+                <tr>
+                  <td><strong>回滚</strong></td>
+                  <td>反向操作一遍，靠记忆与文档</td>
+                  <td>把上一版的实例重新拉起来 / 把流量切回去</td>
+                </tr>
+                <tr>
+                  <td><strong>故障排查</strong></td>
+                  <td>先要搞清楚「这台机器现在到底是什么状态」</td>
+                  <td>状态等于定义，排查直接从定义开始</td>
+                </tr>
+                <tr>
+                  <td><strong>代价</strong></td>
+                  <td>改动快、见效快</td>
+                  <td>需要快速创建实例的能力、流量切换机制，以及<strong>状态与数据必须外置</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「不可变」不是「不能变」</strong>，而是<strong>「不在原地变」</strong>。
+            不可变基础设施的变更频率往往比传统方式更高 —— 它每天可能重建几十次实例。
+            被禁止的只有一件事：<strong>登录到一台正在运行的机器上去修改它</strong>。</small></p>
+          <p class="mb-0 muted"><small>本对照表与「不可变 ≠ 不能变」这一判据均为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>基础设施仓库走同一套评审流程</strong>：不要为环境变更单开一条「更快的通道」。
+              评审的对象是<strong>变更预览的差异清单</strong>，评审人重点看新增的对外暴露、被销毁的资源、权限范围的扩大。</li>
+            <li><strong>给环境定义加自动化检查</strong>：把「不允许安全组对全网开放」「必须打成本归属标签」
+              「存储必须启用加密」这类规则写成可执行的校验，在合入前跑。
+              <strong>这就是把合规从事后审计前移到变更时刻</strong> ——
+              与<a href="../ch03-key-practices/3.5-devsecops.html">第 3 章 DevSecOps（3.5）</a>、
+              <a href="../ch03-key-practices/3.1-continuous-testing.html">左移（3.1）</a>是同一条思路在基础设施上的应用。</li>
+            <li><strong>回滚路径要演练</strong>：与<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付（3.3）</a>
+              里的道理一致 —— <strong>没演练过的回滚等于没有回滚</strong>。IaC 的回滚要验证的是
+              「按旧版定义重新应用之后，环境真的回到了旧状态」，而不只是「代码回退了」。</li>
+            <li><strong>状态必须外置，不可变才成立</strong>：数据库、对象存储、日志要放在实例之外。
+              一台可以随时被销毁的机器上，不能存放任何销毁后就找不回来的东西。</li>
+            <li><strong>先从最容易重建的一层开始</strong>：无状态的 web 层最适合先做不可变，
+              有状态的数据层往往长期保持可变。<strong>不必全站统一，分层推进即可。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上工程动作为本站教学整理，官方文件未规定 IaC 或不可变基础设施的实施方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最值得注意的一条官方数字</strong>：v3.4 官方课程描述把 DevOps 的业务价值量化为
+              <strong>整体 IT 成本下降 15–25%、变更失败率下降 50–70%、供应与部署时间下降最多 90%</strong>
+              （<strong>DOFD v3.4 Course Description</strong>）。
+              其中<strong>「供应（provision）时间」这一项，正是 IaC 直接作用的地方</strong> ——
+              环境从「提工单等几天」变成「执行一次定义」。引用这三个数字时<strong>必须带 v3.4 版本标注</strong>，
+              它们是 v3.4 课程描述给出的区间，v3.6 未重新发布。</li>
+            <li><strong>命题角度：把收益落到具体机制上</strong>。题干若描述「环境的变更有完整记录、可评审、可回退」，
+              指向的是 IaC 带来的这四项能力，而不是某个流水线阶段或某种测试。</li>
+            <li><strong>干扰项长什么样</strong>：
+              一类是<strong>泛化收益</strong>（「减少人力成本」「提高团队士气」）—— 读起来正确，但没有对应到任何具体机制；
+              一类是<strong>张冠李戴</strong>，把 IaC 的收益说成持续集成或持续测试的收益；
+              还有一类是把<strong>不可变基础设施说成「基础设施不再变更」</strong> —— 这是对该词的标准误读。</li>
+            <li><strong>排除技巧</strong>：看选项描述的收益<strong>能不能追到一个具体动作上</strong>。
+              「可以回退到上一个版本的定义重新应用」能追到动作；
+              「提升了运维效率」追不到 —— 追不到动作的选项，在基础级考试里通常是干扰项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>三个量化数字出自 <strong>DOFD v3.4 Course Description</strong>，可引为官方；
+            「provision 时间对应 IaC」这一关联为本站教学推断。
+            官方未公布命题规律与题型分布，以上命题角度、干扰项构造与排除技巧均为本站教学推断，
+            官方仅公布考试范围为 Bloom 1–2；本站不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">基础设施变成代码，就能被评审、被测试、被回滚 —— 从一台不敢碰的机器，变成一份可以讨论的文件。</p>
+          <p class="muted"><small>不可变基础设施一句话：<strong>不修，是换。</strong>
+            记住它的反面更有用 —— 一台没人敢重装的机器，就是漂移已经赢了的标志。</small></p>
+          <p class="mb-0 muted"><small>与本章其他小节的分工：<strong>环境的定义</strong>归本节，
+            <strong>代码到制品的流转</strong>归本章 <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a>，<strong>容器与云</strong>归 <a href="6.4-cloud-containers-microservices.html">6.4</a>，
+            <strong>工具之间怎么串起来</strong>归 <a href="6.5-toolchain-architecture.html">6.5</a>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>一句话定义</strong>：用<strong>版本控制中的声明式代码</strong>定义和创建基础设施，而不是手工点击或跑一次性脚本</li>
+        <li><strong>要杀的敌人</strong>：<strong>配置漂移</strong> —— 手工搭的环境彼此不一致，「在我这能跑」，故障无法复现，回滚靠记忆</li>
+        <li><strong>归属</strong>：属 CALMS 的 <strong>A: Automation</strong> 与 v3.4 课程大纲 M6 模块。
+          这一归属有官方原文撑着 —— Blueprint 的 A 格描述句逐字写
+          <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>。
+          但 <strong>Infrastructure as Code 不在 66 条术语表内，因此本节判「📘 官方模块子项」，不是「⭐ 考纲核心」，也不是「🧭 延伸 · 非考纲」</strong></li>
+        <li><strong>声明式 vs 命令式</strong>：前者写「要什么状态」，后者写「怎么做」。分界不是文件格式，而是执行前有没有「读实际状态、算差异」这一步（本站教学整理）</li>
+        <li><strong>幂等性</strong>：同一份代码执行十次，结果与执行一次相同。验收动作只有一个 —— <strong>连跑两次，第二次必须 0 处改动</strong>（本站教学整理）</li>
+        <li><strong>四项继承能力</strong>：版本历史 · 代码评审 · 自动化测试 · 回滚。基础设施因此进入了与应用代码同一套工程纪律</li>
+        <li><strong>不可变基础设施</strong>：不在原地改，而是重建替换。<strong>「不可变」≠「不能变」</strong>，被禁的只是登机器就地修改（延伸 · 非考纲）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Infrastructure as Code</em> <strong>未列入</strong> DOFD v3.4 官方考纲术语表（Concept and Terminology List）的 66 条，
+      本节因此不使用「⭐ 考纲核心」徽章；但 <em>infrastructure-as-code</em> <strong>逐字出现在
+      PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句</strong>
+      —— <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>（官方原文）——
+      属官方文件正文点名的内容，因此页头与主题知识点判
+      <span class="badge badge--plain">📘 官方模块子项</span>，不判「🧭 延伸 · 非考纲」。
+      本节主题同时归入 v3.4 课程大纲
+      <strong>M6 Automation &amp; Architecting DevOps Toolchains</strong> 模块的 <em>Automation</em> 子项范畴；
+      把 IaC 单列成一小节展开是<strong>本站的教学编排</strong>。
+      三个量化收益数字（整体 IT 成本下降 15–25%、变更失败率下降 50–70%、供应与部署时间下降最多 90%）出自
+      <strong>DOFD v3.4 Course Description</strong>，为 v3.4 给出的区间，v3.6 未重新发布。
+      本章唯一由 <strong>DOFD v3.4 官方样题答案键</strong>确认的判断是
+      「服务台事件管理系统不属于典型 DevOps 工具链要素」，落在本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>，不属于本节考点；
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：配置漂移的形成机制图（图 6-3-1）、声明式与命令式对照（图 6-3-2）、
+      「三个要件」判据、「格式 ≠ 执行模型」判据、幂等性验收方法、四项继承能力的对照表、
+      各面中的命题角度分析与干扰项构造，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      <strong>延伸 · 非考纲</strong>：<em>Declarative</em> / <em>Imperative</em> / <em>Idempotence</em> /
+      <em>Immutable Infrastructure</em> 四词，以及 Terraform、Ansible、CloudFormation、Pulumi 等具体工具名，
+      均不在 DOFD 66 条术语表与 v3.4 课程大纲子项内，本节仅作理解性补充与点名，具体工具展开见延伸章。
+      相关小节：<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付 vs 持续部署（3.3）</a>、
+      <a href="../ch03-key-practices/3.5-devsecops.html">DevSecOps（3.5）</a>、
+      <a href="../ch03-key-practices/3.1-continuous-testing.html">持续测试与左移（3.1）</a>；
+      环境变更带来的度量口径见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

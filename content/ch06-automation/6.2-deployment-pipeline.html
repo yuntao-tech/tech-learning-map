@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.2 部署流水线 · DevOps Foundation 学习站</title>
+<meta name="description" content="部署流水线（Deployment pipeline）是从一次代码提交到生产环境之间唯一的那条路。本节展开它的分层结构——提交阶段、验收阶段、非功能测试、可选的手工验证、生产部署——以及支撑它的两条铁律：制品只构建一次，任一阶段失败即停。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.2-deployment-pipeline"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.2 部署流水线</h1>
+      <div class="page-head__en">Deployment Pipeline</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>
+        用「有没有人工闸门」区分了两个术语，但没有打开流水线本身。本节打开它：
+        <strong>它由哪几个阶段组成，每个阶段拦什么、给谁反馈、该花多长时间</strong>，
+        以及让整条通道成立的两条铁律 —— <strong>制品只构建一次</strong>、<strong>任一阶段失败即停</strong>。
+        换个角度说，部署流水线就是
+        <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>
+        画出来的那张图的<strong>可执行版本</strong>：图上的每一个环节，在这里都变成了一段真的会跑、会红、会拦人的代码。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>一条部署流水线到底分成哪几个阶段，为什么必须是「分层」而不是「一锅端」</li>
+        <li>为什么「制品只构建一次」是铁律 —— 违反它意味着什么</li>
+        <li>提交阶段为什么必须控制在十分钟以内，超过之后第一步「流动」会怎样被破坏</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 336" role="img" aria-label="部署流水线的分层结构：提交阶段、验收阶段、非功能测试、手工验证与生产部署，各自的典型时长与反馈对象，以及失败即停的位置">
+          <defs>
+            <marker id="ah-62-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-62-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <text x="24" y="20" class="s-ink" font-size="14" font-weight="650">触发：主干上的一次代码提交 Code commit　—　此后同一个制品逐阶段向右传递</text>
+
+          <!-- 五个阶段 -->
+          <rect x="24"  y="34" width="168" height="152" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="210" y="34" width="168" height="152" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="396" y="34" width="168" height="152" rx="10" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="582" y="34" width="168" height="152" rx="10" class="s-stroke" stroke-width="1.8" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+          <rect x="768" y="34" width="168" height="152" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <!-- 1 提交阶段 -->
+            <text x="108" y="62"  class="f-4"    font-size="15" font-weight="700">提交阶段</text>
+            <text x="108" y="82"  class="s-muted" font-size="12">Commit stage</text>
+            <text x="108" y="108" class="s-ink"  font-size="12.5">编译 · 单元测试</text>
+            <text x="108" y="128" class="s-ink"  font-size="12.5">静态扫描 · 打包制品</text>
+            <text x="108" y="156" class="f-4"    font-size="12.5" font-weight="650">时长：5–10 分钟</text>
+            <text x="108" y="176" class="s-muted" font-size="12.5">反馈给：提交者本人</text>
+
+            <!-- 2 验收阶段 -->
+            <text x="294" y="62"  class="f-1"    font-size="15" font-weight="700">验收阶段</text>
+            <text x="294" y="82"  class="s-muted" font-size="12">Acceptance stage</text>
+            <text x="294" y="108" class="s-ink"  font-size="12.5">部署到类生产环境</text>
+            <text x="294" y="128" class="s-ink"  font-size="12.5">集成 · 自动化验收测试</text>
+            <text x="294" y="156" class="f-1"    font-size="12.5" font-weight="650">时长：30–90 分钟</text>
+            <text x="294" y="176" class="s-muted" font-size="12.5">反馈给：开发团队</text>
+
+            <!-- 3 非功能测试 -->
+            <text x="480" y="62"  class="f-2"    font-size="15" font-weight="700">非功能测试</text>
+            <text x="480" y="82"  class="s-muted" font-size="12">Non-functional</text>
+            <text x="480" y="108" class="s-ink"  font-size="12.5">性能 · 容量 · 负载</text>
+            <text x="480" y="128" class="s-ink"  font-size="12.5">安全扫描 · 韧性验证</text>
+            <text x="480" y="156" class="f-2"    font-size="12.5" font-weight="650">时长：1 小时起</text>
+            <text x="480" y="176" class="s-muted" font-size="12.5">反馈给：架构与安全</text>
+
+            <!-- 4 手工验证 -->
+            <text x="666" y="62"  class="s-ink"  font-size="15" font-weight="700">手工验证 / UAT</text>
+            <text x="666" y="82"  class="s-muted" font-size="12">可选 · 由人执行</text>
+            <text x="666" y="108" class="s-ink"  font-size="12.5">探索式测试</text>
+            <text x="666" y="128" class="s-ink"  font-size="12.5">业务方确认</text>
+            <text x="666" y="156" class="s-muted" font-size="12.5">时长：小时 – 天</text>
+            <text x="666" y="176" class="s-muted" font-size="12.5">反馈给：业务与产品</text>
+
+            <!-- 5 生产部署 -->
+            <text x="852" y="62"  class="f-3"    font-size="15" font-weight="700">生产部署</text>
+            <text x="852" y="82"  class="s-muted" font-size="12">Production deploy</text>
+            <text x="852" y="108" class="s-ink"  font-size="12.5">一键触发或自动触发</text>
+            <text x="852" y="128" class="s-ink"  font-size="12.5">部署后遥测与监控</text>
+            <text x="852" y="156" class="f-3"    font-size="12.5" font-weight="650">时长：分钟级</text>
+            <text x="852" y="176" class="s-muted" font-size="12.5">反馈给：真实用户</text>
+          </g>
+
+          <!-- 阶段之间的流向 -->
+          <g class="s-1" stroke-width="2.2" fill="none">
+            <line x1="194" y1="110" x2="206" y2="110" marker-end="url(#ah-62-1)"/>
+            <line x1="380" y1="110" x2="392" y2="110" marker-end="url(#ah-62-1)"/>
+            <line x1="566" y1="110" x2="578" y2="110" marker-end="url(#ah-62-1)"/>
+            <line x1="752" y1="110" x2="764" y2="110" marker-end="url(#ah-62-1)"/>
+          </g>
+
+          <!-- 失败即停：每个阶段向下的支路 -->
+          <g class="s-5" stroke-width="2" fill="none">
+            <line x1="108" y1="188" x2="108" y2="214" marker-end="url(#ah-62-2)"/>
+            <line x1="294" y1="188" x2="294" y2="214" marker-end="url(#ah-62-2)"/>
+            <line x1="480" y1="188" x2="480" y2="214" marker-end="url(#ah-62-2)"/>
+            <line x1="666" y1="188" x2="666" y2="214" marker-end="url(#ah-62-2)"/>
+          </g>
+          <text x="852" y="206" class="s-muted" font-size="12.5" text-anchor="middle">失败 → 一键回滚 / 前滚</text>
+
+          <rect x="24" y="218" width="912" height="52" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="480" y="242" class="f-5" font-size="14.5" font-weight="700" text-anchor="middle">失败即停 —— 前四段任一阶段没通过，这个制品就地停下，不再向右传递</text>
+          <text x="480" y="262" class="s-muted" font-size="12.5" text-anchor="middle">修复的优先级高于写新功能；不允许「先标成允许失败，后面再说」</text>
+
+          <text x="480" y="300" class="s-ink" font-size="13" text-anchor="middle">越靠左：越快、越便宜、覆盖越窄　　·　　越靠右：越慢、越贵、越接近真实生产</text>
+          <text x="480" y="322" class="s-muted" font-size="12.5" text-anchor="middle">排序原则：把最可能失败、最便宜的检查放在最前面，让坏消息先到</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-2-1　部署流水线的分层结构。</strong>
+        要看懂的是三件事：<strong>阶段是有顺序的、反馈对象是逐段变化的、每一段都能把制品拦下来</strong>。
+        提交阶段的答案只给提交者本人，几分钟内到；越往右，参与的人越多、代价越高、环境越接近真实生产。
+        虚线框的手工验证是唯一可选的一段 —— 它可以整段不存在，流水线依然成立。
+        下方的红色带子说明「失败即停」不是发生在某一个特定位置，而是<strong>前四段的出口都有这道拦截</strong>；
+        最后一段生产部署右边已经没有下一阶段，它的失败处置方式不同 —— 走的是<strong>一键回滚或前滚</strong>。
+        <br><small class="muted">五个阶段的划分与命名、各阶段的典型时长与反馈对象，均为本站教学整理，DOFD 官方文件未给出流水线的阶段划分表；
+        其中「单元、集成、用户验收、非功能」四类测试的并列，与 DOFD v3.4 官方样题答案键中出现的测试类型一致。
+        持续交付与持续部署的分界不在本图中，见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-2-1</div>
+        <h3 class="kp__title">部署流水线<span class="en">Deployment Pipeline</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">部署流水线 <span class="en">Deployment pipeline</span></span>
+            是把<strong>一次代码提交</strong>自动送到<strong>可上生产的制品</strong>乃至生产环境的一条
+            <strong>自动化通道</strong>：它由若干个前后依赖的阶段组成，每个阶段都是一道有明确通过标准的验证关卡，
+            制品只能<strong>从左往右单向前进</strong>，任何一关没过就地停下。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个构成要件</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>有序的阶段</strong></td><td>不是一堆并列的任务，而是一条有先后的链条。后一阶段的输入，是前一阶段验证通过的产物</td></tr>
+                <tr><td><strong>每阶段有通过标准</strong></td><td>通过标准写在流水线里，是可执行的判断，不是写在文档里等人去看。「绿」和「红」都由机器给出</td></tr>
+                <tr><td><strong>唯一的上生产路径</strong></td><td>生产环境只接受来自流水线的制品。绕过流水线的手工上线，等于这条流水线不存在</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Deployment pipeline</strong> 逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+            上面这条中文释义与三个构成要件为本站措辞与教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要消灭的是一段具体的黑暗时间：<strong>代码合进主干之后、有人真正验证它之前的那一段「无人知晓区」</strong>。
+          </p>
+          <ul>
+            <li>一个 40 人的团队，测试集中在发布前两周做。开发者提交完就转下一个任务，
+              至于这次提交有没有把别人的东西弄坏，<strong>要等六周后的集中回归才知道</strong>。</li>
+            <li>回归第一天发现三个模块互不兼容，追溯到六周前的一次提交。那位作者已经换了项目，
+              要重新读懂六周前的上下文才能改 —— <strong>同一个缺陷，六周后的修复成本是当时的十几倍</strong>。</li>
+            <li>更隐蔽的一层：上线动作本身是<strong>不可复现的</strong>。谁在什么时候手工改了哪台机器的哪个配置，
+              没有记录。出事时先花两小时争论「预发和生产到底哪里不一样」。</li>
+          </ul>
+          <p>
+            部署流水线用两个动作切断它：把「这次提交能不能用」的答案压缩到<strong>分钟级</strong>，
+            并把上生产的全部步骤收进<strong>同一条可重复、可审计的路径</strong>。
+            提交之后不再有黑暗时间 —— 每一次提交都立刻得到一个二值答案。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">部署流水线</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>持续交付 <span class="en">Continuous Delivery</span></strong></td>
+                  <td>是被依赖的<strong>机制 / 资产</strong>：一条具体存在、可以画出来的通道</td>
+                  <td>是一种<strong>实践 / 组织能力</strong>：随时处于可发布状态。它<strong>依赖</strong>流水线，但不等于流水线（见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>持续集成 <span class="en">Continuous Integration</span></strong></td>
+                  <td>覆盖从提交一直到生产的<strong>全程</strong></td>
+                  <td>只覆盖流水线<strong>最左边那几段</strong>：合并、构建、自动化测试。它是流水线的一部分，不是全部（见 <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 工具链 <span class="en">DevOps toolchain</span></strong></td>
+                  <td>是一条<strong>有顺序的通道</strong>：讲的是「先做什么、后做什么、哪里能拦下来」</td>
+                  <td>是一<strong>组工具的集合</strong>：讲的是「用什么做」。同一条流水线可以换掉全部工具而结构不变（工具链见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong></td>
+                  <td>是<strong>会跑的那一版</strong>：每个环节都是真在执行的代码</td>
+                  <td>是<strong>画在纸上的那一版</strong>：用来看清等待与浪费在哪（见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a>）。两者描述同一条价值流，一个用来看，一个用来跑</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>部署流水线是机制，持续交付是实践</strong>。
+            考题里只要出现「依赖部署流水线来实现……」，就说明流水线是<strong>题干给出的条件</strong>，
+            答案要落在实践名上，不可能是「部署流水线」自己。</small></p>
+          <p class="mb-0 muted"><small>本对照表的四组维度为本站教学整理，官方未以此形式给出对照；
+            表中 <em>Deployment pipeline</em>、<em>Continuous delivery</em>、<em>Continuous integration</em>、
+            <em>DevOps toolchain</em>、<em>Value stream mapping</em> 五个词条均列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一条流水线是不是真的成立，看四件事：</p>
+          <ul>
+            <li><strong>一次提交 = 一个流水线实例</strong>：能指着任何一个制品，说清它来自哪一次提交、过了哪几关。
+              做不到这一点，就无法回答「生产上跑的到底是哪份代码」。</li>
+            <li><strong>流水线定义与代码同仓库</strong>：流水线本身是版本化的文件，跟着代码一起评审、一起回滚。
+              流水线配置存在某个界面里、只有两个人会改，它就成了新的单点故障 <span class="en">SPOF</span>。</li>
+            <li><strong>把手工步骤一个一个吃进来</strong>：改造顺序不是从最难的开始，而是从
+              <strong>最频繁、最容易出错的那一步</strong>开始。每吃掉一步，发布手册就短一页。</li>
+            <li><strong>先画后建</strong>：建流水线之前，先照
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>
+              把现状画一遍。图上等待时间最长的那一段，才是流水线第一版最该覆盖的地方 ——
+              <strong>否则很容易把已经很快的环节自动化得更快，而排队的地方一动没动</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条检查动作为本站教学整理，官方文件把 <em>Deployment pipeline</em> 列为术语，未规定实施清单。
+            <em>Single Point of Failure (SPOF)</em> 列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>依赖部署流水线实现「按需一键部署」的实践，答案是持续交付</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条题的价值不在答案本身，而在它示范了一种句式：<strong>把「部署流水线」放在题干里当条件，问你这叫什么实践</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「部署流水线」自己</strong>（题干已经把它说出来了，再选它等于原地打转，这是本节最典型的一个陷阱）、
+              <strong>持续集成</strong>（它不覆盖到生产）、
+              <strong>DevOps 工具链</strong>（那是工具的集合，回答的是「用什么」而不是「什么实践」）。</li>
+            <li><strong>另一种角度：问流水线里有什么</strong>。这里有两条官方事实可以直接当判据：
+              持续集成的必要前提是<strong>自动化的单元、集成与验收测试</strong>；
+              自动部署每个通过<strong>单元、集成、用户验收与非功能测试</strong>的版本属于持续部署 ——
+              两条均由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              注意两份清单<strong>不一样</strong>：<strong>非功能测试出现在后一条里，不在持续集成的前提里</strong>。</li>
+            <li><strong>排除技巧</strong>：先判断题干问的是<strong>「叫什么」还是「用什么」</strong>。
+              问「这属于哪种实践」，答案一定是一个实践名（持续集成 / 持续交付 / 持续部署）；
+              问「哪些属于工具链要素」，答案才落在工具那一侧。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            官方未公布命题规律与题型分布，句式分析与排除技巧为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">从提交到生产只有这一条路，路上每一关都能把它拦下来。</p>
+          <p class="mb-0 muted"><small>配一句区分：<strong>流水线是「路」，持续交付是「随时能走这条路」的能力</strong>。
+            题干给了路，问的就一定是能力。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-2-2</div>
+        <h3 class="kp__title">流水线的分层结构与十分钟规则<span class="en">Pipeline Stages &amp; the Ten-Minute Commit Stage</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            分层的意思是：<strong>不同种类的验证按「快慢 / 贵贱 / 离真实生产多远」排成前后几段</strong>，
+            而不是一股脑塞进一个巨大的测试任务里。典型的五段如下（对应<strong>图 6-2-1</strong>）：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:17%">阶段</th><th style="width:29%">拦什么</th><th style="width:17%">典型时长</th><th>失败意味着</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>提交阶段</strong><br><small class="muted">Commit stage</small></td>
+                  <td>编译错误、单元测试失败、静态扫描告警。产出<strong>本次唯一的那个制品</strong></td>
+                  <td><strong>5–10 分钟</strong></td>
+                  <td>提交者本人立刻改，通常几分钟能定位 —— 他脑子里还装着刚写的代码</td>
+                </tr>
+                <tr>
+                  <td><strong>验收阶段</strong><br><small class="muted">Acceptance stage</small></td>
+                  <td>把制品部署到类生产环境，跑<strong>集成测试与自动化验收测试</strong>：模块之间、系统与外部依赖之间是否还对得上</td>
+                  <td>30–90 分钟</td>
+                  <td>问题在「组合」而不在「单件」，需要开发团队一起看</td>
+                </tr>
+                <tr>
+                  <td><strong>非功能测试</strong><br><small class="muted">Non-functional</small></td>
+                  <td>功能对了但<strong>撑不撑得住</strong>：性能、容量、负载、安全扫描、故障韧性</td>
+                  <td>1 小时起</td>
+                  <td>往往要改设计而不是改代码，反馈落在架构与安全侧</td>
+                </tr>
+                <tr>
+                  <td><strong>手工验证 / UAT</strong><br><small class="muted">可选</small></td>
+                  <td>机器判断不了的部分：探索式测试、业务方确认、体验判断</td>
+                  <td>小时 – 天</td>
+                  <td><strong>整段可以不存在</strong>。它是唯一一段「没有也能成立」的阶段</td>
+                </tr>
+                <tr>
+                  <td><strong>生产部署</strong><br><small class="muted">Production deploy</small></td>
+                  <td>不再是「测试」，而是把已经验证过的那个制品装上去，并靠遥测确认它没变坏</td>
+                  <td>分钟级</td>
+                  <td>触发一键回滚或前滚；反馈来自真实用户</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            这套<strong>五段划分、阶段命名与典型时长</strong>为本站教学整理，DOFD 官方文件未给出流水线的阶段结构表。
+            可以引为官方的是两点：<em>Deployment pipeline</em> 与
+            <em>Testing (unit, acceptance, integration)</em> 均列于
+            <strong>DOFD v3.4 官方考纲术语表</strong>；
+            <strong>DOFD v3.4 官方样题答案键</strong>确认的一条判断中，
+            <strong>单元、集成、用户验收、非功能</strong>四类测试是并列出现的 —— 这与上表把它们分到不同阶段的做法一致。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            分层要解决的痛点，出现在<strong>一个团队已经把测试全自动化之后</strong>：
+            <strong>测试都在，但一次跑完要 78 分钟，于是它们几乎没起作用。</strong>
+          </p>
+          <ul>
+            <li>某团队把 4 200 个测试放进同一个任务，提交后 78 分钟出结果。
+              开发者不会坐等 —— 他去干别的了。<strong>78 分钟后回来，他已经又提交了 3 次</strong>，
+              红灯到底是哪一次引起的，得先花时间二分。</li>
+            <li>更糟的是行为上的适应：既然反正要等一个多小时，<strong>不如攒够几个改动一起提交</strong>。
+              批量重新变大，冲突变多，定位更难 ——
+              <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>
+              要求的小批量与快速流动，被一个技术细节原样抵消掉了。</li>
+            <li>分层之后：编译与单元测试留在提交阶段，<strong>6 分钟给出答案</strong>；
+              慢的集成、验收、性能测试推到后面的阶段异步跑。
+              开发者拿到的是一个「值得等」的快答案，攒批的动机随之消失。</li>
+          </ul>
+          <p>
+            这就是<strong>十分钟规则</strong>：提交阶段一旦超过十分钟，人的行为就会变
+            —— 开始切换上下文、开始攒批、开始把红灯当背景噪音。
+            <strong>反馈的价值与它到达的延迟成反比</strong>，这条曲线在十分钟附近掉得最陡。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「十分钟」这一阈值属持续交付领域的通行经验做法，属<strong>延伸补充</strong>，不在 DOFD 考纲术语表与官方文件内。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:20%">提交阶段</th><th style="width:20%">验收阶段</th><th style="width:20%">非功能测试</th><th>手工验证 / UAT</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>回答的问题</strong></td>
+                  <td>这段代码本身对不对</td>
+                  <td>拼在一起还对不对</td>
+                  <td>撑不撑得住、安不安全</td>
+                  <td>人看着满不满意</td>
+                </tr>
+                <tr>
+                  <td><strong>由谁执行</strong></td>
+                  <td>机器</td>
+                  <td>机器</td>
+                  <td>机器</td>
+                  <td><strong>人</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>能不能没有</strong></td>
+                  <td>不能</td>
+                  <td>不能</td>
+                  <td>不能</td>
+                  <td><strong>可以，整段省略</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>失败反馈给谁</strong></td>
+                  <td>提交者本人</td>
+                  <td>开发团队</td>
+                  <td>架构与安全</td>
+                  <td>业务与产品</td>
+                </tr>
+                <tr>
+                  <td><strong>环境</strong></td>
+                  <td>构建机</td>
+                  <td>类生产环境</td>
+                  <td>接近生产规格</td>
+                  <td>预发 / 演示环境</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「验收测试」与「用户验收测试 UAT」要分两层看，不能靠缩写一刀切</strong>。<br>
+            第一层，<strong>验收测试 acceptance testing</strong> 在流水线语境下指<strong>自动化验收测试</strong>，由机器在验收阶段跑；
+            它对应官方术语 <em>Testing (unit, acceptance, integration)</em> 中的 acceptance ——
+            官方术语表只列词条、不附定义，官方并未界定该 acceptance 的执行方式，此处的「自动化」定性为本站教学整理。<br>
+            第二层，<strong>用户验收测试 UAT</strong> 有两种落法。
+            一种是把用户场景用例做进自动化验收套件，由流水线自动执行 ——
+            <strong>DOFD v3.4 官方样题答案键</strong>确认的那条持续部署判断里说的就是这一种，因为全自动部署不可能停下来等人；
+            另一种才是本节图 6-2-1 里由人做的探索式测试与业务确认，<strong>只有这一段是可选的</strong>。<br>
+            判据不看缩写，看<strong>这道关卡是不是流水线自动执行的闸门</strong>：是 → 属自动化验收；不是 → 属可选的人工确认。
+            上面这一层拆分的依据，是官方样题答案键中「验收测试」与「用户验收测试」分列出现这一事实；推论本身为本站教学整理。</small></p>
+          <p class="mb-0 muted"><small>本对照表的五个维度、「谁执行」与「能不能没有」两行判据，均为本站教学整理，官方未以此形式给出阶段对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>切分阶段时，四条可操作的规则：</p>
+          <ul>
+            <li><strong>按失败原因切，不按工具切</strong>：同一个阶段里的检查，失败之后应该由<strong>同一群人</strong>、
+              用<strong>同一种思路</strong>去修。把「单元测试」和「性能测试」放一起，等于让两拨人抢同一个红灯。</li>
+            <li><strong>让坏消息先到</strong>：阶段内部也要排序 —— 最快、最可能失败的检查放最前面。
+              一次编译错误没必要等 800 个测试跑完才被发现。</li>
+            <li><strong>守住十分钟</strong>：提交阶段一旦超过十分钟，要动的是<strong>测试的位置而不是测试的数量</strong>：
+              把慢测试挪到验收阶段、并行执行、按变更范围裁剪，而不是删掉它们。</li>
+            <li><strong>每个阶段都能单独重跑</strong>：验收阶段挂了，不需要从编译重来一遍。
+              做不到这一点的流水线，每次排查都要付一遍全程的时间成本。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条切分规则为本站教学整理，官方文件未规定阶段划分方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>能当硬判据用的两条官方事实</strong>：持续集成的必要前提是
+              <strong>自动化的单元、集成与验收测试</strong>；
+              自动部署每个通过<strong>单元、集成、用户验收与非功能测试</strong>的版本属于持续部署 ——
+              两条均<strong>由 DOFD v3.4 官方样题答案键确认</strong>。
+              把两份清单叠起来看，就是流水线里测试的层次顺序。</li>
+            <li><strong>最典型的干扰项</strong>：把<strong>非功能测试塞进持续集成的前提</strong>里。
+              读起来很顺（性能测试当然也是自动化测试），但官方确认的那条前提清单里<strong>没有它</strong>。
+              同理，把「用户验收测试 UAT」写成持续集成的前提也是错的方向。</li>
+            <li><strong>第二种干扰项：颠倒快慢顺序</strong>。选项描述成「先跑性能与安全测试，通过后再跑单元测试」。
+              判据很简单：<strong>贵的检查不会排在便宜的检查前面</strong>，否则每次都要为一个编译错误付几小时。</li>
+            <li><strong>排除技巧</strong>：遇到测试类型排序题，按<strong>「范围从窄到宽、时间从短到长」</strong>排一遍
+              —— 单元 → 集成 → 验收 → 非功能 → 人工确认。与这条顺序相反的选项基本都可以划掉。
+              <strong>限定条件</strong>：这条顺序是本站按「范围从窄到宽」整理的教学顺序，
+              遇到逐字复述官方测试清单（<strong>单元、集成、用户验收、非功能</strong>）的选项时不适用 —— 那是官方措辞，不能拿本站顺序去否定它。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            官方未公布命题规律与题型分布，干扰项分析与排除技巧为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">快的先跑，贵的后跑；提交阶段十分钟内必须给出答案。</p>
+          <p class="mb-0 muted"><small>五段口诀：<strong>编译单测 → 集成验收 → 性能安全 → 人看一眼（可选）→ 上生产</strong>。
+            越往右越慢、越贵、越像真的生产环境。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-2-3</div>
+        <h3 class="kp__title">两条铁律：制品只构建一次 · 失败即停<span class="en">Build Once, Deploy Many &amp; Fail Fast</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            这两条约束不改变流水线的形状，但决定它<strong>是否可信</strong>：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">铁律</th><th>内容</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>制品只构建一次</strong><br><small class="muted">build once, deploy many</small></td>
+                  <td>编译打包<strong>只在提交阶段发生一次</strong>，产出一个带固定版本与校验和的二进制。
+                    此后测试环境、类生产环境、生产环境部署的，<strong>都是同一个文件</strong>。
+                    环境之间的差异<strong>只通过外部配置注入</strong>，不通过重新构建体现</td>
+                </tr>
+                <tr>
+                  <td><strong>失败即停</strong><br><small class="muted">fail fast</small></td>
+                  <td>任一阶段没通过，<strong>这个制品就地停下</strong>，不进入下一阶段。
+                    没有「先放过去，后面再补」，也没有「这个测试老是偶发失败，标成允许失败」</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>这两条表述为本站教学整理，属持续交付领域的通行原则，
+            DOFD 官方文件未以「铁律」或此措辞给出。可引为官方的是 <em>Deployment pipeline</em> 这一术语本身，
+            以及 PeopleCert DevOps Foundation Blueprint 中 <em>Principles &amp; Practices</em> 一栏的逐字表述
+            —— 频繁的小批量发布「reduce lead time, costs and risks」，
+            这两条铁律正是对其中 <strong>risks</strong> 的直接回应。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p><strong>铁律一的痛点：预发全绿，生产炸了。</strong></p>
+          <ul>
+            <li>某团队的流水线在每个环境各自执行一次构建，理由听起来很正当：
+              「这样能保证构建出来的东西跟该环境匹配」。</li>
+            <li>某次上线，预发全部通过，生产启动即失败。查了 5 个小时，
+              原因是生产构建机上一个传递依赖被解析成了另一个小版本 ——
+              <strong>预发验证过的那个二进制，和生产上跑的那个，压根不是同一个东西</strong>。</li>
+            <li>本质问题：每个环境各自构建，等于<strong>每次上生产都在部署一个从来没被测试碰过的制品</strong>。
+              前面所有阶段的验证结论，对生产上的那个文件<strong>一条都不成立</strong>。</li>
+          </ul>
+          <p><strong>铁律二的痛点：破窗。</strong></p>
+          <ul class="mb-0">
+            <li>一个测试偶发失败，团队为了不挡住发布，把它标成「允许失败」。第二个月又标了 6 个。</li>
+            <li>三个月后，那条流水线的红灯没人再看 —— <strong>因为红灯已经不代表任何东西</strong>。
+              一旦允许带病往下走，验证关卡就退化成了一排装饰。</li>
+            <li>失败即停真正保护的不是这一次发布，而是<strong>「绿灯意味着可以上生产」这个信念</strong>。
+              这个信念一旦破产，重建的成本远高于当初停下来修那一次。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上两个案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 6-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 940 400" role="img" aria-label="制品只构建一次与每个环境各自构建的对比：前者各环境部署同一个二进制，后者生产上的二进制从未被测试过">
+              <defs>
+                <marker id="ah-62-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-62-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <!-- 左：正确 -->
+              <rect x="20" y="8" width="440" height="320" rx="12" class="s-1" stroke-width="2" fill="none"/>
+              <text x="240" y="34" class="f-1" font-size="15" font-weight="700" text-anchor="middle">铁律：只构建一次，同一制品逐环境部署</text>
+
+              <rect x="44" y="46" width="392" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="240" y="70" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">提交阶段构建一次：源码 → 制品 v1.7.3</text>
+              <text x="240" y="90" class="s-muted" font-size="12.5" text-anchor="middle">版本号与校验和固定，此后不再重新编译</text>
+
+              <g class="s-1" stroke-width="2" fill="none">
+                <line x1="240" y1="102" x2="240" y2="126"/>
+                <line x1="100" y1="126" x2="380" y2="126"/>
+                <line x1="100" y1="126" x2="100" y2="146" marker-end="url(#ah-62-3)"/>
+                <line x1="240" y1="126" x2="240" y2="146" marker-end="url(#ah-62-3)"/>
+                <line x1="380" y1="126" x2="380" y2="146" marker-end="url(#ah-62-3)"/>
+              </g>
+
+              <rect x="40"  y="150" width="120" height="70" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="180" y="150" width="120" height="70" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="320" y="150" width="120" height="70" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="100" y="178" class="s-ink" font-size="13.5" font-weight="650">测试环境</text>
+                <text x="100" y="200" class="f-1"  font-size="13">部署 v1.7.3</text>
+                <text x="240" y="178" class="s-ink" font-size="13.5" font-weight="650">类生产环境</text>
+                <text x="240" y="200" class="f-1"  font-size="13">部署 v1.7.3</text>
+                <text x="380" y="178" class="s-ink" font-size="13.5" font-weight="650">生产环境</text>
+                <text x="380" y="200" class="f-1"  font-size="13">部署 v1.7.3</text>
+              </g>
+
+              <rect x="44" y="240" width="392" height="72" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="240" y="266" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">生产上跑的这个二进制</text>
+              <text x="240" y="290" class="f-1" font-size="13.5" font-weight="650" text-anchor="middle">已经在前两个环境里被完整验证过</text>
+
+              <!-- 右：错误 -->
+              <rect x="480" y="8" width="440" height="320" rx="12" class="s-5" stroke-width="2" fill="none"/>
+              <text x="700" y="34" class="f-5" font-size="15" font-weight="700" text-anchor="middle">反模式：每个环境各自重新构建</text>
+
+              <rect x="500" y="46" width="120" height="56" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="640" y="46" width="120" height="56" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="780" y="46" width="120" height="56" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="560" y="70" class="s-ink" font-size="13.5" font-weight="650">构建 → 制品 A</text>
+                <text x="560" y="90" class="s-muted" font-size="12.5">各自编译</text>
+                <text x="700" y="70" class="s-ink" font-size="13.5" font-weight="650">构建 → 制品 B</text>
+                <text x="700" y="90" class="s-muted" font-size="12.5">各自编译</text>
+                <text x="840" y="70" class="s-ink" font-size="13.5" font-weight="650">构建 → 制品 C</text>
+                <text x="840" y="90" class="s-muted" font-size="12.5">各自编译</text>
+              </g>
+
+              <g class="s-5" stroke-width="2" fill="none">
+                <line x1="560" y1="102" x2="560" y2="146" marker-end="url(#ah-62-4)"/>
+                <line x1="700" y1="102" x2="700" y2="146" marker-end="url(#ah-62-4)"/>
+                <line x1="840" y1="102" x2="840" y2="146" marker-end="url(#ah-62-4)"/>
+              </g>
+
+              <rect x="500" y="150" width="120" height="70" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="640" y="150" width="120" height="70" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="780" y="150" width="120" height="70" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="560" y="178" class="s-ink" font-size="13.5" font-weight="650">测试环境</text>
+                <text x="560" y="200" class="f-5"  font-size="13">部署 A · 已测</text>
+                <text x="700" y="178" class="s-ink" font-size="13.5" font-weight="650">类生产环境</text>
+                <text x="700" y="200" class="f-5"  font-size="13">部署 B · 已测</text>
+                <text x="840" y="178" class="s-ink" font-size="13.5" font-weight="650">生产环境</text>
+                <text x="840" y="200" class="f-5"  font-size="13">部署 C · 没测过</text>
+              </g>
+
+              <rect x="500" y="240" width="400" height="72" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="700" y="266" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">A、B、C 是三个不同的二进制</text>
+              <text x="700" y="290" class="f-5" font-size="13.5" font-weight="650" text-anchor="middle">前面所有测试结论，对生产上的 C 一条都不成立</text>
+
+              <text x="470" y="356" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">同一个制品向右传递 = 每个环境验证的都是同一个东西</text>
+              <text x="470" y="380" class="f-5" font-size="13.5" font-weight="650" text-anchor="middle">各环境各自构建 = 每次上生产，都在部署一个从没被测过的东西</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-2-2　制品只构建一次 vs 每个环境各自构建。</strong>
+            要看懂的是右半边最后一个方框：<strong>A、B、C 是三个不同的文件</strong>。
+            右侧那条流水线的每个阶段看起来都跑了、都绿了，
+            但它验证的是 A 和 B，<strong>生产上跑的是从未经过任何验证的 C</strong> ——
+            所有测试投入在最后一步被清零。
+            左半边则相反：三个环境部署的是同一个 v1.7.3，环境差异只通过外部配置注入，
+            所以前两个环境的每一次通过，都是对生产上那个文件的直接证明。
+            <br><small class="muted">本对比图为本站教学整理，DOFD 官方文件未给出该对照；版本号与制品名为示意。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">铁律的说法</th><th>常见的误读</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>制品只构建一次</strong></td>
+                  <td>只<strong>构建</strong>一次，然后<strong>部署很多次</strong>。部署次数越多越好</td>
+                  <td>误读成「只部署一次」。两者毫无关系 —— 同一个制品可能被部署到几十个环境、上百次</td>
+                </tr>
+                <tr>
+                  <td><strong>环境差异怎么处理</strong></td>
+                  <td>通过<strong>外部配置注入</strong>：连接串、开关、资源规格从环境读取</td>
+                  <td>误读成「所以不能有环境差异」。差异当然存在，只是不能靠<strong>重新编译</strong>来体现</td>
+                </tr>
+                <tr>
+                  <td><strong>失败即停</strong></td>
+                  <td>停的是<strong>这一个制品的前进</strong>：它不进下一阶段</td>
+                  <td>误读成「整条流水线停摆、所有人不许提交」。别的提交仍然可以跑自己的流水线实例</td>
+                </tr>
+                <tr>
+                  <td><strong>失败即停 vs 自动重试</strong></td>
+                  <td>红灯要被<strong>看见并修掉</strong></td>
+                  <td>误读成「加个自动重试就不算失败了」。重试掩盖的是不稳定，
+                    <strong>它让红灯失去含义，正是破窗的第一步</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「构建一次」限制的是编译打包，不是部署</strong>。
+            正好相反 —— 正因为只构建一次，同一个制品才能被放心地反复部署，
+            <span class="term">部署频率 <span class="en">Deployment frequency</span></span>才可能提上去。
+            把这条铁律记成「少部署」，方向刚好反了。</small></p>
+          <p class="mb-0 muted"><small>本对照表的四组「说法 vs 误读」为本站教学整理，官方未以此形式给出；
+            <em>Deployment frequency</em> 列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>建一个制品仓库，版本号不可变</strong>：制品带唯一版本与校验和，
+              一旦发布就不允许覆盖。「同名不同内容」是这条铁律最常见的破法。</li>
+            <li><strong>让制品可追溯到提交</strong>：任何一个在生产上跑的制品，
+              都能回答「来自哪次提交、过了哪几个阶段、谁批的」。这也是审计要的东西。</li>
+            <li><strong>配置与制品分离</strong>：配置文件不进制品包。
+              判据很简单 —— <strong>换环境时如果需要重新打包，就说明配置进包了</strong>。</li>
+            <li><strong>红灯优先于新功能</strong>：流水线红着的时候，修它的优先级高于写新代码。
+              这是「失败即停」在人身上的那一半，只靠工具落实不了。</li>
+            <li><strong>不稳定测试要隔离，不要忽略</strong>：把它移出主路径单独治理并限期修复，
+              而不是永久标成「允许失败」。两者的区别是<strong>有没有截止日期</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条落地动作为本站教学整理，官方文件未规定实施方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度：问部署流水线的特征</strong>。这两条铁律不是官方逐字条目，
+              但它们是描述流水线时最常出现的正确表述，选项里通常以
+              「各环境部署<strong>同一个</strong>制品」「某阶段失败则<strong>不再继续</strong>」这样的句式出现。</li>
+            <li><strong>最像对的干扰项</strong>：<strong>「为每个环境分别构建，以确保与该环境匹配」</strong>。
+              它读起来非常合理，甚至像是严谨的做法 —— 但它恰恰取消了前面所有测试的效力。
+              见到「分别构建 / 各自编译 / per-environment build」这类措辞，直接划掉。</li>
+            <li><strong>第二种干扰项</strong>：「失败的阶段可以跳过，等发布后再修复」。
+              凡是允许<strong>带病继续</strong>的选项，在这一组题里都是错的方向。</li>
+            <li><strong>排除技巧</strong>：把每个选项代入一句反问 ——
+              <strong>「按这个做法，上生产的那个东西被测过吗？红灯还有意义吗？」</strong>
+              两个答案里只要有一个是「否」，这个选项就不是流水线的正确描述。</li>
+            <li><strong>与 3.3 的联动</strong>：题干若同时出现流水线与「按需一键部署」，
+              答案落在<strong>持续交付</strong>（<strong>由 DOFD v3.4 官方样题答案键确认</strong>），
+              别被本节的铁律带偏去选「部署流水线」。</li>
+          </ul>
+          <p class="mb-0 muted"><small>除明确标注「官方样题答案键确认」的一条外，
+            以上命题角度、干扰项分析与排除技巧均为本站教学推断，官方未公布命题规律；
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">构建一次，处处部署；一处失败，就地停下。</p>
+          <p class="mb-0 muted"><small>反问式自检：<strong>「生产上跑的那个文件，被前面哪个阶段测过？」</strong>
+            答不上来，就说明这条流水线违反了第一条铁律。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>定义</strong>：<em>Deployment pipeline</em> 是从一次提交到生产之间<strong>唯一的那条自动化通道</strong>，
+          由前后依赖、各有通过标准的阶段组成（<em>Deployment pipeline</em> 列于 DOFD v3.4 官方考纲术语表）</li>
+        <li><strong>五段结构</strong>：提交阶段（编译 · 单元 · 静态扫描）→ 验收阶段（集成 · 自动化验收）→
+          非功能测试（性能 · 安全）→ 手工验证 / UAT（<strong>可选</strong>）→ 生产部署（本站教学整理的阶段划分）</li>
+        <li><strong>铁律一</strong>：<strong>制品只构建一次</strong>，各环境部署同一个二进制，差异只靠配置注入。
+          每环境各自构建 = 每次上生产都在部署一个从没被测过的东西</li>
+        <li><strong>铁律二</strong>：<strong>任一阶段失败即停</strong>，不允许带病往下走。放过一次，红灯就少一分含义
+          <br><small class="muted">（两条铁律的措辞与「铁律」这一提法为本站教学整理，官方未以此形式给出）</small></li>
+        <li><strong>十分钟规则</strong>：提交阶段超过十分钟，开发者开始攒批与切换上下文，
+          <a href="../ch02-core-principles/2.2-first-way-flow.html">第一步 · 流动（2.2）</a>被破坏（阈值为本站教学整理）</li>
+        <li><strong>官方确认（DOFD v3.4 官方样题答案键）</strong>：依赖部署流水线实现<strong>按需一键部署 → 持续交付</strong>；
+          持续集成的必要前提是自动化的<strong>单元、集成与验收测试</strong>；
+          自动部署每个通过<strong>单元、集成、用户验收与非功能测试</strong>的版本 → 持续部署
+          <br><small class="muted">（官方确认的那份持续集成前提清单中未列入非功能测试；由此推出「CI 前提不含非功能测试」是本站教学推断）</small></li>
+        <li><strong>别混</strong>：流水线是<strong>机制</strong>，持续交付是<strong>实践</strong>；
+          流水线是<strong>有序通道</strong>，工具链是<strong>工具集合</strong>；
+          流水线是<strong>价值流映射的可执行版本</strong>（<a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a>）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Deployment pipeline</em>、<em>Continuous integration</em>、<em>Continuous delivery</em>、
+      <em>Continuous deployment</em>、<em>Continuous testing</em>、<em>Testing (unit, acceptance, integration)</em>、
+      <em>Code commit</em>、<em>Deployment frequency</em>、<em>DevOps toolchain</em>、<em>Value stream mapping</em>、
+      <em>Single Point of Failure (SPOF)</em> 均列于
+      <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>；
+      该术语表只列词条、不附定义，因此本页对各术语给出的中文释义均为本站措辞。
+      本节主题属 v3.4 课程大纲 M6 模块 <em>Automation &amp; Architecting DevOps Toolchains</em> 的 <em>CI/CD</em> 子项范围。
+      <strong>可引为官方的表述</strong>：PeopleCert DevOps Foundation Blueprint 的
+      <em>Principles &amp; Practices</em> 一栏逐字写着
+      「Frequent small releases using continuous integration, testing, delivery, deployments and monitoring
+      reduce lead time, costs and risks」。
+      <strong>三条由 DOFD v3.4 官方样题答案键确认</strong>：依赖部署流水线实现「按需一键部署」的实践是<strong>持续交付</strong>；
+      持续集成的必要前提是自动化的<strong>单元、集成与验收测试</strong>；
+      自动部署每个通过<strong>单元、集成、用户验收与非功能测试</strong>的版本属于<strong>持续部署</strong>。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>本站教学整理部分</strong>：五阶段的划分、命名、典型时长与反馈对象（图 6-2-1 与 kp-6-2-2 表格）、
+      「十分钟规则」这一阈值、「制品只构建一次」与「失败即停」两条铁律的措辞与对照图（图 6-2-2）、
+      各面中的对照表、落地清单、干扰项分析与排除技巧 —— 官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例为本站构造的教学示例，非真实调研数据。
+      持续交付与持续部署的辨析见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>，
+      持续集成的展开见 <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2 持续集成</a>，
+      持续测试见 <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1 持续测试</a>，
+      流水线相关指标见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

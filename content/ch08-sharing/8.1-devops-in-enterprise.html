@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.1 企业中的 DevOps · DevOps Foundation 学习站</title>
+<meta name="description" content="一个团队做 DevOps 是技术题，几十个团队做 DevOps 是扩散题。本节讲清企业规模下难题的性质变化、三种规模化路径的适用条件与失败模式，以及 CBOK、Immersion、Dojo 这些官方术语在知识扩散链上各补哪一环。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch08", sec:"8.1-devops-in-enterprise"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 8 章 · 分享、跟随与演进</div>
+      <h1 class="page-head__title">8.1 企业中的 DevOps</h1>
+      <div class="page-head__en">DevOps in the Enterprise</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        前七章讲的是<strong>一个团队怎么做到</strong>。到了这一章，问题换了：
+        <strong>怎么让第 2 个到第 50 个团队也做到</strong>，以及<strong>怎么和既有的合规、审计、采购、预算流程共处</strong>。
+        这两件事都不是技术问题。本章的官方依据就是 CALMS 的 <strong>S</strong>，Blueprint 逐字写的是
+        <em>S: Sharing - Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>
+        （出自 PeopleCert DevOps Foundation Blueprint）。这句里的
+        <strong>share ideas, and skills</strong> 正是本章「分享、跟随与演进」的出处。
+        本站在这句官方原文之上再推一步：<strong>规模化的瓶颈在知识扩散，不在流水线</strong> ——
+        这一步推论是本站教学表述。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>从一个团队做 DevOps 到整个企业做 DevOps，<strong>难题的性质</strong>发生了什么变化</li>
+        <li>三种规模化路径各自在什么条件下成立，<strong>失败时分别长什么样</strong></li>
+        <li>监管留痕、遗留系统、外包合同、跨时区 —— 哪些是<strong>真约束</strong>，哪些只是<strong>习惯</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-1-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 1020 436" role="img" aria-label="一个团队的局部成功变成组织能力的五环扩散链路，以及每一环断裂时会发生什么">
+          <defs>
+            <marker id="ah-81-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="10" y="30" class="s-ink" font-size="15" font-weight="700">局部成功 → 组织能力：中间有四道必须接通的环</text>
+
+          <!-- 五个节点 -->
+          <rect x="10"  y="54" width="168" height="96" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="218" y="54" width="168" height="96" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="426" y="54" width="168" height="96" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="634" y="54" width="168" height="96" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="842" y="54" width="168" height="96" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="94"  y="84"  class="f-1" font-size="13.5" font-weight="700">① 局部成功</text>
+            <text x="94"  y="110" class="s-ink" font-size="12.5">一个团队做出了</text>
+            <text x="94"  y="132" class="s-ink" font-size="12.5">可衡量的改善</text>
+
+            <text x="302" y="84"  class="s-ink" font-size="13.5" font-weight="700">② 变成知识</text>
+            <text x="302" y="110" class="s-ink" font-size="12.5">写成别人能直接</text>
+            <text x="302" y="132" class="s-ink" font-size="12.5">照着做的东西</text>
+
+            <text x="510" y="84"  class="s-ink" font-size="13.5" font-weight="700">③ 被看见</text>
+            <text x="510" y="110" class="s-ink" font-size="12.5">别的团队知道它</text>
+            <text x="510" y="132" class="s-ink" font-size="12.5">存在，也找得到</text>
+
+            <text x="718" y="84"  class="s-ink" font-size="13.5" font-weight="700">④ 被试用</text>
+            <text x="718" y="110" class="s-ink" font-size="12.5">别的团队在自己</text>
+            <text x="718" y="132" class="s-ink" font-size="12.5">的场景里跑一遍</text>
+
+            <text x="926" y="84"  class="f-3" font-size="13.5" font-weight="700">⑤ 成为组织能力</text>
+            <text x="926" y="110" class="s-ink" font-size="12.5">不再依赖某几个人</text>
+            <text x="926" y="132" class="s-ink" font-size="12.5">它成了默认做法</text>
+          </g>
+
+          <!-- 环与环之间 -->
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="180" y1="102" x2="214" y2="102" marker-end="url(#ah-81-1)"/>
+            <line x1="388" y1="102" x2="422" y2="102" marker-end="url(#ah-81-1)"/>
+            <line x1="596" y1="102" x2="630" y2="102" marker-end="url(#ah-81-1)"/>
+            <line x1="804" y1="102" x2="838" y2="102" marker-end="url(#ah-81-1)"/>
+          </g>
+
+          <!-- 断裂点连线 -->
+          <g class="s-5" stroke-width="1.6" fill="none" stroke-dasharray="5 5">
+            <line x1="197" y1="112" x2="196" y2="192"/>
+            <line x1="405" y1="112" x2="404" y2="192"/>
+            <line x1="613" y1="112" x2="612" y2="192"/>
+            <line x1="821" y1="112" x2="820" y2="192"/>
+          </g>
+
+          <!-- 四个断裂盒 -->
+          <rect x="100" y="196" width="196" height="104" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <rect x="308" y="196" width="196" height="104" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <rect x="516" y="196" width="196" height="104" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <rect x="724" y="196" width="196" height="104" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+
+          <text x="114" y="222" class="f-5" font-size="13" font-weight="700">断在「记录」</text>
+          <text x="114" y="248" class="s-ink" font-size="12.5">做法只留在当事人脑子里</text>
+          <text x="114" y="270" class="s-ink" font-size="12.5">关键的人一调岗就归零</text>
+          <text x="114" y="292" class="s-muted" font-size="12.5">留下的是传说，不是方法</text>
+
+          <text x="322" y="222" class="f-5" font-size="13" font-weight="700">断在「可见」</text>
+          <text x="322" y="248" class="s-ink" font-size="12.5">写下来了，但没人找得到</text>
+          <text x="322" y="270" class="s-ink" font-size="12.5">另一个团队半年后</text>
+          <text x="322" y="292" class="s-muted" font-size="12.5">重新踩同一个坑</text>
+
+          <text x="530" y="222" class="f-5" font-size="13" font-weight="700">断在「试用」</text>
+          <text x="530" y="248" class="s-ink" font-size="12.5">「他们那套在我们这不行」</text>
+          <text x="530" y="270" class="s-ink" font-size="12.5">知识被当成特例挡回去</text>
+          <text x="530" y="292" class="s-muted" font-size="12.5">分享会开了，行为没变</text>
+
+          <text x="738" y="222" class="f-5" font-size="13" font-weight="700">断在「回流」</text>
+          <text x="738" y="248" class="s-ink" font-size="12.5">十个团队十个私有版本</text>
+          <text x="738" y="270" class="s-ink" font-size="12.5">谁也不去修正共享那份</text>
+          <text x="738" y="292" class="s-muted" font-size="12.5">半年后没人再信它</text>
+
+          <!-- 第三步工作法呼应 -->
+          <rect x="10" y="326" width="1000" height="64" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="26" y="352" class="f-1" font-size="13.5" font-weight="700">这条链服务的是第三步 · 持续改进（实验与学习）。</text>
+          <text x="26" y="376" class="s-ink" font-size="13">推广受阻时，问题通常不在第 ① 环，而在 ② 到 ⑤ 当中的某一环。</text>
+
+          <text x="10" y="416" class="s-muted" font-size="12.5">⑤ 若始终到不了：试点团队被当成展览，年年在同一场分享会上讲同一个故事，组织能力没有增加。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-1-1　从局部成功到组织能力的扩散链。</strong>
+        要看懂的是：<strong>第 ① 环是团队级 DevOps 的终点，却只是企业级 DevOps 的起点</strong>。
+        企业里被反复讨论的「怎么推广」，实际上是在问 ② 到 ⑤ 这四环哪一环断了 ——
+        断点不同，该做的事完全不同：断在「记录」要补的是可复用的写法，断在「试用」要补的是让人带着真实工作进场的机制。
+        <br><small class="muted">五环链路与四个断裂点的划分为本站教学整理，官方未以此形式给出扩散模型；
+        图中「问题通常断在 ② 到 ⑤ 之间」这一判断同为本站教学推断，无官方或调研数据支撑。
+        「把局部发现转化为全局改进」这一措辞是第三步的通行阐述与本站教学表述，不是官方措辞，
+        见 <a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步 · 持续改进（2.5）</a>同一标注。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-8-1-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-1-1</div>
+        <h3 class="kp__title">企业中的 DevOps：难题从技术变成扩散<span class="en">DevOps in the Enterprise</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">企业中的 DevOps <span class="en">DevOps in the Enterprise</span></span>
+            指的是<strong>把 DevOps 从一个团队的做法，变成整个组织的默认做法</strong>。
+            它要同时解决两件事：<strong>知识如何在几十个团队之间扩散</strong>，
+            以及<strong>新做法如何与既有的合规、审计、采购、预算流程共存</strong>。
+          </p>
+          <p>
+            这正是 CALMS 里 <strong>S</strong> 的位置。
+            <span class="term">CALMS</span> 五个字母是
+            <em>C: Culture</em> / <em>A: Automation</em> / <em>L: Lean</em> /
+            <em>M: Measurement</em> / <em>S: <strong>Sharing</strong></em>。
+            Blueprint 对 <strong>S</strong> 这一格给出的<strong>官方描述句</strong>是：
+          </p>
+          <p>
+            <em>S: Sharing - Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>
+          </p>
+          <p>
+            <small class="muted">这句是<strong>官方原文</strong>，出自 PeopleCert DevOps Foundation Blueprint。
+            中译「领导者与团队分享想法与技能，改善沟通、协作与绩效」为本站译文。
+            注意它逐字点名了 <strong>share ideas, and skills</strong> —— 分享的对象是<strong>想法与技能</strong>，
+            不是工具或代码仓库，这是本章全部内容的原则依据。</small>
+          </p>
+          <p class="mb-0 muted"><small><strong>DevOps in the Enterprise</strong> 是 DOFD v3.4 课程大纲 M8 模块
+            <em>Sharing, Shadowing and Evolving</em> 的首个子项，本身不在 66 条术语表内；
+            <strong>CALMS</strong> 与 <strong>Collaboration and communication</strong> 则列于
+            DOFD v3.4 官方考纲术语表（Concept and Terminology List）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>痛点场景：<strong>试点成功了，推广失败了</strong>。</p>
+          <ul>
+            <li>某银行零售 IT，一支 12 人的支付团队用 18 个月把变更前置时间从 <strong>6 周降到 2 天</strong>
+              （此处采用<strong>精益价值流口径</strong>，从<strong>需求被接受</strong>算起，含排队等待；
+              DORA 口径则从<strong>代码提交</strong>算起，两种口径的辨析见
+              <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间与周期时间</a>）。
+              管理层要求「照这个样子推广到其余 40 个团队」。<strong>又过 18 个月，只有 3 个团队达到了类似水平。</strong></li>
+            <li>复盘发现，试点的成功里混着<strong>四项别的团队拿不到的东西</strong>：
+              12 人中有 4 名是从架构组专门借调的资深工程师；
+              试点期被特批<strong>免走变更评审会</strong>；
+              他们的系统是两年前新建的，而其余 40 个团队里有 26 个跑在同一个共享单体上；
+              工具投入走的是一次性项目预算，日常运维预算里根本没有这一项。</li>
+            <li>结论很朴素：<strong>可以扩散的是做法，不能扩散的是特权。</strong>
+              只复制做法而不复制条件，第 2 到第 50 个团队面对的是完全不同的一道题。</li>
+          </ul>
+          <p>
+            所以企业级 DevOps 的难题不再是「怎么建流水线」。
+            流水线是可复制的，<strong>人员配置、审批豁免、系统结构与资金模式不是</strong>。
+            其中资金模式尤其隐蔽 —— 项目制预算天然只养得起试点，养不起长期演进，
+            这一层见 <a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">企业中的 DevOps</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>单个团队做 DevOps</strong></td>
+                  <td>问题是<strong>扩散与共存</strong>：一个团队学到的怎么到第 50 个团队，以及怎么跟合规、采购、预算并存</td>
+                  <td>问题是<strong>技术与协作</strong>：流水线、自动化测试、跨职能配合。边界之内自己就能解决</td>
+                </tr>
+                <tr>
+                  <td><strong>运营模型 <span class="en">Operating Models</span></strong></td>
+                  <td>问<strong>「知识与实践怎么流动到别处」</strong>，关注的是扩散链条</td>
+                  <td>问<strong>「工作与责任按什么形态组织」</strong>，关注的是结构本身。见 <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a></td>
+                </tr>
+                <tr>
+                  <td><strong>CALMS 的 S · Sharing</strong></td>
+                  <td>是一个<strong>模块主题</strong>（M8），涵盖角色、领导力、组织考量、起步与风险</td>
+                  <td>是 CALMS <strong>五个维度之一</strong>，官方描述句 <em>S: Sharing - Leaders and teams share ideas, and skills…</em>
+                    出自 PeopleCert DevOps Foundation Blueprint，是本节的原则依据，不是本节的全部内容</td>
+                </tr>
+                <tr>
+                  <td><strong>SAFe <span class="en">Scaled Agile Framework</span></strong></td>
+                  <td><strong>不绑定任何框架</strong>，只谈扩散与共存这两个问题</td>
+                  <td>是一个<strong>具体的规模化框架</strong>，规定了角色、节奏与工件。见 <a href="../ch04-frameworks/4.2-agile-scrum.html">第 4 章 Agile 与 Scrum（4.2）</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>企业级 DevOps 不是「规模更大的团队级 DevOps」，难题的性质换了</strong>。
+            团队级的成功指标是「这条流水线跑通了」，企业级的成功指标是「第 20 个团队不需要认识第 1 个团队的人也能做到」。
+            把后者当成前者的放大版，就会得出「再多招几个 DevOps 工程师」这种解法。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出四组对照；
+            <em>Scaled Agile Framework (SAFe)</em> 与 <em>CALMS</em> 是 DOFD v3.4 官方考纲术语表条目，
+            <em>Operating Models</em> 不在该术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            企业环境里总有一堆「做不了 DevOps」的理由。有用的第一步不是反驳，而是逐条拆开：
+            <strong>哪一部分是法律与物理意义上的真约束，哪一部分只是沿用至今的习惯。</strong>
+            真约束要绕着走，习惯可以直接改。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:19%">企业约束</th><th style="width:26%">真约束的部分</th><th style="width:26%">只是习惯的部分</th><th>处理方向</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>监管与审计</strong><br><small class="muted">变更必须留痕</small></td>
+                  <td>必须存在<strong>可追溯的授权记录与变更记录</strong>，且能被外部审计取证</td>
+                  <td>「留痕 = 开评审会 + 人工签字 + 事后补一份 Word」这一整套<strong>形式</strong></td>
+                  <td>让流水线本身产出审计证据：谁提交、过了哪些测试、谁批准、何时上线，全部自动记录。闸门保留但做快，见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付 vs 持续部署（3.3）</a></td>
+                </tr>
+                <tr>
+                  <td><strong>遗留系统</strong><br><small class="muted">无法频繁发布</small></td>
+                  <td>单体耦合、缺自动化测试、发布窗口受硬件或合同限制 —— 这些改起来要按年计</td>
+                  <td>「既然老系统发不快，全组织就统一按老系统的节奏发」</td>
+                  <td>拆节奏而不是拆系统：新建边界按天发，遗留系统先做到<strong>可重复、可回滚</strong>的发布，再谈频率</td>
+                </tr>
+                <tr>
+                  <td><strong>外包合同</strong><br><small class="muted">按项目计价</small></td>
+                  <td>合同期限、验收条款、结算方式是<strong>法律事实</strong>，改要走商务流程</td>
+                  <td>「因为是外包，所以不能做 DevOps」这个推论本身</td>
+                  <td>换验收对象：从验收交付物改为验收<strong>可运行的结果与服务水平</strong>；资金模式见 <a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a></td>
+                </tr>
+                <tr>
+                  <td><strong>跨地域团队</strong><br><small class="muted">时区差</small></td>
+                  <td>每天的<strong>重叠工作时间确实有限</strong>，物理事实</td>
+                  <td>「重要的事必须靠同步会议对齐」</td>
+                  <td>把同步沟通换成<strong>可追溯的异步沟通</strong>（见 <a href="../ch03-key-practices/3.6-chatops.html">第 3 章 ChatOps（3.6）</a>）；并按<strong>减少交接点</strong>切团队边界</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>判断动作只有一个：把「做不了」的理由写下来，逐条问 —— <strong>如果监管机构明天说这条不要求了，这个组织会立刻改吗？</strong>
+            会改，说明它是习惯；不会改，说明它背后还有别的真约束没说出来。</p>
+          <p class="mb-0 muted"><small>本表的「真约束 / 习惯」拆分方式与四类约束的处理方向均为本站教学整理，
+            官方文件未给出企业约束清单，也未规定应对方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条在企业语境里最常出现：题干描述一个组织要在全公司铺开 DevOps，问依据是什么。
+              答案不是「行业最佳实践」，也不是「工具成熟度」，而是<strong>业务战略与目标</strong>。
+              该判断的另一半展开见 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 业务与 IT 视角（1.3）</a>。</li>
+            <li><strong>CALMS 的字母题</strong>：<strong>S 是 Sharing</strong>，不是 Security，也不是 Standardization。
+              Blueprint 对这一格的官方描述句是
+              <em>Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>
+              —— <strong>分享的是想法与技能</strong>，改善的是<strong>沟通、协作与绩效</strong>，四个落点都写在官方原文里。
+              <em>CALMS</em> 是官方考纲术语表条目，属必背。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把 Sharing 窄化成<strong>「共用同一套工具」或「统一代码仓库」</strong> —— 这是工具层，不是这一维度指向的东西；
+              把 S 换成 <strong>Security</strong>（借 DevSecOps 制造混淆，见 <a href="../ch03-key-practices/3.5-devsecops.html">3.5</a>）；
+              把「企业中的 DevOps」等同于<strong>某个规模化框架</strong>（如 SAFe）。</li>
+            <li><strong>模块权重</strong>：M8 <em>Sharing, Shadowing and Evolving</em> 最多 <strong>4 题</strong>
+              （DOFD v3.4 Examination Requirements，2022-05）。<strong>v3.6 未公开重新发布权重表。</strong></li>
+            <li><strong>排除技巧</strong>：企业类题干里出现「全公司 / 整个组织 / 多个团队」时，
+              先划掉一切只描述<strong>单团队技术动作</strong>的选项（建流水线、加测试、换工具），
+              剩下的往往是关于<strong>战略、文化与知识扩散</strong>的那一项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布命题规律与逐题分级，本面中的命题角度分析与排除技巧均为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">一个团队做 DevOps 是技术题；几十个团队做 DevOps 是扩散题。</p>
+          <p class="mb-0 muted"><small>配套一句：<strong>可以扩散的是做法，不能扩散的是特权。</strong>
+            试点如果靠借调专家、审批豁免、专项预算撑起来，它证明的只是「给足资源就能做到」，不是「这套做法可复制」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-8-1-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-1-2</div>
+        <h3 class="kp__title">规模化的三种路径<span class="en">Grassroots / Top-down / Center of Excellence</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            组织把 DevOps 从少数团队铺到全公司，实践中反复出现三种路径：
+          </p>
+          <ul>
+            <li><strong>自下而上 · 星火燎原</strong>：几个团队自己干出成果，靠口碑向外传。</li>
+            <li><strong>自上而下 · 统一推行</strong>：管理层立项，用统一的流程、平台与考核往下推。</li>
+            <li><strong>卓越中心 / 使能团队</strong>：抽出一支专职小队，巡回进驻各团队，教会一个撤出一个。
+              它把人送进真实场景里练，靠的是<span class="term">沉浸式学习 <span class="en">Immersion</span></span>
+              与 <span class="term">Dojo</span>（沉浸式实战训练场）这两个官方术语，详见 kp-8-1-3。</li>
+          </ul>
+          <p class="mb-0">
+            三者的分野不在「谁下命令」，而在<strong>扩散成本由谁承担</strong>：
+            自下而上由接收方自己承担，自上而下由被推行方承担，卓越中心由一支专职队伍承担。
+          </p>
+          <div class="src-note">
+            这三条路径的<strong>命名与划分是本站教学整理</strong>，DOFD v3.4 官方考纲
+            <strong>未给出规模化路径分类</strong>，66 条术语表中也没有
+            <em>Center of Excellence</em>、<em>Enabling Team</em>、<em>Grassroots</em> 这些词条。
+            官方在 M8 模块列出的子项是 <em>DevOps in the Enterprise</em>、<em>Roles</em>、
+            <em>DevOps Leadership</em>、<em>Organizational Considerations</em>、<em>Getting Started</em>、
+            <em>Challenges, Risks, and Critical Success Factors</em>。
+            本知识点用于组织理解，考试不会直接考这三个路径名。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点是一个具体的会议场景：<strong>试点做成了，管理层问「那我们怎么推」</strong>。
+            现场通常只会给出两个默认答案，而这两个答案各自都有一种典型的死法。
+          </p>
+          <ul>
+            <li><strong>只等自发</strong>：某互联网公司三年不设任何推广机制，期待「好东西自己会传开」。
+              三年后仍然只有最初那两个团队做到，因为其余团队从来没有一段被允许「暂停交付需求去改工程能力」的时间。
+              <strong>知识不会自己走路，它需要有人替接收方腾出成本。</strong></li>
+            <li><strong>一纸文件全铺</strong>：某制造企业 IT 部门下令「所有团队 Q3 前建立 CI 流水线」。
+              Q3 末达标率 <strong>100%</strong>，但抽查发现 <strong>61% 的流水线只有一个空的构建步骤，没有任何测试</strong>。
+              指标达成，行为没变 —— 这是典型的<strong>合规式采纳</strong>，
+              它直接转化为<a href="../ch05-culture/5.2-cultural-debt.html">第 5 章 文化债（5.2）</a>：
+              组织从此多了一套「大家都知道是走过场」的流程。</li>
+          </ul>
+          <p class="mb-0">
+            三条路径之所以要摆出来对照，就是因为<strong>这两种失败长得完全不同，救法也完全不同</strong>：
+            前者缺的是承担扩散成本的人，后者缺的是让行为真正改变的机制。
+          </p>
+          <p class="mb-0 muted"><small>以上两个案例均为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 8-1-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 1000 446" role="img" aria-label="三种规模化路径在起点、扩散机制、适用条件与典型失败模式四个维度上的对比">
+              <!-- 表头 -->
+              <rect x="120" y="14" width="276" height="58" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="412" y="14" width="276" height="58" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="704" y="14" width="276" height="58" rx="8" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <text x="258" y="40" class="f-1" font-size="14.5" font-weight="700" text-anchor="middle">自下而上 · 星火燎原</text>
+              <text x="258" y="60" class="s-muted" font-size="12" text-anchor="middle">Grassroots</text>
+              <text x="550" y="40" class="f-3" font-size="14.5" font-weight="700" text-anchor="middle">自上而下 · 统一推行</text>
+              <text x="550" y="60" class="s-muted" font-size="12" text-anchor="middle">Top-down</text>
+              <text x="842" y="40" class="f-4" font-size="14.5" font-weight="700" text-anchor="middle">卓越中心 / 使能团队</text>
+              <text x="842" y="60" class="s-muted" font-size="12" text-anchor="middle">Center of Excellence</text>
+
+              <!-- 行标签 -->
+              <rect x="14" y="80"  width="96" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="14" y="146" width="96" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="14" y="238" width="96" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <rect x="14" y="330" width="96" height="96" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="62" y="115" class="s-ink" font-size="13" font-weight="650" text-anchor="middle">起点</text>
+              <text x="62" y="194" class="s-ink" font-size="13" font-weight="650" text-anchor="middle">扩散机制</text>
+              <text x="62" y="286" class="s-ink" font-size="13" font-weight="650" text-anchor="middle">适用条件</text>
+              <text x="62" y="384" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">典型失败</text>
+              <text x="62" y="404" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">模式</text>
+
+              <!-- 行 1 起点 -->
+              <rect x="120" y="80" width="276" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="412" y="80" width="276" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="704" y="80" width="276" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="134" y="106" class="s-ink" font-size="12.5">一两个团队自己干出</text>
+              <text x="134" y="128" class="s-ink" font-size="12.5">了可衡量的成果</text>
+              <text x="426" y="106" class="s-ink" font-size="12.5">管理层立项，全组织</text>
+              <text x="426" y="128" class="s-ink" font-size="12.5">统一流程与统一平台</text>
+              <text x="718" y="106" class="s-ink" font-size="12.5">抽出一支专职小队，</text>
+              <text x="718" y="128" class="s-ink" font-size="12.5">去服务其他团队</text>
+
+              <!-- 行 2 扩散机制 -->
+              <rect x="120" y="146" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="412" y="146" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="704" y="146" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="134" y="172" class="s-ink" font-size="12.5">口碑吸引主动来学的人</text>
+              <text x="134" y="194" class="s-ink" font-size="12.5">靠沉浸式学习与 Dojo 把</text>
+              <text x="134" y="216" class="s-ink" font-size="12.5">人送进真实场景里练</text>
+              <text x="426" y="172" class="s-ink" font-size="12.5">目标、预算与考核逐层</text>
+              <text x="426" y="194" class="s-ink" font-size="12.5">下压；统一模板与平台</text>
+              <text x="426" y="216" class="s-ink" font-size="12.5">铺得快，扎得浅</text>
+              <text x="718" y="172" class="s-ink" font-size="12.5">巡回进驻：教会一个团</text>
+              <text x="718" y="194" class="s-ink" font-size="12.5">队就撤出，把做法沉淀</text>
+              <text x="718" y="216" class="s-ink" font-size="12.5">进 CBOK 供后来者取用</text>
+
+              <!-- 行 3 适用条件 -->
+              <rect x="120" y="238" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="412" y="238" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <rect x="704" y="238" width="276" height="84" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="134" y="264" class="s-ink" font-size="12.5">组织容忍试验与失败</text>
+              <text x="134" y="286" class="s-ink" font-size="12.5">改动不越出团队边界</text>
+              <text x="134" y="308" class="s-ink" font-size="12.5">有真实痛点在推着走</text>
+              <text x="426" y="264" class="s-ink" font-size="12.5">要改的东西跨越部门：</text>
+              <text x="426" y="286" class="s-ink" font-size="12.5">预算、合规、组织结构</text>
+              <text x="426" y="308" class="s-ink" font-size="12.5">这时它是唯一可行的路</text>
+              <text x="718" y="264" class="s-ink" font-size="12.5">已经存在跑通的样板</text>
+              <text x="718" y="286" class="s-ink" font-size="12.5">组织愿意长期出人出钱</text>
+              <text x="718" y="308" class="s-ink" font-size="12.5">团队数量多、差异大</text>
+
+              <!-- 行 4 失败模式 -->
+              <rect x="120" y="330" width="276" height="96" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="412" y="330" width="276" height="96" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="704" y="330" width="276" height="96" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="134" y="354" class="f-5" font-size="13" font-weight="700">停在孤岛</text>
+              <text x="134" y="376" class="s-ink" font-size="12.5">试点被当成展览，一碰</text>
+              <text x="134" y="398" class="s-ink" font-size="12.5">上合规、采购、预算就</text>
+              <text x="134" y="418" class="s-ink" font-size="12.5">撞墙，多年还是那两队</text>
+              <text x="426" y="354" class="f-5" font-size="13" font-weight="700">合规式采纳</text>
+              <text x="426" y="376" class="s-ink" font-size="12.5">流水线都建了，行为没变</text>
+              <text x="426" y="398" class="s-ink" font-size="12.5">指标达成，变更前置时间</text>
+              <text x="426" y="418" class="s-ink" font-size="12.5">照旧，文化债越积越厚</text>
+              <text x="718" y="354" class="f-5" font-size="13" font-weight="700">变成新的中心化瓶颈</text>
+              <text x="718" y="376" class="s-ink" font-size="12.5">所有团队排队等它，它</text>
+              <text x="718" y="398" class="s-ink" font-size="12.5">自己成了新的约束；</text>
+              <text x="718" y="418" class="s-ink" font-size="12.5">「教会就撤出」是生命线</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 8-1-2　三种规模化路径的起点、扩散机制与失败模式。</strong>
+            要看懂的是：<strong>每一列的失败模式，都是它自己那条扩散机制走到极端的结果</strong> ——
+            靠口碑扩散的会停在孤岛，靠考核下压的会换来合规式采纳，靠专职小队的会把小队自己变成瓶颈。
+            所以选路径不是选优劣，而是选<strong>你更能承受哪一种失败，并且提前给它装上刹车</strong>。
+            <br><small class="muted">路径划分、扩散机制与失败模式的归纳为本站教学整理，官方未给出规模化路径分类；
+            <em>Center of Excellence</em>、<em>Enabling Team</em>、<em>Grassroots</em> 不在 DOFD v3.4 官方 66 条术语表内，
+            这套命名与划分是本站自行归类，故本知识点标「教学整理」；
+            图中「变更前置时间照旧」以及<strong>本节所有「变更前置时间」均取 DORA 口径：从代码提交到在生产上运行</strong>；
+            图中出现的沉浸式学习 <em>Immersion</em>、<em>Dojo</em>（沉浸式实战训练场）、<em>CBOK</em> 则是术语表条目。
+            「变成新的约束」呼应 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:19%">维度</th><th style="width:27%">自下而上</th><th style="width:27%">自上而下</th><th>卓越中心 / 使能团队</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>扩散成本谁付</strong></td>
+                  <td>接收方自己付（要自己挤出时间学）</td>
+                  <td>被推行方付（且往往没被减掉别的活）</td>
+                  <td><strong>专职队伍付</strong>，接收方只付参与时间</td>
+                </tr>
+                <tr>
+                  <td><strong>扩散速度</strong></td>
+                  <td>慢，但扎得深</td>
+                  <td><strong>快，但可能只到表面</strong></td>
+                  <td>中等，可控且有节奏</td>
+                </tr>
+                <tr>
+                  <td><strong>能不能拆掉跨部门的墙</strong></td>
+                  <td>不能。合规、预算、采购不归团队管</td>
+                  <td><strong>能，而且只有它能</strong></td>
+                  <td>不能，但可以把墙的位置报上去</td>
+                </tr>
+                <tr>
+                  <td><strong>失效时的表征</strong></td>
+                  <td>三年后还是那两个团队</td>
+                  <td>覆盖率 100%，变更前置时间没动</td>
+                  <td>小队排期排到三个月后</td>
+                </tr>
+                <tr>
+                  <td><strong>刹车装在哪</strong></td>
+                  <td>给接收方腾出时间与预算</td>
+                  <td>只统一<strong>必须统一的少数几件事</strong>，其余留给团队</td>
+                  <td>硬性规定<strong>教会即撤出</strong>，不许长期驻场</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>这三条路径不是三选一的方案品牌，而是三种承担扩散成本的方式，成熟组织通常同时在用</strong>。
+            典型组合是：先用自下而上造出一个真样板，再用卓越中心把样板复制出去，
+            同时只把「必须全公司统一的少数几件事」自上而下定死（例如审计留痕格式、安全基线）。
+            把它们当成互斥选项，就会陷入「到底该推还是该等」这种没有答案的争论。</small></p>
+          <p class="mb-0 muted"><small>本对照表与「刹车装在哪」这一列均为本站教学整理，官方未以此形式给出路径对比。
+            表中「变更前置时间没动」以及<strong>本节所有「变更前置时间」均取 DORA 口径：从代码提交到在生产上运行</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选路径之前，先用三个问题把选项砍掉一半：</p>
+          <ul>
+            <li><strong>问题一：这次要改的东西，越不越出团队自己能决定的边界？</strong>
+              涉及预算科目、合规条款、组织结构、供应商合同的，团队自己改不了 ——
+              <strong>只靠自下而上必然撞墙</strong>，必须有自上而下的一段。</li>
+            <li><strong>问题二：组织里有没有已经跑通的真样板？</strong>
+              没有就先别推。没有样板的统一推行，推的是一份 PPT 上的流程，
+              接收方只能照着做仪式。<strong>先造样板，再谈扩散。</strong></li>
+            <li><strong>问题三：谁承担扩散成本？</strong>
+              说不出具体名字和具体工时，这次扩散就不会发生。
+              「大家有空多交流」不是一个成本承担方案。</li>
+          </ul>
+          <p>推行过程中的两个具体检查动作：</p>
+          <ul class="mb-0">
+            <li><strong>不要用覆盖率当成功指标</strong>。「多少个团队建了流水线」是活动指标，
+              会直接诱发合规式采纳。要看的是 <strong>DORA 口径</strong>的结果指标 ——
+              变更前置时间（从<strong>代码提交</strong>到在生产上运行）、部署频率、变更失败率、平均恢复时间，
+              四指标详见 <a href="../ch07-metrics/7.2-dora-metrics.html">7.2 DORA 四大关键指标</a>。</li>
+            <li><strong>给卓越中心设退出条款</strong>。进驻时就写明「几周后撤出、撤出时接收团队要能独立做到什么」。
+              没有退出条款的使能团队，三个月内就会变成一个新的中心化部门。</li>
+          </ul>
+          <div class="src-note">
+            这三个选路径的问题、两个检查动作与「退出条款」的做法均为<strong>本站教学整理</strong>，
+            官方文件未规定规模化的实施步骤。
+            四项结果指标（<em>Change lead time</em>、<em>Deployment frequency</em>、<em>Change failure rate</em>、
+            <em>Mean Time to Repair/Recover (MTTR)</em>）是 DOFD v3.4 官方考纲术语表条目。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>不会直接考路径名。</strong>「星火燎原 / 统一推行 / 卓越中心」是本站的教学归纳，
+              官方既未分类也未命名，题目不会问「以下哪种是自下而上的规模化路径」。
+              这一点先记牢，免得在考场上找一个不存在的选项。</li>
+            <li><strong>会考的是路径背后的判断依据</strong>。
+              <strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong> ——
+              由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              题干给一个正在全公司铺开 DevOps 的组织，问「依据什么来选」，方向就是这条。</li>
+            <li><strong>另一条相关的官方判断</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong>，
+              同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              它解释了为什么跨部门的墙只有自上而下的一段才拆得动。这条的完整展开在本章 <a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a>。</li>
+            <li><strong>干扰项长什么样</strong>：把成功因素说成
+              <strong>「引入合适的工具链」「设立专门的 DevOps 部门」「提高自动化覆盖率」</strong> ——
+              这三类都是活动，读起来都很像正确答案，但都不是<strong>承诺</strong>或<strong>战略</strong>。
+              另一种是把「设立卓越中心」写成标准答案，官方从未如此规定。</li>
+            <li><strong>排除技巧</strong>：题干问「最关键 / 最重要 / 首要」时，
+              先把所有<strong>可以花钱买到的东西</strong>（工具、平台、外部顾问、培训课程）划掉，
+              剩下的通常是<strong>人的承诺、文化与战略</strong>这一类。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布命题规律与逐题分级，本面中的命题角度分析与排除技巧均为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">自下而上造样板，自上而下拆墙，卓越中心搬运 —— 三件事，不是三选一。</p>
+          <p class="mb-0 muted"><small>三种死法配套记：<strong>孤岛、走过场、新瓶颈</strong>。
+            看见「覆盖率 100% 但变更前置时间没变」，就是走过场；看见「所有团队排队等那支小队」，就是新瓶颈。
+            本节所有「变更前置时间」均取 <strong>DORA 口径：从代码提交到在生产上运行</strong>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-8-1-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-1-3</div>
+        <h3 class="kp__title">知识扩散的四个官方术语<span class="en">CBOK · Collaboration and communication · Immersion · Dojo</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>官方考纲术语表里有四个词，正好各自对应图 8-1-1 扩散链上的一环：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">术语</th><th style="width:38%">一句话定义</th><th>补的是哪一环</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">集体知识体 <span class="en">Collective Body of Knowledge (CBOK)</span></span></td>
+                  <td>一个领域内被<strong>集体认可、共同维护</strong>的知识总体 —— 不属于某个人，也不是某一份文档</td>
+                  <td><strong>② 变成知识</strong> + <strong>③ 被看见</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="term">协作与沟通 <span class="en">Collaboration and communication</span></span></td>
+                  <td>跨职能之间<strong>持续的信息交换与共同工作</strong>本身，是 CALMS 中 Sharing 落地的日常形态</td>
+                  <td><strong>③ 被看见</strong>的前提</td>
+                </tr>
+                <tr>
+                  <td><span class="term">沉浸式学习 <span class="en">Immersion</span></span></td>
+                  <td>把人<strong>放进真实工作情境里边做边学</strong>，而不是坐在教室里听讲</td>
+                  <td><strong>④ 被试用</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="term">Dojo</span><br><small class="muted">沉浸式实战训练场</small></td>
+                  <td>一段有<strong>教练陪同</strong>、团队带着<strong>自己手上真实的工作</strong>集中投入的训练期</td>
+                  <td><strong>④ 被试用</strong>的具体承载形式</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Collective Body of Knowledge (CBOK)</em>、<em>Collaboration and communication</em>、
+            <em>Immersion</em>、<em>Dojo</em> <strong>四条均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>，
+            属必须掌握的名词。第三列「补的是哪一环」是本站结合图 8-1-1 所做的教学映射，官方未给出这种对应。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点是一个几乎所有大组织都做过的动作：<strong>办分享会</strong>。
+          </p>
+          <ul>
+            <li>某公司每季度办一次 DevOps 分享会，两年办了 <strong>8 场</strong>，平均 60 人参加，满意度评分 4.6 分。
+              但两年下来，<strong>复制出成功的团队是 0 个</strong>。</li>
+            <li>对着扩散链看就清楚了：分享会只接通了第 <strong>③ 环（被看见）</strong>。
+              听众散会回到自己的系统前，面对的是不同的代码库、不同的合规要求、不同的排期压力 ——
+              <strong>第 ④ 环（在自己场景里试用）从来没被接通过。</strong></li>
+            <li>更隐蔽的是 <strong>④ 与 ⑤ 之间的「回流」断点</strong>：即使有团队回去试了，试出来的修正也没有地方回填，
+              分享会的 PPT 还是那一版。半年后新人问起，得到的是一份已经过时的做法。</li>
+          </ul>
+          <p>
+            Immersion 与 Dojo 补的正是第 ④ 环：<strong>人不是单独去学的，他连同手上真实的工作一起进场</strong>，
+            学完带回去的不是笔记，是一段已经改好的真代码。
+            CBOK 补的是<strong>② 变成知识 + ③ 被看见</strong>，并接住 <strong>④→⑤ 之间的回流断点</strong>：
+            让知识有一个<strong>被共同维护</strong>的落点，
+            每个用过的团队都能往回改一笔。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">术语</th><th style="width:38%">它实际是什么</th><th>最容易被误解成</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>CBOK</strong></td>
+                  <td>一个领域<strong>被集体认可并共同维护的知识总体</strong>，重点在「集体」与「持续维护」</td>
+                  <td>误解成<strong>一本手册、一个 wiki 站点或一套认证教材</strong> —— 那些是载体，不是知识体本身；一个没人往回改的 wiki 不构成 CBOK</td>
+                </tr>
+                <tr>
+                  <td><strong>Collaboration and communication</strong></td>
+                  <td><strong>跨职能协作与沟通这件事本身</strong>，是 DevOps 的核心行为</td>
+                  <td>误解成<strong>「装一个聊天工具」</strong>。工具是手段 —— ChatOps 就是这种手段之一，见 <a href="../ch03-key-practices/3.6-chatops.html">第 3 章 ChatOps（3.6）</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Immersion</strong></td>
+                  <td>一种<strong>学习方式</strong>：在真实情境中边做边学</td>
+                  <td>误解成<strong>集中培训班、入职宣讲、线上课程</strong> —— 那些的共同特征是「学的内容不是学员自己手上的活」</td>
+                </tr>
+                <tr>
+                  <td><strong>Dojo</strong></td>
+                  <td>一个<strong>具体的安排</strong>：固定时长、有教练、带真实工作进场的训练场</td>
+                  <td>误解成<strong>一间会议室、一个工具或一次黑客松</strong> —— 场地和活动都不是关键，「带自己真实的工作来」才是</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Immersion 是方式，Dojo 是承载这种方式的具体安排</strong> ——
+            Dojo 是 Immersion 的一种实现，不是它的同义词，也不是它的上位概念。
+            考场上如果题干强调的是<strong>「学习方式：在真实情境中做中学」</strong>，指向 Immersion；
+            强调的是<strong>「一段带教练的集中训练安排」</strong>，指向 Dojo。</small></p>
+          <p class="mb-0 muted"><small>四条术语的中文释义、「最容易被误解成」一列，以及
+            「Dojo 是 Immersion 的一种实现」这一从属关系，均为本站教学整理 ——
+            官方未说明 Immersion 与 Dojo 之间的从属关系。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>把成果写成能被直接取走的东西</strong>：不是会议纪要，是别人能拿去就用的
+              流水线脚手架、模板仓库、决策记录。判据很简单 ——
+              <strong>一个没参加过项目的人，照着它能不能独立做一遍？</strong>不能，就还停在第 ② 环。</li>
+            <li><strong>Dojo 一次收一整个团队，不收零散的人</strong>：把团队完整地放进去若干周，
+              做的是他们自己 backlog 里真实的待办。收零散的人回去改不动任何东西，
+              因为改工作方式需要整个团队同时改。</li>
+            <li><strong>Immersion 的验收判据</strong>：学的人回去之后<strong>手上的工作变了吗</strong>？
+              没变就只是听了课。满意度评分与出勤率都不构成验收。</li>
+            <li><strong>回流必须是硬性的</strong>：每个用过共享做法的团队，
+              离场前要留下一次修改 —— 补一个坑、改一句不准确的话都算。
+              <strong>没有回流的知识库，半年后就没人再信它。</strong></li>
+            <li><strong>给 Collaboration and communication 固定的场所与节奏</strong>：
+              跨团队协作不会因为「鼓励大家多沟通」而发生，
+              它需要一个固定的频道、固定的时间与被记录的决策。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五项做法与验收判据为本站教学整理，官方术语表列出这四个词条，
+            未规定实施方式或验收标准。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：名词辨析</strong>。给一段描述，问它是哪个术语。
+              这四个词都在 DOFD v3.4 官方考纲术语表内，属 Bloom 1–2 的识记与理解层，
+              题目会用<strong>换一种说法的定义句</strong>来问，而不是考它们的深层机制。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>Immersion 与 Dojo 互换</strong>（最常见的一对，两者共享「真实情境」这半句）；
+              把 <strong>CBOK 说成某一本教材或某个认证体系</strong>；
+              把 <strong>Collaboration and communication 换成某个具体工具或某种会议</strong>；
+              以及借 <strong>Shadowing</strong>（模块名 <em>Sharing, Shadowing and Evolving</em> 里的那个词）
+              来跟 Immersion 制造混淆。</li>
+            <li><strong>排除技巧</strong>：抓三个关键词。
+              题干出现<strong>「集体 / 共同维护 / 一个领域的全部知识」</strong>→ CBOK；
+              出现<strong>「在真实工作中学习」而没有说时长与教练</strong>→ Immersion；
+              出现<strong>「一段时间、有教练、带着自己的项目」</strong>→ Dojo。</li>
+            <li><strong>反向问法</strong>：问「以下哪一项<strong>不是</strong>促进知识分享的做法」。
+              这类题的正确答案通常是一个<strong>把知识锁起来</strong>的动作 ——
+              例如按团队隔离代码仓库访问权限、只让指定人员接触生产环境知识。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布命题规律与逐题分级，本面中的命题角度分析与排除技巧均为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">知识不会自己走路：写下来、被看见、被试用、再回流，四步断一步就停在原地。</p>
+          <p class="muted"><small>四个词各站一站：<strong>CBOK 管「写下来并共同维护」，Collaboration and communication 管「被看见」，
+            Immersion 管「在真实情境里做中学」，Dojo 是 Immersion 的具体安排。</strong></small></p>
+          <p class="mb-0 muted"><small>一句话区分 Immersion 与 Dojo：<strong>Immersion 说的是怎么学，Dojo 说的是在哪儿学、学多久、谁陪着。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>难题换了性质</strong>：一个团队做 DevOps 是技术题，几十个团队做 DevOps 是<strong>扩散题</strong>加<strong>共存题</strong>。可扩散的是做法，不可扩散的是特权</li>
+        <li><strong>CALMS 的 S = Sharing</strong>，不是 Security。官方描述句逐字是 <em>Leaders and teams share ideas, and skills, improve communication, collaboration and performance.</em>（出自 PeopleCert DevOps Foundation Blueprint）—— <strong>分享想法与技能，改善沟通、协作与绩效</strong></li>
+        <li><strong>官方确认一</strong>：决定哪些 DevOps 原则与实践对组织最有益的，是<strong>业务战略与目标</strong>（DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>官方确认二</strong>：DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>（DOFD v3.4 官方样题答案键确认；完整展开在本章 <a href="8.5-challenges-csf.html">8.5</a>）</li>
+        <li><strong>三条路径与三种死法</strong>：自下而上→停在孤岛；自上而下→合规式采纳（覆盖率 100%，变更前置时间没动）；卓越中心→变成新瓶颈。三者不是三选一（本站教学整理）。本节所有「变更前置时间」均取 <strong>DORA 口径：从代码提交到在生产上运行</strong></li>
+        <li><strong>四个术语各站一环</strong>：CBOK（写下来并共同维护）· Collaboration and communication（被看见）· Immersion（在真实情境里学）· Dojo（Immersion 的具体安排）—— 四条均在官方 66 条术语表内</li>
+        <li><strong>先分辨真约束与习惯</strong>：监管要的是可追溯的留痕，不是评审会；外包卡的是合同条款，不是「外包所以做不了」。资金模式往往是隐形天花板，见 <a href="../ch04-frameworks/4.7-continuous-funding.html">4.7 持续资金</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本节主题 <em>DevOps in the Enterprise</em> 是 DOFD v3.4 课程大纲 M8 模块
+      <em>Sharing, Shadowing and Evolving</em> 的子项，<strong>不在 66 条术语表内</strong>，故页头标「官方模块子项」。
+      <em>CALMS</em>、<em>Collective Body of Knowledge (CBOK)</em>、<em>Collaboration and communication</em>、
+      <em>Immersion</em>、<em>Dojo</em>、<em>Scaled Agile Framework (SAFe)</em>、<em>Change lead time</em>、
+      <em>Deployment frequency</em>、<em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>。
+      其中 <em>Change lead time</em>（变更前置时间）本页一律采用 <strong>DOFD / DORA 口径：起点为代码提交</strong>，
+      终点为在生产上运行；<strong>精益价值流口径</strong>的 lead time 起点则是<strong>需求被接受</strong>、包含需求排队，
+      两者不矛盾，只是量的东西不同，辨析见 <a href="../ch07-metrics/7.4-lead-vs-cycle-time.html">7.4 前置时间与周期时间</a>。
+      本页 ② 面银行案例中的「6 周降到 2 天」按精益价值流口径给出，已就地注明。
+      该术语表<strong>只列词条、不附定义</strong>，因此本页给出的术语中文释义都是本站措辞
+      （<em>CALMS</em> 的 S 格另有 Blueprint 官方描述句，见下）。
+      <strong>CALMS 五个字母及其描述句</strong>出自 <strong>PeopleCert DevOps Foundation Blueprint</strong>，属官方原文。
+      本节引用的 S 格描述句
+      <em>「S: Sharing - Leaders and teams share ideas, and skills, improve communication, collaboration and performance.」</em>
+      为 Blueprint 逐字原文；其中译为本站译文。
+      M8 模块最多 <strong>4 题</strong>出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      <strong>两条官方样题答案键确认的判断</strong>：「决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标」、
+      「DevOps 的关键成功因素是管理层对文化变革的承诺」，出自 <strong>DOFD v3.4 官方样题答案键</strong>，
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：五环扩散链与四个断裂点（图 8-1-1）、三种规模化路径的命名划分与失败模式（图 8-1-2）、
+      「真约束 vs 习惯」对照表、选路径的三个问题与「退出条款」做法、四个术语与扩散链环节的映射、
+      「Dojo 是 Immersion 的一种实现」这一从属关系，以及各面中的干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      页头与 kp-8-1-1 的「📌 高频」为本站基于 M8 最多 4 题与本节覆盖面所做的<strong>教学推断</strong>，
+      官方未公布逐主题命题频度。
+      导语中「规模化的瓶颈在知识扩散，不在流水线」是本站在官方描述句之上再推的一步，属本站教学表述，
+      官方原文只写到「分享想法与技能，改善沟通、协作与绩效」为止。
+      <em>Center of Excellence</em>、<em>Enabling Team</em>、<em>Grassroots</em>、<em>Operating Models</em>
+      不在 DOFD v3.4 官方 66 条术语表内。
+      文中三个数字化案例为本站构造的教学示例，非真实调研数据。
+      官方未公布命题规律、题型分布与逐题 Bloom 分级，各「⑤ 考试怎么考」面中的命题角度分析均为本站教学推断。
+      角色与团队结构见本章 <a href="8.2-roles-teams.html">8.2</a>，DevOps 领导力见 <a href="8.3-leadership.html">8.3</a>，如何起步见 <a href="8.4-getting-started.html">8.4</a>，挑战、风险与关键成功因素见 <a href="8.5-challenges-csf.html">8.5</a>；
+      运营模型对照见 <a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>，
+      资金模式见 <a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -42,6 +42,7 @@
       <h1 class="page-head__title">3.9 价值流管理</h1>
       <div class="page-head__en">Value Stream Management</div>
       <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
         <span class="badge badge--new">🆕 v3.6 新增</span>
         <span class="badge badge--warn">⚠️ 易混淆</span>
       </div>
@@ -169,6 +170,7 @@
         <div class="kp__id">kp-3-9-1</div>
         <h3 class="kp__title">价值流管理是什么<span class="en">Value Stream Management / VSM</span></h3>
         <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
           <span class="badge badge--new">🆕 v3.6 新增</span>
           <span class="badge badge--warn">⚠️ 易混淆</span>
         </div>
@@ -198,9 +200,10 @@
             关键词是<strong>持续</strong>。做一次叫分析，反复做并据此调整才叫管理。
           </p>
           <div class="src-note">
-            <em>Value Stream Management</em> 出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，
-            属于 <strong>v3.6 新增</strong>内容；它<strong>不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>
-            （表内收录的是 <em>Value stream mapping</em>），因此本站不给它标「考纲核心」。
+            <em>Value Stream Management</em> 出自 <strong>PeopleCert 现行产品页公布的学习目标，
+            v3.4 术语表未收录</strong>，属 <strong>v3.6 新增</strong>的<strong>官方</strong>学习目标，不是本站的延伸补充，
+            因此标「📘 官方模块子项」+「🆕 v3.6 新增」；因不在 66 条术语表内（表内收录的是 <em>Value stream mapping</em>），
+            不标「⭐ 考纲核心」。
             上面「度量 / 可视化 / 优化」这三个动作的拆分方式为本站教学整理，官方未以此形式列出。
           </div>
         </div>
@@ -212,7 +215,7 @@
           </p>
           <ul>
             <li>某保险公司 IT 部门开了两天工作坊，画出当前状态图：一个需求从提出到上线端到端 34 天，
-              其中「等 UAT 环境」占 9 天。结论很清楚，团队投入两个月做环境自助化，把这 9 天的等待压掉，<strong>前置时间降到 25 天</strong>。</li>
+              其中「等 UAT 环境」占 9 天。结论很清楚，团队投入两个月做环境自助化，把这 9 天的等待压掉，<strong>端到端前置时间（精益价值流口径，自需求提出起算）降到 25 天</strong>。</li>
             <li>然后没有人再量了。<strong>半年后同一条流程重新测，回到 31 天</strong> ——
               约束已经转移到「变更审批每周只开一次会」，但没有任何数据把这件事显示出来。
               管理层看到的仍是那张 34 天的旧图，讨论的仍是环境问题。</li>
@@ -245,7 +248,7 @@
                 <tr>
                   <td><strong>VSM 平台 <span class="en">VSM Platforms</span></strong></td>
                   <td>是<strong>实践</strong>：即使用电子表格手工汇总，只要持续做，也是价值流管理</td>
-                  <td>是<strong>承载这个实践的软件</strong>：打通各工具的数据、自动出端到端视图<br><small class="muted">展开见<a href="../ch06-automation/index.html">第 6 章 VSM 平台（6.6）</a></small></td>
+                  <td>是<strong>承载这个实践的软件</strong>：打通各工具的数据、自动出端到端视图<br><small class="muted">展开见<a href="../ch06-automation/6.6-vsm-platform-genai.html">第 6 章 VSM 平台（6.6）</a></small></td>
                 </tr>
                 <tr>
                   <td><strong>DevOps 工具链 <span class="en">DevOps toolchain</span></strong></td>
@@ -316,6 +319,7 @@
         <h3 class="kp__title">价值流映射 vs 价值流管理<span class="en">Value stream mapping vs Value Stream Management</span></h3>
         <div class="badge-row">
           <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--plain">📘 官方模块子项</span>
           <span class="badge badge--new">🆕 v3.6 新增</span>
           <span class="badge badge--warn">⚠️ 易混淆</span>
           <span class="badge badge--hot">📌 高频</span>
@@ -347,9 +351,11 @@
             关系不是并列，是<strong>包含</strong>：管理这个环里有映射这一步，反过来不成立。
           </p>
           <div class="src-note">
-            <em>Value stream mapping</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>（66 条），
-            因此本知识点标「⭐ 考纲核心」；
-            <em>Value Stream Management</em> 出自 <strong>PeopleCert 现行产品页学习目标</strong>，是 v3.6 新增。
+            <strong>本知识点的两个徽章分别属于哪一个，不要混：</strong>
+            <em>Value stream mapping</em>（价值流<strong>映射</strong>）逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>（66 条），
+            对应「⭐ 考纲核心」；<em>Value Stream Management</em>（价值流<strong>管理</strong>）出自
+            <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>，同样是<strong>官方</strong>内容，
+            对应「📘 官方模块子项」+「🆕 v3.6 新增」。
             <strong>「映射是管理的第一圈」这一包含关系为本站教学整理</strong>，官方未以此措辞表述两者关系。
           </div>
         </div>
@@ -453,7 +459,6 @@
         <div class="kp__id">kp-3-9-3</div>
         <h3 class="kp__title">VSM 度量什么 · 与流动和 DORA 指标的关系<span class="en">Flow data: processing time, wait time, flow efficiency</span></h3>
         <div class="badge-row">
-          <span class="badge badge--new">🆕 v3.6 新增</span>
           <span class="badge badge--note">📝 教学整理</span>
         </div>
       </div>
@@ -474,14 +479,21 @@
           </div>
           <p class="mb-0">
             三者之上是端到端的<span class="term">变更前置时间 <span class="en">Change lead time</span></span> ——
-            它是这些分段时间的总和，也是 DORA 四指标之一。<strong>VSM 的特点是把这个总和拆开看。</strong>
+            它是这些分段时间的总和。<strong>VSM 的特点是把这个总和拆开看。</strong>
           </p>
+          <p class="mb-0"><strong>这里必须先说清用哪一种口径</strong>，因为前置时间的<strong>起点有两种</strong>：
+            <strong>DOFD / DORA 口径</strong>的 <em>Change lead time</em> 从<strong>代码提交</strong>算到该变更在生产运行，
+            这是 DORA 四指标里的那一条；<strong>精益价值流口径</strong>的 lead time 从<strong>需求被接受</strong>算起，
+            包含需求排队的那一段。两者都对，起点不同是因为量的东西不同，不是矛盾。
+            本知识点的分段拆解采用<strong>精益价值流口径</strong>（含需求排队）；
+            引用 DORA 四指标时用的是<strong>提交起点</strong>。</p>
           <div class="src-note">
             <em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
             <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>
             均逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>。
             <strong>「处理时间 / 等待时间 / 流动效率」这三个词不在 66 条术语表内</strong>，
             本站作为理解价值流管理所必需的教学补充引入；「多数组织低于 25%、常见落在 5%–15%」是行业常见观察，非官方数据。
+            本知识点服务于 v3.6 新增主题 Value Stream Management，但这三个度量词本身是本站教学补充，因此不挂「🆕 v3.6 新增」。
           </div>
         </div>
 
@@ -583,7 +595,7 @@
             要看懂的是条带的<strong>长度比例</strong>：深色（处理）加起来只占四分之一，浅色（等待）占四分之三。
             这解释了为什么「让开发更快」通常无效 —— 它动的是那四分之一里的一小段。
             这三类数字持续更新，就是价值流管理与一次性映射的实质差别。
-            <strong>这个 25% 已经处在常见区间的上沿</strong>，多数组织比它更低 —— 不是「这家特别差」，而是「这已经算好的」。
+            这个 25% <strong>已经高于常见区间（5%–15%）</strong>，多数组织比它更低 —— 不是「这家特别差」，而是「这已经算好的」。
           </figcaption>
         </figure>
 
@@ -641,7 +653,7 @@
               端到端评审要把速度类与稳定性类指标放在一起看，不能单看一边。</li>
           </ul>
           <p class="mb-0 muted"><small>以上四个动作与时间戳选点为本站教学整理，官方学习目标未规定具体实施方式；
-            承载这些数据的 <em>VSM Platforms</em> 见<a href="../ch06-automation/index.html">第 6 章（6.6）</a>。</small></p>
+            承载这些数据的 <em>VSM Platforms</em> 见<a href="../ch06-automation/6.6-vsm-platform-genai.html">第 6 章（6.6）</a>。</small></p>
         </div>
 
         <div class="face face--exam">
@@ -686,7 +698,8 @@
       <ul class="mb-0">
         <li><strong>价值流管理 Value Stream Management</strong>：对端到端价值流进行<strong>持续的度量、可视化与优化</strong>的管理实践（v3.6 新增）</li>
         <li>本节唯一必须记牢的辨析：<strong>映射 = 一次性的分析活动；管理 = 持续的管理实践</strong>。中文差一字，英文缩写都写 VSM</li>
-        <li>只有 <strong>Value stream mapping</strong> 在 v3.4 官方 66 条术语表内；<strong>Value Stream Management</strong> 是 v3.6 新增学习目标</li>
+        <li>徽章别混：只有 <strong>Value stream mapping</strong>（映射）在 v3.4 官方 66 条术语表内，标「⭐ 考纲核心」；
+          <strong>Value Stream Management</strong>（管理）是 v3.6 新增的<strong>官方</strong>学习目标，标「📘 官方模块子项」+「🆕 v3.6 新增」，<strong>不是延伸内容</strong></li>
         <li>两者不是替代关系：<strong>映射通常是管理这个环的第一圈</strong>，用来建立基线</li>
         <li>VSM 采集三类数据：<strong>处理时间 · 等待时间 · 流动效率（处理 ÷ 端到端总时间）</strong>；<strong>流动效率 ≠ 资源利用率</strong></li>
         <li>与 DORA 的关系：DORA 量<strong>结果</strong>，VSM 拆<strong>过程</strong>；<strong>变更前置时间</strong>是两者的交叉点</li>
@@ -696,13 +709,14 @@
 
     <p class="muted"><small>本节的跨章边界：映射的绘制步骤见
       <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章（4.6）</a>，VSM 平台见
-      <a href="../ch06-automation/index.html">第 6 章（6.6）</a>，指标本身见
+      <a href="../ch06-automation/6.6-vsm-platform-genai.html">第 6 章（6.6）</a>，指标本身见
       <a href="../ch07-metrics/index.html">第 7 章</a>。</small></p>
 
     <div class="src-note">
       <strong>来源</strong>：<em>Value Stream Management</em> 出自
-      <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>，属 <strong>v3.6 新增</strong>内容，
-      本节页头与相关知识点已标「🆕 v3.6 新增」；<strong>v3.6 未公开重新发布权重表</strong>，
+      <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>，属 <strong>v3.6 新增</strong>的
+      <strong>官方</strong>学习目标（非延伸内容），本节页头与主题知识点已标「📘 官方模块子项」+「🆕 v3.6 新增」；
+      <strong>v3.6 未公开重新发布权重表</strong>，
       按 v3.4 <em>Examination Requirements</em>（2022-05），Key DevOps Practices 模块最多 7 题。
       <em>Value stream mapping</em>、<em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
       <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、<em>Kanban</em>、<em>DevOps toolchain</em>、

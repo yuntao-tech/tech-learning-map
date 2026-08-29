@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.2 DORA 四大指标 · DevOps Foundation 学习站</title>
+<meta name="description" content="部署频率、变更前置时间、变更失败率、平均恢复时间 MTTR 四个指标的定义、它们各自在度量什么、各自会被怎样操纵，以及本节最该记住的一条：速度与稳定性不是取舍关系。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.2-dora-metrics"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.2 DORA 四大指标</h1>
+      <div class="page-head__en">The Four DORA Metrics</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        四个指标：<strong>部署频率、变更前置时间、变更失败率、平均恢复时间 MTTR</strong>。
+        前两个量<strong>速度</strong>，后两个量<strong>稳定性</strong>。
+        它们的价值不在于任何单独一个数字，而在于<strong>四个必须一起看</strong> ——
+        因为只看其中一半，每一个都能被轻易做漂亮。
+        本节最该记住的一条是那个反直觉的结论：<strong>速度与稳定性不是取舍关系</strong>。
+        本章在官方考试要求里最多出 <strong>2 题</strong>（DOFD v3.4 Examination Requirements，2022-05；
+        <strong>v3.6 未公开重新发布权重表</strong>）—— 按理解重要性学，不要按考试权重分配时间。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>四个指标各自在度量什么，以及每一个<strong>单独拿出来会被怎样操纵</strong></li>
+        <li>为什么<strong>变更前置时间</strong>量的是「流动」，而不是「开发写得快不快」</li>
+        <li>为什么高绩效组织是<strong>四项同时更好</strong>，而不是在快与稳之间选一头</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 570" role="img" aria-label="四大指标的二分结构：前两个度量速度、后两个度量稳定性，以及高绩效组织四项同时更好这一反直觉事实">
+
+          <text x="480" y="30" class="s-ink" font-size="17" font-weight="700" text-anchor="middle">四大指标的结构：前两个量速度，后两个量稳定性</text>
+
+          <!-- 速度组 -->
+          <rect x="30" y="48" width="430" height="252" rx="14" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="245" y="78" class="f-1" font-size="16" font-weight="700" text-anchor="middle">速度 · 吞吐</text>
+          <text x="245" y="100" class="s-muted" font-size="12.5" text-anchor="middle">这条价值流走得多快</text>
+
+          <rect x="52" y="114" width="386" height="80" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="70" y="140" class="s-ink" font-size="14.5" font-weight="700">部署频率　Deployment frequency</text>
+          <text x="70" y="162" class="s-muted" font-size="12.5">单位时间内成功部署到生产的次数</text>
+          <text x="70" y="182" class="s-muted" font-size="12">官方术语表条目</text>
+
+          <rect x="52" y="206" width="386" height="80" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="70" y="232" class="s-ink" font-size="14.5" font-weight="700">变更前置时间　Change lead time</text>
+          <text x="70" y="254" class="s-muted" font-size="12.5">从代码提交到它在生产上运行的时间（DORA 口径）</text>
+          <text x="70" y="274" class="s-muted" font-size="12">官方术语表条目</text>
+
+          <!-- 稳定性组 -->
+          <rect x="500" y="48" width="430" height="252" rx="14" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="715" y="78" class="f-3" font-size="16" font-weight="700" text-anchor="middle">稳定性</text>
+          <text x="715" y="100" class="s-muted" font-size="12.5" text-anchor="middle">出问题时表现如何</text>
+
+          <rect x="522" y="114" width="386" height="80" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="540" y="140" class="s-ink" font-size="14.5" font-weight="700">变更失败率　Change failure rate</text>
+          <text x="540" y="162" class="s-muted" font-size="12.5">导致生产降级并需补救的变更占比</text>
+          <text x="540" y="182" class="s-muted" font-size="12">官方术语表条目</text>
+
+          <rect x="522" y="206" width="386" height="80" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="540" y="232" class="s-ink" font-size="14.5" font-weight="700">平均恢复时间　MTTR</text>
+          <text x="540" y="254" class="s-muted" font-size="12.5">从故障发生到服务恢复的时间</text>
+          <text x="540" y="274" class="s-muted" font-size="12">官方术语表条目</text>
+
+          <text x="480" y="336" class="f-5" font-size="17" font-weight="700" text-anchor="middle">关键结构：速度与稳定性不是取舍关系</text>
+
+          <!-- 直觉（错） -->
+          <rect x="30" y="356" width="430" height="164" rx="12" class="s-stroke" stroke-width="1.8" stroke-dasharray="7 5" fill="var(--dia-fill)"/>
+          <text x="245" y="384" class="s-muted" font-size="14" font-weight="700" text-anchor="middle">直觉（错）：跷跷板</text>
+          <text x="245" y="408" class="s-ink" font-size="14" text-anchor="middle">「要快就得牺牲质量」</text>
+
+          <text x="112" y="436" class="s-muted" font-size="12.5" text-anchor="middle">速度 高</text>
+          <line x1="112" y1="446" x2="378" y2="470" class="s-stroke" stroke-width="3"/>
+          <path d="M245 460 L232 486 L258 486 z" class="s-stroke" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="378" y="492" class="s-muted" font-size="12.5" text-anchor="middle">稳定性 低</text>
+
+          <!-- 实际 -->
+          <rect x="500" y="356" width="430" height="164" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="715" y="382" class="f-5" font-size="14.5" font-weight="700" text-anchor="middle">官方术语：高绩效组织</text>
+          <text x="715" y="402" class="s-muted" font-size="12.5" text-anchor="middle">High-performing organizations</text>
+          <text x="715" y="428" class="s-ink" font-size="14.5" font-weight="700" text-anchor="middle">四项同时更好，不是四选二</text>
+
+          <g text-anchor="middle">
+            <rect x="516" y="444" width="98" height="48" rx="8" class="s-5" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="565" y="466" class="s-ink" font-size="12.5">部署频率</text>
+            <text x="565" y="484" class="f-5" font-size="12.5" font-weight="700">更高</text>
+
+            <rect x="620" y="444" width="98" height="48" rx="8" class="s-5" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="669" y="466" class="s-ink" font-size="12">变更前置时间</text>
+            <text x="669" y="484" class="f-5" font-size="12.5" font-weight="700">更短</text>
+
+            <rect x="724" y="444" width="98" height="48" rx="8" class="s-5" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="773" y="466" class="s-ink" font-size="12.5">变更失败率</text>
+            <text x="773" y="484" class="f-5" font-size="12.5" font-weight="700">更低</text>
+
+            <rect x="828" y="444" width="98" height="48" rx="8" class="s-5" stroke-width="1.5" fill="var(--dia-fill)"/>
+            <text x="877" y="466" class="s-ink" font-size="12.5">MTTR</text>
+            <text x="877" y="484" class="f-5" font-size="12.5" font-weight="700">更短</text>
+          </g>
+
+          <text x="480" y="548" class="s-muted" font-size="13" text-anchor="middle">机制：小批量既让流动更快，又让出问题时嫌疑人更少、恢复更快 —— 同一个原因驱动四项一起变好</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-2-1　四大指标的二分结构与那条反直觉的结论。</strong>
+        要看懂两件事。第一，<strong>四个指标是两两成组的</strong>：左半边回答「走得多快」，右半边回答「出问题时怎么样」——
+        只看左半边会得到一个鲁莽的组织，只看右半边会得到一个不敢动的组织。
+        第二，下半部分才是本节的重点：<strong>右边的四个格子是同时变好的，不是此消彼长</strong>，
+        左边那个跷跷板是需要被推翻的直觉，而不是需要被平衡的现实。
+        <br><small class="muted">四个指标名与 <em>High-performing organizations</em> 均逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+        <strong>把它们编成「速度 / 稳定性」二分结构，以及本图对「跷跷板直觉」的否定式呈现，是本站教学整理</strong>，官方未以此形式给出该结构图。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-2-1</div>
+        <h3 class="kp__title">速度侧两指标：部署频率与变更前置时间<span class="en">Deployment frequency &amp; Change lead time</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            这两个指标一个量<strong>次数</strong>，一个量<strong>时长</strong>，合起来回答同一个问题：
+            <strong>这条价值流把工作送到生产的能力有多强。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">指标</th><th style="width:34%">一句话定义</th><th>它真正在量什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">部署频率 <span class="en">Deployment frequency</span></span></td>
+                  <td>单位时间内<strong>成功部署到生产</strong>的次数</td>
+                  <td><strong>吞吐量</strong>：这条流水线多久能把一批工作推出去一次。频率越高，单次批量通常越小</td>
+                </tr>
+                <tr>
+                  <td><span class="term">变更前置时间 <span class="en">Change lead time</span></span></td>
+                  <td>从<strong>代码提交</strong> <span class="en">code commit</span> 到该变更<strong>在生产上运行</strong>所经历的全部时间，含中间所有排队<br><small class="muted">这是 <strong>DORA 口径</strong>，也是本节采用的口径</small></td>
+                  <td><strong>流动</strong> <span class="en">Flow</span>：一个变更穿过提交之后的交付段需要多久，其中大部分是排队而非作业</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Deployment frequency</em>、<em>Change lead time</em>、<em>Flow</em>
+            均逐字列于 DOFD v3.4 官方考纲术语表（<em>Code commit</em> 亦为该表条目）。
+            <strong>上表两条中文定义是本站措辞</strong> —— 官方术语表只列词条、不附定义。
+            <strong>本节讲 DORA 四指标，因此变更前置时间一律采用 DOFD / DORA 口径：秒表从代码提交按下，到该变更在生产上运行停止。</strong>
+            另有一套<strong>精益价值流口径</strong>，把起点放在「需求被接受」、把需求排队也算进去，
+            两者都对，只是量的东西不同：一个量提交之后的交付段，一个量整条价值流。
+            两种口径的完整辨析见本章 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它们出现之前，交付速度是靠<strong>产出型数字</strong>报告的：本周完成多少故事点、提交了多少次、关闭了多少工单。
+            这些数字有一个共同缺陷 —— <strong>它们都停在开发团队边界之内，不穿过生产环境</strong>。
+          </p>
+          <ul>
+            <li>某内部系统团队周报常年写「本迭代完成 42 个故事点」，看板上一片绿。
+              但一次合规修复从受理到上生产走了 <strong>19 天</strong>：写代码 4 小时，
+              等代码评审 3 天，等测试环境空闲 5 天，等每两周一次的变更审批会 6 天，等发布窗口 5 天。</li>
+            <li>问题不在于哪一段特别慢，而在于<strong>没有任何一个既有指标能看见这 19 天</strong>。
+              故事点只统计到「开发完成」，工单系统只统计到「转测试」。<strong>19 天里有 18 天多没有主人。</strong></li>
+            <li>后果是改进永远打偏：管理层看到故事点不够，于是要求团队加快编码 ——
+              而真正的时间根本不在编码上。</li>
+          </ul>
+          <p>
+            这两个指标的机制价值就在这里：<strong>它们的终点被强制钉在生产环境</strong>。
+            只要终点在生产，中间任何一段排队都会被算进去，谁也甩不掉。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 7-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 366" role="img" aria-label="变更前置时间的 DORA 口径分解：从代码提交到在生产上运行的五段，其中两段是排队等待">
+              <defs>
+                <marker id="ah-72-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <text x="555" y="30" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">变更前置时间 Change lead time 的分解（DORA 口径）</text>
+              <text x="555" y="54" class="s-muted" font-size="12.5" text-anchor="middle">秒表从「代码提交 code commit」按下，到「该变更在生产上运行」停止</text>
+
+              <!-- 跨度括号 -->
+              <path d="M180 78 L180 92 L930 92" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-72-1)"/>
+
+              <!-- 不计入段 -->
+              <rect x="30" y="138" width="140" height="54" rx="8" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 5" fill="var(--dia-fill)"/>
+              <text x="100" y="155" class="s-muted" font-size="12" text-anchor="middle">受理 · 排期 · 编码</text>
+              <text x="100" y="172" class="s-muted" font-size="12" text-anchor="middle">不计入 DORA 口径</text>
+              <text x="100" y="188" class="s-muted" font-size="12" text-anchor="middle">精益口径才计入</text>
+
+              <!-- 五段 -->
+              <rect x="180" y="138" width="150" height="54" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="330" y="138" width="80"  height="54" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="410" y="138" width="100" height="54" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="510" y="138" width="290" height="54" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="800" y="138" width="130" height="54" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle">
+                <text x="255" y="126" class="s-ink" font-size="13.5" font-weight="650">等待评审 · 合并</text>
+                <text x="370" y="126" class="s-ink" font-size="13.5" font-weight="650">构建</text>
+                <text x="460" y="126" class="s-ink" font-size="13.5" font-weight="650">自动化测试</text>
+                <text x="655" y="126" class="s-ink" font-size="13.5" font-weight="650">等待发布窗口 / 变更审批</text>
+                <text x="865" y="126" class="s-ink" font-size="13.5" font-weight="650">部署执行</text>
+
+                <text x="255" y="172" class="f-5" font-size="13" font-weight="700">排队等待</text>
+                <text x="370" y="172" class="f-1" font-size="13" font-weight="700">作业</text>
+                <text x="460" y="172" class="f-1" font-size="13" font-weight="700">作业</text>
+                <text x="655" y="172" class="f-5" font-size="13" font-weight="700">排队等待</text>
+                <text x="865" y="172" class="f-1" font-size="13" font-weight="700">作业</text>
+              </g>
+
+              <line x1="180" y1="192" x2="180" y2="206" class="s-1" stroke-width="2"/>
+              <line x1="930" y1="192" x2="930" y2="206" class="s-1" stroke-width="2"/>
+              <text x="182" y="222" class="s-muted" font-size="12.5">代码提交 code commit</text>
+              <text x="928" y="222" class="s-muted" font-size="12.5" text-anchor="end">在生产上运行</text>
+
+              <rect x="30" y="244" width="900" height="104" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="50" y="272" class="f-5" font-size="14" font-weight="700">为什么它是「流动」的核心度量</text>
+              <text x="50" y="298" class="s-ink" font-size="13">这条时间轴上真正在「做事」的只有构建、测试与部署三段，其余两段都是排队。</text>
+              <text x="50" y="324" class="s-ink" font-size="13">所以缩短它靠的是消除等待与缩小批量，不是催开发写得更快 —— 它量的是流动，不是开发速度。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-2-2　变更前置时间为什么不是「开发速度」。</strong>
+            要看懂的是<strong>色块的分布</strong>：整条时间轴上只有三段在做事，其余两段都在排队，
+            而排队段往往占据绝大部分时长。左侧那个虚线框同样重要 ——
+            <strong>需求受理、排期与编码都在 DORA 口径的秒表之外</strong>（精益价值流口径才把它们算进去，见
+            <a href="7.4-lead-vs-cycle-time.html">7.4</a>）；而提交之后，
+            写代码的动作已经结束，所以「让开发写快点」对这个数字几乎无效。
+            这正是把它归入<strong>流动</strong>类度量、而不是生产率度量的原因。
+            <br><small class="muted">五段的切分方式与各段时长比例为本站教学整理，用于呈现「等待占多数」这一机制，
+            官方未给出前置时间的分解模型；各段名称亦非官方措辞。起点取代码提交是 DORA 口径。
+            与<a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>中的价值流等待时间是同一件事。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">本组两指标</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>发布频率 <span class="en">release frequency</span></strong></td>
+                  <td><strong>部署频率</strong>数的是<strong>版本进生产的次数</strong>，用户看不看得见不影响计数</td>
+                  <td>数的是<strong>功能对用户可见的次数</strong>。部署与发布可以解耦，两个数字可以差一个数量级<br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span> <em>Release</em> 未单列于 66 条术语表；部署与发布的解耦见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>周期时间 <span class="en">Cycle time</span></strong></td>
+                  <td>起点由口径决定：<strong>DORA 口径取「代码提交」</strong>（本节采用），精益价值流口径取「需求被接受」<strong>并含需求排队</strong></td>
+                  <td>起点是<strong>「开始动手处理」</strong>，<strong>不含开工前的排队</strong>；终点与前置时间相同，因此在同一口径下<strong>前置时间 &ge; 周期时间</strong>，差额就是开工前那段队列<br><small class="muted">官方术语表只列词条、不附定义。<strong>两种前置时间口径都成立，只是量的东西不同</strong>，完整辨析见本章 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>，本节不展开</small></td>
+                </tr>
+                <tr>
+                  <td><strong>速率 <span class="en">Velocity</span></strong></td>
+                  <td>量的是<strong>穿过整条价值流</strong>的结果，终点在生产</td>
+                  <td>量的是团队每个迭代<strong>估算完成量</strong>，终点在迭代边界，不出开发团队<br><small class="muted"><em>Velocity</em> 也在 66 条术语表内，但它不是交付性能指标</small></td>
+                </tr>
+                <tr>
+                  <td><strong>产出型数字</strong><br><small class="muted">提交数、代码行数、故事点</small></td>
+                  <td>量的是<strong>结果</strong>：东西到没到用户那里</td>
+                  <td>量的是<strong>动作</strong>：人做了多少事。做得多不等于流得快<br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span> 这类反例名词不在术语表内</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>变更前置时间量的是流动，不是开发效率</strong>。
+            DORA 口径的秒表从<strong>代码提交</strong>按下，此后的时间绝大部分是排队 —— 写代码的动作已经在秒表之外。
+            把它当成「开发写得快不快」的考核指标，是这个指标最常见的误用，也是最典型的干扰项写法。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这些指标之间的对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>用这两个数字之前，先说清它们各自会被怎样做漂亮 —— <strong>操纵方式决定了配套约束</strong>：</p>
+          <ul>
+            <li><strong>部署频率的操纵方式：把一次发布拆成十次无意义的部署。</strong>
+              同一批代码分十次推上去，或者把只改了一行文案的配置也算一次部署，数字立刻翻十倍。
+              <strong>解法不是禁止拆分，而是永远和另外三个指标一起看</strong> ——
+              真拆小了，前置时间会跟着下降、失败率会跟着下降；假拆的话，那三个数字纹丝不动。</li>
+            <li><strong>变更前置时间的操纵方式：挪起点。</strong>
+              把秒表从<strong>代码提交</strong>再往后挪到「合并到主干后」甚至「流水线开始构建时」，等评审的那些天就集体消失了；
+              或者只统计紧急修复这类走绿色通道的变更。
+              <strong>解法：起点、终点、统计口径写死并公开（本节固定用 DORA 口径：提交 → 在生产上运行），
+              并且对全部变更取分布而不是平均值。</strong>
+              另一种更隐蔽的做法是<strong>在两种口径之间来回切换</strong>：报告改进时用 DORA 口径，
+              解释延误时改用精益口径。两种口径都成立，但同一张报表里只能用一种，且必须写明是哪一种。</li>
+            <li><strong>先量分布，再量平均。</strong>前置时间的分布通常是长尾的：一半变更 2 小时上线，
+              少数变更卡 3 周。只报平均值会同时掩盖「大多数很快」和「有一类彻底堵死」两个事实。</li>
+            <li><strong>改进的着手点在等待段，不在作业段。</strong>
+              按图 7-2-2 把时间轴切开，找到最长的那段排队 —— 这就是
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>要找的约束。
+              把构建从 12 分钟优化到 8 分钟，对一个有 6 天审批等待的价值流毫无意义。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条使用建议、操纵方式与对应约束均为本站教学整理，
+            官方文件列出这两个术语，未规定统计口径与改进方法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最主要的命题角度：给定义选术语</strong>。
+              给一句「从代码提交到该变更在生产上运行所用的时间」，问这是哪个指标。
+              <strong>抓两个词就够了：起点是「代码提交」，终点是「在生产上运行」</strong>，
+              只有变更前置时间同时满足。<strong>DOFD / DORA 用的就是这个口径</strong>；
+              题干若把起点写成「需求被接受」，那是精益价值流口径，同样指向前置时间，只是量的范围更宽（见
+              <a href="7.4-lead-vs-cycle-time.html">7.4</a>）。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>周期时间 Cycle time</strong>（起点不同，是最贴身的一个干扰项，也在术语表内）、
+              <strong>速率 Velocity</strong>（听起来也像「快慢」，但它是迭代内的估算量）、
+              <strong>部署频率</strong>（把「多久一次」和「用多久」对调 —— 一个是次数、一个是时长，
+              这是本组最典型的构造方式）。</li>
+            <li><strong>排除技巧</strong>：先判断题干问的是<strong>次数还是时长</strong>。
+              问「多频繁 / how often」的，答案在部署频率；问「多长时间 / how long」的，答案在前置时间类。
+              这一刀先砍掉一半选项，剩下的再看起点在哪。</li>
+            <li><strong>相邻的官方确认</strong>：部署频率能升上去，靠的是流水线的自动化能力。
+              官方样题答案键确认<strong>「依赖部署流水线实现按需一键部署」属于持续交付</strong>、
+              <strong>「自动部署每个通过单元、集成、用户验收与非功能测试的版本」属于持续部署</strong>
+              （均由 <strong>DOFD v3.4 官方样题答案键</strong>确认，详见
+              <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>）。
+              题目若从「怎样才能提高部署频率」切入，落点通常在这一组实践名上，而不在指标名上。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面除标明「官方样题答案键确认」的两条外，命题角度、干扰项构造方式与排除技巧
+            均为本站教学推断 —— 官方未公布命题规律与题型分布；以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">一个数次数，一个数时长；DORA 口径的秒表从「代码提交」按下，到「在生产上运行」停止。</p>
+          <p class="mb-0 muted"><small>补一句推论：<strong>秒表按下之前的编码时间不算</strong>，
+            所以这个指标催不动开发，只能催动排队 —— 这也正是它有价值的原因。
+            换成精益价值流口径时秒表提前到「需求被接受」，量的范围更宽，两者不可混报。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-2-2</div>
+        <h3 class="kp__title">稳定性侧两指标：变更失败率与平均恢复时间<span class="en">Change failure rate &amp; Mean Time to Repair/Recover (MTTR)</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            这两个指标回答的是同一个场景的前后两半：<strong>出事的比例有多高</strong>，以及<strong>出事之后多久收拾干净</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">指标</th><th style="width:34%">一句话定义</th><th>关键限定</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="term">变更失败率 <span class="en">Change failure rate</span></span></td>
+                  <td>投产的变更中，<strong>导致生产环境服务降级、并需要补救动作</strong>（回滚、热修、打补丁）的那部分占比</td>
+                  <td>分母是<strong>变更次数</strong>，不是时间。它是一个<strong>比率</strong>，不是计数</td>
+                </tr>
+                <tr>
+                  <td><span class="term">平均恢复时间 <span class="en">Mean Time to Repair/Recover (MTTR)</span></span></td>
+                  <td>从<strong>故障发生</strong>到<strong>服务恢复</strong>所用时间的平均值</td>
+                  <td>官方术语表里这个词逐字写作 <strong>Repair/Recover</strong> —— 修复与恢复<strong>并列</strong>，不是二选一</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Change failure rate</em> 与 <em>Mean Time to Repair/Recover (MTTR)</em>
+            均逐字列于 DOFD v3.4 官方考纲术语表；<strong>括号里的 Repair/Recover 并列写法是官方原文的写法</strong>。
+            上表两条中文定义与「关键限定」两栏为本站措辞与教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它们要拆掉的是一种非常常见的稳定性观：<strong>把「不出事」当成唯一目标。</strong>
+            这个目标听起来无懈可击，但它只包含一半信息，而且会诱发错误行为。
+          </p>
+          <ul>
+            <li>某支付网关团队把年度目标定为「生产事故为零」。当年只上线了 4 次，
+              事故计数确实是 0 —— <strong>代价是一整年的功能积压。</strong></li>
+            <li>第五次上线出了事：一个数据库连接池配置引发超时。故障持续 <strong>6 小时 20 分</strong>。
+              不是因为问题难，而是因为<strong>回滚脚本一年没跑过</strong>，
+              而这次一起上线的 37 个变更让「是哪一个引起的」花掉了整整 4 小时。</li>
+            <li>用「事故数」这一个数字看，这个团队全年 <strong>1 次事故</strong>，成绩优秀。
+              用两个指标看则是另一幅图：变更失败率 <strong>1/5 = 20%</strong>，MTTR <strong>超过 6 小时</strong>。
+              <strong>它不是稳定，它只是很少动，而且一动就恢复不了。</strong></li>
+          </ul>
+          <p>
+            这就是必须两个一起量的原因：<strong>变更失败率把分母钉在「变更次数」上</strong>，
+            少发版并不能改善它；<strong>MTTR 则把注意力从「能不能不出事」转向「出事后的恢复能力」</strong>，
+            而后者才是可以被工程手段稳定改善的那一半。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">本组两指标</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>生产事故计数</strong></td>
+                  <td><strong>变更失败率</strong>是比率，分母是<strong>变更次数</strong> —— 少发版不会让它变好看</td>
+                  <td>是绝对计数，分母是<strong>时间</strong> —— 停止发版就能立刻「改善」，这正是它不可用的原因</td>
+                </tr>
+                <tr>
+                  <td><strong>缺陷密度 / 测试通过率</strong></td>
+                  <td>只统计<strong>到达生产并造成降级</strong>的那些，且必须<strong>需要补救动作</strong></td>
+                  <td>统计的是流水线内部被拦下的问题。<strong>被测试拦住的缺陷不计入变更失败率</strong> —— 它们恰恰说明质量门在起作用<br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span> 缺陷密度不在 66 条术语表内</small></td>
+                </tr>
+                <tr>
+                  <td><strong>MTBF 平均无故障时间</strong></td>
+                  <td><strong>MTTR</strong> 关心<strong>坏了之后多久好</strong>，改善它靠可观测性、演练与回滚能力</td>
+                  <td>关心<strong>多久坏一次</strong>，改善它的传统思路是减少变更 —— 与 DevOps 的方向相反<br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span> MTBF 不在 66 条术语表内，此处仅作对照</small></td>
+                </tr>
+                <tr>
+                  <td><strong>MTTR 的两半：检测与修复</strong></td>
+                  <td>官方词条写作 <strong>Repair/Recover</strong>，秒表从<strong>故障发生</strong>开始走</td>
+                  <td>「多久<strong>发现</strong>」这一段常被忽略，却往往是 MTTR 里最长的一段 —— 没有遥测，秒表在你不知道的情况下一直在走<br><small class="muted">「检测段 vs 修复段」的拆分为本站教学整理</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>变更失败率的分母是变更次数，不是时间</strong>。
+            这一条决定了它<strong>无法靠少发版做漂亮</strong> —— 少发版会让分子分母同时缩小，比率不变，
+            却会把部署频率和前置时间同时拖垮。命题时把它写成「一段时间内的故障次数」，是标准的干扰项写法。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这些对照；表中 MTBF、缺陷密度均不在 66 条术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>先定义清楚「失败」，再开始统计。</strong>
+              判据要落在<strong>「是否造成生产降级且需要补救动作」</strong>上：回滚、热修、打补丁、降级开关。
+              不写死这条判据，团队会在事后争论「这算不算一次失败」，而这种争论的结果永远偏向不算。</li>
+            <li><strong>变更失败率的操纵方式：改口径。</strong>
+              把热修不算作失败、把「计划内的紧急变更」剔出分子、或者把一次大发布算成一次变更来稀释比率。
+              <strong>约束：分子分母的口径写进定义并公开，且分母必须与部署频率的计数口径一致。</strong></li>
+            <li><strong>MTTR 的操纵方式：挪起点，或者挑样本。</strong>
+              秒表从「工单创建」而不是「故障发生」开始算，能砍掉最长的检测段；
+              把长尾的重大事故按「特殊情况」剔除，平均值立刻变好看。
+              <strong>约束：起点定在故障发生时刻，并同时看中位数与最坏值。</strong></li>
+            <li><strong>改善 MTTR 的杠杆不在「修得更快」上。</strong>
+              最有效的三件事是：缩短检测段（遥测与告警）、缩小嫌疑范围（小批量）、
+              让退出路径成为常态动作（演练过的回滚与前滚）。这与
+              <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a>是同一套手段。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上判据、操纵方式与约束条款均为本站教学整理，官方文件列出这两个术语，未规定统计口径与改进手段。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：定义辨识与归类</strong>。给一句描述问是哪个指标，
+              或者反过来问 MTTR 度量的是什么。
+              <strong>MTTR 的答案永远指向「恢复所需的时间」，不指向「多久出一次故障」</strong>，
+              这是本组最稳的一条判据。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把 MTTR 解释成<strong>「平均无故障时间 / 两次故障之间的间隔」</strong>（这是 MTBF，属方向对调）、
+              把变更失败率解释成<strong>「一段时间内的生产事故数量」</strong>（把比率偷换成计数）、
+              把变更失败率解释成<strong>「测试未通过的构建占比」</strong>（把统计点从生产挪回流水线内）。
+              这三种都读起来通顺，靠的是<strong>分母</strong>和<strong>统计点</strong>两处细节拆开。</li>
+            <li><strong>排除技巧</strong>：见到稳定性类选项，先问两句 ——
+              <strong>「分母是次数还是时间？」「统计的是生产环境还是流水线里？」</strong>
+              变更失败率是「变更次数 + 生产环境」，两条都要满足。</li>
+            <li><strong>唯一能引官方数字的一条</strong>：变更失败率是官方课程描述里<strong>点名给出量化收益的指标</strong> ——
+              <strong>变更失败率下降 50–70%</strong>（DOFD v3.4 Course Description）。
+              这个数字只属于 v3.4 课程描述，引用时必须带版本，v3.6 未重新发布这组数据。</li>
+          </ul>
+          <p class="mb-0 muted"><small>除标明出处的 v3.4 量化收益外，本面的命题角度、干扰项构造方式与排除技巧
+            均为本站教学推断 —— 官方未公布命题规律；以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">变更失败率问「多少次变更捅了篓子」，MTTR 问「捅了之后多久收拾干净」。</p>
+          <p class="mb-0 muted"><small>两个防混淆的钩子：<strong>失败率的分母是「变更次数」</strong>，所以少发版救不了它；
+            <strong>MTTR 的 R 是 Repair/Recover</strong>，是「修好 / 恢复」，不是「无故障」——
+            看到「两次故障之间」四个字，那是 MTBF，直接划掉。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-2-3</div>
+        <h3 class="kp__title">四指标的结构：速度与稳定性不是取舍<span class="en">Speed and stability move together</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            四个指标不是四个并列的 KPI，而是<strong>两组互相制衡的量</strong>：
+            部署频率与变更前置时间量<strong>速度</strong>，变更失败率与 MTTR 量<strong>稳定性</strong>。
+            两组必须同时看，因为<strong>只优化一组，另一组一定会被牺牲掉</strong>。
+          </p>
+          <p>
+            本节真正要记住的结论是：<strong>在表现最好的组织里，四项是同时更好的</strong>。
+            <span class="term">高绩效组织 <span class="en">High-performing organizations</span></span>
+            不是在「快」和「稳」之间找到了某个平衡点，而是<strong>两头都比别人强</strong>。
+          </p>
+          <p class="mb-0">
+            这直接推翻了那条最普遍的直觉 —— <strong>「要快就得牺牲质量」</strong>。
+            这句话在大批量、手工、低自动化的交付方式下是成立的；
+            <strong>DevOps 改变的正是让它成立的那些前提。</strong>
+          </p>
+          <p class="mb-0 muted"><small>
+            <em>High-performing organizations</em> 逐字列于 DOFD v3.4 官方考纲术语表，可用于描述四项同时更好的组织；
+            四个指标名也各自列于该表。
+            <strong>但「DORA」这个名字与「四大指标」这一成组说法，均未出现在 DOFD v3.4 官方考纲术语表或课程大纲子项中</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span> ——
+            DORA（DevOps Research and Assessment）是提出这组指标的外部研究项目，本站只用它作为这组指标的通行称呼。
+            <strong>把四个指标编为「速度组 / 稳定性组」并陈述「四项同向」，是本站教学整理。</strong>
+          </small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一条要单独讲，是因为<strong>那个错误直觉不只是认知问题，它会直接变成组织决策。</strong>
+          </p>
+          <ul>
+            <li>某企业 IT 部门在一次生产事故后作出决定：<strong>所有生产变更增加两级审批，发布窗口从每周改为每月</strong>。
+              理由完全符合直觉 —— 少发、慢发、多几双眼睛看，就会更稳。</li>
+            <li>六个月后的四个数字：部署频率<strong>下降到原来的 1/4</strong>；
+              变更前置时间<strong>从 6 天涨到 24 天</strong>；
+              变更失败率<strong>从 12% 涨到 27%</strong>；MTTR <strong>从 45 分钟涨到 3 小时</strong>。
+              <strong>四项全部变差，包括本来想改善的那两项。</strong></li>
+            <li>机制不难看懂：发布窗口拉长 → 一次发布攒的变更从 5 个变成 40 个 →
+              出问题时嫌疑人从 5 个变成 40 个 → 定位与回滚都变慢（MTTR 涨），
+              而 40 个变更之间的相互影响本身就制造新缺陷（失败率涨）。
+              <strong>批量是同时决定这两组指标的那个共同变量。</strong></li>
+          </ul>
+          <p>
+            所以「四项同向」不是一个乐观的口号，而是<strong>批量大小这一个变量同时作用在两组指标上</strong>的结果：
+            小批量让流动更快，也让每次故障的嫌疑范围更小、恢复更快。
+            <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步 · 流动（2.2）</a>讲的缩小批量，
+            在这里显示为四个数字一起变好。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「批量是共同变量」这一因果解释为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">本节的「四大指标」</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>官方的四类指标族</strong><br><small class="muted">速度 / 质量 / 稳定性 / 文化</small></td>
+                  <td>是<strong>四个具体的、可计算的指标</strong>，每个都有明确的分子分母</td>
+                  <td>是 v3.4 课程大纲 M7 的一个子项，是<strong>指标的分类维度</strong>，不是四个具体指标<br><small class="muted">两者的类目数量都是四，但含义完全不同。展开见本章 <a href="7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a>，本节不进入</small></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 指标 <span class="en">DevOps metrics</span></strong></td>
+                  <td>是这个大类里被引用得最多的<strong>一组具体指标</strong></td>
+                  <td>是术语表里的一个<strong>总称</strong>，涵盖范围远大于这四个<br><small class="muted"><em>DevOps metrics</em> 在 66 条术语表内</small></td>
+                </tr>
+                <tr>
+                  <td><strong>三步工作法 <span class="en">The Three Ways</span></strong></td>
+                  <td>是<strong>度量</strong>：告诉你现在处在什么状态</td>
+                  <td>是<strong>原则</strong>：告诉你该往哪个方向改。速度类对应第一步、稳定类对应第二步，这张映射已在 <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法（2.1）</a>建立，本节不重复</td>
+                </tr>
+                <tr>
+                  <td><strong>单指标 KPI 考核</strong></td>
+                  <td>四个<strong>互相制衡</strong>，任何一个被操纵都会在另外几个上露出破绽</td>
+                  <td>单独考核任何一个都会立刻被优化掉：只考部署频率就拆碎部署，只考失败率就停止发版<br><small class="muted"><span class="badge badge--note">📝 教学整理</span> 「指标制衡」这一说法为本站教学整理</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>不要把「四大指标」和官方 M7 子项里的「速度 / 质量 / 稳定性 / 文化」四类指标族当成同一件事</strong>。
+            后者是分类框架，前者是四个具体数字，而且前者只覆盖了后者中的两类 ——
+            <strong>四大指标里没有任何一个属于「文化」类</strong>。这是本节和 <a href="7.3-four-metric-families.html">7.3</a> 之间最容易串味的一处。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该对照；
+            v3.4 课程大纲 M7 子项 <em>DevOps Metrics - Speed, Quality, Stability, Culture</em> 为官方原文，本节仅引其名称。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把「四项一起看」落成可执行的规则，只有三条：</p>
+          <ul>
+            <li><strong>永远四个一起报，不允许单独汇报。</strong>
+              一份只有部署频率的周报没有信息量。四个数字放在一页上，操纵行为会自己暴露 ——
+              频率涨了但前置时间没动，说明拆的是假批量；失败率降了但频率也降了，说明只是不敢发了。</li>
+            <li><strong>改进动作先落在批量上。</strong>
+              想同时改善四项，最短的路径是缩小批量与消除等待，而不是分别为四个指标各设一个改进项目。
+              为「降低 MTTR」单独立项，往往做成了值班表加人；缩小批量则四项一起动。</li>
+            <li><strong>指标用于改进，不用于考核个人。</strong>
+              一旦四个数字进入绩效考核，它们会在一个季度内全部失真 —— 上面列出的每一种操纵方式都不需要撒谎，
+              只需要改口径。<a href="../ch08-sharing/8.3-leadership.html">第 8 章 DevOps 领导力（8.3）</a>里有一条相关的官方确认：
+              <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（由 DOFD v3.4 官方样题答案键确认）。</li>
+          </ul>
+          <p>
+            还有一条边界要说清：<strong>四个数字都好，不等于做对了产品。</strong>
+            它们量的是交付性能，不是业务价值 —— 高速、稳定地交付没人用的功能，四个指标一样漂亮。
+            补上这一半的是价值驱动指标，见本章 <a href="7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a>。
+          </p>
+          <p class="mb-0 muted"><small>以上三条规则与「交付性能 ≠ 业务价值」这一边界均为本站教学整理，官方未给出此类使用规范。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <p class="muted"><small>以下引号内的题干与选项均为本站构造的示例表述，用于说明命题角度，非官方样题原文。</small></p>
+          <ul>
+            <li><strong>最主要的命题角度：反直觉判断句</strong>。
+              题干给出「提高发布速度必然增加生产风险 / 必须在速度与稳定性之间取舍」这类陈述，问对错或问哪一项最准确。
+              <strong>正确方向永远是「两者可以同时改善」</strong>，理由是小批量与自动化同时作用在两组指标上。</li>
+            <li><strong>干扰项长什么样</strong>：一类是把取舍关系说得很有道理
+              （「为保障稳定性应减少发布次数」）—— 它符合直觉，因此是最有效的干扰项；
+              另一类是把四大指标与官方的<strong>速度 / 质量 / 稳定性 / 文化</strong>四类指标族混起来，
+              比如让你从四大指标里挑一个「文化类指标」。
+              <strong>四大指标里没有文化类，这种选项本身就是陷阱。</strong></li>
+            <li><strong>排除技巧</strong>：凡是选项在鼓励<strong>减少变更次数、拉长发布周期、增加审批层级</strong>
+              来换取稳定性的，在 DOFD 的价值取向下一律不是正确方向。
+              本站建议把这条判据推广到全书使用 —— 它与 DOFD 的价值取向一致，
+              但官方未公布命题规律，这只是本站的应试策略。</li>
+            <li><strong>可以引官方的一条</strong>：v3.4 课程描述把
+              <strong>质量提升（变更失败率下降 50–70%）</strong>与
+              <strong>敏捷性提升（供应与部署时间下降最多 90%）</strong>
+              写在<strong>同一句话里并列呈现</strong>（DOFD v3.4 Course Description）。
+              <span class="muted">本站把这一并列读作对「速度与稳定性同向」的间接佐证 ——
+              官方原句只是把两项收益并列陈述，未就两者的关系作出判断，这一步解读是本站的。</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>本章在 v3.4 官方考试要求中最多出 <strong>2 题</strong>
+            （DOFD v3.4 Examination Requirements，2022-05；<strong>v3.6 未公开重新发布权重表</strong>）——
+            题量小，但这一条结论是理解全书因果链的枢纽，按理解重要性学。
+            除标明出处的官方内容外，本面的命题角度、干扰项构造方式与排除技巧均为本站教学推断，
+            官方未公布命题规律；以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">四项同向，不是四选二 —— 因为小批量同时让它跑得更快、也让它更容易被修好。</p>
+          <p class="muted"><small>结构口诀：<strong>前两个量「走得多快」，后两个量「摔了怎么样」</strong>；
+            两组必须一起看，单看一组必被操纵。</small></p>
+          <p class="mb-0 muted"><small>见到「为了稳定所以少发版」这句话，就该警觉：
+            它会让四个数字一起变差，而不是换来两个变好。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>四个名字</strong>：部署频率 <em>Deployment frequency</em>、变更前置时间 <em>Change lead time</em>、
+          变更失败率 <em>Change failure rate</em>、平均恢复时间 <em>Mean Time to Repair/Recover (MTTR)</em> ——
+          四个词都逐字在 DOFD v3.4 官方考纲术语表内</li>
+        <li><strong>二分结构</strong>：前两个量<strong>速度</strong>，后两个量<strong>稳定性</strong>；
+          必须四个一起看，只看一半的每一个都能被做漂亮（结构编排为本站教学整理）</li>
+        <li><strong>前置时间量的是流动</strong>：<strong>DORA 口径</strong>的秒表从<strong>代码提交</strong>按下、到<strong>在生产上运行</strong>停止，
+          中间大部分是排队 —— 它不是「开发写得快不快」。<strong>DORA 四指标里的那一条用这个口径</strong>；
+          精益价值流口径另从<strong>需求被接受</strong>算起、含需求排队，两者都对，量的东西不同（见 <a href="7.4-lead-vs-cycle-time.html">7.4</a>）</li>
+        <li><strong>失败率的分母是变更次数</strong>，不是时间。少发版救不了它；
+          MTTR 的 R 是 <strong>Repair/Recover</strong>（修复 / 恢复），不是「两次故障之间」（那是 MTBF）</li>
+        <li><strong>最该记住的一条</strong>：<strong>速度与稳定性不是取舍</strong>。
+          高绩效组织 <em>High-performing organizations</em> 四项同时更好，共同变量是<strong>批量</strong></li>
+        <li><strong>官方可引的数字</strong>：变更失败率下降 <strong>50–70%</strong>、供应与部署时间下降最多 <strong>90%</strong>，
+          写在同一句里（DOFD v3.4 Course Description；引用必须带版本）</li>
+        <li><strong>别串味</strong>：「四大指标」≠ 官方 M7 的「速度 / 质量 / 稳定性 / 文化」四类指标族 ——
+          后者是分类维度，且四大指标里<strong>没有文化类</strong>（分类族展开见本章 <a href="7.3-four-metric-families.html">7.3</a>）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、
+      <em>Mean Time to Repair/Recover (MTTR)</em>、<em>High-performing organizations</em>、<em>DevOps metrics</em>、
+      <em>Flow</em>、<em>Cycle time</em>、<em>Velocity</em>
+      均逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）。
+      <strong>该术语表只列词条、不附定义</strong>，因此本页给出的每一条中文释义均为本站措辞。
+      v3.4 课程大纲 M7 模块子项 <em>DevOps Metrics - Speed, Quality, Stability, Culture</em> 与
+      <em>Change lead/cycle time</em> 为官方原文，本节仅引其名称，分类族的展开见本章
+      <a href="7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a>、
+      前置时间与周期时间的辨析见本章 <a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a>。
+      <strong>本节讲 DORA 四指标，变更前置时间采用 DOFD / DORA 口径：从代码提交到在生产上运行</strong>；
+      精益价值流口径另从「需求被接受」算起并含需求排队（价值流映射用的是后者）。
+      <strong>两种口径都成立，起点不同是因为量的东西不同，不是相互矛盾</strong>；
+      官方术语表未附定义，两种口径的并列辨析见 <a href="7.4-lead-vs-cycle-time.html">7.4</a>。
+      <strong>量化收益</strong>「变更失败率下降 50–70%、供应与部署时间下降最多 90%、整体 IT 成本下降 15–25%」
+      出自 <strong>DOFD v3.4 Course Description</strong>，非 v3.6 重新发布的数据。
+      本章题量「最多 2 题」出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      引用的一条官方样题结论「用指标控制和评价员工不属于 DevOps 领导力的目标」由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认；kp-7-2-1 ⑤ 面引用的两条持续交付 / 持续部署归属同出该答案键。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「DORA」这一名称与「四大指标」这一成组说法不在官方术语表与课程大纲子项内，
+      属延伸 · 非考纲；「速度组 / 稳定性组」二分结构（图 7-2-1）、变更前置时间的五段分解（图 7-2-2）、
+      各指标的操纵方式与配套约束、「批量是共同变量」的因果解释、四项使用规则与各面的干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      MTBF、缺陷密度、故事点、发布频率等对照名词不在 66 条术语表内，本节仅作对照使用。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
