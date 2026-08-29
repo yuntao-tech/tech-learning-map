@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.4 组织成熟度模型 · DevOps Foundation 学习站</title>
+<meta name="description" content="组织成熟度模型（Organizational maturity models）用分级描述组织当前所处的位置。本节讲清它作为诊断与对话工具的正确用法、被当成考核指标后的失效机制，以及它与高绩效组织、结果指标之间的关系。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"5.4-maturity-models"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.4 组织成熟度模型</h1>
+      <div class="page-head__en">Organizational Maturity Models</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这是本章唯一一个<strong>工具本身没错、错全在怎么用</strong>的主题。
+        同一张分级表，用来自我诊断能推动改进；一旦用来打分和排名，
+        组织就会去优化分数而不是优化能力 —— 每个团队都报「我们是三级」，
+        真实交付能力一点没变。本节的重点不是背分级，而是<strong>认出这条分叉是怎么发生的</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>成熟度模型到底给出了什么 —— 一把量当前位置的尺子，还是一条必须走的路线？</li>
+        <li>为什么同一张分级表当诊断工具有用，当考核指标就立刻失效</li>
+        <li>定性的成熟度自评与定量的结果指标是什么关系，为什么不能互相替代</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 424" role="img" aria-label="两个组织在五个维度上的成熟度分级：总分相同，但能力分布完全不同">
+
+          <!-- ===== 左：组织 A ===== -->
+          <text x="30" y="34" class="f-5" font-size="15" font-weight="700">组织 A · 自动化先行型</text>
+
+          <!-- 网格线 -->
+          <g class="s-stroke" stroke-width="1" opacity="0.45">
+            <line x1="202" y1="64" x2="202" y2="278"/>
+            <line x1="254" y1="64" x2="254" y2="278"/>
+            <line x1="306" y1="64" x2="306" y2="278"/>
+            <line x1="358" y1="64" x2="358" y2="278"/>
+          </g>
+
+          <g font-size="13" class="s-ink">
+            <text x="30" y="88">文化 Culture</text>
+            <text x="30" y="132">自动化 Automation</text>
+            <text x="30" y="176">精益 Lean</text>
+            <text x="30" y="220">度量 Measurement</text>
+            <text x="30" y="264">分享 Sharing</text>
+          </g>
+
+          <!-- 轨道 -->
+          <g class="s-stroke s-fill2" stroke-width="1.4">
+            <rect x="150" y="72" width="260" height="22" rx="5"/>
+            <rect x="150" y="116" width="260" height="22" rx="5"/>
+            <rect x="150" y="160" width="260" height="22" rx="5"/>
+            <rect x="150" y="204" width="260" height="22" rx="5"/>
+            <rect x="150" y="248" width="260" height="22" rx="5"/>
+          </g>
+
+          <!-- 条形：A -->
+          <rect x="150" y="72"  width="104" height="22" rx="5" class="f-5"/>
+          <rect x="150" y="116" width="260" height="22" rx="5" class="f-1"/>
+          <rect x="150" y="160" width="156" height="22" rx="5" class="f-1"/>
+          <rect x="150" y="204" width="208" height="22" rx="5" class="f-1"/>
+          <rect x="150" y="248" width="52"  height="22" rx="5" class="f-5"/>
+
+          <g font-size="13" class="s-ink" font-weight="650">
+            <text x="418" y="88">2 级</text>
+            <text x="418" y="132">5 级</text>
+            <text x="418" y="176">3 级</text>
+            <text x="418" y="220">4 级</text>
+            <text x="418" y="264">1 级</text>
+          </g>
+
+          <g font-size="12" class="s-muted" text-anchor="middle">
+            <text x="176" y="292">1</text>
+            <text x="228" y="292">2</text>
+            <text x="280" y="292">3</text>
+            <text x="332" y="292">4</text>
+            <text x="384" y="292">5</text>
+          </g>
+
+          <rect x="24" y="306" width="446" height="86" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="42" y="332" class="s-ink" font-size="14" font-weight="700">五维合计 15 · 平均 3.0 →「三级组织」</text>
+          <text x="42" y="356" class="s-muted" font-size="12.5">自动化 5 级建在文化 2 级、分享 1 级之上</text>
+          <text x="42" y="378" class="s-muted" font-size="12.5">工具很强，出事时没人敢说实话，改进也传不出团队</text>
+
+          <!-- ===== 右：组织 B ===== -->
+          <text x="496" y="34" class="f-3" font-size="15" font-weight="700">组织 B · 均衡推进型</text>
+
+          <g class="s-stroke" stroke-width="1" opacity="0.45">
+            <line x1="672" y1="64" x2="672" y2="278"/>
+            <line x1="724" y1="64" x2="724" y2="278"/>
+            <line x1="776" y1="64" x2="776" y2="278"/>
+            <line x1="828" y1="64" x2="828" y2="278"/>
+          </g>
+
+          <g font-size="13" class="s-ink">
+            <text x="496" y="88">文化 Culture</text>
+            <text x="496" y="132">自动化 Automation</text>
+            <text x="496" y="176">精益 Lean</text>
+            <text x="496" y="220">度量 Measurement</text>
+            <text x="496" y="264">分享 Sharing</text>
+          </g>
+
+          <g class="s-stroke s-fill2" stroke-width="1.4">
+            <rect x="620" y="72" width="260" height="22" rx="5"/>
+            <rect x="620" y="116" width="260" height="22" rx="5"/>
+            <rect x="620" y="160" width="260" height="22" rx="5"/>
+            <rect x="620" y="204" width="260" height="22" rx="5"/>
+            <rect x="620" y="248" width="260" height="22" rx="5"/>
+          </g>
+
+          <g class="f-3">
+            <rect x="620" y="72"  width="156" height="22" rx="5"/>
+            <rect x="620" y="116" width="156" height="22" rx="5"/>
+            <rect x="620" y="160" width="156" height="22" rx="5"/>
+            <rect x="620" y="204" width="156" height="22" rx="5"/>
+            <rect x="620" y="248" width="156" height="22" rx="5"/>
+          </g>
+
+          <g font-size="13" class="s-ink" font-weight="650">
+            <text x="888" y="88">3 级</text>
+            <text x="888" y="132">3 级</text>
+            <text x="888" y="176">3 级</text>
+            <text x="888" y="220">3 级</text>
+            <text x="888" y="264">3 级</text>
+          </g>
+
+          <g font-size="12" class="s-muted" text-anchor="middle">
+            <text x="646" y="292">1</text>
+            <text x="698" y="292">2</text>
+            <text x="750" y="292">3</text>
+            <text x="802" y="292">4</text>
+            <text x="854" y="292">5</text>
+          </g>
+
+          <rect x="490" y="306" width="446" height="86" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="508" y="332" class="s-ink" font-size="14" font-weight="700">五维合计 15 · 平均 3.0 →「三级组织」</text>
+          <text x="508" y="356" class="s-muted" font-size="12.5">没有一项突出，也没有一项拖后腿</text>
+          <text x="508" y="378" class="s-muted" font-size="12.5">下一步做什么，五个维度里挑哪个都成立</text>
+
+          <text x="480" y="414" class="f-5" font-size="14" font-weight="700" text-anchor="middle">同一个「三级」，两种完全不同的处境 —— 总分把差别抹平了</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-4-1　分维度看，还是看总分。</strong>
+        两个组织的五项合计都是 15、平均都是 3.0，按总分都会被记成「三级组织」。
+        但左边的形状告诉你它的下一步只能是文化与分享，右边的形状说明它哪个维度都可以动。
+        <strong>要看懂的是：成熟度模型的信息全部在「形状」里，一旦压成一个总分，能指导行动的部分就没有了。</strong>
+        <br><small class="muted">图中的五个维度取自官方 Blueprint 的 <strong>CALMS</strong>（Culture / Automation / Lean / Measurement / Sharing，出自 PeopleCert DevOps Foundation Blueprint；<strong>CALMS 亦为 66 条官方考纲术语表条目</strong>）；
+        <strong>把 CALMS 当作成熟度评估的维度骨架、以及 1–5 的分级刻度，都是本站的教学整理</strong> ——
+        官方 Blueprint 以并列色块给出 CALMS 五项，<strong>未将其定义为成熟度模型，也未规定分级数量与各级判据</strong>；
+        「把 CALMS 理解为价值维度」是本站的教学归类。两个组织的数值为本站构造的教学示例。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-5-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-4-1</div>
+        <h3 class="kp__title">组织成熟度模型<span class="en">Organizational Maturity Models</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">组织成熟度模型 <span class="en">Organizational maturity models</span></span>
+            是<strong>用分级的方式描述组织在某个能力维度上所处的位置</strong>的工具：
+            它给出当前所在的那一格，以及紧邻的下一格长什么样，从而回答「下一步往哪走」。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">三个构件</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>维度</strong></td><td>评什么。文化、自动化、度量、分享等各评各的 —— <strong>维度一旦合并成一个总分，模型就失去了指导价值</strong>（见图 5-4-1）</td></tr>
+                <tr><td><strong>级别定义</strong></td><td>每一级「长什么样」的文字描述。好的级别定义描述<strong>可观察的行为</strong>（谁在什么时候做了什么），而不是形容词（「较为规范」「基本完善」）</td></tr>
+                <tr><td><strong>判定证据</strong></td><td>凭什么说是这一级。没有证据要求的分级表，填出来的只是自我感觉</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Organizational maturity models</em> 是 <strong>DOFD v3.4 课程大纲 M5「Culture, Behaviors &amp; Operating Models」的官方模块子项</strong>，
+            但<strong>不在 66 条官方考纲术语表内</strong>，因此本节标注为「📘 官方模块子项」而非「⭐ 考纲核心」。
+            上表的「三个构件」拆法为本站教学整理，官方未以此形式给出模型的构成。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它解决的痛点是转型半年后的一个具体场面：<strong>没有人能说清「现在到哪了」。</strong></p>
+          <ul>
+            <li>某企业 12 个团队推进 DevOps 半年，季度汇报会上三方各说各话：
+              开发说「流水线都建好了，进展很好」，运维说「上线还是要连夜守着，没什么变化」，
+              管理层看到的只有一句「持续推进中」。<strong>三方用的是三套隐含标准，争的是形容词。</strong></li>
+            <li>更麻烦的是<strong>下一步无从选择</strong>：有人提议买工具，有人提议做培训，有人提议改考核。
+              每个提议都有道理，因为没有任何共同的坐标能说明<strong>哪一项是当前最短的那块板</strong>。</li>
+          </ul>
+          <p>
+            成熟度模型切入的正是这一点：它把「好 / 不好」换成<strong>一组事先写清楚、各方都认的级别描述</strong>。
+            价值不在于评出几级，而在于<strong>三方第一次在同一张表上争论，并且争的是证据而不是印象</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">组织成熟度模型</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DevOps 指标 <span class="en">DevOps metrics</span></strong></td>
+                  <td><strong>定性的自我评估</strong>：描述过程与行为处在哪一格，靠人判断</td>
+                  <td><strong>定量的结果度量</strong>：变更前置时间、部署频率这类可直接测出的数字，不需要人打分</td>
+                </tr>
+                <tr>
+                  <td><strong>改进路线图</strong></td>
+                  <td>说明<strong>「现在在哪」</strong>。它是坐标，不是目的地</td>
+                  <td>说明<strong>「决定要去哪、按什么顺序去」</strong>。这是一个业务决定，模型代替不了</td>
+                </tr>
+                <tr>
+                  <td><strong>合规评级 / 认证审计</strong></td>
+                  <td>由团队<strong>对自己</strong>做，结果服务于团队自己的下一步</td>
+                  <td>由外部<strong>对被评方</strong>做，结果服务于发证、准入或采购比价</td>
+                </tr>
+                <tr>
+                  <td><strong>目标态 / 终点状态</strong></td>
+                  <td>没有终点。达到最高级只意味着<strong>这套级别定义已经不够用了，该换更细的尺子</strong></td>
+                  <td>目标态是一个<strong>可以被达到并结束</strong>的状态；而 DevOps 的第三步是<strong>持续改进</strong>，没有毕业的那一天（见 <a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步：持续学习与实验（2.5）</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>成熟度模型回答的是「现在在哪」，不是「必须往哪走」。</strong>
+            很多组织把分级表倒过来用，把「爬到五级」本身当成目标，于是开始按表格补齐每一格的证据 ——
+            证据补齐了，交付能力却没有变化。
+            <strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>，
+            这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认（相关展开见
+            <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>与
+            <a href="../ch08-sharing/index.html">第 8 章 组织考量与如何起步（8.4）</a>）。</small></p>
+          <p class="mb-0 muted"><small>上表四行对照为本站教学整理，官方未以此形式给出该对照；
+            「『成熟』这个词自带终点暗示，而改进没有毕业的那一天」这一提醒同为本站教学提示。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把它当成<strong>一次结构化的对话</strong>来组织，而不是一次测评。具体动作：</p>
+          <ul>
+            <li><strong>先定维度，再定级别</strong>：维度要少（五个上下），且彼此正交。
+              官方 Blueprint 的 CALMS 五项可以直接拿来当维度骨架<span class="muted">（这一用法是本站教学整理）</span>。</li>
+            <li><strong>每一级都要能指出证据</strong>：把「有自动化测试」改写成
+              「主干每次提交自动触发测试，失败会阻断合并，上周有 3 次真的阻断了」。
+              形容词式的级别定义，评出来的必然是自我感觉。</li>
+            <li><strong>分维度呈现，绝不算总分</strong>：图 5-4-1 的两个组织总分完全一样，处境完全不同。
+              总分唯一的用处是排名 —— 而排名正是这个工具最不该被拿去做的事。</li>
+            <li><strong>输出物是「下一件事」，不是「几级」</strong>：一次评估的正确产出是
+              「本季度只做一件事：把发布评审从两周一次改成随时可发起」，而不是「本季度达到三级」。</li>
+            <li><strong>让评估结果接受结果指标的检验</strong>：改进项落地两个月后，
+              对应的结果指标如果一动不动，说明改的不是真正的约束
+              （见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，
+              指标展开见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）。</li>
+          </ul>
+          <div class="src-note">
+            这份使用清单为<strong>本站教学整理</strong>。DOFD v3.4 课程大纲把
+            <em>Organizational maturity models</em> 列为 M5 的模块子项，考纲只到这一层，
+            具体用哪个模型、分几级、怎么评估都由组织自定。
+            CMM / CMMI 等具体成熟度框架的名称不在 DOFD 66 条术语表内，本节不展开。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度（Bloom 1–2）</strong>：一是<strong>归属</strong> ——
+              <em>Organizational maturity models</em> 属于「文化、行为与运营模型」这一知识域，
+              与文化债、行为模型同一模块，不是度量模块的内容；
+              二是<strong>用途</strong> —— 它用于<strong>评估当前状态、找出改进方向</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：把用途写成
+              <strong>「用于给团队打分排名」「用于给供应商发证」「用于评价个人绩效」</strong>，
+              或者把它<strong>等同于结果指标</strong>（「成熟度模型就是用部署频率等指标衡量组织」）。
+              前一类偷换了服务对象，后一类混淆了定性自评与定量度量。</li>
+            <li><strong>排除技巧</strong>：选项里凡是出现<strong>考核、排名、奖惩、评价员工</strong>的，
+              在 DOFD 语境下基本都不是正确方向 —— <strong>「用指标控制和评价员工不属于 DevOps 领导力的目标」
+              这一条由 DOFD v3.4 官方样题答案键确认</strong>（展开归
+              <a href="../ch08-sharing/index.html">第 8 章 DevOps 领导力（8.3）</a>）。<span class="muted">把这条结论迁移到成熟度模型的选项上，是本站的教学推论。</span></li>
+            <li><strong>反向问法</strong>：问成熟度模型<strong>不能</strong>提供什么。
+              正确方向是「不能替你决定该往哪走」—— 那由业务战略与目标决定（官方样题答案键确认，见 ③ 面）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">成熟度模型回答「现在在哪」，不回答「必须去哪」。</p>
+          <p class="mb-0 muted"><small>形状比总分重要：<strong>五个维度画出来的那条折线，才是能指导下一步的东西；平均成一个数字，信息就没了。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-5-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-4-2</div>
+        <h3 class="kp__title">诊断工具 vs 考核指标：成熟度模型的正确用法与误用<span class="en">Diagnostic tool vs performance scorecard</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            同一张分级表有两种截然不同的用法，<strong>文档上看不出区别，后果上天差地别</strong>：
+          </p>
+          <p>
+            <strong>同一张成熟度分级表，按「评估结果给谁看、会不会被用来比较」分成两种用法：诊断用法与考核用法 —— 表格一模一样，后果相反。</strong>
+            分野不在表格的内容，而在结果的流向：结果留在团队内部，它就是一面镜子；结果流向团队之外并被并排摆放，它就变成了一把尺子，
+            而被量的人一定会去优化尺子上的读数。
+          </p>
+          <ul class="mb-0">
+            <li><strong>作为诊断与对话工具</strong>：团队对自己评，目的是<strong>看清当前状态、达成共识、选出下一步</strong>。
+              低分是有用的信息，因为它指出了短板在哪。评估开得越坦白，产出越有用。</li>
+            <li><strong>作为考核指标与排名依据</strong>：上级对团队评，结果进 KPI、进季度汇报、进团队对比。
+              低分是<strong>需要避免的后果</strong>，于是团队开始优化分数：先松动判定标准，再回避低分项，
+              最后把评估会开成材料准备会。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「诊断与对话工具 vs 考核指标与排名依据」这组二分为本站教学整理，官方未以此形式给出该划分；
+            也正因为官方未给出对应术语，本知识点<strong>没有官方英文原词</strong>，
+            kp 标题里的英文只是本站为便于对照所写的说法，<strong>不是官方名称</strong>，不需要记忆。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一面要说清的痛点，是<strong>误用的那条路径具体怎么走完的</strong> ——
+            它从来不是某个人决定造假，而是一连串各自合理的动作叠出来的结果。
+          </p>
+          <ul>
+            <li>某企业把成熟度评级写进部门季度 KPI，12 个团队每季度自评上报。
+              三次评估的平均分是 <strong>1.5 → 3.0 → 4.5</strong>，汇报材料上是一条漂亮的上升曲线。
+              同期的变更前置时间与变更失败率<strong>没有任何改善</strong>。</li>
+            <li>中间发生了什么：分数与评优挂钩后，<strong>判定标准开始向宽松漂移</strong> ——
+              「有自动化测试」从「失败会阻断合并」松成「仓库里存在测试文件」；
+              接着<strong>报低分等于承认工作没做好</strong>，于是没有团队愿意第一个报 2 级；
+              最后<strong>评估会变成材料准备会</strong>，讨论的是怎么写，不是哪里差。</li>
+            <li>代价是双份的：分数失去信息量（管理层拿到的是一条假曲线），
+              <strong>而且团队再也不敢在评估里暴露真实短板</strong> —— 短板于是永远得不到修。</li>
+          </ul>
+          <p>
+            <strong>机制一句话：当一项测量被用作目标，它就不再是一项好的测量。</strong>
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            这句话通常被称为<strong>古德哈特定律 <span class="en">Goodhart's Law</span></strong> ——
+            这是理解用的补充，<strong>不在 DOFD 考纲术语表内</strong>，考试不会考定律名称。
+          </p>
+          <p class="mb-0 muted"><small>本案例与其中的数字为本站构造的教学示例，用于说明失效链条，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 420" role="img" aria-label="同一组织三次成熟度评估：作为诊断工具时分数与真实能力同步上升，作为考核指标时分数上涨而真实能力原地踏步">
+
+              <!-- ===== 左panel：作为诊断工具 ===== -->
+              <text x="24" y="38" class="s-ink" font-size="15" font-weight="700">用法 A · 作为自我诊断与对话工具</text>
+              <rect x="24" y="56" width="446" height="290" rx="12" class="s-stroke s-fill2" stroke-width="1.5"/>
+
+              <g class="s-stroke" stroke-width="1" opacity="0.4">
+                <line x1="76" y1="320" x2="456" y2="320"/>
+                <line x1="76" y1="274" x2="456" y2="274"/>
+                <line x1="76" y1="228" x2="456" y2="228"/>
+                <line x1="76" y1="182" x2="456" y2="182"/>
+                <line x1="76" y1="136" x2="456" y2="136"/>
+              </g>
+              <g class="s-muted" font-size="12" text-anchor="end">
+                <text x="66" y="324">1</text>
+                <text x="66" y="278">2</text>
+                <text x="66" y="232">3</text>
+                <text x="66" y="186">4</text>
+                <text x="66" y="140">5</text>
+              </g>
+              <text x="40" y="110" class="s-muted" font-size="12">等级</text>
+
+              <!-- 图例 -->
+              <line x1="150" y1="86" x2="182" y2="86" class="s-5" stroke-width="3"/>
+              <text x="190" y="91" class="s-ink" font-size="12.5">评估报出的等级</text>
+              <line x1="310" y1="86" x2="342" y2="86" class="s-1" stroke-width="3" stroke-dasharray="6 4"/>
+              <text x="350" y="91" class="s-ink" font-size="12.5">真实交付能力</text>
+
+              <polyline points="130,297 250,251 370,205" class="s-5" stroke-width="3" fill="none"/>
+              <polyline points="130,306 250,262 370,218" class="s-1" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+              <g class="f-5"><circle cx="130" cy="297" r="4.5"/><circle cx="250" cy="251" r="4.5"/><circle cx="370" cy="205" r="4.5"/></g>
+              <g class="f-1"><circle cx="130" cy="306" r="4.5"/><circle cx="250" cy="262" r="4.5"/><circle cx="370" cy="218" r="4.5"/></g>
+
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="130" y="340">第 1 次评估</text>
+                <text x="250" y="340">第 2 次</text>
+                <text x="370" y="340">第 3 次</text>
+              </g>
+
+              <!-- ===== 右panel：作为考核指标 ===== -->
+              <text x="490" y="38" class="s-ink" font-size="15" font-weight="700">用法 B · 作为考核指标与排名依据</text>
+              <rect x="490" y="56" width="446" height="290" rx="12" class="s-stroke s-fill2" stroke-width="1.5"/>
+
+              <g class="s-stroke" stroke-width="1" opacity="0.4">
+                <line x1="542" y1="320" x2="922" y2="320"/>
+                <line x1="542" y1="274" x2="922" y2="274"/>
+                <line x1="542" y1="228" x2="922" y2="228"/>
+                <line x1="542" y1="182" x2="922" y2="182"/>
+                <line x1="542" y1="136" x2="922" y2="136"/>
+              </g>
+              <g class="s-muted" font-size="12" text-anchor="end">
+                <text x="532" y="324">1</text>
+                <text x="532" y="278">2</text>
+                <text x="532" y="232">3</text>
+                <text x="532" y="186">4</text>
+                <text x="532" y="140">5</text>
+              </g>
+              <text x="506" y="110" class="s-muted" font-size="12">等级</text>
+
+              <text x="560" y="96" class="s-ink" font-size="12.5">分数三次评估从 1.5 升到 4.5</text>
+              <text x="560" y="118" class="s-ink" font-size="12.5">同期交付能力几乎没有变化</text>
+
+              <polyline points="596,297 716,228 836,159" class="s-5" stroke-width="3" fill="none"/>
+              <polyline points="596,303 716,299 836,310" class="s-1" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+              <g class="f-5"><circle cx="596" cy="297" r="4.5"/><circle cx="716" cy="228" r="4.5"/><circle cx="836" cy="159" r="4.5"/></g>
+              <g class="f-1"><circle cx="596" cy="303" r="4.5"/><circle cx="716" cy="299" r="4.5"/><circle cx="836" cy="310" r="4.5"/></g>
+
+              <line x1="836" y1="159" x2="836" y2="310" class="s-5" stroke-width="2" stroke-dasharray="5 5"/>
+              <text x="848" y="228" class="f-5" font-size="12.5" font-weight="700">落差</text>
+              <text x="848" y="248" class="s-muted" font-size="12">已无法</text>
+              <text x="848" y="266" class="s-muted" font-size="12">从分数</text>
+              <text x="848" y="284" class="s-muted" font-size="12">看出实情</text>
+
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="596" y="340">第 1 次评估</text>
+                <text x="716" y="340">第 2 次</text>
+                <text x="836" y="340">第 3 次</text>
+              </g>
+
+              <text x="480" y="378" class="f-5" font-size="14" font-weight="700" text-anchor="middle">分叉不是因为评估做得不认真，而是分数被用来比较之后的必然结果</text>
+              <text x="480" y="404" class="s-muted" font-size="12.5" text-anchor="middle">分数与奖惩挂钩 → 判定标准向宽松漂移 → 报低分等于认错 → 没人说坏消息 → 分数继续上涨</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-4-2　同一张分级表，两种用法下的三次评估。</strong>
+            左右两边的实线（报出的等级）都在上涨，看汇报材料完全看不出差别。
+            <strong>差别只在虚线 —— 真实交付能力有没有跟着走。</strong>
+            右边那段「落差」一旦出现，成熟度分数就失去了作为信息的资格：它测的不再是能力，而是报分的技巧。
+            <br><small class="muted">两组曲线与数值为本站构造的教学示例，用于呈现失效机制，非真实调研数据；
+            「诊断用法 vs 考核用法」这一组对照为本站教学整理，官方未以此形式给出。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">作为诊断与对话工具</th><th>作为考核指标与排名依据</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>谁发起、评给谁看</strong></td>
+                  <td>团队评自己，结果<strong>只对团队自己负责</strong></td>
+                  <td>上级评团队，结果<strong>进汇报、进对比、进 KPI</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>低分意味着什么</strong></td>
+                  <td>一条<strong>有用的信息</strong>：短板找到了，下一步有了着落</td>
+                  <td>一个<strong>要避免的后果</strong>：说明工作没做好，会影响评价</td>
+                </tr>
+                <tr>
+                  <td><strong>输出物</strong></td>
+                  <td>一件<strong>具体要改的事</strong>，加一个用来验证的结果指标</td>
+                  <td>一个<strong>等级数字</strong>，以及团队之间的排序</td>
+                </tr>
+                <tr>
+                  <td><strong>失效方式</strong></td>
+                  <td>评得太粗、改进项没人跟进 —— <strong>失效了也只是白做一次</strong></td>
+                  <td>判定标准漂移、无人报真实短板 —— <strong>失效后比不做更糟：管理层拿到一条假曲线</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>与文化的关系</strong></td>
+                  <td>需要<strong>能安全说出坏消息</strong>的环境，反过来也在建设这种环境</td>
+                  <td>持续制造<strong>报喜不报忧</strong>的压力，是文化债的典型来源之一</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>两种用法在文档上是同一张表、同一套问题、同一份评分说明，从材料上分辨不出来。</strong>
+            唯一可靠的判据只有一条 —— <strong>问「这次评的分数会不会被拿去和别的团队比较、会不会影响评价」</strong>。
+            答案是「会」，那它已经是考核指标了，无论文件上写的是什么。</small></p>
+          <p class="mb-0 muted"><small>上表五行对照与该判据均为本站教学整理，官方未以此形式给出；
+            文化债 <em>Cultural debt</em> 与组织文化 <em>Organizational culture</em> 是 DOFD v3.4 官方术语表条目，展开见本章<a href="5.1-defining-culture.html">5.1</a>、<a href="5.2-cultural-debt.html">5.2</a>两节。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>要保住诊断用法，靠的不是宣布「这次评估不用于考核」，而是几条结构性的保护：</p>
+          <ul>
+            <li><strong>评估由团队自己做，结果默认只在团队内可见</strong>。需要向上汇报时，
+              报的是<strong>改进项与其效果</strong>，不是等级。</li>
+            <li><strong>不做跨团队排名，不进 KPI，不与奖惩关联</strong>。
+              只要建立过一次关联，之后再宣布解除也没用 —— 团队已经学会了怎么报分。</li>
+            <li><strong>把输出从「几级」换成「下一件事」</strong>：一次评估只产出一到两个改进项，
+              每个改进项绑定一个可测的结果指标。</li>
+            <li><strong>用结果指标交叉验证</strong>：等级上升而变更前置时间、变更失败率毫无变化，
+              说明分数漂了。<strong>这是发现误用的最早信号</strong>
+              （指标展开见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）。</li>
+            <li><strong>刻意奖励报出低分</strong>：第一个在评估里如实说出「这一项我们只有 1 级」的团队，
+              需要被公开肯定。否则第二次评估就不会有人这么做了。</li>
+          </ul>
+          <div class="src-note">
+            这份保护清单为<strong>本站教学整理</strong>，官方未规定成熟度评估的实施方式。
+            其中「让人敢于说出坏消息」的组织环境，对应 DOFD v3.4 课程大纲 M4 的官方模块子项<strong>安全文化 <em>Safety culture</em></strong>
+            （该词<strong>不在</strong> 66 条官方考纲术语表内，按本站徽章判定规则应标
+            <span class="badge badge--plain">📘 官方模块子项</span>）——
+            <strong>面对指责与恐惧文化、大量单点故障、频繁战情室的组织应转向安全文化，这一判断由 DOFD v3.4 官方样题答案键确认</strong>，
+            展开归 <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度</strong>：给一段组织做法，问它<strong>是否符合 DevOps 的方向</strong>，
+              或问成熟度评估<strong>应当用于什么</strong>。正确方向永远指向
+              <strong>自我评估、找出改进方向、促成共识</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：把误用写成正面选项 ——
+              <strong>「用成熟度等级对团队排名」「将等级纳入个人绩效考核」「按等级分配预算或奖金」</strong>。
+              这类选项读起来很像管理常识，但方向是反的。</li>
+            <li><strong>官方已确认的相邻结论</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认（展开归
+              <a href="../ch08-sharing/index.html">第 8 章 DevOps 领导力（8.3）</a>）；
+              <strong>面对指责与恐惧的文化应转向安全文化</strong> —— 同样由官方样题答案键确认（展开归
+              <a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>）。
+              <span class="muted">这两条本身不是成熟度模型的考点，把它们当作本节选项的判据是本站的教学推论。</span></li>
+            <li><strong>排除技巧</strong>：读选项时找<strong>「谁评谁、结果给谁看」</strong>。
+              团队评自己、结果自己用 → 正确方向；上级评团队、结果用于比较 → 干扰项。
+              另一条更快的：<strong>凡是会让人不敢说真话的做法，在 DOFD 语境里都不是正确答案。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            排除技巧与判据为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">分数一旦被拿来比较，测的就不再是能力，而是报分的技巧。</p>
+          <p class="mb-0 muted"><small>配套一问：<strong>报低分的团队，会不会有事？</strong>
+            会 —— 这张表已经是考核指标；不会 —— 它还是诊断工具。这一问比任何文件说明都准。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-5-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-4-3</div>
+        <h3 class="kp__title">高绩效组织<span class="en">High-performing Organizations</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">高绩效组织 <span class="en">High-performing organizations</span></span>
+            指的是<strong>在交付速度与稳定性上同时领先、并且不靠牺牲其中一方去换另一方</strong>的组织。
+            它是一个<strong>结果表述</strong>：由实际表现认定，不是由自评等级认定。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">通常表现在</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>又快又稳</strong></td><td>部署频率高、变更前置时间短的同时，变更失败率低、平均恢复时间 MTTR 短。<strong>四项一起好，才是这个词的意思</strong></td></tr>
+                <tr><td><strong>问题恢复快于追责</strong></td><td>出事时先恢复、后复盘，复盘产出改进项而不是责任人</td></tr>
+                <tr><td><strong>改进是日常</strong></td><td>改进不靠专项运动，而是嵌在日常工作里 —— 对应三步工作法的第三步</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>High-performing organizations</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表</strong>，
+            属必须掌握的名词，故标「⭐ 考纲核心」；表中列出的四项指标名
+            （<em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、<em>MTTR</em>）同样是官方术语表条目。
+            <strong>上表这三条表现是本站对该术语的教学性刻画</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个词要打掉的，是一句在 IT 组织里流传了几十年的话：<strong>「要稳定就得慢。」</strong>
+          </p>
+          <ul>
+            <li>某企业运维部门以「零重大事故」为唯一考核项，于是把发布窗口压到一季度一次、
+              每次发布需要三级审批。事故数确实低，代价是一个紧急修复也要等 6 周。
+              <strong>业务侧提出的每一个加速要求，都被「你要速度还是要稳定」挡了回去。</strong></li>
+            <li>这句话之所以难反驳，是因为在<strong>大批量、手工发布</strong>的前提下它是对的 ——
+              发得越勤，出事越多。取舍是真的，但<strong>它是那套工作方式的产物，不是规律</strong>。</li>
+          </ul>
+          <p>
+            「高绩效组织」提供的正是反例：存在一批组织<strong>四项指标同时优于其他组织</strong>，
+            说明速度与稳定性可以一起改善。于是讨论从「选哪一边」变成了「怎么把工作方式换掉」。
+          </p>
+          <p class="mb-0 muted"><small>官方给出的收益区间可作为量级参照：<strong>整体 IT 成本下降 15–25%、
+            变更失败率下降 50–70%、供应与部署时间下降最多 90%</strong>
+            （DOFD v3.4 Course Description，2022-06；这是 v3.4 课程描述的数据，v3.6 未重新发布）。
+            上述案例为本站构造的教学示例，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">高绩效组织</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>高成熟度等级</strong></td>
+                  <td><strong>结果</strong>：由实际交付表现认定，别人也能测出来</td>
+                  <td><strong>过程自评</strong>：由组织自己按分级表判定。两者可以严重不一致 —— 图 5-4-2 右边那条落差就是不一致的样子</td>
+                </tr>
+                <tr>
+                  <td><strong>高自动化程度</strong></td>
+                  <td>自动化是<strong>手段之一</strong>，还需要文化、度量与分享跟上（见图 5-4-1 的组织 A）</td>
+                  <td>只说明工具铺得广。工具齐全但没人敢报故障的组织，不是高绩效组织</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 指标 <span class="en">DevOps metrics</span></strong></td>
+                  <td>是<strong>被描述的对象</strong>：一类组织</td>
+                  <td>是<strong>描述用的尺子</strong>：具体的量。指标展开归 <a href="../ch07-metrics/index.html">第 7 章</a></td>
+                </tr>
+                <tr>
+                  <td><strong>投入规模</strong></td>
+                  <td>与预算、人数、工具数量<strong>没有必然关系</strong></td>
+                  <td>「买了最多工具的组织」是最常见的误解版本，也是常见干扰项</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>成熟度是自己评出来的，绩效是结果测出来的。</strong>
+            一个组织完全可能自评四级而各项结果指标平平（分数漂了），
+            也可能自评二级却各项结果都很好（尺子太粗，没测到它真正的强项）。
+            <strong>两者不一致时，先信结果指标，再回头修尺子。</strong></small></p>
+          <p class="mb-0 muted"><small>上表四行对照与「先信结果指标」这一判断句均为本站教学整理，官方未以此形式给出该对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            成熟度自评与结果指标是<strong>互补的两条轨道，不能互相替代</strong>：
+            前者解释「为什么会这样、下一步该动哪里」，后者证明「改完之后到底有没有用」。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">两条轨道</th><th style="width:38%">成熟度自评（定性）</th><th>结果指标（定量）</th></tr></thead>
+              <tbody>
+                <tr><td><strong>回答什么</strong></td><td>现在处在哪一格，短板在哪个维度</td><td>交付得快不快、稳不稳，改完有没有变化</td></tr>
+                <tr><td><strong>数据来源</strong></td><td>人的判断加证据举例</td><td>系统里可直接取出的数</td></tr>
+                <tr><td><strong>单独使用的风险</strong></td><td>分数会漂（见 kp-5-4-2）</td><td>知道变坏了，但不知道为什么、该动哪里</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>落地方式很简单：<strong>每一个由成熟度评估产生的改进项，都绑定一个结果指标作为验收条件。</strong></p>
+          <ul class="mb-0">
+            <li>指标动了 → 这一步改对了，回到评估表挑下一块短板。</li>
+            <li>指标没动 → 改的不是真正的约束，别急着往下一级爬
+              （见 <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>）。</li>
+            <li>指标动了但等级没变 → 尺子太粗，该修的是分级表本身。</li>
+          </ul>
+          <div class="src-note">
+            「两条轨道互补」的表述、上表三行对照与三条判读规则均为本站教学整理。
+            官方 v3.4 课程大纲把 <em>Organizational maturity models</em> 放在 M5，
+            把 <em>The Importance of Measurement</em> 与 <em>DevOps Metrics</em> 放在 M7，
+            <strong>未给出两者的配合方式</strong>。DORA 四项指标的展开归
+            <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+            <strong>「DORA」这一名称不在 DOFD 66 条术语表内</strong>，术语表收录的是四个指标各自的名字。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度（Bloom 1–2）</strong>：<em>High-performing organizations</em> 是官方术语表条目，
+              按 Bloom 1–2 层级，可预期的问法是直接问它<strong>指什么、有什么特征</strong>。
+              正确方向是<strong>速度与稳定性同时优秀</strong>，而不是单项突出。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「自动化程度最高的组织」「工具链最完整的组织」「成熟度评估达到最高级的组织」
+              「事故数为零的组织」</strong>。前三个用手段冒充结果，最后一个是单项极值 ——
+              事故为零往往意味着根本没在发布。</li>
+            <li><strong>与本节的连接点</strong>：题干若把<strong>成熟度等级</strong>当作绩效的证明，
+              方向就已经错了。<strong>决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标</strong>，
+              这一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认 —— 不是等级表，也不是别家的做法。<span class="muted">（把这条结论用于排除「等级表」「别家做法」类选项，是本站的教学推论。）</span></li>
+            <li><strong>排除技巧</strong>：看选项描述的是<strong>结果</strong>还是<strong>投入</strong>。
+              提到工具、预算、人数、认证等级的，基本可以整组划掉；
+              留下的应该是<strong>交付表现</strong>类的描述。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析与排除技巧为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">成熟度是自己说的，绩效是结果说的 —— 两者对不上时，信结果。</p>
+          <p class="mb-0 muted"><small>四项一起好才算数：<strong>部署频率、变更前置时间、变更失败率、MTTR</strong>。
+            只快不稳或只稳不快，都不是高绩效组织。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>定位</strong>：<em>Organizational maturity models</em> 是 <strong>v3.4 M5「文化、行为与运营模型」的官方模块子项</strong>，
+          <strong>不在 66 条术语表内</strong>；<em>High-performing organizations</em> <strong>在</strong>术语表内</li>
+        <li><strong>它回答什么</strong>：用分级描述<strong>现在在哪</strong>，给出下一步的参照 —— <strong>不回答「必须去哪」</strong></li>
+        <li><strong>正确用法</strong>：自我诊断与对话工具，团队评自己，输出是「下一件事」而不是「几级」</li>
+        <li><strong>误用</strong>：变成考核指标与排名 → 团队优化分数而不是能力 → 人人都报三级，能力毫无变化
+          （机制即古德哈特定律，<strong>延伸补充，不在考纲术语表内</strong>）</li>
+        <li><strong>「成熟」是个陷阱词</strong>：它暗示有终点，而 DevOps 的本质是<strong>持续改进，没有毕业</strong></li>
+        <li><strong>与度量的关系</strong>：成熟度是<strong>定性自评</strong>，DevOps 指标是<strong>定量结果度量</strong>，
+          <strong>互补而非替代</strong>；两者对不上时先信结果指标</li>
+        <li><strong>可当判据的官方结论</strong>：用指标控制和评价员工<strong>不属于</strong> DevOps 领导力的目标；
+          决定哪些原则与实践最有益的是<strong>业务战略与目标</strong>（两条均由 DOFD v3.4 官方样题答案键确认）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Organizational maturity models</em> 出自 <strong>DOFD v3.4 课程大纲（2022-05）M5
+      「Culture, Behaviors &amp; Operating Models」的模块子项</strong>，
+      <strong>未收录于 66 条官方考纲术语表</strong>，故本节页头与该知识点标注为「📘 官方模块子项」。
+      <em>High-performing organizations</em>、<em>DevOps metrics</em>、<em>Organizational culture</em>、
+      <em>Cultural debt</em>、<em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、
+      <em>Mean Time to Repair/Recover (MTTR)</em> 均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，
+      出自 DOFD v3.4 Examination Requirements（2022-05）；<strong>该术语表只列出词条、不附定义</strong>，
+      因此本页出现的每一条中文释义都是本站措辞，不是官方逐字定义；
+      CALMS 五项名称出自 PeopleCert《DevOps Foundation® Blueprint》，
+      <strong>CALMS 同时逐字列于 DOFD v3.4 官方考纲术语表（66 条），属 ⭐ 考纲核心术语，展开见
+      <a href="../ch01-exploring-devops/1.1-defining-devops.html">第 1 章 定义 DevOps（1.1）</a></strong>。
+      量化收益区间（成本 15–25%、变更失败率 50–70%、供应与部署时间最多 90%）出自
+      <strong>DOFD v3.4 Course Description（2022-06）</strong>，v3.6 未重新发布该数据。
+      <strong>三条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」、
+      「<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标」、
+      「面对指责与恐惧文化、大量单点故障、频繁战情室的组织应转向<strong>安全文化</strong>」——
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>；后两条的展开分别归
+      <a href="../ch08-sharing/index.html">第 8 章</a>与 <a href="../ch04-frameworks/index.html">第 4 章</a>，
+      本节仅将其用作判据，<strong>这一迁移是本站的教学推论</strong>。
+      <strong>教学整理部分</strong>：成熟度模型的「三个构件」拆法、以 CALMS 为评估维度骨架与 1–5 分级刻度（图 5-4-1）、
+      「诊断用法 vs 考核用法」的五行对照与失效链条（图 5-4-2）、保护清单、
+      「成熟度自评 × 结果指标」双轨表与三条判读规则、各面的干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。文中三处带数字的案例均为本站构造的教学示例，非真实调研数据。
+      <br>DORA 四项指标的展开见 <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+      关键成功因素见 <a href="../ch08-sharing/index.html">第 8 章 挑战、风险与关键成功因素（8.5）</a>；
+      组织文化与文化债见本章<a href="5.1-defining-culture.html">5.1</a>、<a href="5.2-cultural-debt.html">5.2</a>两节。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

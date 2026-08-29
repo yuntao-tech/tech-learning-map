@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.2 Agile 与 Scrum · DevOps Foundation 学习站</title>
+<meta name="description" content="敏捷宣言四条价值观的左右不能对调，「高于」也不等于否定右侧。本节给出四条价值观对照图、Scrum 角色事件工件三栏图，以及 Agile 与 DevOps 覆盖范围的边界图 —— 这条边界是第 4 章最高频的考点。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.2-agile-scrum"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.2 Agile 与 Scrum</h1>
+      <div class="page-head__en">Agile and Scrum</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        本节考的不是「怎么开好一场 Sprint 计划会」，而是两件事：
+        <strong>敏捷宣言那四条价值观的左右两边有没有被对调</strong>，
+        以及 <strong>Agile 和 DevOps 各自覆盖到价值流的哪一段</strong>。
+        前者是最标准的干扰项做法，后者是第 4 章反复出现的判断点 ——
+        Agile 的原始范围基本止于「开发完成」，DevOps 把同一套思路一路延伸到运维与客户手里。
+      </p>
+      <p class="mb-0 muted"><small><strong>页头标 ⭐ 考纲核心的依据</strong>：
+        <em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、<em>Agile Manifesto</em>、
+        <em>Agile software development</em>、<em>Agile service management</em> 均逐字列于
+        DOFD v3.4 官方考纲术语表，本节主题词落在表内，按判定口径取 ⭐ 考纲核心。
+        术语表<strong>不含单独的 Agile</strong> —— Agile 作为整体是 v3.4 课程大纲 M4 的模块子项，
+        这一层身份在本节正文中说明，不另占页头徽章。</small></p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>敏捷宣言四条价值观分别是什么，为什么<strong>「高于」不等于否定右侧</strong></li>
+        <li>Scrum 的<strong>角色、事件、工件</strong>各是哪几个，Epics 与 Velocity 在其中处在什么位置</li>
+        <li>Agile 与 DevOps 的<strong>覆盖范围边界画在哪里</strong>，Agile service management 又把敏捷带到了哪一侧</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 442" role="img" aria-label="敏捷宣言四条价值观的左右对照：左侧更被看重，右侧同样有价值">
+          <text x="235" y="32" class="f-1" font-size="15" font-weight="700" text-anchor="middle">左侧 —— 更被看重</text>
+          <text x="480" y="32" class="s-muted" font-size="13" text-anchor="middle">关系</text>
+          <text x="725" y="32" class="f-4" font-size="15" font-weight="700" text-anchor="middle">右侧 —— 同样有价值，只是次之</text>
+
+          <!-- 第 1 组 -->
+          <rect x="40" y="46" width="390" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="235" y="80" class="s-ink" font-size="16" font-weight="650" text-anchor="middle">个体与互动</text>
+          <text x="480" y="72" class="f-5" font-size="14" font-weight="700" text-anchor="middle">高于</text>
+          <text x="480" y="90" class="s-muted" font-size="12" text-anchor="middle">over</text>
+          <rect x="530" y="46" width="390" height="56" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="725" y="80" class="s-ink" font-size="16" text-anchor="middle">流程与工具</text>
+
+          <!-- 第 2 组 -->
+          <rect x="40" y="114" width="390" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="235" y="148" class="s-ink" font-size="16" font-weight="650" text-anchor="middle">可工作的软件</text>
+          <text x="480" y="140" class="f-5" font-size="14" font-weight="700" text-anchor="middle">高于</text>
+          <text x="480" y="158" class="s-muted" font-size="12" text-anchor="middle">over</text>
+          <rect x="530" y="114" width="390" height="56" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="725" y="148" class="s-ink" font-size="16" text-anchor="middle">详尽的文档</text>
+
+          <!-- 第 3 组 -->
+          <rect x="40" y="182" width="390" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="235" y="216" class="s-ink" font-size="16" font-weight="650" text-anchor="middle">客户协作</text>
+          <text x="480" y="208" class="f-5" font-size="14" font-weight="700" text-anchor="middle">高于</text>
+          <text x="480" y="226" class="s-muted" font-size="12" text-anchor="middle">over</text>
+          <rect x="530" y="182" width="390" height="56" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="725" y="216" class="s-ink" font-size="16" text-anchor="middle">合同谈判</text>
+
+          <!-- 第 4 组 -->
+          <rect x="40" y="250" width="390" height="56" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="235" y="284" class="s-ink" font-size="16" font-weight="650" text-anchor="middle">响应变化</text>
+          <text x="480" y="276" class="f-5" font-size="14" font-weight="700" text-anchor="middle">高于</text>
+          <text x="480" y="294" class="s-muted" font-size="12" text-anchor="middle">over</text>
+          <rect x="530" y="250" width="390" height="56" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="725" y="284" class="s-ink" font-size="16" text-anchor="middle">遵循计划</text>
+
+          <!-- 两条读法提示 -->
+          <rect x="40" y="324" width="880" height="52" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="60" y="346" class="f-5" font-size="14" font-weight="700">「高于」≠「否定」</text>
+          <text x="60" y="368" class="s-ink" font-size="13">宣言末尾自己说清楚了：右侧各项同样有价值，只是左侧被看得更重。没有任何一条说「不要文档」「不要计划」。</text>
+
+          <rect x="40" y="386" width="880" height="46" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="60" y="404" class="f-3" font-size="13.5" font-weight="700">最标准的干扰项做法：把某一行的左右两格对调</text>
+          <text x="60" y="424" class="s-muted" font-size="12.5">例如写成「流程与工具 高于 个体与互动」。读起来通顺，只有记住方向才拆得开。</text>
+
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-2-1　敏捷宣言的四条价值观。</strong>
+        这张图要让你看懂的只有两件事：<strong>每一行左右两格的位置不能互换</strong>，
+        以及<strong>右侧那一列并没有被划掉</strong>——它只是排在第二位。
+        考场上真正会出错的地方不是「记不住四条」，而是「四条都记得，但某一条的左右被出题人对调了而没察觉」。
+        <br><small class="muted">四条价值观出自 <em>Manifesto for Agile Software Development</em>（2001）原文，中译为本站译文；
+        <em>Agile Manifesto</em> 列于 DOFD v3.4 官方考纲术语表。
+        图中「最标准的干扰项做法」一栏为本站教学整理，官方未以此形式给出命题提示。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-2-1</div>
+        <h3 class="kp__title">敏捷宣言与敏捷软件开发<span class="en">Agile Manifesto · Agile software development</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">敏捷宣言 <span class="en">Agile Manifesto</span></span>
+            是 2001 年发布的一份不到一页的声明，用<strong>四条「A 高于 B」的价值观</strong>加十二条原则，
+            定义了一种以<strong>短周期、可工作的软件、持续响应变化</strong>为核心的开发方式。
+          </p>
+          <p>
+            <span class="term">敏捷软件开发 <span class="en">Agile software development</span></span>
+            是按这套价值观工作的一类方法的统称 ——
+            <strong>它是一个伞形词，不是某一个具体方法</strong>。Scrum、极限编程
+            <span class="en">Extreme Programming / XP</span> <span class="badge badge--ext">🧭 延伸 · 非考纲</span>、看板方法都在伞下。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:34%">更被看重（左）</th><th style="width:10%">关系</th><th style="width:32%">同样有价值（右）</th><th>这一条在反对什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>个体与互动</strong></td><td class="center">高于</td><td>流程与工具</td><td>用流程文件和工具链<strong>替代</strong>人与人当面把事情说清楚</td></tr>
+                <tr><td><strong>可工作的软件</strong></td><td class="center">高于</td><td>详尽的文档</td><td>用一摞交付物<strong>证明</strong>进度，而软件本身跑不起来</td></tr>
+                <tr><td><strong>客户协作</strong></td><td class="center">高于</td><td>合同谈判</td><td>把精力花在<strong>划清责任边界</strong>而不是弄清客户真正要什么</td></tr>
+                <tr><td><strong>响应变化</strong></td><td class="center">高于</td><td>遵循计划</td><td>把<strong>按原计划执行</strong>本身当成成功标准</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>四条价值观出自 <em>Manifesto for Agile Software Development</em>（2001）原文，中译为本站译文；
+            第四列「这一条在反对什么」为本站教学整理，宣言原文没有这一列。
+            <strong>Agile Manifesto</strong> 与 <strong>Agile software development</strong> 均列于 DOFD v3.4 官方考纲术语表。
+            宣言的<strong>十二条原则</strong>未在 66 条术语表中单列，本节只提及不展开。
+            「极限编程 <em>Extreme Programming / XP</em>」不在 DOFD 66 条术语表内，也不是 v3.4 课程大纲子项，
+            此处仅作举例，不作为考点；同句中的 <em>Scrum</em> 与 <em>Kanban</em> 则都是术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它针对的是<span class="term">瀑布 <span class="en">Waterfall</span></span>式项目里一个具体到近乎荒诞的场景：
+            <strong>所有交付物都齐了，只有软件不能用。</strong>
+          </p>
+          <ul>
+            <li>某企业内部报销系统立项，需求分析 3 个月产出 210 页规格说明书，
+              业务方签字确认。设计 2 个月，开发 7 个月，第 13 个月首次集成演示。
+              演示当天业务方第一句话是：<strong>「差旅政策去年 10 月就改了。」</strong></li>
+            <li>接下来发生的不是修改，而是<strong>翻合同</strong>：政策变更算不算需求变更、算谁的责任、
+              走不走变更控制流程。<strong>三周会议，一行代码没动。</strong></li>
+            <li>根因不是谁偷懒，而是这套工作方式的<strong>反馈周期是 13 个月</strong>：
+              在第 13 个月之前，没有任何一个时刻能让人看到可以运行的软件，
+              因此也没有任何一个时刻能便宜地发现「方向错了」。</li>
+          </ul>
+          <p class="mb-0">
+            四条价值观正是对这四个症结的逐条回应：<strong>让人直接对话（而不是靠流程传话）、
+            让软件每几周就能跑一次（而不是靠文档证明进度）、让客户一直在场（而不是只在签字时在场）、
+            让变化被当作正常输入（而不是当作事故）</strong>。
+            <br><span class="muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            <em>Waterfall</em> 列于 DOFD v3.4 官方考纲术语表。</small></span>
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">敏捷软件开发 Agile</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>瀑布 <span class="en">Waterfall</span></strong></td>
+                  <td><strong>短周期迭代</strong>，每个迭代都产出可工作的软件；变化是正常输入</td>
+                  <td><strong>阶段串行、一次性交付</strong>；变化要走变更控制。反馈只在最后出现</td>
+                </tr>
+                <tr>
+                  <td><strong>Scrum</strong></td>
+                  <td>是<strong>一组价值观与原则</strong>，没有规定角色、会议、时长</td>
+                  <td>是<strong>一个具体框架</strong>，规定了角色、事件、工件。Scrum 是敏捷的一种实现</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps</strong></td>
+                  <td>主要关注<strong>把软件做出来</strong>这一段，终点是可交付的增量</td>
+                  <td>把同一套思路<strong>延伸到运维与客户</strong>，终点是客户手里在运行的价值（详见本节 <a href="#kp-4-2-3">Agile 与 DevOps 的边界</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Agile 是一类思路，Scrum 是其中一个具体框架</strong>。
+            题干里出现「角色 / 事件 / 工件 / Sprint」这类<strong>被规定死的结构</strong>时，问的多半是 Scrum；
+            出现「价值观 / 原则 / 响应变化」这类<strong>没有结构的表述</strong>时，问的是 Agile。
+            把两者当同义词用，是本节最常见的失分点。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出三组对照；
+            表中 <em>Waterfall</em>、<em>Scrum</em>、<em>DevOps</em> 均为 DOFD v3.4 官方考纲术语表条目。
+            Agile 与<strong>看板方法 <em>Kanban</em></strong> 同在敏捷伞下，不构成对立面，因此不列入本表；
+            Scrum 与 Kanban 的对照见本节 <a href="#kp-4-2-2">Scrum：角色、事件、工件</a> 的 ③ 面。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>这四条价值观在日常工作里的用法，是<strong>当作决策时的排序规则</strong>，而不是当作口号贴墙上：</p>
+          <ul>
+            <li><strong>「个体与互动」的具体动作</strong>：一个跨部门问题拖了三天还在邮件里绕，
+              判据是「换成把相关三个人拉到一起当面说十分钟」是否更快。是，就不要继续走流程。</li>
+            <li><strong>「可工作的软件」的具体动作</strong>：迭代评审时看的是<strong>能运行的系统</strong>，
+              不是进度百分比。一个功能「代码写完了、还没联调」，在这条价值观下等于没完成。</li>
+            <li><strong>「客户协作」的具体动作</strong>：让能拍板的业务方<strong>定期看到真实系统</strong>，
+              而不是只在立项和验收两个时点出现。</li>
+            <li><strong>「响应变化」的具体动作</strong>：把需求变更接进下一个迭代的待办，
+              而不是先立一个「变更影响评估」的子项目。</li>
+            <li><strong>反过来的红线</strong>：这四条<strong>不能被用来拒绝右侧</strong>。
+              「我们敏捷，所以不写文档」「我们敏捷，所以不做计划」是典型的误用 ——
+              受监管行业的合规文档、发布计划，右侧这些东西一样要做，只是不能凌驾于左侧之上。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实践判据为本站教学整理，宣言原文只给出价值观与原则，未规定具体动作。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：直接问四条价值观之一</strong>。给出左半句，问右半句是什么；或整条给出，问对不对。
+              这是最基础的记忆题，Bloom 1 级。</li>
+            <li><strong>干扰项长什么样（最标准的一种）</strong>：<strong>把某一行的左右两格对调</strong> ——
+              写成「流程与工具高于个体与互动」「详尽的文档高于可工作的软件」。
+              这种选项读起来完全通顺，唯一的破绽就是方向。
+              <strong>排除技巧：先只看「高于」左边那一格，四个左格分别是「个体与互动 / 可工作的软件 / 客户协作 / 响应变化」，
+              凡是左格出现「流程」「文档」「合同」「计划」的，一律划掉。</strong></li>
+            <li><strong>干扰项长什么样（第二种）</strong>：<strong>把「高于」偷换成「取代 / 不需要」</strong> ——
+              写成「敏捷意味着不写文档」「敏捷意味着不做计划」。
+              判据是宣言自己说过右侧同样有价值，任何把右侧说成「不需要」的选项都是错的。</li>
+            <li><strong>干扰项长什么样（第三种）</strong>：<strong>把 Scrum 的元素塞进敏捷宣言</strong> ——
+              选项里出现「Sprint」「每日站会」「Product Owner」，声称它们是宣言的价值观之一。
+              宣言里<strong>没有任何角色和会议</strong>，出现具体结构名的一律划掉。</li>
+            <li><strong>反向问法</strong>：问「以下哪一项<strong>不是</strong>敏捷宣言的价值观」，
+              这时正确答案往往是一句本身很正确、但属于别处的话（比如某条 Scrum 规则或某个 DevOps 原则）。
+              <strong>不要按「这句话对不对」来选，要按「这句话是不是那四条之一」来选。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度、干扰项构造方式与排除技巧均为本站教学整理，
+            官方仅公布考试范围为 Bloom 1–2；本站不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">左边四格：人、能跑的软件、客户、变化；右边四格：流程、文档、合同、计划。左边更重，右边不废。</p>
+          <p class="mb-0 muted"><small>左格四个词有个共同点 —— <strong>都是「活的」</strong>（人、运行中的软件、在场的客户、正在发生的变化）；
+            右格四个词也有共同点 —— <strong>都是「写死的」</strong>（流程、文档、合同、计划）。
+            <strong>活的高于写死的</strong>，方向就不会记反。<span class="muted">（此助记为本站教学整理）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-2-2</div>
+        <h3 class="kp__title">Scrum：角色、事件、工件<span class="en">Scrum · Scrum roles, artifacts and events · Epics · Velocity · SAFe</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">Scrum</span> 是敏捷伞下<strong>最常被拿来当作敏捷落地范例的一个具体框架</strong><span class="muted">（本站表述）</span>：
+            把工作切成固定时长的迭代（Sprint），在每个迭代结束时产出一个<strong>可用的增量</strong>。
+            它规定的东西只有三类 —— <strong>角色、事件、工件</strong>，考纲术语表把这三类合并为一个条目
+            <em>Scrum roles, artifacts and events</em>。
+          </p>
+          <p>
+            另外三个术语围绕 Scrum 出现：<strong>Epics</strong> 是尚未拆细的大颗粒需求，
+            <strong>Velocity</strong> 是团队一个迭代能完成多少工作量的<strong>经验值</strong>，
+            <strong>Scaled Agile Framework (SAFe)</strong> 是把敏捷推到多团队、大规模场景的框架。
+          </p>
+          <p class="mb-0 muted"><small><em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、<em>Epics</em>、<em>Velocity</em>、
+            <em>Scaled Agile Framework (SAFe)</em> 均列于 DOFD v3.4 官方考纲术语表，但术语表只收录词条名、未附定义；
+            本面对这几个词的定义与展开为本站教学整理。</small></p>
+        </div>
+
+        <!-- ============ 图 4-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 356" role="img" aria-label="Scrum 规定的三类元素：三个角色、五个事件、三个工件">
+              <!-- 角色列 -->
+              <rect x="30" y="30" width="290" height="282" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="175" y="60" class="f-1" font-size="16" font-weight="700" text-anchor="middle">角色 Roles　3 个</text>
+              <rect x="46" y="78" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="175" y="99" class="s-ink" font-size="14" text-anchor="middle">Product Owner　产品负责人</text>
+              <rect x="46" y="118" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="175" y="139" class="s-ink" font-size="14" text-anchor="middle">Scrum Master</text>
+              <rect x="46" y="158" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="175" y="179" class="s-ink" font-size="14" text-anchor="middle">Developers　开发者</text>
+              <text x="175" y="216" class="s-muted" font-size="12" text-anchor="middle">三者合称 Scrum Team</text>
+              <text x="175" y="238" class="s-muted" font-size="12" text-anchor="middle">没有「项目经理」这个角色</text>
+              <text x="175" y="272" class="s-muted" font-size="12" text-anchor="middle">早期材料把第三个角色写作</text>
+              <text x="175" y="292" class="s-muted" font-size="12" text-anchor="middle">Development Team 开发团队</text>
+
+              <!-- 事件列 -->
+              <rect x="340" y="30" width="290" height="282" rx="12" class="s-3" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="485" y="60" class="f-3" font-size="16" font-weight="700" text-anchor="middle">事件 Events　5 个</text>
+              <rect x="356" y="78" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="485" y="99" class="s-ink" font-size="14" text-anchor="middle">Sprint　迭代本身</text>
+              <rect x="356" y="118" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="485" y="139" class="s-ink" font-size="14" text-anchor="middle">Sprint Planning　迭代计划</text>
+              <rect x="356" y="158" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="485" y="179" class="s-ink" font-size="14" text-anchor="middle">Daily Scrum　每日站会</text>
+              <rect x="356" y="198" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="485" y="219" class="s-ink" font-size="14" text-anchor="middle">Sprint Review　迭代评审</text>
+              <rect x="356" y="238" width="258" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="485" y="259" class="s-ink" font-size="14" text-anchor="middle">Sprint Retrospective　回顾</text>
+              <text x="485" y="292" class="s-muted" font-size="12" text-anchor="middle">Sprint 是容器，其余四个都在它里面</text>
+
+              <!-- 工件列 -->
+              <rect x="650" y="30" width="280" height="282" rx="12" class="s-4" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="790" y="60" class="f-4" font-size="16" font-weight="700" text-anchor="middle">工件 Artifacts　3 个</text>
+              <rect x="666" y="78" width="248" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="790" y="99" class="s-ink" font-size="14" text-anchor="middle">Product Backlog　产品待办</text>
+              <rect x="666" y="118" width="248" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="790" y="139" class="s-ink" font-size="14" text-anchor="middle">Sprint Backlog　迭代待办</text>
+              <rect x="666" y="158" width="248" height="32" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="790" y="179" class="s-ink" font-size="14" text-anchor="middle">Increment　增量</text>
+              <text x="790" y="216" class="s-muted" font-size="12" text-anchor="middle">Epics 位于 Product Backlog 里，</text>
+              <text x="790" y="236" class="s-muted" font-size="12" text-anchor="middle">是还没拆细的大颗粒条目</text>
+              <text x="790" y="270" class="s-muted" font-size="12" text-anchor="middle">Increment 是否算完成，由</text>
+              <text x="790" y="290" class="s-muted" font-size="12" text-anchor="middle">完成的定义 DoD 判定</text>
+
+              <text x="480" y="338" class="s-muted" font-size="12.5" text-anchor="middle">数目口诀：角色 3 · 事件 5 · 工件 3　——　考题最爱在「几个」和「谁属于哪一类」上做文章</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-2-2　Scrum 只规定这三类东西。</strong>
+            要看懂的是<strong>「哪个词属于哪一列」</strong>，而不是每个元素怎么开会。
+            考题不会问你站会该怎么主持，但很可能给你一个词（比如 Sprint Backlog 或 Daily Scrum），
+            让你判断它是角色、事件还是工件；或者把某一列的数目改掉。
+            <br><small class="muted"><em>Scrum</em> 与 <em>Scrum roles, artifacts and events</em> 列于 DOFD v3.4 官方考纲术语表，
+            但术语表只给出这一个合并词条，<strong>并未逐一列举具体的角色 / 事件 / 工件名称</strong>。
+            图中的具体清单、「三 / 五 / 三」的数目与元素归类，依据 <em>Scrum Guide</em>（Scrum 官方指南，非 DOFD 官方文件）整理，属<strong>本站教学整理</strong>。
+            <em>Sprint</em>、<em>Product Owner</em> 等具体名称不在 66 条术语表内单列。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            Scrum 要解决的，是<strong>「敏捷宣言说了要短周期，但没说短周期具体怎么组织」</strong>这个空档。
+            宣言只给方向，一个团队照着它办事时会立刻撞上三个具体问题：
+          </p>
+          <ul>
+            <li><strong>谁来决定先做什么？</strong>
+              某产品团队的待办列表由五个业务部门直接往里塞，每个部门都说自己的最紧急。
+              开发轮流被走廊里嗓门最大的人指挥，一个迭代同时开工 11 件事，结束时<strong>一件都没做完</strong>。
+              → Scrum 的回答是设一个 <strong>Product Owner</strong>，
+              待办的<strong>排序权唯一</strong>，五个部门去跟他谈，不跟开发谈。</li>
+            <li><strong>什么时候算做完？</strong>
+              同一团队里「完成」有三种含义：代码写完、测试通过、上线可用。
+              演示会上永远在争论「这个到底算不算完成」。
+              → Scrum 的回答是 <strong>Increment + 完成的定义 DoD</strong>：
+              一个统一标准，达不到就不算完成，不允许「基本完成」。</li>
+            <li><strong>怎么知道下个迭代能接多少？</strong>
+              计划会上靠拍脑袋承诺，连续三个迭代都超载，团队开始不相信自己的承诺。
+              → Scrum 的回答是 <strong>Velocity</strong>：
+              用过去几个迭代<strong>真实完成</strong>的工作量当作下一个迭代的容量上限。</li>
+          </ul>
+          <p class="mb-0">
+            换句话说，Scrum 的每一条规定都是在<strong>堵一个具体的漏洞</strong>：
+            排序权分散、完成标准模糊、容量靠猜。
+            <br><span class="muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「Scrum 的三条规定对应三个漏洞」这一归纳为本站教学整理。</small></span>
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">正确理解</th><th>常见误解 / 对照对象</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Epics</strong> vs 更小的待办条目</td>
+                  <td><strong>Epics</strong> 是<strong>大到装不进一个迭代</strong>的需求，必须先拆</td>
+                  <td>拆完之后的小条目才能进 Sprint Backlog。<strong>Epic 本身不是「更重要」，只是「更大」</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Velocity</strong> vs 绩效指标</td>
+                  <td>是<strong>本团队的容量预测值</strong>，用来回答「下个迭代能接多少」</td>
+                  <td>不是效率评价，<strong>更不能跨团队横向比较</strong> —— 估算基准各队不同，比出来的数没有意义</td>
+                </tr>
+                <tr>
+                  <td><strong>Scrum</strong> vs <strong>看板方法 <span class="en">Kanban</span></strong></td>
+                  <td>按<strong>固定时长的迭代</strong>组织，有承诺、有迭代边界</td>
+                  <td>不设迭代边界，靠<strong>限制在制品</strong>拉动，工作完成即放行<br><small class="muted">本节只点边界，展开见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>Scrum</strong> vs <strong>SAFe</strong></td>
+                  <td>是<strong>单个团队</strong>尺度的框架</td>
+                  <td><strong>Scaled Agile Framework (SAFe)</strong> 是把敏捷扩展到<strong>多团队 / 组织尺度</strong>的框架。本节只做定位，不展开其层级与角色</td>
+                </tr>
+                <tr>
+                  <td><strong>Scrum Master</strong> vs 项目经理</td>
+                  <td>职责是<strong>移除障碍、维护框架</strong>，不下达任务、不排优先级</td>
+                  <td>项目经理在传统语境下要管范围、进度、资源分配。<strong>Scrum 里没有这个角色</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Velocity 被当成绩效指标</strong>。
+            它是给团队自己做容量规划用的经验值，一旦被拿来考核或跨团队排名，团队只会抬高估算 ——
+            数字上升，实际交付不变。<strong>Velocity 升高本身不代表任何改进。</strong></small></p>
+          <p class="mb-0 muted"><small><em>Epics</em>、<em>Velocity</em>、<em>Scrum</em>、<em>Scaled Agile Framework (SAFe)</em>、
+            <em>Kanban</em> 均列于 DOFD v3.4 官方考纲术语表；本对照表的五组对照与「Velocity 不可跨团队比较」这一判断
+            为本站教学整理，官方未以此形式给出。
+            「用户故事 <em>user story</em>」「故事点 <em>story point</em>」不在 66 条术语表内，本节不作为考点。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>在 DevOps 语境下用 Scrum，要盯的不是仪式是否齐全，而是<strong>迭代产出的增量能不能真的走到生产</strong>：</p>
+          <ul>
+            <li><strong>把 DoD 一路推到生产</strong>：如果「完成的定义」只写到「测试环境通过」，
+              那么每个迭代的产出都会在测试环境堆积。
+              把 DoD 改成「已部署到生产（或随时可部署）」，Scrum 的迭代节奏才和交付节奏对齐。</li>
+            <li><strong>把运维工作放进同一个待办</strong>：监控告警治理、技术债、容量扩容如果不进 Product Backlog，
+              就永远排不上优先级 —— 因为排序权在 Product Owner 手里，而他看不见待办之外的东西。</li>
+            <li><strong>用 Epics 控制批量</strong>：一个 Epic 一直不拆，就意味着一个大批量在等待。
+              拆 Epic 本质上就是<strong>缩小批量</strong>，这一点直接连到
+              <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2 第一步：流动</a>。</li>
+            <li><strong>Velocity 只用于对内规划</strong>：拿它回答「这批需求大概几个迭代能完成」是合理的；
+              拿它写进部门 KPI，就会立刻失真。</li>
+            <li><strong>回顾会要能改到流程本身</strong>：Sprint Retrospective 如果只产出「下次注意」，
+              就没有触发改进。产出应当是<strong>下个迭代待办里的一个条目</strong>，有人认领。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实践判据为本站教学整理，官方考纲收录 <em>Scrum</em> 与
+            <em>Scrum roles, artifacts and events</em> 等术语，未规定 Scrum 与 DevOps 的具体落地做法。
+            「完成的定义 DoD」不在 66 条术语表内单列。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：归类题</strong>。给一个 Scrum 元素，问它属于角色、事件还是工件。
+              最容易出错的是 <strong>Sprint Backlog</strong>（工件，不是事件）和
+              <strong>Sprint</strong> 本身（事件，是装着其他四个事件的容器）。
+              <strong>排除技巧：名字里带 Backlog 或 Increment 的一定是工件；
+              带 Planning / Daily / Review / Retrospective 这类「会」的一定是事件；剩下的是角色。</strong></li>
+            <li><strong>命题角度二：Velocity 是什么</strong>。
+              标准干扰项是把它说成<strong>「衡量团队效率 / 生产率的指标」</strong>或
+              <strong>「可用于比较不同团队」</strong>。
+              正确方向是：它是本团队用于<strong>容量预测</strong>的经验值。
+              <strong>选项里只要出现「比较团队」「评价绩效」，基本可以划掉。</strong></li>
+            <li><strong>命题角度三：Epics 的含义</strong>。
+              干扰项常把 Epics 说成「最高优先级的需求」或「已经拆分好的需求」。
+              判据只有一个：<strong>Epic 说的是「大」，不是「急」，也不是「已拆」。</strong></li>
+            <li><strong>命题角度四：SAFe 的定位</strong>。
+              考的基本只是一句话 —— 它是<strong>规模化</strong>敏捷的框架。
+              干扰项会把它说成「一种测试方法」「一种部署策略」或「Scrum 的替代品」。
+              <strong>只要抓住 Scaled 这个词，就不会选错。</strong></li>
+            <li><strong>陷阱写法</strong>：把 <strong>Scrum Master</strong> 描述成「负责给团队分配任务、决定优先级」。
+              这两件事分别属于团队自己和 Product Owner，Scrum Master 都不做。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度、干扰项构造方式与排除技巧均为本站教学整理，
+            官方仅公布考试范围为 Bloom 1–2、未公布命题规律与题型分布；本站不复制任何官方样题的题干与选项原文。
+            具体的角色 / 事件 / 工件清单依据 <em>Scrum Guide</em>（非 DOFD 官方文件）整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">Scrum 只管三件事：谁（角色 3）、什么时候（事件 5）、看什么（工件 3）。</p>
+          <p class="muted"><small>三个配角术语一句话各记一条：
+            <strong>Epic 是「太大，先拆」；Velocity 是「本队容量，别拿去比」；SAFe 是「大规模，只此一句」。</strong></small></p>
+          <p class="mb-0 muted"><small>归类速判：<strong>Backlog / Increment → 工件；带「会」的 → 事件；剩下的 → 角色</strong>。
+            <span class="muted">（口诀与速判均为本站教学整理）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-2-3</div>
+        <h3 class="kp__title">Agile 与 DevOps 的边界 · 敏捷服务管理<span class="en">Agile vs DevOps scope · Agile service management</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+        <p class="mb-0 muted"><small>本 kp 的「边界」划分为<strong>本站教学整理</strong>；
+          ⭐ 仅对应 <em>Agile service management</em> 一词（逐字列于 66 条术语表），
+          「Agile vs DevOps scope / Agile 与 DevOps 的边界」是本站为讲清关系自造的对比词，官方未以此形式表述。</small></p>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            Agile 与 DevOps 不是竞争关系，而是<strong>同一条价值流上覆盖长度不同的两段</strong>：
+            <strong>Agile 的原始范围主要覆盖到「开发完成」——即产出一个可交付的增量；
+            DevOps 把同样的思路继续向右延伸，一直到运维、生产环境和客户手里，并把反馈送回源头。</strong>
+          </p>
+          <p>
+            <span class="term">敏捷服务管理 <span class="en">Agile service management</span></span>
+            则是这条延伸线上的另一个方向：<strong>把敏捷的价值观与做法用到 IT 服务管理流程本身</strong> ——
+            流程也小步迭代地设计和改进，而不是先花半年写出一套完整流程手册再推行。
+          </p>
+          <p class="mb-0 muted"><small>
+            官方 Blueprint 在 <em>Related Frameworks</em> 一栏中把 Agile 与 DevOps 关联起来，写法为
+            <strong><em>Agile: Lean Development</em></strong>（出自 PeopleCert DevOps Foundation Blueprint 原文）。
+            <em>Agile service management</em> 与 <em>Agile software development</em> 均列于 DOFD v3.4 官方考纲术语表，
+            v3.4 课程大纲 M4 模块的子项之一即为 <em>Agile</em>。
+            <br>上文「Agile 的原始范围主要覆盖到开发完成、DevOps 把它延伸到运维与客户」这一划分，
+            以及 <em>Agile service management</em> 的中文释义，均为<strong>本站教学整理</strong> ——
+            官方术语表只收录词条名、不附定义，释义的措辞由本站给出。
+          </small></p>
+        </div>
+
+        <!-- ============ 图 4-2-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 412" role="img" aria-label="同一条从需求到客户的价值流上，Agile 与 DevOps 各自覆盖的范围">
+              <defs>
+                <marker id="ah-42-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-42-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 边界竖虚线 -->
+              <text x="546" y="26" class="f-5" font-size="14" font-weight="700" text-anchor="middle">Agile 的原始边界：「开发完成」</text>
+              <path d="M546 34 L546 300" class="s-5" stroke-width="2.5" fill="none" stroke-dasharray="8 6"/>
+
+              <!-- Agile 覆盖带 -->
+              <rect x="161" y="46" width="376" height="34" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="175" y="68" font-size="13.5"><tspan class="f-1" font-weight="700">Agile software development</tspan><tspan class="s-ink">　止于可交付增量</tspan></text>
+
+              <!-- DevOps 覆盖带 -->
+              <rect x="30" y="90" width="900" height="34" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="46" y="112" font-size="13.5"><tspan class="f-3" font-weight="700">DevOps</tspan><tspan class="s-ink">　从业务构想一直到客户手里在运行的价值，并把反馈送回源头</tspan></text>
+
+              <!-- 价值流阶段 -->
+              <rect x="30"  y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="161" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="292" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="423" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="554" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="685" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="816" y="152" width="114" height="88" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle">
+                <text x="87"  y="190" class="s-ink" font-size="14.5" font-weight="650">业务构想</text>
+                <text x="87"  y="212" class="s-muted" font-size="12">要解决什么</text>
+
+                <text x="218" y="190" class="s-ink" font-size="14.5" font-weight="650">需求与待办</text>
+                <text x="218" y="212" class="s-muted" font-size="12">Backlog</text>
+
+                <text x="349" y="190" class="s-ink" font-size="14.5" font-weight="650">开发</text>
+                <text x="349" y="212" class="s-muted" font-size="12">迭代产出</text>
+
+                <text x="480" y="182" class="s-ink" font-size="14.5" font-weight="650">测试与增量</text>
+                <text x="480" y="204" class="s-muted" font-size="12">可交付增量</text>
+                <text x="480" y="224" class="s-muted" font-size="12">Increment</text>
+
+                <text x="611" y="190" class="s-ink" font-size="14.5" font-weight="650">发布与部署</text>
+                <text x="611" y="212" class="s-muted" font-size="12">进入生产</text>
+
+                <text x="742" y="190" class="s-ink" font-size="14.5" font-weight="650">运行与监控</text>
+                <text x="742" y="212" class="s-muted" font-size="12">运维在这里</text>
+
+                <text x="873" y="190" class="s-ink" font-size="14.5" font-weight="650">客户价值</text>
+                <text x="873" y="212" class="s-muted" font-size="12">真正被使用</text>
+              </g>
+
+              <!-- 正向流 -->
+              <g class="s-1" stroke-width="2" fill="none">
+                <line x1="144" y1="196" x2="158" y2="196" marker-end="url(#ah-42-2)"/>
+                <line x1="275" y1="196" x2="289" y2="196" marker-end="url(#ah-42-2)"/>
+                <line x1="406" y1="196" x2="420" y2="196" marker-end="url(#ah-42-2)"/>
+              </g>
+              <g class="s-3" stroke-width="2" fill="none">
+                <line x1="537" y1="196" x2="551" y2="196" marker-end="url(#ah-42-3)"/>
+                <line x1="668" y1="196" x2="682" y2="196" marker-end="url(#ah-42-3)"/>
+                <line x1="799" y1="196" x2="813" y2="196" marker-end="url(#ah-42-3)"/>
+              </g>
+
+              <!-- 反馈回路 -->
+              <path d="M873 240 L873 282 L218 282 L218 244" class="s-3" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-42-3)"/>
+              <text x="560" y="274" class="s-muted" font-size="12.5" text-anchor="middle">反馈：运行数据与客户信号回到需求与开发（三步工作法的第二步）</text>
+
+              <!-- 底部两条读法 -->
+              <rect x="30" y="312" width="440" height="84" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="48" y="336" class="f-1" font-size="13.5" font-weight="700">Agile 的终点：组织内部的「Done」</text>
+              <text x="48" y="360" class="s-ink" font-size="12.5">产出一个可交付的增量。增量放在那里，用户还没用上。</text>
+              <text x="48" y="382" class="s-muted" font-size="12">迭代很快，但增量到生产之间那一段没被覆盖。</text>
+
+              <rect x="490" y="312" width="440" height="84" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="508" y="336" class="f-3" font-size="13.5" font-weight="700">DevOps 的终点：客户手里在运行的价值</text>
+              <text x="508" y="360" class="s-ink" font-size="12.5">同一套思路继续覆盖发布、运行、监控，并闭合反馈回路。</text>
+              <text x="508" y="382" class="s-muted" font-size="12">运维不是流程末端的接收方，而是同一条流上的一段。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-2-3　同一条价值流，两段覆盖范围。</strong>
+            这张图只要看懂一件事：<strong>那条竖直虚线</strong>。
+            虚线左边是 Agile 原本关注的范围（需求 → 开发 → 可交付增量），
+            虚线右边（发布、运行、客户）在 Agile 的原始表述里基本没有被覆盖，而 DevOps 的带子一直画到最右端，
+            并且多了一条<strong>从客户回到需求的反馈虚线</strong>。
+            「Agile 快，但只快到 Done 为止」——两者不是替代关系，DevOps 需要 Agile 打底。
+            <br><small class="muted">价值流的七个阶段划分为本站教学整理，官方未以此形式给出阶段图；
+            反馈回路对应<a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a>。
+            「Agile 止于开发完成、DevOps 延伸到运维与客户」这一划分同为<strong>本站教学整理</strong>（见本知识点 ① 面的来源说明）。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这条边界之所以要单独讲，是因为存在一个非常具体、也非常常见的失败形态：
+            <strong>开发已经敏捷了，交付还是没变快。</strong>
+          </p>
+          <ul>
+            <li>某公司完整落地了 Scrum，两周一个迭代，评审会上每次都能演示可用功能，
+              团队 Velocity 稳定。<strong>但「可用功能」到「用户能用上」之间还有一道墙</strong>：
+              上生产要提工单、等运维排期、等变更评审会，平均 <strong>19 天</strong>。</li>
+            <li>结果是迭代产出在预发环境<strong>排队堆积</strong>：
+              第 5 个迭代结束时，前四个迭代的功能还有 3 个没上线。
+              一次性上线四个迭代的成果，批量重新变大，出问题时又要挨个排查。
+              <strong>敏捷把开发段的批量缩小了，墙后面又把它攒了回去。</strong></li>
+            <li>更关键的是<strong>反馈回不来</strong>：团队引以为傲的两周反馈周期，
+              只覆盖到「产品负责人在评审会上说好」。<strong>真实用户的反馈仍然要等 19 天以后</strong>，
+              而那时团队早已在做别的事了。</li>
+          </ul>
+          <p>
+            DevOps 存在的意义正是拆掉这道墙：把<strong>运维、发布、监控纳入同一条流</strong>，
+            让反馈从真实生产环境回到源头。这也是三步工作法的直接体现 ——
+            <a href="../ch02-core-principles/2.1-three-ways.html">2.1 三步工作法总览</a>里的
+            <strong>流动</strong>要求这条流没有断点，<strong>反馈</strong>要求信号来自最右端而不是中途。
+          </p>
+          <p class="mb-0">
+            <strong>Agile service management</strong> 处理的是同一堵墙的另一半：
+            墙的右侧往往是一套 ITSM 流程（变更审批、事件处理、发布管理）。
+            如果这些流程本身是「一次性设计、常年不改、越加越厚」的，
+            那么再敏捷的开发也会被它们卡住。敏捷服务管理的做法是<strong>让流程本身也小步迭代、按需裁剪、持续改进</strong>。
+            <br><span class="muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            ITSM 流程本身不在本节展开，见本章 <a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>。</small></span>
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:19%">维度</th><th style="width:27%">Agile</th><th style="width:27%">DevOps</th><th>Agile service management</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>覆盖到哪</strong></td>
+                  <td>需求 → 开发 → <strong>可交付增量</strong></td>
+                  <td>业务构想 → …… → <strong>客户手里在运行的价值</strong></td>
+                  <td><strong>ITSM 流程本身</strong>的设计与改进</td>
+                </tr>
+                <tr>
+                  <td><strong>主要参与方</strong></td>
+                  <td>产品与开发团队</td>
+                  <td><strong>开发 + 运维 + 安全 + 业务</strong>，跨职能</td>
+                  <td>服务管理与流程责任人</td>
+                </tr>
+                <tr>
+                  <td><strong>改的是什么</strong></td>
+                  <td>做软件的<strong>方式</strong></td>
+                  <td>整条<strong>价值流</strong>与协作方式</td>
+                  <td>做<strong>流程</strong>的方式</td>
+                </tr>
+                <tr>
+                  <td><strong>成功的标志</strong></td>
+                  <td>每个迭代都有可用增量</td>
+                  <td>变更能快速、安全、可重复地到达生产并被观测</td>
+                  <td>流程轻量、可迭代，不成为交付的阻塞点</td>
+                </tr>
+                <tr>
+                  <td><strong>依赖关系</strong></td>
+                  <td>DevOps 的<strong>前提之一</strong></td>
+                  <td><strong>需要 Agile 打底</strong>，但不止于 Agile</td>
+                  <td>让 ITSM 侧跟得上前两者的节奏</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 Agile 和 DevOps 说成「二选一」或「后者取代前者」</strong>。
+            正确的关系是<strong>包含与延伸</strong> —— DevOps 覆盖 Agile 覆盖的那一段，再往右接上发布与运维。
+            一个组织可以「只做 Agile 不做 DevOps」（开发快、交付慢），
+            但很难「只做 DevOps 不做 Agile」，因为最左边那一段仍然要有人快速地把需求变成软件。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出三列对比。
+            表中 <em>Agile service management</em>、<em>Agile software development</em>、<em>DevOps</em>、
+            <em>IT service management</em> 均为 DOFD v3.4 官方考纲术语表条目；
+            Agile 与 DevOps 覆盖范围的划分为本站教学整理（见本知识点 ① 面）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            判断一个组织是「只到 Agile」还是「已经到 DevOps」，不看它开不开站会，
+            只看<strong>虚线右边那一段有没有被同一批人、同一套节奏覆盖</strong>：
+          </p>
+          <ul>
+            <li><strong>问一个数字</strong>：一个迭代产出的功能，从「评审会通过」到「用户真的能用」平均多少天？
+              如果这个数远大于迭代长度，说明墙还在，敏捷只做了半条流。</li>
+            <li><strong>看反馈来自哪里</strong>：迭代评审会上的反馈来自产品负责人，还是来自生产环境的真实使用数据？
+              前者是 Agile 的反馈，后者才是 DevOps 要的反馈。</li>
+            <li><strong>看运维工作在哪个待办里</strong>：如果运维有一套独立的工单队列、与开发的 Backlog 互不相干，
+              这条流在中间就断了。</li>
+            <li><strong>把 DoD 往右推</strong>：这是把 Agile 接到 DevOps 上最直接的一个动作 ——
+              「完成的定义」从「测试通过」改成「已部署到生产或随时可部署」，
+              和 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3 持续交付 vs 持续部署</a>直接对接。</li>
+            <li><strong>Agile service management 的具体动作</strong>：
+              不要一次性设计一套「完整」的变更管理流程再推行，而是先做最小可用版本，
+              在若干次真实变更中迭代它；流程文档本身也进待办、也有责任人、也定期回顾。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上判断动作与 Agile service management 的落地做法均为本站教学整理，
+            官方考纲收录 <em>Agile service management</em> 这一术语，未规定其实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>最主要的命题角度：Agile 与 DevOps 的关系</strong>。
+              正确方向是<strong>「DevOps 建立在 Agile 之上，并把范围延伸到运维与客户」</strong>。
+              <strong>干扰项长什么样</strong>：
+              ① 说两者<strong>互相排斥 / 二选一</strong>；
+              ② 说 <strong>DevOps 取代了 Agile</strong>；
+              ③ 说 <strong>Agile 已经覆盖了运维与生产环境</strong>；
+              ④ 把 DevOps 说成<strong>只是一套工具或一个团队名称</strong>。
+              <strong>排除技巧：凡是把两者写成对立、替代关系的选项一律划掉</strong> ——
+              官方 Blueprint 把 Agile 放在 <em>Related Frameworks</em>（相关框架）一栏中，
+              并未把它与 DevOps 并列为可替代方案<span class="muted">（「非竞争关系」是本站据栏名所作的解读）</span>。</li>
+            <li><strong>第二个角度：Agile service management 是什么</strong>。
+              正确方向是<strong>把敏捷用到 IT 服务管理流程上</strong>。
+              干扰项常见两种：说它是<strong>「一种敏捷开发方法」</strong>（错，它作用在流程侧不是开发侧），
+              或说它是<strong>「用 ITSM 流程去管理敏捷团队」</strong>（方向刚好反了）。
+              <strong>抓住词序：Agile 是修饰语，service management 才是被作用的对象。</strong></li>
+            <li><strong>第三个角度：框架归属</strong>。
+              问「以下哪个是与 DevOps 相关的框架」，Agile 是标准的正确方向 ——
+              官方 Blueprint 的 <em>Related Frameworks</em> 一栏中就写着 <em>Agile: Lean Development</em>。
+              干扰项通常放具体工具名或某个不属于框架的东西。</li>
+            <li><strong>反向问法</strong>：问「Agile <strong>不</strong>覆盖以下哪一项」，
+              正确方向指向<strong>生产运维 / 发布之后</strong>那一段。
+              注意别被「Agile 也讲持续交付价值」这类说法带偏 —— 讲价值不等于覆盖运维环节。</li>
+          </ul>
+          <p class="mb-0 muted"><small><em>Agile: Lean Development</em> 出自 PeopleCert DevOps Foundation Blueprint 的
+            <em>Related Frameworks</em> 一栏（官方原文）。
+            以上命题角度、干扰项构造方式与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2、未公布命题规律与题型分布；
+            本站不复制任何官方样题的题干与选项原文。
+            「Agile 不覆盖发布之后那一段」这一判据同为本站教学整理（见本知识点 ① 面）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">Agile 跑到「做完」，DevOps 跑到「用上」，Agile service management 让流程也跟着跑起来。</p>
+          <p class="muted"><small>一句话推论：<strong>DevOps ⊃ Agile</strong>，不是 DevOps vs Agile。
+            考场上凡见「取代」「二选一」「互斥」，都是错的方向。</small></p>
+          <p class="mb-0 muted"><small>词序助记：<strong>Agile service management —— 被敏捷化的是 service management（流程），不是开发。</strong>
+            <span class="muted">（助记为本站教学整理）</span></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>四条价值观（方向不能反）</strong>：个体与互动 <em>高于</em> 流程与工具；可工作的软件 <em>高于</em> 详尽的文档；客户协作 <em>高于</em> 合同谈判；响应变化 <em>高于</em> 遵循计划</li>
+        <li><strong>「高于」≠「否定」</strong>：宣言明说右侧同样有价值，只是左侧更被看重。凡把右侧说成「不需要」的选项都是错的</li>
+        <li><strong>最标准的干扰项</strong>：把某一行的左右两格<strong>对调</strong>。只看「高于」左边那一格：人 / 能跑的软件 / 客户 / 变化 —— 出现流程、文档、合同、计划的一律划掉</li>
+        <li><strong>Scrum 的三类元素</strong>：角色 3（Product Owner、Scrum Master、Developers）· 事件 5（Sprint、Planning、Daily Scrum、Review、Retrospective）· 工件 3（Product Backlog、Sprint Backlog、Increment）<span class="muted">（具体清单依据 Scrum Guide 整理，非 DOFD 官方文件，属本站教学整理）</span></li>
+        <li><strong>三个配角术语</strong>：<strong>Epics</strong> = 太大要拆（不是「最紧急」）；<strong>Velocity</strong> = 本队容量预测（不是绩效、不可跨队比较）；<strong>SAFe</strong> = 规模化敏捷框架，只记 Scaled 一词</li>
+        <li><strong>Agile 与 DevOps 的边界</strong>：Agile 原始范围止于「开发完成 / 可交付增量」，DevOps 延伸到发布、运维与客户，并闭合反馈回路。两者是<strong>包含与延伸</strong>，不是取代或二选一<span class="muted">（该划分为本站教学整理）</span></li>
+        <li><strong>Agile service management</strong>：被敏捷化的是 <strong>service management（ITSM 流程）</strong>，不是开发。词序就是判据</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Agile Manifesto</em>、<em>Agile software development</em>、<em>Agile service management</em>、
+      <em>Scrum</em>、<em>Scrum roles, artifacts and events</em>、<em>Epics</em>、<em>Velocity</em>、
+      <em>Scaled Agile Framework (SAFe)</em>、<em>Waterfall</em>、<em>Kanban</em>、<em>IT service management</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      v3.4 课程大纲 M4 <em>Business and Technology Frameworks</em> 的子项之一即为 <em>Agile</em>
+      （单独的 <em>Agile</em> 不在 66 条术语表内）。
+      官方 Blueprint 的 <em>Related Frameworks</em> 一栏写有 <strong><em>Agile: Lean Development</em></strong>（逐字原文，
+      出自 PeopleCert DevOps Foundation Blueprint）。
+      敏捷宣言的四条价值观出自 <em>Manifesto for Agile Software Development</em>（2001）原文，中译为本站译文，该文件非 DOFD 官方文件。
+      <strong>教学整理部分</strong>：四条价值观的「这一条在反对什么」一列、图 4-2-1 的干扰项提示、
+      Scrum「三个规定对应三个漏洞」的归纳、五组对照表、Agile / DevOps / Agile service management 三列对比、
+      图 4-2-3 的七段价值流划分、各面中的命题角度与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例为本站构造的教学示例，非真实调研数据。
+      另需说明三项同属<strong>本站教学整理</strong>：① 「Agile 的原始范围主要覆盖到开发完成，DevOps 把同样的思路延伸到运维与客户」这一划分；
+      ② Scrum 具体的角色 / 事件 / 工件清单与「3 / 5 / 3」数目（依据 <em>Scrum Guide</em> 整理，非 DOFD 官方文件）；
+      ③ 官方考纲术语表<strong>只列词条、不附定义</strong>，因此本节每一条术语的中文释义都是本站措辞。
+      官方也未公布命题规律、题型分布与逐题 Bloom 分级，各面的命题角度分析均为本站教学推断。
+      本节不复制任何官方样题的题干与选项原文。
+      看板方法见 <a href="../ch03-key-practices/3.7-kanban.html">3.7 看板方法</a>；
+      Lean 与 ITSM 分别见本章 <a href="4.3-lean.html">4.3 Lean 与八项浪费</a>、<a href="4.4-itsm-itil.html">4.4 ITSM 与 ITIL</a>；
+      组织文化与团队结构见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 文化、行为与运营模型</a>；
+      Velocity 之外的 DevOps 指标见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.5 运营模型与团队结构 · DevOps Foundation 学习站</title>
+<meta name="description" content="职能筒仓、跨职能产品团队、独立「DevOps 团队」、产品团队 + 平台团队 —— 四种组织形态各自制造多少次交接、责任边界落在谁身上。为什么单设一个 DevOps 团队多数情况下只是第三个筒仓，以及选运营模型该看哪几个维度。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"5.5-operating-models"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.5 运营模型与团队结构</h1>
+      <div class="page-head__en">Operating Models and Team Structures</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--note">📝 教学整理</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        组织结构图不是行政安排，它<strong>直接决定一个变更要经过几次交接、在谁的队列里排多久</strong>。
+        本节讲四种常见形态各自的代价，尤其是那个看起来最像 DevOps、实际上最容易出事的选项 ——
+        <strong>单独设立一个「DevOps 团队」</strong>。
+        本节不推荐任何一种结构：<strong>运营模型没有唯一正确答案</strong>，只有判断维度。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>四种组织形态各自制造多少次<strong>交接</strong>，「谁对生产结果负责」这条边界落在谁身上</li>
+        <li>为什么单独设一个「DevOps 团队」多数情况下只是<strong>第三个筒仓</strong></li>
+        <li>选运营模型该看哪几个维度 —— 以及官方对「由什么决定」给过的那条结论</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-5-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 1000 600" role="img" aria-label="四种组织形态对照：职能筒仓、跨职能产品团队、独立 DevOps 团队、产品团队加平台团队，标出各自的跨团队交接次数与责任边界">
+          <defs>
+            <marker id="ah-55-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+            <marker id="ah-55-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-55-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- ===== 面板 A · 职能筒仓 ===== -->
+          <rect x="20" y="20" width="225" height="530" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="132" y="48" class="f-5" font-size="15" font-weight="700" text-anchor="middle">① 职能筒仓</text>
+          <text x="132" y="68" class="s-muted" font-size="12" text-anchor="middle">Functional silos</text>
+
+          <rect x="45" y="96" width="175" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="132" y="122" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">开发部 Dev</text>
+          <text x="132" y="142" class="s-muted" font-size="12" text-anchor="middle">KPI：交付了多少功能</text>
+
+          <rect x="45" y="170" width="175" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="132" y="196" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">测试部 QA</text>
+          <text x="132" y="216" class="s-muted" font-size="12" text-anchor="middle">KPI：发现了多少缺陷</text>
+
+          <rect x="45" y="244" width="175" height="58" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="132" y="270" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">运维部 Ops</text>
+          <text x="132" y="290" class="s-muted" font-size="12" text-anchor="middle">KPI：可用性 · 变更越少越好</text>
+
+          <line x1="132" y1="156" x2="132" y2="166" class="s-5" stroke-width="2" marker-end="url(#ah-55-1)"/>
+          <line x1="132" y1="230" x2="132" y2="240" class="s-5" stroke-width="2" marker-end="url(#ah-55-1)"/>
+
+          <text x="132" y="330" class="s-ink" font-size="12.5" text-anchor="middle">三段 KPI 互相拉扯</text>
+          <text x="132" y="350" class="s-muted" font-size="12" text-anchor="middle">同一次上线，一方盼它发生</text>
+          <text x="132" y="368" class="s-muted" font-size="12" text-anchor="middle">另一方盼它不发生</text>
+
+          <line x1="45" y1="406" x2="220" y2="406" class="s-stroke" stroke-width="1.2"/>
+          <text x="45" y="428" class="s-muted" font-size="12">跨团队交接</text>
+          <text x="45" y="452" class="f-5" font-size="15" font-weight="700">2 次</text>
+          <text x="85" y="452" class="s-muted" font-size="12">Dev→QA→Ops</text>
+          <text x="45" y="480" class="s-muted" font-size="12">责任边界</text>
+          <text x="45" y="502" class="s-ink" font-size="12.5">各自对本部门 KPI 负责，</text>
+          <text x="45" y="520" class="s-ink" font-size="12.5">没有人拥有「服务在生产</text>
+          <text x="45" y="538" class="s-ink" font-size="12.5">里好不好用」这件事</text>
+
+          <!-- ===== 面板 B · 跨职能产品团队 ===== -->
+          <rect x="265" y="20" width="225" height="530" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="377" y="48" class="f-1" font-size="15" font-weight="700" text-anchor="middle">② 跨职能产品团队</text>
+          <text x="377" y="68" class="s-muted" font-size="12" text-anchor="middle">Cross-functional product team</text>
+
+          <rect x="283" y="96" width="189" height="140" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="377" y="122" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">一个团队，一个目标</text>
+          <rect x="289" y="140" width="54" height="34" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+          <text x="316" y="162" class="s-ink" font-size="12.5" text-anchor="middle">Dev</text>
+          <rect x="351" y="140" width="54" height="34" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+          <text x="378" y="162" class="s-ink" font-size="12.5" text-anchor="middle">QA</text>
+          <rect x="413" y="140" width="54" height="34" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill)"/>
+          <text x="440" y="162" class="s-ink" font-size="12.5" text-anchor="middle">Ops</text>
+          <text x="377" y="200" class="s-muted" font-size="12" text-anchor="middle">目标：服务在生产里可用</text>
+          <text x="377" y="220" class="s-muted" font-size="12" text-anchor="middle">从需求到值班都在团队内</text>
+
+          <line x1="377" y1="238" x2="377" y2="262" class="s-1" stroke-width="2" marker-end="url(#ah-55-2)"/>
+
+          <rect x="307" y="266" width="140" height="48" rx="8" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="377" y="296" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">生产环境</text>
+
+          <text x="377" y="348" class="s-muted" font-size="12" text-anchor="middle">反馈直接回到写代码的人</text>
+          <text x="377" y="368" class="s-muted" font-size="12" text-anchor="middle">不经过任何工单系统</text>
+
+          <line x1="290" y1="406" x2="465" y2="406" class="s-stroke" stroke-width="1.2"/>
+          <text x="290" y="428" class="s-muted" font-size="12">跨团队交接</text>
+          <text x="290" y="452" class="f-1" font-size="15" font-weight="700">0 次</text>
+          <text x="290" y="480" class="s-muted" font-size="12">责任边界</text>
+          <text x="290" y="502" class="s-ink" font-size="12.5">端到端：需求、构建、</text>
+          <text x="290" y="520" class="s-ink" font-size="12.5">发布、值班、改进全部</text>
+          <text x="290" y="538" class="s-ink" font-size="12.5">落在同一个团队内</text>
+
+          <!-- ===== 面板 C · 独立 DevOps 团队 ===== -->
+          <rect x="510" y="20" width="225" height="530" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="622" y="48" class="f-5" font-size="15" font-weight="700" text-anchor="middle">③ 独立「DevOps 团队」</text>
+          <text x="622" y="68" class="s-muted" font-size="12" text-anchor="middle">A separate DevOps team · 反模式</text>
+
+          <rect x="535" y="96" width="175" height="52" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="622" y="127" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">开发团队 Dev</text>
+
+          <rect x="535" y="166" width="175" height="66" rx="8" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="622" y="192" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">DevOps 团队</text>
+          <text x="622" y="214" class="s-muted" font-size="12" text-anchor="middle">有自己的待办与工单队列</text>
+
+          <rect x="535" y="250" width="175" height="52" rx="8" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="622" y="281" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">运维团队 Ops</text>
+
+          <line x1="622" y1="150" x2="622" y2="162" class="s-5" stroke-width="2" marker-end="url(#ah-55-1)"/>
+          <line x1="622" y1="234" x2="622" y2="246" class="s-5" stroke-width="2" marker-end="url(#ah-55-1)"/>
+          <text x="716" y="162" class="s-muted" font-size="12" text-anchor="end">提工单</text>
+          <text x="716" y="246" class="s-muted" font-size="12" text-anchor="end">转工单</text>
+
+          <text x="622" y="330" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">筒仓没有被消除</text>
+          <text x="622" y="350" class="s-muted" font-size="12" text-anchor="middle">而是从两个变成三个</text>
+          <text x="622" y="368" class="s-muted" font-size="12" text-anchor="middle">交接比 Dev/Ops 两筒仓多 1 次</text>
+
+          <line x1="535" y1="406" x2="710" y2="406" class="s-stroke" stroke-width="1.2"/>
+          <text x="535" y="428" class="s-muted" font-size="12">跨团队交接</text>
+          <text x="535" y="452" class="f-5" font-size="15" font-weight="700">2 次</text>
+          <text x="575" y="452" class="s-muted" font-size="12">Dev→DevOps→Ops</text>
+          <text x="535" y="480" class="s-muted" font-size="12">责任边界</text>
+          <text x="535" y="502" class="s-ink" font-size="12.5">最模糊的一种：出事时</text>
+          <text x="535" y="520" class="s-ink" font-size="12.5">三方都能指向另外两方，</text>
+          <text x="535" y="538" class="s-ink" font-size="12.5">生产结果仍然无人拥有</text>
+
+          <!-- ===== 面板 D · 产品团队 + 平台团队 ===== -->
+          <rect x="755" y="20" width="225" height="530" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="867" y="48" class="f-3" font-size="15" font-weight="700" text-anchor="middle">④ 产品团队 + 平台团队</text>
+          <text x="867" y="68" class="s-muted" font-size="12" text-anchor="middle">Product teams + platform team</text>
+
+          <rect x="777" y="96" width="168" height="90" rx="8" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="861" y="124" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">产品团队</text>
+          <text x="861" y="146" class="s-muted" font-size="12" text-anchor="middle">端到端责任不变</text>
+          <text x="861" y="166" class="s-muted" font-size="12" text-anchor="middle">仍然自己发布、自己值班</text>
+
+          <line x1="861" y1="188" x2="861" y2="212" class="s-3" stroke-width="2" marker-end="url(#ah-55-3)"/>
+
+          <rect x="795" y="216" width="132" height="46" rx="8" class="s-3" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <text x="861" y="245" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">生产环境</text>
+
+          <text x="861" y="290" class="s-muted" font-size="12" text-anchor="middle">↑ 自助获取，不用排队</text>
+
+          <rect x="777" y="302" width="168" height="76" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="861" y="328" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">平台团队</text>
+          <text x="861" y="348" class="s-muted" font-size="12" text-anchor="middle">把通用能力做成自助产品</text>
+          <text x="861" y="368" class="s-muted" font-size="12" text-anchor="middle">不接管交付与值班责任</text>
+
+          <path d="M945 340 H963 V152 H949" class="s-3" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ah-55-3)"/>
+
+          <line x1="777" y1="406" x2="952" y2="406" class="s-stroke" stroke-width="1.2"/>
+          <text x="777" y="428" class="s-muted" font-size="12">跨团队交接</text>
+          <text x="777" y="452" class="f-3" font-size="15" font-weight="700">0 次（自助，非交接）</text>
+          <text x="777" y="480" class="s-muted" font-size="12">责任边界</text>
+          <text x="777" y="502" class="s-ink" font-size="12.5">交付与运行责任仍在产</text>
+          <text x="777" y="520" class="s-ink" font-size="12.5">品团队；平台团队对「平</text>
+          <text x="777" y="538" class="s-ink" font-size="12.5">台好不好用」负责</text>
+
+          <text x="500" y="586" class="s-muted" font-size="12.5" text-anchor="middle">看两件事就够：这一列有几次跨团队交接，以及「谁半夜被叫醒」落在哪个框里</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-5-1　四种组织形态与它们的代价。</strong>
+        这张图想让你只盯住两行数字：<strong>跨团队交接次数</strong>与<strong>责任边界</strong>。
+        ① 与 ③ 的交接次数都不为零，且 ③ <strong>并不比 ① 少</strong>；
+        相对它本要替代的 Dev/Ops 两筒仓形态，③ 还<strong>多出一次交接</strong>（见图 5-5-2）——
+        这是本节最反直觉的一点。
+        ② 与 ④ 的交接次数都是 0，区别在于 ④ 把通用能力从产品团队手里挪走，
+        但<strong>交付与值班责任并没有跟着挪走</strong>：平台是自助获取的，不是提单申请的。
+        <br><small class="muted">四种形态的归类、命名与「交接次数 / 责任边界」两个对照维度均为本站教学整理，
+        DOFD 官方文件未以此形式给出组织形态分类；其中「独立 DevOps 团队属反模式」的判断同为本站教学整理，依据见 kp-5-5-1 ③ 的就地标注。
+        平台团队相关内容展开见 <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-5-5-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-5-1</div>
+        <h3 class="kp__title">DevOps 团队与四种组织形态<span class="en">DevOps Teams · Operating Models</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>本站释义</strong>：<span class="term">DevOps 团队 <span class="en">DevOps teams</span></span>
+            指的是<strong>结构</strong>，不是一个部门的名字：
+            把原本分属不同职能的人放进同一个对<strong>业务结果</strong>负责的团队。
+          </p>
+          <p class="muted"><small><strong>DevOps teams</strong> 逐字列于 DOFD v3.4 官方考纲术语表；
+          上面这句释义为<strong>本站教学整理</strong>。</small></p>
+          <p>PeopleCert《DevOps Foundation® Blueprint》<em>Organization</em> 段落的逐字原文是：</p>
+          <p>
+            <em>Cross-function teams focus on business goals. Ops work with Dev, supporting each other
+            to improve flow towards production and monitor results.</em>
+          </p>
+          <p>
+            本站译文：<strong>跨职能团队聚焦业务目标。Ops 与 Dev 一起工作，互相支持，
+            以改善通往生产的流动并监控结果。</strong>
+          </p>
+          <p>
+            这句话给出了两条硬边界：团队是<strong>跨职能</strong>的，Ops 与 Dev 是<strong>一起工作</strong>的。
+            Blueprint 正面表述的方向是<strong>跨职能</strong>；「新设一层」与「跨职能」是方向相反的两个动作 ——
+            这一推论为<strong>本站教学整理</strong>，依据见本知识点 ③ 的来源标注。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">四种常见形态</th><th>一句话说清</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 职能筒仓</strong></td><td>Dev 与 Ops 分属不同部门、不同 KPI，变更靠工单在部门之间传递</td></tr>
+                <tr><td><strong>② 跨职能产品团队</strong></td><td>一个团队端到端拥有一个产品或服务，从需求一直到生产值班</td></tr>
+                <tr><td><strong>③ 独立「DevOps 团队」</strong></td><td>在 Dev 与 Ops 之间新设一个专职团队。<strong>多数情况下是反模式</strong>，见本知识点 ③</td></tr>
+                <tr><td><strong>④ 产品团队 + 平台团队</strong></td><td>平台团队提供自助能力，<strong>交付与运行责任仍在产品团队</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>词条出处：<strong>DevOps roles</strong> 同样逐字列于 DOFD v3.4 官方考纲术语表；
+          <em>Culture, Behaviors &amp; Operating Models</em> 是 v3.4 八大知识域中第 5 个模块的官方英文名。
+          上表四种形态的划分与命名为<strong>本站教学整理</strong>，官方未给出组织形态分类。</small></p>
+          <p class="mb-0 muted"><small>本页把「运营模型 <em>Operating Models</em>」当作本节主题词使用：
+          它出现在<strong>官方模块名</strong> <em>Culture, Behaviors &amp; Operating Models</em> 内，
+          但既不在 66 条官方考纲术语表内，也不是 v3.4 课程大纲 M5 的子项
+          （M5 子项为 Defining Culture / Cultural Debt / Behavioral Models / Organizational maturity models）。
+          页头据此标 <strong>📝 教学整理</strong>，本节围绕该主题所做的形态划分与判断维度均为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这个话题存在，是因为<strong>职能筒仓不是靠态度造成的，是靠 KPI 造成的</strong>。
+            换一批更愿意协作的人进去，结构不变，结果也不变。
+          </p>
+          <ul>
+            <li>某保险公司核心系统：开发部的 KPI 是<strong>季度交付功能点数</strong>，
+              运维部的 KPI 是<strong>可用性 99.95% 与变更次数</strong>。
+              同一次上线，一个部门希望它发生，另一个部门希望它不发生。</li>
+            <li>一个变更从「开发完成」到「进生产」要过 <strong>3 次交接、2 个工单系统</strong>，
+              平均耗时 <strong>11 个工作日</strong>，其中 <strong>9 天在排队</strong> ——
+              真正动手的时间不到两天。</li>
+            <li>线上事故复盘时，开发说是环境问题，运维说是代码问题。
+              <strong>问题不在于谁诚实，而在于组织里确实没有一个岗位拥有「这个服务在生产里好不好用」。</strong></li>
+          </ul>
+          <p>
+            机制是一条闭环：<strong>KPI 对立 → 用工单自保 → 排队 → 批量变大 → 事故更难定位 →
+            更依赖流程与审批 → 交接更多</strong>。改工具改不动它，因为它不是工具问题。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。
+          「排队时间远大于作业时间」这一现象与流动的关系见
+          <a href="../ch02-core-principles/2.2-first-way-flow.html">第 2 章 第一步：流动（2.2）</a>。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">形态</th><th style="width:26%">责任边界在哪</th><th style="width:16%">跨团队交接</th><th>典型退化风险</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>职能筒仓</strong></td>
+                  <td>各自对<strong>本部门 KPI</strong>负责；生产结果无人拥有</td>
+                  <td><strong>2 次</strong><br><small class="muted">Dev→QA→Ops</small></td>
+                  <td>变更靠审批兜底，批量越攒越大，事故互相指认</td>
+                </tr>
+                <tr>
+                  <td><strong>跨职能产品团队</strong></td>
+                  <td><strong>端到端</strong>：需求、构建、发布、值班同属一个团队</td>
+                  <td><strong>0 次</strong></td>
+                  <td>团队要背的领域太多，<strong>认知负荷超载</strong>（见 kp-5-5-2）</td>
+                </tr>
+                <tr>
+                  <td><strong>独立「DevOps 团队」</strong><br><small class="muted">反模式</small></td>
+                  <td><strong>最模糊</strong>：三方都能指向另外两方</td>
+                  <td><strong>2 次</strong><br><small class="muted">Dev→DevOps→Ops，比 Dev/Ops 两筒仓多 1 次</small></td>
+                  <td>退化成<strong>第三个筒仓</strong>：有自己的待办、自己的工单队列、自己的 KPI</td>
+                </tr>
+                <tr>
+                  <td><strong>产品团队 + 平台团队</strong><br><small class="muted"><span class="badge badge--new">🆕 v3.6 新增</span></small></td>
+                  <td>交付与运行责任<strong>仍在产品团队</strong>；平台团队对平台本身负责</td>
+                  <td><strong>0 次</strong>（自助获取，不是提单）</td>
+                  <td>平台改成「提单申请」，立刻退化回形态 ③</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small><strong>最容易被混淆的那一点</strong>：形态 ② 和形态 ③ 在日常口语里<strong>都被叫做「DevOps 团队」</strong>，
+          但结构完全相反。② 是<strong>把 Dev 与 Ops 合进同一个对业务结果负责的团队</strong>；
+          ③ 是<strong>在 Dev 与 Ops 之间再插一个团队</strong>。
+          听到「我们有 DevOps 团队」时，唯一能分辨的问题是：<strong>它是接工单的，还是背生产结果的？</strong></small></p>
+          <div class="src-note">
+            「独立 DevOps 团队在多数情况下是反模式、会退化成第三个筒仓」这一判断是
+            <strong>本站教学整理，不是官方结论</strong>。
+            它的依据是 Blueprint <em>Organization</em> 段的正面表述（跨职能团队、Ops 与 Dev 一起工作）
+            与行业内广泛的组织实践观察；官方文件本身没有针对「独立 DevOps 团队」的直接表述。
+          </div>
+          <p class="mb-0 muted"><small>本表的四种形态划分与「责任边界 / 交接次数 / 退化风险」三个对照维度为本站教学整理，官方未以此形式给出对照表。
+          <em>Team Topologies</em> 提供了另一套团队类型划分，属他人理论，<span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+          本节只点名，不展开。</small></p>
+        </div>
+
+        <!-- ============ 图 5-5-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 430" role="img" aria-label="引入独立 DevOps 团队前后的对比：交接从一次变成两次，工单队列从一条变成两条">
+              <defs>
+                <marker id="ah-55-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+                </marker>
+                <marker id="ah-55-5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <!-- 上：改造前 -->
+              <text x="30" y="42" class="f-4" font-size="15" font-weight="700">改造前 · 两个筒仓</text>
+
+              <rect x="30" y="58" width="150" height="70" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="105" y="100" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">开发团队 Dev</text>
+
+              <rect x="250" y="58" width="150" height="70" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="325" y="100" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">运维团队 Ops</text>
+
+              <rect x="470" y="58" width="150" height="70" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="545" y="100" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">生产环境</text>
+
+              <line x1="182" y1="93" x2="246" y2="93" class="s-4" stroke-width="2" marker-end="url(#ah-55-4)"/>
+              <text x="214" y="82" class="s-muted" font-size="12" text-anchor="middle">交接 ①</text>
+              <line x1="402" y1="93" x2="466" y2="93" class="s-4" stroke-width="2" marker-end="url(#ah-55-4)"/>
+              <text x="434" y="82" class="s-muted" font-size="12" text-anchor="middle">部署</text>
+
+              <rect x="660" y="58" width="270" height="70" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="678" y="86" class="s-ink" font-size="13" font-weight="650">跨团队交接：1 次</text>
+              <text x="678" y="110" class="s-muted" font-size="12.5">工单队列：1 条</text>
+
+              <line x1="30" y1="160" x2="930" y2="160" class="s-stroke" stroke-width="1.2" stroke-dasharray="7 6"/>
+
+              <!-- 下：改造后 -->
+              <text x="30" y="200" class="f-5" font-size="15" font-weight="700">「设一个 DevOps 团队」之后 · 三个筒仓</text>
+
+              <rect x="30" y="216" width="140" height="76" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="100" y="260" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">开发团队 Dev</text>
+
+              <rect x="222" y="216" width="176" height="76" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="310" y="250" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">DevOps 团队</text>
+              <text x="310" y="274" class="s-muted" font-size="12" text-anchor="middle">自己的待办与 KPI</text>
+
+              <rect x="440" y="216" width="140" height="76" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="510" y="260" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">运维团队 Ops</text>
+
+              <rect x="622" y="216" width="130" height="76" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="687" y="260" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">生产环境</text>
+
+              <line x1="172" y1="254" x2="218" y2="254" class="s-5" stroke-width="2" marker-end="url(#ah-55-5)"/>
+              <text x="195" y="242" class="s-muted" font-size="12" text-anchor="middle">提工单</text>
+              <line x1="400" y1="254" x2="436" y2="254" class="s-5" stroke-width="2" marker-end="url(#ah-55-5)"/>
+              <text x="418" y="242" class="s-muted" font-size="12" text-anchor="middle">转单</text>
+              <line x1="582" y1="254" x2="618" y2="254" class="s-5" stroke-width="2" marker-end="url(#ah-55-5)"/>
+              <text x="600" y="242" class="s-muted" font-size="12" text-anchor="middle">部署</text>
+
+              <rect x="222" y="300" width="176" height="26" rx="6" class="s-5" stroke-width="1.4" fill="var(--dia-fill)"/>
+              <text x="310" y="318" class="s-muted" font-size="12" text-anchor="middle">工单队列 · 等待中</text>
+              <rect x="440" y="300" width="140" height="26" rx="6" class="s-5" stroke-width="1.4" fill="var(--dia-fill)"/>
+              <text x="510" y="318" class="s-muted" font-size="12" text-anchor="middle">工单队列 · 等待中</text>
+
+              <rect x="782" y="216" width="148" height="76" rx="10" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="798" y="244" class="f-5" font-size="13" font-weight="700">交接：2 次</text>
+              <text x="798" y="268" class="f-5" font-size="13" font-weight="700">队列：2 条</text>
+
+              <rect x="30" y="346" width="900" height="66" rx="10" class="s-stroke" stroke-width="1.6" fill="var(--dia-fill)"/>
+              <text x="48" y="372" class="s-ink" font-size="13.5">结果：交接从 1 次变成 2 次，队列从 1 条变成 2 条 —— 中间那个团队没有消除筒仓，它成了第三个筒仓。</text>
+              <text x="48" y="396" class="s-muted" font-size="12.5">退化信号：别的团队要用工单向它请求变更 · 它有独立的待办与 KPI · 生产出事时值班的仍然是另一批人。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-5-2　第三个筒仓是怎么长出来的。</strong>
+            要看懂的是<strong>数量的方向</strong>：本意是「消除 Dev 与 Ops 之间的墙」，
+            实际结果却是<strong>交接次数和队列条数都增加了一条</strong>。
+            筒仓的判定标准从来不是名字，而是三条退化信号 ——
+            <strong>别人要提工单才能让它动、它有自己独立的待办与 KPI、生产出事时它不值班</strong>。
+            三条同时成立，无论它叫什么，它就是一个筒仓。
+            <br><small class="muted">本图为本站教学整理，用于呈现交接与队列的数量变化，官方未给出此类图示；
+            图中的次数为形态对比，非统计数据。三条「退化信号」的判据同为本站教学整理，依据见本知识点 ③。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断一个组织现在处于哪种形态，不看组织结构图，看四个可观测的事实：</p>
+          <ul>
+            <li><strong>数交接次数</strong>：挑最近一个真实变更，从代码写完到进生产，
+              数它<strong>换过几次「负责人」</strong>。每换一次就是一次排队入口。</li>
+            <li><strong>问「谁半夜被叫醒」</strong>：如果被叫醒的人和写这段代码的人不是同一批，
+              责任边界就还没有闭合，反馈也回不到源头。</li>
+            <li><strong>看请求的形状</strong>：产品团队要一个新环境，是<strong>自助点一下</strong>，
+              还是<strong>提一张单等排期</strong>？这是形态 ④ 与形态 ③ 的分界线，与工具无关。</li>
+            <li><strong>看 KPI 是否对立</strong>：一个团队的达标会不会自动导致另一个团队的不达标。
+              会，就是筒仓；这时先改考核，再谈协作。</li>
+          </ul>
+          <p class="mb-0">
+            改造顺序上有一条务实的经验：<strong>先合并责任，再合并汇报线</strong>。
+            让 Dev 与 Ops 共背同一组结果指标，往往比一次性重组更容易推动，也更早看到交接次数下降。
+          </p>
+          <div class="src-note">
+            以上四项诊断动作、「先合并责任再合并汇报线」的改造顺序，均为<strong>本站教学整理</strong>，
+            官方文件未规定诊断清单或改造步骤。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度</strong>：给一段组织描述（部门割裂、靠工单传递、互相指责），
+              问「这体现了什么」或「该往哪个方向改」。
+              正确方向通常指向 Blueprint 的正面表述：<strong>跨职能团队聚焦业务目标，Ops 与 Dev 互相支持</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              最常见的一个是<strong>「成立一个专门的 DevOps 团队 / 部门」</strong> ——
+              它读起来最像标准答案，方向却是新增一层；
+              第二种是<strong>「增加变更审批环节」「加强流程管控」</strong>，这是把交接写成了改进；
+              第三种是<strong>「引入某某工具 / 平台」</strong>，把结构问题答成了工具问题。</li>
+            <li><strong>排除技巧</strong>：先判断每个选项会让<strong>交接次数变多还是变少</strong>。
+              变多的一律划掉，无论它的名字里有没有 DevOps。</li>
+            <li><strong>与领导力题的联动</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              因此「给各部门设更严格的 KPI 考核」这类选项，在组织题里同样是错误方向
+              （领导力展开见<a href="../ch08-sharing/index.html">第 8 章 DevOps 领导力（8.3）</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+          <strong>命题角度、三类干扰项与「数交接次数」这一排除技巧均为本站教学整理</strong>，
+          官方样题答案键中没有直接针对「独立 DevOps 团队」的条目。
+          本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">组织形态好不好，先数交接次数，再问谁半夜被叫醒。</p>
+          <p class="mb-0 muted"><small>反模式一句话：<strong>在两个筒仓中间加一个团队，得到的是三个筒仓，不是零个。</strong>
+          筒仓的判据是「要提工单才能让它动」，不是它叫什么名字。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-5-5-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-5-2</div>
+        <h3 class="kp__title">DevOps 角色与端到端责任<span class="en">DevOps Roles · End-to-End Accountability</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevOps 角色 <span class="en">DevOps roles</span></span>
+            回答的是<strong>「谁对什么负责」</strong>，而不是「谁的职位叫什么」。
+            本节只处理其中一条最关键的边界：<strong>谁对服务在生产中的结果负责</strong>。
+          </p>
+          <p class="muted"><small><strong>DevOps roles</strong> 逐字列于 DOFD v3.4 官方考纲术语表，
+          上面的释义为<strong>本站教学整理</strong>。</small></p>
+          <p>
+            这条边界最常见的表述是
+            <strong>「你构建，你运维」<span class="en">You build it, you run it</span></strong>：
+            构建一个服务的团队，同时负责它在生产中的运行 —— 值班、告警、事故与改进。
+          </p>
+          <div class="callout callout--ext">
+            <div class="callout__title">🧭 教学补充 · 非考纲</div>
+            <p>
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+              <strong>「你构建，你运维 / You build it, you run it」是行业表述，不是官方术语</strong>：
+              它<strong>不在</strong> DOFD v3.4 的 66 条术语表内，也<strong>不是</strong> v3.4 课程大纲的模块子项。
+            </p>
+            <p class="mb-0">
+              这是理解用的补充。官方在 Blueprint 中的对应表述是
+              <em>Cross-function teams focus on business goals</em> 与 <em>Ops work with Dev</em>；
+              考纲术语表里的对应条目是 <strong>DevOps teams</strong> 与 <strong>DevOps roles</strong>。
+              答题时以官方措辞为准。
+            </p>
+          </div>
+          <p class="mb-0 muted"><small>词条出处：<em>Roles</em>、<em>DevOps Leadership</em> 是 v3.4 课程大纲 M8 的子项。
+          具体角色清单、职责划分与 DevOps 领导力属第 8 章范围，
+          见<a href="../ch08-sharing/index.html">第 8 章 角色与团队（8.2）</a>，本节不展开。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            端到端责任解决的痛点有一个准确的名字：<strong>交付即脱手</strong>。
+            代码一旦上线，写它的人就与它的后果断开了。
+          </p>
+          <ul>
+            <li>某平台部门 6 个开发小组交付了 <strong>40 多个服务</strong>，全部移交给一个 9 人的运维组值班。
+              运维组同时盯着 40 多个服务的告警，<strong>看不懂其中任何一个的业务语义</strong>，
+              收到告警后能做的只有重启和升级工单。</li>
+            <li>反馈回不到源头：同一类超时缺陷在三个季度里出现了 <strong>7 次</strong>，
+              每次都被运维组按「已恢复」关闭。写代码的小组<strong>从未在复盘里出现过</strong>，
+              自然也没有人去改那段没有超时控制的调用。</li>
+            <li>更隐蔽的代价是设计：<strong>不值班的人，不会为「好排查」写代码</strong>。
+              日志写不写、指标埋不埋，取决于写代码的人会不会在凌晨用到它。</li>
+          </ul>
+          <p>
+            把值班责任放回构建团队，等于把<strong>第二步·反馈</strong>的回路接回源头 ——
+            痛感落在能改代码的人身上，改进才会发生
+            （见<a href="../ch02-core-principles/2.4-second-way-feedback.html">第 2 章 第二步：反馈（2.4）</a>）。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">端到端责任（你构建，你运维）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Ops 代运维</strong></td>
+                  <td>生产结果的责任<strong>留在构建团队</strong>，值班的是写代码的人</td>
+                  <td>责任在移交那一刻<strong>转走</strong>；值班的人无法修改代码，只能重启与转单</td>
+                </tr>
+                <tr>
+                  <td><strong>独立「DevOps 团队」代管</strong></td>
+                  <td>没有中间层，产品团队直接面对生产</td>
+                  <td>责任被交给一个中间团队，<strong>结果是责任更模糊</strong>，不是更清晰（见 kp-5-5-1）</td>
+                </tr>
+                <tr>
+                  <td><strong>平台团队</strong><br><small class="muted"><span class="badge badge--new">🆕 v3.6 新增</span></small></td>
+                  <td>回答<strong>「谁负责结果」</strong>：产品团队</td>
+                  <td>回答<strong>「谁负责底座」</strong>：平台团队。它降低认知负荷，<strong>但不接走交付与值班责任</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>「什么都自己搭」</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>是一条<strong>责任归属</strong>规定</td>
+                  <td>是一种<strong>技术自建范围</strong>的误读。责任在自己身上，不等于工具链也要自己造一遍</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small><strong>最容易被混淆的那一点</strong>：把「你构建，你运维」理解成
+          <strong>「每个团队自己搭一整套基础设施」</strong>。
+          它规定的是<strong>责任归属</strong>，不是<strong>自建范围</strong> ——
+          正因为责任不能转走，才需要有人把通用能力做成自助产品，
+          <strong>这就是平台团队存在的空间</strong>。责任不动，负荷可以动。</small></p>
+          <p class="mb-0 muted"><small>本表的四组对照为本站教学整理，官方未以此形式给出；
+          「你构建，你运维」与「认知负荷」均不在 DOFD 66 条术语表内，属教学补充。</small></p>
+        </div>
+
+        <!-- ============ 图 5-5-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 390" role="img" aria-label="端到端责任的代价是认知负荷：没有平台层时产品团队要背八个领域，有平台层时其中四个由平台团队以自助形式提供">
+              <!-- 左：只有端到端责任 -->
+              <rect x="20" y="20" width="410" height="310" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="225" y="46" class="f-5" font-size="15" font-weight="700" text-anchor="middle">只喊「你构建，你运维」</text>
+              <text x="225" y="68" class="s-muted" font-size="12" text-anchor="middle">产品团队要同时背下的领域</text>
+
+              <rect x="36" y="80" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="124" y="101" class="s-ink" font-size="13" text-anchor="middle">业务逻辑与服务代码</text>
+              <rect x="238" y="80" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="326" y="101" class="s-ink" font-size="13" text-anchor="middle">可用性目标与值班轮转</text>
+
+              <rect x="36" y="120" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="124" y="141" class="s-ink" font-size="13" text-anchor="middle">构建与部署流水线</text>
+              <rect x="238" y="120" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="326" y="141" class="s-ink" font-size="13" text-anchor="middle">环境供给与容量</text>
+
+              <rect x="36" y="160" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="124" y="181" class="s-ink" font-size="13" text-anchor="middle">可观测性底座</text>
+              <rect x="238" y="160" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="326" y="181" class="s-ink" font-size="13" text-anchor="middle">安全基线与合规</text>
+
+              <rect x="36" y="200" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="124" y="221" class="s-ink" font-size="13" text-anchor="middle">发布节奏与回滚</text>
+              <rect x="238" y="200" width="176" height="32" rx="6" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="326" y="221" class="s-ink" font-size="13" text-anchor="middle">依赖与版本升级</text>
+
+              <text x="36" y="256" class="s-muted" font-size="12">认知负荷</text>
+              <rect x="36" y="264" width="378" height="20" rx="6" class="s-stroke" stroke-width="1.2" fill="var(--dia-fill-2)"/>
+              <rect x="38" y="266" width="344" height="16" rx="5" class="f-5"/>
+              <text x="36" y="306" class="s-ink" font-size="12.5">接近上限：值班疲劳、交付变慢，</text>
+              <text x="36" y="324" class="s-ink" font-size="12.5">团队开始把「端到端责任」当作负担而不是权力</text>
+
+              <!-- 右：产品团队 + 平台团队 -->
+              <rect x="470" y="20" width="410" height="310" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="675" y="46" class="f-3" font-size="15" font-weight="700" text-anchor="middle">产品团队 + 平台团队</text>
+              <text x="561" y="68" class="s-muted" font-size="12" text-anchor="middle">产品团队仍然背</text>
+              <text x="789" y="68" class="s-muted" font-size="12" text-anchor="middle">平台团队做成自助能力</text>
+
+              <rect x="486" y="80" width="176" height="32" rx="6" class="s-1" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="574" y="101" class="s-ink" font-size="13" text-anchor="middle">业务逻辑与服务代码</text>
+              <rect x="688" y="80" width="176" height="32" rx="6" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="776" y="101" class="s-ink" font-size="13" text-anchor="middle">构建与部署流水线</text>
+
+              <rect x="486" y="120" width="176" height="32" rx="6" class="s-1" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="574" y="141" class="s-ink" font-size="13" text-anchor="middle">可用性目标与值班轮转</text>
+              <rect x="688" y="120" width="176" height="32" rx="6" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="776" y="141" class="s-ink" font-size="13" text-anchor="middle">环境供给与容量</text>
+
+              <rect x="486" y="160" width="176" height="32" rx="6" class="s-1" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="574" y="181" class="s-ink" font-size="13" text-anchor="middle">发布节奏与回滚</text>
+              <rect x="688" y="160" width="176" height="32" rx="6" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="776" y="181" class="s-ink" font-size="13" text-anchor="middle">可观测性底座</text>
+
+              <rect x="486" y="200" width="176" height="32" rx="6" class="s-1" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="574" y="221" class="s-ink" font-size="13" text-anchor="middle">生产结果的责任</text>
+              <rect x="688" y="200" width="176" height="32" rx="6" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+              <text x="776" y="221" class="s-ink" font-size="13" text-anchor="middle">安全基线与合规</text>
+
+
+              <text x="486" y="256" class="s-muted" font-size="12">认知负荷</text>
+              <rect x="486" y="264" width="378" height="20" rx="6" class="s-stroke" stroke-width="1.2" fill="var(--dia-fill-2)"/>
+              <rect x="488" y="266" width="196" height="16" rx="5" class="f-3"/>
+              <text x="486" y="306" class="s-ink" font-size="12.5">负荷下降，但左列那条「生产结果的责任」</text>
+              <text x="486" y="324" class="s-ink" font-size="12.5">一格都没有移动 —— 移走的只有通用领域</text>
+
+              <text x="450" y="366" class="s-muted" font-size="12.5" text-anchor="middle">认知负荷不会凭空消失，它被转移给一个把「底座」当作产品来经营的团队；责任边界原地不动</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-5-3　端到端责任的代价，以及平台团队出现的位置。</strong>
+            两侧对比只有一个要点：<strong>右图移走的是「领域」，不是「责任」</strong>。
+            左图里那八个格子全压在一个产品团队身上，负荷条接近满格 ——
+            这时「你构建，你运维」会从一种权力变成一种负担，团队开始逃避拥有服务。
+            右图把四个通用领域交给平台团队做成<strong>自助能力</strong>，
+            但「生产结果的责任」这一格仍然留在产品团队里。
+            <strong>一旦这一格也被挪走，形态就退回成了独立 DevOps 团队。</strong>
+            <br><small class="muted">本图为本站教学整理，八个领域的划分与负荷比例为示意，非官方内容也非统计数据；
+            「认知负荷」不在 DOFD 66 条术语表内，属教学补充。平台工程展开见
+            <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>端到端责任要落地，靠的是三个可验证的归属，不是一句口号：</p>
+          <ul>
+            <li><strong>值班归属</strong>：告警先响在构建这个服务的团队，而不是先响在一个统一值班台。
+              这是最硬的一条 —— 其余都可以谈，值班归属不能谈。</li>
+            <li><strong>指标归属</strong>：服务的可用性与延迟目标由这个团队自己定、自己背，
+              而不是由另一个部门下发。</li>
+            <li><strong>变更归属</strong>：这个团队能自己把变更推到生产，不必向别人提单请求执行。
+              做不到，前两条就是空话。</li>
+          </ul>
+          <p>
+            然后看代价。当团队要背的领域超过它的承受范围，端到端责任会开始<strong>反噬</strong>：
+            值班疲劳、交付变慢、没人愿意认领新服务。
+          </p>
+          <p class="mb-0">
+            此时正确的动作不是把责任交回去，而是<strong>把通用领域抽出来做成自助平台</strong> ——
+            责任不动，负荷下降。这正是
+            <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a>要解决的问题。
+            检验平台是否合格的标准只有一条：<strong>产品团队是自助取用，还是提单等待。</strong>
+          </p>
+          <div class="src-note">
+            「三个归属」清单与「负荷超载时抽出平台层」的处置顺序均为<strong>本站教学整理</strong>，
+            官方文件未规定实施步骤。<em>Platform Engineering</em> 属 <strong>v3.6 新增学习目标</strong>
+            （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），v3.4 的 66 条术语表未收录。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度</strong>：命题方向指向<strong>责任归属</strong>而非某个具体短语 ——
+              「你构建，你运维」不在 66 条术语表内，答题时按含义匹配官方措辞。
+              典型情形是描述一个团队共同拥有服务从构建到运行的结果，问这体现了什么；
+              方向指向 <strong>DevOps teams / DevOps roles</strong> 与
+              Blueprint 的「跨职能团队、Ops 与 Dev 互相支持」。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「开发只管写代码，运维只管稳定运行」</strong>（这是被否定的旧分工，却写得很像职责清晰）；
+              <strong>「由一个专职团队统一承担运维责任」</strong>（把责任转走，方向相反）；
+              <strong>「每个团队自行搭建全套基础设施」</strong>（把责任归属误读成自建范围，属过度推论）。</li>
+            <li><strong>排除技巧</strong>：读选项时只问一句 ——
+              <strong>这个说法是把生产结果的责任「留在」构建团队，还是「转给」别人？</strong>
+              转走的一律排除。<strong>注意「平台团队」不算转走</strong>：它转走的是通用领域，不是结果责任。</li>
+            <li><strong>措辞提示</strong>：官方可考的措辞只有 Blueprint 的
+              <em>cross-function teams</em>（Blueprint <em>Organization</em> 段原文）；
+              <strong>shared responsibility / end-to-end</strong> 是<strong>本站补充的同义表述</strong>，
+              官方文件中未出现，<strong>不要按短语匹配</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+          本面的<strong>命题角度、干扰项分析、排除技巧与措辞提示均为本站教学整理</strong>，
+          官方仅公布考试范围为 Bloom 1–2。本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">谁写的谁值班 —— 但不必谁写的，谁把底座也造一遍。</p>
+          <p class="mb-0 muted"><small>一句话推论：端到端责任的代价是<strong>认知负荷</strong>，
+          平台团队是对这个代价的回答。<strong>移走领域可以，移走责任不行</strong> ——
+          移走责任的那一刻，形态就退回成了独立 DevOps 团队。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-5-5-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-5-3</div>
+        <h3 class="kp__title">组织考量：运营模型怎么选<span class="en">Organizational Considerations</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">组织考量 <span class="en">Organizational considerations</span></span>
+            指把 DevOps 落到一个具体组织时，必须一并纳入判断的<strong>约束条件</strong> ——
+            产品边界、团队规模、合规要求、现有系统耦合度、资金模式。
+          </p>
+          <p class="muted"><small>「产品边界 / 团队规模 / 合规 / 系统耦合度 / 资金模式」这五项约束条件为<strong>本站教学整理</strong>的归纳，
+          官方只收录 <strong>Organizational considerations</strong> 这一词条名，<strong>未列出它的具体条目</strong>。</small></p>
+          <p>
+            关于「哪种运营模型是对的」，官方给的锚点<strong>不是某种结构</strong>：
+            <strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong> ——
+            这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+          </p>
+          <p>
+            所以本节不推荐任何一种形态。<strong>不存在唯一正确答案</strong>，
+            只存在「在这组约束下，哪种形态的代价更可接受」。
+          </p>
+          <p class="mb-0 muted"><small>词条出处：<strong>Organizational considerations</strong> 逐字列于 DOFD v3.4 官方考纲术语表，
+          同时是 v3.4 课程大纲 M8 的子项之一（仅词条名，无定义句）。本节只处理其中与<strong>运营模型选择</strong>相关的部分；
+          起步方法与关键成功因素见<a href="../ch08-sharing/index.html">第 8 章 组织考量与如何起步（8.4）</a>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这一条存在，是因为最常见的失败方式是<strong>照抄别人的组织结构图</strong> ——
+            抄走了形状，没抄走支撑那个形状的约束条件。
+          </p>
+          <ul>
+            <li>某公司照搬一家互联网公司的「小队制」，把 40 人、12 个系统拆成 <strong>9 个跨职能小队</strong>，
+              每队声称端到端负责。结构图当月就改完了。</li>
+            <li>但两个约束没动：<strong>资金仍按项目一年一批</strong>，小队的人手每个财年重新分配；
+              <strong>合规要求生产变更必须由独立岗位审批</strong>，小队没有部署权限。</li>
+            <li>半年后：小队要部署仍然得提单等审批，交接次数一次没少；
+              新财年一到，7 个小队被拆散重组。<strong>结构被拉回原位，只留下一轮组织动荡。</strong></li>
+          </ul>
+          <p>
+            机制很直接：<strong>组织结构由资金流向、审批权限与考核口径共同固定</strong>。
+            只改汇报线而不动这三样，结构会弹回去。
+          </p>
+          <p>
+            资金这一条尤其被低估：<strong>按项目一次性拨款的资金模式，无法支撑长期存在的产品团队</strong> ——
+            团队的寿命等于项目的寿命。要让跨职能产品团队稳定存在，资金模式往往得先变
+            （见<a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a>）。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <p>最近的相邻概念是<strong>组织成熟度模型</strong>（本章<a href="5.4-maturity-models.html">5.4</a>）。两者常被当成同一条线上的两点：</p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">对照项</th><th style="width:40%">组织成熟度模型（本章<a href="5.4-maturity-models.html">5.4</a>）</th><th>运营模型（本节）</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>它规定什么</strong></td>
+                  <td>衡量<strong>能力水平</strong>：某项实践做到了哪一级</td>
+                  <td>规定<strong>责任与交接结构</strong>：谁对生产结果负责、变更要过几次手</td>
+                </tr>
+                <tr>
+                  <td><strong>取值方向</strong></td>
+                  <td><strong>纵轴</strong>：分级有高低之分，越高越好</td>
+                  <td><strong>横轴</strong>：四种形态并列，<strong>没有唯一正确答案</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>是否互相决定</strong></td>
+                  <td><strong>不指定组织结构</strong>：受强监管的组织可以成熟度很高，同时保留审批岗位与职责分离</td>
+                  <td>与成熟度等级<strong>无一一对应</strong>：换结构不等于升级，升级也不要求换结构</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>以下为<strong>选型维度，不是概念对照</strong> ——
+            选运营模型时真正要判断的是这几个维度，每一条都只指出<strong>倾向</strong>，不是规定：</p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">判断维度</th><th style="width:39%">这一端的情况</th><th>倾向的形态</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>产品边界</strong></td>
+                  <td>边界清晰、能独立发布</td>
+                  <td>跨职能产品团队可行；边界含混、改一处牵动全局时，强行拆队只会把交接改成开会</td>
+                </tr>
+                <tr>
+                  <td><strong>规模与服务数量</strong></td>
+                  <td>团队少、服务少</td>
+                  <td>不需要平台层，直接端到端；服务与团队增多、重复造底座时，平台团队开始划算</td>
+                </tr>
+                <tr>
+                  <td><strong>合规与职责分离</strong></td>
+                  <td>法规要求变更由独立岗位授权</td>
+                  <td>审批环节<strong>删不掉</strong>，目标转为把它做快、做成预授权；不要假装能做到全自动上线</td>
+                </tr>
+                <tr>
+                  <td><strong>认知负荷</strong></td>
+                  <td>团队要背的领域超出承受范围</td>
+                  <td>抽出平台层降负荷 —— <strong>移走领域，不移走责任</strong>（见 kp-5-5-2）</td>
+                </tr>
+                <tr>
+                  <td><strong>资金模式</strong></td>
+                  <td>按项目一年一批</td>
+                  <td>长期产品团队难以稳定存在，先动资金模式（见 <a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a>）</td>
+                </tr>
+                <tr>
+                  <td><strong>系统耦合度</strong></td>
+                  <td>单体、共享数据库、统一发布窗口</td>
+                  <td>组织怎么拆，发布仍然是一次全体行动 —— 架构与组织必须同时改</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small><strong>最容易被混淆的那一点</strong>：把<strong>「成熟度更高 = 必须采用跨职能产品团队」</strong>当成结论。
+          组织成熟度模型衡量的是<strong>能力水平</strong>，不指定<strong>组织结构</strong>；
+          一个受强监管的组织可以在成熟度上很高，同时保留审批岗位与职责分离。
+          <strong>成熟度是纵轴，运营模型是横轴，不是同一条线上的两点。</strong>
+          （成熟度模型见本章<a href="5.4-maturity-models.html">5.4 组织成熟度模型</a>。）</small></p>
+          <div class="callout callout--ext">
+            <div class="callout__title">🧭 教学补充 · 非考纲</div>
+            <p>
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+              <strong>康威定律 <span class="en">Conway's Law</span></strong>：
+              系统的架构会趋同于设计它的组织的沟通结构。
+              这是理解用的补充，<strong>不在 DOFD v3.4 的 66 条术语表内，也不是 v3.4 课程大纲的模块子项</strong>。
+            </p>
+            <p class="mb-0">
+              它在本节的作用只有一句：<strong>改架构必须同时改组织，只改一边，另一边会把它拉回去</strong> ——
+              这正好解释了上表最后一行「架构与组织必须同时改」。
+              另一套团队类型划分 <em>Team Topologies</em> 同属非考纲，本节仅点名。
+            </p>
+          </div>
+          <p class="mb-0 muted"><small>上面两张表 —— 成熟度模型与运营模型的对照、六个判断维度与「倾向」判断 ——
+          均为<strong>本站教学整理</strong>，官方未给出运营模型的选择清单，也未推荐任何一种组织形态。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选运营模型的实际动作，按顺序是四步：</p>
+          <ul>
+            <li><strong>先写清业务战略与目标</strong>：要缩短上市时间，还是要把变更失败率压下来？
+              目标不同，能接受的组织代价也不同。<strong>官方把这一条放在决定位置上</strong>（见 ⑤ 面）。</li>
+            <li><strong>再盘约束</strong>：合规、资金、系统耦合度这三条如果不动，
+              先承认它们的存在 —— <strong>不要设计一个约束不允许存在的结构</strong>。</li>
+            <li><strong>选一个能真正端到端的切口试点</strong>：挑边界清晰、能独立发布的服务先做，
+              用交接次数与变更前置时间验证，而不是用满意度调查验证。</li>
+            <li><strong>把结构变化和考核变化同批发布</strong>：只改汇报线不改 KPI，
+              旧的对立行为会原样保留在新结构里。</li>
+          </ul>
+          <p class="mb-0">
+            还有一条否定式的判断：<strong>不要一次改全公司</strong>。
+            大规模重组会同时改变所有人的默认路径，出问题时无法归因，也无法回滚。
+          </p>
+          <div class="src-note">
+            四步动作与「不要一次改全公司」的建议为<strong>本站教学整理</strong>，
+            官方文件未规定实施步骤。其中「先写清业务战略与目标」这一条的方向，
+            与 <strong>DOFD v3.4 官方样题答案键</strong>确认的判断一致（见本知识点 ⑤ 面）。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              凡是问「依据是什么 / 由什么决定」的题，方向就在这里。</li>
+            <li><strong>另一条官方已确认的</strong>：<strong>DevOps 的关键成功因素是管理层对文化变革的承诺</strong>
+              —— 同样由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              组织改造类题目问「最关键的成功因素」时用它
+              （展开见<a href="../ch08-sharing/index.html">第 8 章 挑战、风险与关键成功因素（8.5）</a>）。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>工具选型 / 平台选型</strong>（把组织问题答成工具问题）；
+              <strong>预算规模、团队人数</strong>（听起来务实，但都是结果不是依据）；
+              <strong>某个具体框架或某种组织结构</strong>（把手段说成依据）；
+              以及<strong>「IT 部门的偏好」</strong>（方向与「业务战略与目标」相反）。</li>
+            <li><strong>排除技巧</strong>：这类题的正确答案<strong>几乎不会落在技术侧</strong>。
+              先把所有指向工具、平台、厂商、具体结构的选项整组划掉，
+              剩下的往往只有<strong>业务战略与目标</strong>、<strong>管理层承诺</strong>这两类。</li>
+            <li><strong>反向问法</strong>：问「以下哪项<strong>不是</strong>组织采用 DevOps 时应考虑的」，
+              这时要找的是<strong>纯技术选型</strong>那一项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅陈述官方答案键确认的结论并描述命题角度，
+          <strong>不复制任何官方样题的题干与选项原文</strong>；干扰项分析与排除技巧为本站教学整理。
+          本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先问业务战略与目标，再画组织结构图；顺序反了，结构会被拉回原位。</p>
+          <p class="mb-0 muted"><small>三条硬约束的口诀：<strong>合规删不掉、资金拖得住、架构拆不开</strong> ——
+          任何一条没处理，新结构都活不过一个财年。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方口径</strong>：Blueprint <em>Organization</em> 段原文 ——
+          <em>Cross-function teams focus on business goals. Ops work with Dev…</em>
+          官方给的是<strong>跨职能</strong>，不是<strong>新设一个 DevOps 部门</strong></li>
+        <li><strong>四种形态</strong>：职能筒仓 Dev→QA→Ops（2 次交接）· 跨职能产品团队（0 次）·
+          独立 DevOps 团队 Dev→DevOps→Ops（<strong>2 次，比它替代的 Dev/Ops 两筒仓多 1 次</strong>）·
+          产品团队 + 平台团队（0 次，自助非提单）<span class="muted">（四分类为本站教学整理）</span></li>
+        <li><strong>反模式判据</strong>：别人要提工单才能让它动 · 它有独立待办与 KPI · 生产出事时它不值班 ——
+          三条成立就是第三个筒仓<span class="muted">（本站教学整理）</span></li>
+        <li><strong>「你构建，你运维」</strong>是行业表述、<strong>不在 66 条术语表内</strong>；
+          它规定<strong>责任归属</strong>，不规定<strong>自建范围</strong>。代价是<strong>认知负荷</strong></li>
+        <li><strong>平台团队</strong>移走的是<strong>通用领域</strong>，不是<strong>结果责任</strong>；
+          责任也被移走时，形态就退回成独立 DevOps 团队（展开见 <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a>）</li>
+        <li><strong>官方确认一</strong>：决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>
+          （DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>官方确认二</strong>：DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>；
+          <strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标（均由 DOFD v3.4 官方样题答案键确认）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevOps teams</em>、<em>DevOps roles</em>、<em>Organizational considerations</em>
+      逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Culture, Behaviors &amp; Operating Models</em> 是 v3.4 八大知识域第 5 个模块的官方英文名
+      （DOFD v3.4 Examination Requirements，2022-05）；
+      <em>Roles</em>、<em>DevOps Leadership</em>、<em>Organizational Considerations</em> 是 v3.4 课程大纲 M8 的子项。
+      本节引用的 Blueprint <em>Organization</em> 段为逐字原文（出自 PeopleCert DevOps Foundation Blueprint），中译为本站译文。
+      <strong>三条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」、
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」、
+      「<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标」。本站只陈述结论，
+      <strong>不复制官方样题的题干与选项原文</strong>。
+      <em>Platform Engineering</em> 属 <strong>v3.6 新增学习目标</strong>
+      （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），v3.4 的 66 条术语表未收录。
+      <strong>教学整理部分</strong>：四种组织形态的分类与命名、「交接次数 / 责任边界」对照维度（图 5-5-1）、
+      第三个筒仓的数量对比（图 5-5-2）、认知负荷与平台层的对照（图 5-5-3）、
+      四项形态诊断动作、端到端责任的「三个归属」、成熟度模型与运营模型的对照表、
+      六个运营模型判断维度与四步选择动作、各 ⑤ 面的命题角度与干扰项构造，
+      官方均未以此形式给出，已分别在对应位置就地标注。文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      <strong>延伸 · 非考纲</strong>：「你构建，你运维 <em>You build it, you run it</em>」、康威定律 <em>Conway's Law</em>、
+      <em>Team Topologies</em>、认知负荷，均不在 DOFD 66 条术语表与 v3.4 模块子项内，本节仅作理解用补充并已就地标注。
+      另有三处按 <strong>本站教学整理</strong>处理：㈠「独立 DevOps 团队在多数情况下是反模式、会退化成第三个筒仓」这一判断，
+      依据是 Blueprint <em>Organization</em> 段的正面表述与行业实践观察，官方无直接表述；
+      ㈡ 本节主题词「运营模型 <em>Operating Models</em>」只出现在官方模块名内，
+      既不在 66 条术语表内、也不是 v3.4 课程大纲 M5 的子项，页头据此标 <strong>📝 教学整理</strong>；
+      ㈢ <strong>官方考纲术语表只列出词条、不附定义</strong>，<em>DevOps teams</em>、<em>DevOps roles</em>、
+      <em>Organizational considerations</em> 三条在本节各 ① 面的中文释义都是本站措辞。
+      跨章内容：平台工程见 <a href="../ch03-key-practices/3.10-platform-engineering.html">3.10 平台工程</a>；
+      持续资金见 <a href="../ch04-frameworks/4.7-continuous-funding.html">第 4 章 持续资金（4.7）</a>；
+      角色职责与领导力见 <a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

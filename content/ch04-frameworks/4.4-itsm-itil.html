@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.4 ITSM 与 ITIL · DevOps Foundation 学习站</title>
+<meta name="description" content="官方样题答案键确认对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是；ITSM 是实践领域，ITIL 是其中最广泛采用的框架。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch04", sec:"4.4-itsm-itil"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 4 章 · 业务与技术框架</div>
+      <h1 class="page-head__title">4.4 ITSM 与 ITIL</h1>
+      <div class="page-head__en">ITSM and ITIL</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这一节要拆掉两个根深蒂固的误解。第一个是把
+        <strong>ITSM 和 ITIL 当成同一个词</strong> —— 前者是实践领域，后者是这个领域里最广泛采用的框架 ——
+        <strong>ITIL 这一框架名本身不在 DOFD v3.4 官方考纲术语表的 66 条词条内</strong>，本节只把它当作理解 ITSM 的参照。
+        第二个更贵：认为 <strong>DevOps 与 ITSM 天然对立、上了 DevOps 就该废掉变更管理</strong>。
+        官方样题答案键给出的方向恰恰相反 —— 三个 ITSM 流程对 DevOps <strong>同时</strong>关键。
+        真实的演化不是删掉控制，而是<strong>把控制从会议室搬进流水线</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>ITSM 与 ITIL 到底是什么关系，为什么说它们不是同义词</li>
+        <li>官方样题答案键为什么把「对 DevOps 最关键的 ITSM 流程」判成<strong>三者皆是</strong>，只选一个错在哪</li>
+        <li>变更管理在 DevOps 下怎么演化：<strong>控制并没有消失，它换了位置</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 4-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 476" role="img" aria-label="组织变革管理、服务连续性管理、事件管理三个 ITSM 流程分别支撑 DevOps 的哪一端，官方样题答案键确认三者皆是">
+          <defs>
+            <marker id="ah-44-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-44-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-44-5" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 官方确认横幅 -->
+          <rect x="30" y="18" width="900" height="44" rx="10" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="480" y="46" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">官方答案键确认：对 DevOps 最关键的 ITSM 流程 ——「三者皆是」，不是三选一</text>
+
+          <!-- 流程一 -->
+          <rect x="30" y="88" width="280" height="176" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="170" y="120" class="f-1" font-size="16" font-weight="700" text-anchor="middle">组织变革管理</text>
+          <text x="170" y="142" class="s-muted" font-size="12" text-anchor="middle">Organizational Change Management</text>
+          <text x="52" y="176" class="s-ink" font-size="13">管的是：人的工作方式怎么变</text>
+          <text x="52" y="202" class="s-ink" font-size="13">缺了它：流水线建好了，</text>
+          <text x="52" y="222" class="s-ink" font-size="13">但没人按新方式工作</text>
+          <text x="52" y="250" class="f-1" font-size="13" font-weight="650">守住「人」这一端</text>
+
+          <!-- 流程二 -->
+          <rect x="340" y="88" width="280" height="176" rx="12" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="480" y="120" class="f-3" font-size="16" font-weight="700" text-anchor="middle">服务连续性管理</text>
+          <text x="480" y="142" class="s-muted" font-size="12" text-anchor="middle">Service Continuity Management</text>
+          <text x="362" y="176" class="s-ink" font-size="13">管的是：出事之后服务怎么撑住</text>
+          <text x="362" y="202" class="s-ink" font-size="13">缺了它：发得越快，</text>
+          <text x="362" y="222" class="s-ink" font-size="13">一次故障影响面越不可控</text>
+          <text x="362" y="250" class="f-3" font-size="13" font-weight="650">守住「韧性」这一端</text>
+
+          <!-- 流程三 -->
+          <rect x="650" y="88" width="280" height="176" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="790" y="120" class="f-5" font-size="16" font-weight="700" text-anchor="middle">事件管理</text>
+          <text x="790" y="142" class="s-muted" font-size="12" text-anchor="middle">Incident Management</text>
+          <text x="672" y="176" class="s-ink" font-size="13">管的是：生产信号怎么回到开发</text>
+          <text x="672" y="202" class="s-ink" font-size="13">缺了它：故障处理完就散，</text>
+          <text x="672" y="222" class="s-ink" font-size="13">同一个坑反复踩</text>
+          <text x="672" y="250" class="f-5" font-size="13" font-weight="650">守住「反馈」这一端</text>
+
+          <!-- 汇聚箭头 -->
+          <path d="M170 268 L170 300 L455 300 L455 328" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-44-1)"/>
+          <path d="M480 268 L480 328" class="s-3" stroke-width="2" fill="none" marker-end="url(#ah-44-3)"/>
+          <path d="M790 268 L790 300 L505 300 L505 328" class="s-5" stroke-width="2" fill="none" marker-end="url(#ah-44-5)"/>
+
+          <!-- 汇聚目标 -->
+          <rect x="150" y="332" width="660" height="66" rx="12" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="480" y="360" class="s-ink" font-size="16" font-weight="700" text-anchor="middle">DevOps：端到端的服务交付</text>
+          <text x="480" y="384" class="s-muted" font-size="13" text-anchor="middle">快速流动 · 反馈 · 持续改进，同时保住质量、稳定性与可靠性</text>
+
+          <!-- 底注 -->
+          <text x="480" y="428" class="s-ink" font-size="13.5" font-weight="650" text-anchor="middle">只选其中一个 = 只补上一端，另外两端仍然是缺口</text>
+          <text x="480" y="452" class="s-muted" font-size="12" text-anchor="middle">「人 / 韧性 / 反馈」这一组归类是本站教学映射，官方只确认了「三者皆是」这个结论</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 4-4-1　三个流程各守一端。</strong>
+        要看懂的是：这三个 ITSM 流程<strong>不在同一条赛道上竞争</strong>，它们分别堵住 DevOps 的三个不同缺口 ——
+        组织变革管理管人、服务连续性管理管出事之后、事件管理管信号回流。
+        正因为三者互不替代，「哪一个最关键」这个问法才只能答<strong>三者皆是</strong>。
+        <br><small class="muted">「对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是」由
+        <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论，不复制题干与选项原文。
+        图中把三者归类为「人 / 韧性 / 反馈」三端、以及各框内「缺了它会怎样」的推论，均为本站教学整理，官方未以此形式给出。
+        三个流程的英文名为行业通行写法，DOFD v3.4 官方考纲术语表未逐条收录这三个流程名，该部分属<strong>本站教学整理</strong>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-4-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-4-1</div>
+        <h3 class="kp__title">IT 服务管理与 ITIL 的关系<span class="en">IT Service Management &amp; ITIL</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">IT 服务管理 <span class="en">IT service management / ITSM</span></span>
+            是把 IT 当作<strong>一组面向用户的服务</strong>来设计、交付、运营与改进的实践领域 ——
+            关注的不是「这台服务器好不好」，而是「用户要用的那件事能不能一直用、出问题多久恢复」。
+          </p>
+          <p>
+            <span class="term">服务 <span class="en">Service</span></span>
+            指的是<strong>为用户产生价值、而用户不必自己承担其成本与风险</strong>的那样东西。
+            用户要的是「随时能下单」，不是「一套订单系统」。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">名词</th><th>它在这套体系里的位置</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>ITSM</strong><br><small class="muted">实践领域</small></td>
+                  <td>一门学问 / 一个领域。任何组织只要在「以服务的方式管理 IT」，就是在做 ITSM，不管它用不用某个具体框架</td>
+                </tr>
+                <tr>
+                  <td><strong>ITIL</strong><br><small class="muted">框架</small></td>
+                  <td>这个领域里<strong>被最广泛采用</strong>的那一套框架与最佳实践集合。它是 ITSM 的一种实现方式，<strong>不是 ITSM 本身</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>流程 <span class="en">Processes</span></strong></td>
+                  <td>ITSM 落地的形态。PeopleCert Blueprint 在「Related Frameworks」一栏里对 ITSM 只写了一件事：<em>ITSM: Processes</em></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>IT service management</strong> 与 <strong>Service</strong> 均逐字列于 DOFD v3.4 官方考纲术语表；
+            <em>ITSM: Processes</em> 是 PeopleCert DevOps Foundation Blueprint 的逐字原文。
+            <strong>「ITIL」这个框架名本身不在 66 条术语表内</strong>，本站按行业通行事实介绍它与 ITSM 的关系；
+            本知识点标题并列了 ITSM 与 ITIL，故徽章同时标「⭐ 考纲核心」（判据：<em>IT service management</em> 为术语表条目）
+            与「📘 官方模块子项」（判据：ITIL 属 v3.4 课程大纲 M4 的服务管理一支，不在术语表内）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>ITSM 出现之前，IT 部门是按<strong>技术资产</strong>组织的，而不是按<strong>用户要办的事</strong>组织的。这带来一类非常具体的场景：</p>
+          <ul>
+            <li>某公司的网上营业厅打不开了。网络组说链路正常，主机组说服务器 CPU 正常，
+              数据库组说没有慢查询，应用组说自己的进程还活着。
+              <strong>四个团队的仪表盘全是绿的，用户却办不了业务</strong> —— 因为没有任何人负责「网上营业厅」这个<strong>服务</strong>。</li>
+            <li>用户打电话进来，第一句话被问的是「您用的是哪套系统」。用户不知道，也不该知道。
+              工单在四个组之间转了 3 小时，<strong>没有一个组认为这是自己的故障</strong>。</li>
+          </ul>
+          <p>
+            ITSM 的解法是换一个组织单位：<strong>把「服务」定义出来，给它一个负责人、一条恢复路径、一个可承诺的目标</strong>。
+            服务定义清楚了，绿色仪表盘和黑屏用户之间那道裂缝才有人补。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明「按资产组织」与「按服务组织」的差别，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">ITSM</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>ITIL</strong></td>
+                  <td>是<strong>领域</strong>：以服务的方式管理 IT 这件事本身</td>
+                  <td>是<strong>框架</strong>：该领域里最广泛采用的一套实践集合。组织可以做 ITSM 而不采用 ITIL，也可以采用 ITIL 却只用其中几个流程</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps</strong></td>
+                  <td>回答<strong>「服务怎么被稳定地运营与恢复」</strong>，视角是服务的整个生命周期</td>
+                  <td>回答<strong>「变更怎么快速且安全地流到生产」</strong>，视角是价值流。两者<strong>视角不同，目标不冲突</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Service（服务）</strong></td>
+                  <td>是<strong>管理这些服务的实践</strong></td>
+                  <td>是<strong>被管理的对象</strong>：用户能用上的那件事。不等于系统、应用或服务器 —— 一个服务通常横跨多个系统</td>
+                </tr>
+                <tr>
+                  <td><strong>SRE</strong><br><small class="muted">站点可靠性工程 Site Reliability Engineering</small></td>
+                  <td>用<strong>流程</strong>保证服务可用：定义、职责、恢复路径</td>
+                  <td>用<strong>工程手段</strong>保证服务可用：自动化、韧性设计、可靠性目标。见 <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把 ITSM 直接读成 ITIL</strong>。
+            考纲收录的是 <em>IT service management</em>，不是某个框架名。
+            题干说「ITSM 流程」时问的是<strong>服务管理这件事</strong>，
+            答案不会因为组织没有做 ITIL 认证而改变。</small></p>
+          <p class="mb-0 muted"><small>本表四行对照为本站教学整理，官方未以此形式给出该对比；涉及 ITIL 的行按行业通行事实写成（见 ① 面标注）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把 ITSM 用在 DevOps 语境里，落到三个具体判断动作：</p>
+          <ul>
+            <li><strong>先能说清「服务是什么」</strong>：拿一个真实故障问团队「这次坏的是哪个服务、谁负责、承诺多久恢复」。
+              三个问题答不上来，后面所有流程都是空转。</li>
+            <li><strong>用服务边界划团队边界</strong>：让一个团队对一个服务从需求到生产全程负责，
+              而不是把服务切成前端、后端、数据库三段各管一截。这一步做不到，
+              就还会出现「四个绿仪表盘 + 一个黑屏用户」。</li>
+            <li><strong>只挑与 DevOps 咬合的流程先做</strong>：变更、事件、连续性。
+              一次性铺开一整套流程手册是 ITSM 落地最常见的失败方式 —— 具体的流程清单不必背，
+              本节只讲与 DevOps 直接相关的那几个。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这三个判断动作为本站教学整理，官方文件把 <em>ITSM</em> 列为 M4 模块子项与 Blueprint 的相关框架之一，未规定实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：ITSM 在框架全景里的位置</strong>。
+              PeopleCert Blueprint 的「Related Frameworks」一栏把 <em>ITSM: Processes</em> 与
+              <em>Agile: Lean Development</em>、<em>Lean: Reduce Waste</em>、
+              <em>Value Stream Management: End-to-End</em> 并列 ——
+              <strong>ITSM 对应的关键词是「流程 Processes」</strong>，这一组配对可以直接背。</li>
+            <li><strong>命题角度二：术语归属</strong>。<em>IT service management</em>、<em>Service</em>、
+              <em>Agile service management</em> 三个词都在官方术语表内，属 Bloom 1–2 的记忆与理解层级，
+              考法是给定义找名词，或给名词找定义。</li>
+            <li><strong>干扰项长什么样</strong>：把 <strong>ITIL 换成 ITSM</strong> 混用；
+              或者把「服务」偷换成「系统 / 应用 / 服务器」——
+              一旦选项描述的是一台机器或一套软件而不是<strong>用户能用上的那件事</strong>，就可以划掉。</li>
+            <li><strong>排除技巧</strong>：先分辨题干问的是<strong>领域</strong>还是<strong>框架</strong>。
+              问「以服务方式管理 IT 的实践」→ ITSM；问某个具体流程模型的来源 → 才轮到框架名。
+              <span class="muted">（此判据为本站教学整理）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            Blueprint 引用为逐字原文（出自 PeopleCert DevOps Foundation Blueprint）；干扰项分析与排除技巧为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">ITSM 是那门学问，ITIL 是那门学问里最流行的一本教科书。</p>
+          <p class="mb-0 muted"><small>第二句配套记：<strong>服务不是系统</strong>。用户要的是「随时能下单」，不是「一套订单系统」——
+            Blueprint 给 ITSM 配的词是 <em>Processes</em>，不是 <em>Tools</em>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-4-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-4-2</div>
+        <h3 class="kp__title">对 DevOps 最关键的三个 ITSM 流程<span class="en">ITSM Processes That Matter Most to DevOps</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            官方样题答案键确认了一条硬事实：<strong>对 DevOps 最关键的 ITSM 流程是
+            <em>组织变革管理</em>、<em>服务连续性管理</em>、<em>事件管理</em> —— 三者皆是</strong>。
+            这不是「三个都还行」的和稀泥，而是因为三者<strong>各自堵住一个不同的缺口</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">流程</th><th style="width:34%">它管什么</th><th>为什么 DevOps 缺不了它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>组织变革管理</strong><br><small class="muted">Organizational Change Management</small></td>
+                  <td>人的工作方式、职责与协作关系怎么改变</td>
+                  <td>DevOps 改的是<strong>行为</strong>，不是工具。流水线可以两周搭好，「运维和开发共同对生产负责」这件事两周改不完</td>
+                </tr>
+                <tr>
+                  <td><strong>服务连续性管理</strong><br><small class="muted">Service Continuity Management</small></td>
+                  <td>服务在故障与灾难下如何维持与恢复</td>
+                  <td>发布频率上去之后，风险从「一次大爆炸」变成「持续的小扰动」。<strong>恢复能力必须先于发布速度</strong>建立</td>
+                </tr>
+                <tr>
+                  <td><strong>事件管理</strong><br><small class="muted">Incident Management</small></td>
+                  <td>生产中断的发现、响应、恢复与记录</td>
+                  <td>它是<strong>生产反馈回到开发的入口</strong>。没有它，第二步反馈在生产这一段是断的</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>徽章判据</strong>：本知识点的主题词是 <em>ITSM = IT service management</em>，逐字见 DOFD v3.4 官方考纲术语表，故标「⭐ 考纲核心」；
+            <strong>下面三个流程名本身并不在那 66 条术语表内</strong>，英文写法为行业通行写法（见<strong>图 4-4-1 下方标注</strong>），属本站教学整理。
+            「三者皆是」这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，可以放心当作官方事实使用。
+            本站只陈述结论，<strong>不复制题干与选项原文</strong>。
+            表中「它管什么 / 为什么缺不了」两列是本站的展开解释，官方未以此形式给出理由说明。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            这道题真正在防的，是一种非常普遍的落地失败：
+            <strong>组织只补了三个缺口中的一个，然后宣布 DevOps 转型完成。</strong>
+          </p>
+          <ul>
+            <li><strong>只做事件管理的那家公司</strong>：告警接进了聊天群，故障响应从 40 分钟压到 6 分钟。
+              但每次复盘写完的改进项没人认领 —— 因为绩效仍然按「开发交付功能数 / 运维故障次数」分开考核。
+              <strong>缺的是组织变革管理</strong>：流程换了，激励没换，行为就回弹。</li>
+            <li><strong>只做组织变革管理的那家公司</strong>：团队合并了，站会开起来了，部署频率从月度提到每天 4 次。
+              第 7 周一次数据库变更导致主库不可用，恢复演练两年没做过，
+              <strong>恢复用了 9 小时</strong> —— 缺的是服务连续性管理，速度先于韧性建立，等于把爆炸频率提高了。</li>
+            <li><strong>只做服务连续性管理的那家公司</strong>：容灾切换 8 分钟完成，演练每季度一次。
+              但生产中反复出现的同一类超时，三个月里出现 11 次，每次都被「重启解决」，
+              <strong>没有一次回到开发的待办里</strong> —— 缺的是把事件当作反馈信号的事件管理。</li>
+          </ul>
+          <p>
+            三个案例的共同结构是：<strong>补上一端，另外两端的缺口原样保留，并且很快把补上的那一端也拖回去。</strong>
+            这正是「三者皆是」这个答案要传达的东西。
+          </p>
+          <p class="mb-0 muted"><small>以上三个案例均为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「补一端会被另外两端拖回去」这一结构为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对象</th><th style="width:30%">它是什么</th><th>与 DevOps 的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>组织变革管理</strong></td>
+                  <td><strong>流程</strong>：管人的转变</td>
+                  <td><strong>关键</strong>（官方样题答案键确认）。注意它不是「变更管理」—— 一个改的是人，一个改的是生产环境</td>
+                </tr>
+                <tr>
+                  <td><strong>服务连续性管理</strong></td>
+                  <td><strong>流程</strong>：管出事之后</td>
+                  <td><strong>关键</strong>（官方样题答案键确认）。与<a href="../ch02-core-principles/2.6-chaos-engineering.html">混沌工程（2.6）</a>方向一致：都在验证「真出事时撑不撑得住」</td>
+                </tr>
+                <tr>
+                  <td><strong>事件管理</strong></td>
+                  <td><strong>流程</strong>：管生产信号</td>
+                  <td><strong>关键</strong>（官方样题答案键确认）。它是<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈（2.4）</a>在生产侧的入口</td>
+                </tr>
+                <tr>
+                  <td><strong>服务台事件管理系统</strong></td>
+                  <td><strong>工具</strong>：一套软件</td>
+                  <td><strong>不属于</strong>典型 DevOps 工具链要素 —— 这一条同样由 DOFD v3.4 官方样题答案键确认（工具链见<a href="../ch06-automation/index.html">第 6 章 DevOps 工具链架构（6.5）</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点，就藏在这张表的最后两行：
+            <strong>「事件管理」这个流程对 DevOps 关键，但「服务台事件管理系统」这个工具不属于典型 DevOps 工具链要素</strong>。
+            两条都是官方样题答案键确认的事实，而且方向相反。
+            分辨的钥匙是<strong>题干问的是流程还是工具</strong> —— 问流程，事件管理是对的；问工具链要素，它是要被排除的那一个。</small></p>
+          <p class="mb-0 muted"><small>另一个高频混淆：<strong>组织变革管理 ≠ 变更管理</strong>。
+            英文一个是 organizational change management，一个是 change management；中文只差两个字。
+            前者的对象是<strong>人与组织</strong>，后者的对象是<strong>生产环境里的变更</strong>（见 kp-4-4-3）。
+            这一组辨析为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把三个流程当成一份自检清单，每一条都对应一个可以当场问出口的问题：</p>
+          <ul>
+            <li><strong>组织变革管理</strong>：「转型之后，谁的考核指标变了？」
+              如果一个人的指标都没动，那么变的只是工具。文化侧的展开见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 文化、行为与运营模型</a>。</li>
+            <li><strong>服务连续性管理</strong>：「上一次真实演练恢复是什么时候，用了多久？」
+              没演练过的恢复路径等于不存在。这也是 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a> 里那道人工闸门迟迟不敢移除的真实原因。</li>
+            <li><strong>事件管理</strong>：「上个月的事件里，有几件变成了代码或流水线的改动？」
+              比例接近零，说明事件管理停在「恢复服务」，没有走到「反馈」。
+              平均恢复时间 MTTR 的度量口径见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这三个自检问题为本站教学整理，官方确认的是「三者皆是」这一判断，未给出实施清单。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条（本节最高价值考点）</strong>：
+              <strong>对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理 —— 三者皆是</strong>，
+              这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。</li>
+            <li><strong>本站外推（教学整理）</strong>：考场上遇到「对 DevOps 最关键的 ITSM 流程是哪个」这类问法、
+              且这三个流程<strong>同时作为候选出现</strong>时，官方答案键确认的方向是<strong>三者皆是</strong>；
+              候选不是这三个时，本结论不适用 —— 先逐个验证再决定，不要当成通用规则。
+              <span class="muted">（结论出自 DOFD v3.4 官方样题答案键，适用范围的判断为本站教学整理；官方答案键只确认了这一道题的结论，未给出通用规则）</span></li>
+            <li><strong>干扰项长什么样</strong>：<strong>三个正确答案本身就是干扰项</strong>。
+              命题方把三个各自都成立的流程拆开摆进选项，每一个读起来都对，
+              于是考生凭「哪个听起来最像 DevOps」挑了事件管理 —— 这正是被设计出来的错误。</li>
+            <li><strong>为什么「只选一个」必错</strong>：三个流程分管人、韧性、反馈三个不同缺口，
+              互不替代。<strong>只要能说出第二个流程为什么也关键，「单选一个」就自动被排除了。</strong>
+              <span class="muted">（此推理为本站教学整理，官方只确认结论）</span></li>
+            <li><strong>排除技巧</strong>：读到「三个流程哪个最关键」这类问法时，
+              判据不是套路而是<strong>逐个验证</strong> ——
+              能对每个候选都说出一句「缺了它 DevOps 会怎样」，方向就是<strong>三者皆是</strong>；
+              只能说出一个，就说明另外两个还没理解。</li>
+            <li><strong>最需要防的反向题</strong>：问<strong>哪一项不属于</strong>典型 DevOps 工具链要素时，
+              答案是<strong>服务台事件管理系统</strong>（同样由 DOFD v3.4 官方样题答案键确认）。
+              流程关键、工具不入链 —— 两条不矛盾，因为问的根本不是同一样东西。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项分析、排除技巧与「只选一个必错」的推理为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">人、韧性、反馈 —— 三个流程各守一端，所以答案是三者皆是。</p>
+          <p class="muted"><small>反向配对句：<strong>事件管理这个「流程」是关键的，服务台事件管理系统这个「工具」是不入工具链的。</strong>
+            两条都由官方样题答案键确认，一起记才不会自相矛盾。</small></p>
+          <p class="mb-0 muted"><small>还有一个字面陷阱：<strong>组织变革管理改的是人，变更管理改的是生产环境</strong>。中文只差两个字，考的却是两件事。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-4-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-4-4-3</div>
+        <h3 class="kp__title">Agile service management 与变更管理的演化<span class="en">Agile Service Management</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">敏捷服务管理 <span class="en">Agile service management</span></span>
+            是把敏捷的做法<strong>用到 ITSM 流程本身的设计与改进上</strong>：
+            流程小步交付、快速迭代、由使用者的反馈驱动，而不是一次性写出一整本流程手册再强制推行。
+          </p>
+          <p>
+            关键在于分清<strong>对象</strong>：敏捷开发的对象是<strong>软件</strong>，
+            敏捷服务管理的对象是<strong>流程</strong>。
+            同样是迭代和增量，被迭代的东西不一样。
+          </p>
+          <div class="src-note">
+            <em>Agile service management</em> 逐字列于 DOFD v3.4 官方考纲术语表，属必须掌握的名词；
+            <em>ITSM</em> 是 v3.4 课程大纲 M4 <em>Business and Technology Frameworks</em> 的官方模块子项。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点有两个，第二个是本节要纠正的最大误解。
+          </p>
+          <ul>
+            <li><strong>痛点一：流程本身是瀑布做出来的。</strong>
+              某企业启动流程改进项目，用 11 个月产出一本 240 页的变更管理手册。
+              上线当月业务线已经重组，手册里 6 个审批角色有 2 个不存在了。
+              一线的实际做法是<strong>先做完再补单</strong> —— 流程存在于文档里，不存在于工作中。</li>
+            <li><strong>痛点二：把「重」误当成「有控制」。</strong>
+              同一家公司的变更评审会每周二开一次，一次评 20 个变更，平均每个变更 4 分钟。
+              评审依据是申请人自己填的一张影响评估表。
+              <strong>这不是控制，这是控制的仪式感</strong> —— 4 分钟看不出一个变更会不会打挂主库。</li>
+          </ul>
+          <p>
+            于是很多团队走向另一个极端：<strong>「DevOps 就是要废掉变更管理」</strong>。
+            这是本节最贵的一个误解。真实的方向是第三条路 ——
+            <strong>控制一条都不删，但换个位置执行</strong>：从事后开会看材料，
+            变成事前内建在流水线里、每次自动跑一遍。
+          </p>
+          <p class="mb-0 muted"><small>以上两个场景为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 4-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 470" role="img" aria-label="同一个变更走两条路径：重量级审批与内建于流水线的控制，说明控制点数量并未减少而是换了位置">
+              <defs>
+                <marker id="ah-44-6" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-44-7" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <!-- 标题 -->
+              <text x="480" y="28" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">同一个变更：把一个接口的超时时间从 30 秒改成 10 秒</text>
+
+              <!-- 路径一 -->
+              <rect x="20" y="44" width="920" height="152" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="36" y="70" class="f-5" font-size="15" font-weight="700">路径一 · 重量级审批</text>
+              <text x="240" y="70" class="s-muted" font-size="13">控制点集中在一次会议上</text>
+
+              <rect x="36" y="84" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="220" y="84" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="404" y="84" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="588" y="84" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="772" y="84" width="152" height="94" rx="10" class="s-5" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle">
+                <text x="120" y="118" class="s-ink" font-size="15" font-weight="650">填写变更申请单</text>
+                <text x="120" y="142" class="s-muted" font-size="12.5">附影响评估表</text>
+                <text x="120" y="164" class="s-muted" font-size="12.5">自己填、自己评</text>
+
+                <text x="304" y="118" class="s-ink" font-size="15" font-weight="650">排队等评审会</text>
+                <text x="304" y="142" class="s-muted" font-size="12.5">每周二一次</text>
+                <text x="304" y="164" class="s-muted" font-size="12.5">这周赶不上等下周</text>
+
+                <text x="488" y="118" class="s-ink" font-size="15" font-weight="650">会上口头过一遍</text>
+                <text x="488" y="142" class="s-muted" font-size="12.5">一个变更 4 分钟</text>
+                <text x="488" y="164" class="s-muted" font-size="12.5">风险靠人的印象</text>
+
+                <text x="672" y="118" class="s-ink" font-size="15" font-weight="650">人工按手册上线</text>
+                <text x="672" y="142" class="s-muted" font-size="12.5">操作步骤靠文档</text>
+                <text x="672" y="164" class="s-muted" font-size="12.5">回滚现场想办法</text>
+
+                <text x="848" y="112" class="f-5" font-size="15" font-weight="700">结果</text>
+                <text x="848" y="136" class="s-ink" font-size="12.5">变更前置时间 2–5 天</text>
+                <text x="848" y="158" class="s-ink" font-size="12.5">控制点：1 处</text>
+              </g>
+
+              <g stroke-width="2" fill="none" class="s-5">
+                <line x1="204" y1="131" x2="216" y2="131" marker-end="url(#ah-44-6)"/>
+                <line x1="388" y1="131" x2="400" y2="131" marker-end="url(#ah-44-6)"/>
+                <line x1="572" y1="131" x2="584" y2="131" marker-end="url(#ah-44-6)"/>
+                <line x1="756" y1="131" x2="768" y2="131" marker-end="url(#ah-44-6)"/>
+              </g>
+
+              <!-- 路径二 -->
+              <rect x="20" y="216" width="920" height="152" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="36" y="242" class="f-1" font-size="15" font-weight="700">路径二 · 内建于流水线的控制</text>
+              <text x="300" y="242" class="s-muted" font-size="13">控制点分散成 4 处，每次自动执行</text>
+
+              <rect x="36" y="256" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="220" y="256" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="404" y="256" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="588" y="256" width="168" height="94" rx="10" stroke="var(--border-strong)" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="772" y="256" width="152" height="94" rx="10" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+
+              <g text-anchor="middle">
+                <text x="120" y="290" class="s-ink" font-size="15" font-weight="650">同行评审</text>
+                <text x="120" y="314" class="s-muted" font-size="12.5">改动可见、可追溯</text>
+                <text x="120" y="336" class="s-muted" font-size="12.5">控制点 ①</text>
+
+                <text x="304" y="290" class="s-ink" font-size="15" font-weight="650">自动化测试</text>
+                <text x="304" y="314" class="s-muted" font-size="12.5">加策略与合规检查</text>
+                <text x="304" y="336" class="s-muted" font-size="12.5">控制点 ②</text>
+
+                <text x="488" y="290" class="s-ink" font-size="15" font-weight="650">按风险分级</text>
+                <text x="488" y="314" class="s-muted" font-size="12.5">低风险已预授权</text>
+                <text x="488" y="336" class="s-muted" font-size="12.5">控制点 ③</text>
+
+                <text x="672" y="290" class="s-ink" font-size="15" font-weight="650">流水线自动执行</text>
+                <text x="672" y="314" class="s-muted" font-size="12.5">自动留痕与回滚</text>
+                <text x="672" y="336" class="s-muted" font-size="12.5">控制点 ④</text>
+
+                <text x="848" y="284" class="f-1" font-size="15" font-weight="700">结果</text>
+                <text x="848" y="308" class="s-ink" font-size="12.5">变更前置时间 分钟级</text>
+                <text x="848" y="330" class="s-ink" font-size="12.5">控制点：4 处</text>
+              </g>
+
+              <g stroke-width="2" fill="none" class="s-1">
+                <line x1="204" y1="303" x2="216" y2="303" marker-end="url(#ah-44-7)"/>
+                <line x1="388" y1="303" x2="400" y2="303" marker-end="url(#ah-44-7)"/>
+                <line x1="572" y1="303" x2="584" y2="303" marker-end="url(#ah-44-7)"/>
+                <line x1="756" y1="303" x2="768" y2="303" marker-end="url(#ah-44-7)"/>
+              </g>
+
+              <!-- 结论 -->
+              <rect x="20" y="388" width="920" height="64" rx="12" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="480" y="414" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">控制没有消失，也没有变少 —— 它从会议室搬进了流水线</text>
+              <text x="480" y="438" class="s-muted" font-size="12.5" text-anchor="middle">高风险变更仍然走人工审批：分级的意思是把人的注意力留给真正需要人的那几个</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 4-4-2　同一个变更，两条路径。</strong>
+            这张图只有一个要点：<strong>下面那条路的控制点比上面那条更多，不是更少</strong>。
+            所谓「DevOps 废掉了变更管理」，看到的只是那间会议室没了；
+            真正发生的是一处人工检查被拆成四处自动检查，并且每次变更都跑一遍，而不是一周跑一次。
+            <br><small class="muted">两条路径的步骤划分、「控制点计数」这一读法与两个变更前置时间数字，均为本站构造的教学示例与教学整理，官方未以此形式给出该对比。
+            其中「对生产变更进行同行评审属于<strong>第二步</strong>」这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认（见 <a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步 · 反馈</a>）。
+            「标准变更」「预授权」「变更评审会」等具体做法名的出处说明，见本知识点 ④ 面下方标注。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">Agile service management</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agile software development</strong></td>
+                  <td>被迭代的对象是<strong>流程</strong>：审批路径、角色、判定规则</td>
+                  <td>被迭代的对象是<strong>软件</strong>：功能、界面、接口。两者用同一套做法，作用在不同东西上</td>
+                </tr>
+                <tr>
+                  <td><strong>传统 ITSM 流程设计</strong></td>
+                  <td>先上线一个能用的最小流程，再按使用者反馈改</td>
+                  <td>先设计一整套完备流程，再全量推行。<strong>改一次的成本高到没人愿意改</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps</strong></td>
+                  <td>作用面是<strong>服务管理的流程</strong>怎么被造出来</td>
+                  <td>作用面是<strong>变更</strong>怎么流到生产。二者<strong>互补</strong>：DevOps 把流程内建成流水线关卡，敏捷服务管理保证这些关卡本身能被快速改</td>
+                </tr>
+                <tr>
+                  <td><strong>组织变革管理</strong></td>
+                  <td>改的是<strong>流程的形态</strong>：审批怎么设计</td>
+                  <td>改的是<strong>人的行为与接受度</strong>：为什么愿意按新方式工作（见 kp-4-4-2）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>Agile service management 不是「用敏捷来开发软件」，而是「用敏捷来设计流程」</strong>。
+            一个团队完全可以敏捷地开发软件，同时用瀑布方式做流程改进 ——
+            那正是敏捷服务管理要解决的情形。</small></p>
+          <p class="mb-0 muted"><small><em>Agile service management</em>、<em>Agile software development</em> 均为 DOFD v3.4 官方术语表条目；
+            本表四行的对照维度为本站教学整理，官方未以此形式给出该对比。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把重量级审批换成内建控制，落地成三个动作。顺序不能颠倒：</p>
+          <ul>
+            <li><strong>先做风险分级，再谈自动化</strong>：把变更按影响面与可逆性分成几档。
+              分级的目的不是给变更贴标签，而是<strong>把人的注意力从 20 个变更里挑出真正需要人看的那 1 个</strong>。
+              没有分级就自动化，等于把所有变更一视同仁地放行。</li>
+            <li><strong>把重复且低风险的变更做成标准变更</strong>：
+              同一类变更做过几十次、有固定步骤、可自动回滚 —— 这类变更<strong>一次性预授权</strong>，
+              之后每次执行不再逐个审批，只留自动记录。
+              判据是「这类变更过去 6 个月失败过几次」，不是「谁敢签字」。</li>
+            <li><strong>把审批会上做的判断挪进流水线</strong>：会上原本在看什么，就让流水线自动检查什么 ——
+              代码有没有被第二个人看过（同行评审）、测试过没过、有没有违反安全与合规策略、回滚路径在不在。
+              <strong>会议里那几个人的判断，被拆成几条每次都跑的检查。</strong></li>
+          </ul>
+          <p>
+            最后留一条边界：<strong>高风险、不可逆、涉及监管留痕的变更仍然走人工审批。</strong>
+            分级的价值就在于让这几个变更能被认真对待，而不是淹没在每周 20 个变更的列表里。
+          </p>
+          <div class="src-note">
+            这三个落地动作、「标准变更 / 预授权 / 风险分级」的具体做法，以及「先分级后自动化」的顺序主张，
+            均为本站教学整理与工程实践表述。
+            DOFD v3.4 官方考纲把 <em>ITSM</em> 列为 M4 模块子项、把 <em>Agile service management</em> 列为术语表条目，
+            <strong>未规定变更管理的具体实施方式</strong>。
+            「标准变更」「预授权」「变更评审会」等名词不在 DOFD 66 条术语表内，属行业通行做法名。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度一：术语识别</strong>。<em>Agile service management</em> 是官方术语表条目，
+              考法是给一段描述判断它是哪个术语。
+              <strong>钥匙词是「把敏捷用在流程 / 服务管理上」</strong> ——
+              只要描述的对象是流程而不是软件，方向就是它。</li>
+            <li><strong>命题角度二：DevOps 与 ITSM 的关系</strong>。
+              <strong>本站判断：方向是互补而非取代</strong> ——
+              凡是出现「DevOps 取代 ITSM」「DevOps 不需要变更管理」「DevOps 消除了所有审批」这类表述，
+              基本可以直接划掉。
+              <span class="muted">（此命题方向判断为本站教学整理，官方仅在 Blueprint「Related Frameworks」中把 ITSM 列为相关框架，未公布该类题的考法）</span></li>
+            <li><strong>干扰项长什么样</strong>：
+              把 <strong>Agile service management 说成「用敏捷开发软件」</strong>（对象错了）；
+              把它<strong>等同于 DevOps</strong>（作用面错了）；
+              或者把它写成「敏捷团队使用的服务台工具」（把实践偷换成工具，与 kp-4-4-2 里那条工具链陷阱同一套路）。</li>
+            <li><strong>排除技巧</strong>：读到「DevOps 与 ITSM」时先设一个默认答案 ——
+              <strong>协同 / 互补 / 相互支撑</strong>。然后只检查有没有反证。
+              对立式的表述在这门考试里几乎从不是正确答案。
+              <span class="muted">（此判据为本站教学整理）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            干扰项分析与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">DevOps 不删控制，只把控制从会议室搬进流水线。</p>
+          <p class="muted"><small>配套一句分清对象：<strong>敏捷开发迭代的是软件，敏捷服务管理迭代的是流程。</strong></small></p>
+          <p class="mb-0 muted"><small>变更管理演化三件套：<strong>分级 → 预授权 → 自动执行加留痕</strong>。
+            高风险的那几个仍然要人签字 —— 分级的目的正是把签字留给它们（本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方确认（本节最高价值）</strong>：对 DevOps 最关键的 ITSM 流程是
+          <strong>组织变革管理、服务连续性管理、事件管理 —— 三者皆是</strong>（DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>为什么不能只选一个</strong>：三者分管<strong>人 / 韧性 / 反馈</strong>三个不同缺口，互不替代；
+          只补一端，另外两端会把它拖回去（「三端」归类为本站教学整理）</li>
+        <li><strong>方向相反的另一条官方确认</strong>：<strong>服务台事件管理系统不属于</strong>典型 DevOps 工具链要素
+          （DOFD v3.4 官方样题答案键确认）—— <strong>流程关键 ≠ 工具入链</strong></li>
+        <li><strong>ITSM ≠ ITIL</strong>：ITSM 是实践领域，ITIL 是其中最广泛采用的框架。
+          官方术语表收的是 <em>IT service management</em>，Blueprint 给 ITSM 配的词是 <em>Processes</em></li>
+        <li><strong>DevOps 与 ITSM 不对立</strong>：题干里出现「取代」「废掉变更管理」「消除所有审批」，方向就错了</li>
+        <li><strong>变更管理的演化</strong>：<strong>分级 → 标准变更预授权 → 内建于流水线自动执行并留痕</strong>；
+          控制点变多不是变少，高风险变更仍走人工审批（做法名不在 66 条术语表内，属本站教学整理）</li>
+        <li><strong>Agile service management</strong>（官方术语表条目）：把敏捷用在<strong>流程</strong>的设计与改进上，
+          迭代对象是流程，不是软件</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>IT service management</em>、<em>Service</em>、<em>Agile service management</em>、
+      <em>Agile software development</em> 均逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>ITSM</em> 是 v3.4 课程大纲（2022-05）M4 <em>Business and Technology Frameworks</em> 的官方模块子项；
+      <em>ITSM: Processes</em> 为 PeopleCert DevOps Foundation Blueprint「Related Frameworks」一栏的逐字原文。
+      <strong>两条关键判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>」，
+      以及「<strong>服务台事件管理系统不属于</strong>典型 DevOps 工具链要素」；
+      本节引用的「对生产变更进行同行评审属于<strong>第二步</strong>」同样出自该答案键。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：三个流程的「人 / 韧性 / 反馈」三端映射（图 4-4-1）、
+      两条变更路径的步骤划分与控制点计数（图 4-4-2）、各面的对照表维度、三条自检问题、
+      变更管理落地三动作与「先分级后自动化」的顺序主张、以及全部干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中所有带数字的场景均为本站构造的教学示例，非真实调研数据。
+      <strong>不在术语表内、按本站教学整理呈现的名词</strong>：<em>ITIL</em> 这一框架名本身、三个 ITSM 流程的英文名写法，
+      以及「标准变更」「预授权」「变更评审会」等具体做法名 —— 三者都不在 66 条术语表内，本站按行业通行写法给出并已就地标注。
+      另需说明：<strong>官方考纲术语表只列词条、不附定义</strong>，因此本节每一条术语的中文释义都是本站措辞；
+      官方也未公布命题规律、题型分布与逐题 Bloom 分级，各面的命题角度分析均为本站教学推断。
+      本节不展开安全文化（见 <a href="4.5-safety-culture.html">4.5 安全文化与学习型组织</a>）与持续资金（见 <a href="4.7-continuous-funding.html">4.7 持续资金</a>）；SRE 见
+      <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4 SRE 与韧性工程</a>；
+      工具链要素见<a href="../ch06-automation/index.html">第 6 章 DevOps 工具链架构（6.5）</a>；
+      文化与组织变革见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 文化、行为与运营模型</a>；
+      MTTR 等指标口径见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

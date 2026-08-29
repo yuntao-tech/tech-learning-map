@@ -94,14 +94,14 @@ window.SYLLABUS = {
       questions: 7,
       desc: "考纲权重并列最高，也是最容易被低估的一章。考的是「DevOps 与 Agile / Lean / ITSM 的关系」，而不是各框架本身。",
       sections: [
-        { n: "4.1", slug: "4.1-framework-landscape", title: "框架全景与彼此关系", status: "todo" },
-        { n: "4.2", slug: "4.2-agile-scrum", title: "Agile 与 Scrum", status: "todo" },
-        { n: "4.3", slug: "4.3-lean", title: "Lean 与七种浪费", status: "todo" },
-        { n: "4.4", slug: "4.4-itsm-itil", title: "ITSM 与 ITIL", status: "todo" },
-        { n: "4.5", slug: "4.5-safety-culture", title: "安全文化与学习型组织", status: "todo" },
-        { n: "4.6", slug: "4.6-value-stream-mapping", title: "价值流映射", status: "todo" },
-        { n: "4.7", slug: "4.7-continuous-funding", title: "持续资金", status: "todo" },
-        { n: "4.8", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "4.1", slug: "4.1-framework-landscape", title: "框架全景与彼此关系", status: "done" },
+        { n: "4.2", slug: "4.2-agile-scrum", title: "Agile 与 Scrum", status: "done" },
+        { n: "4.3", slug: "4.3-lean", title: "Lean 与七种浪费", status: "done" },
+        { n: "4.4", slug: "4.4-itsm-itil", title: "ITSM 与 ITIL", status: "done" },
+        { n: "4.5", slug: "4.5-safety-culture", title: "安全文化与学习型组织", status: "done" },
+        { n: "4.6", slug: "4.6-value-stream-mapping", title: "价值流映射", status: "done" },
+        { n: "4.7", slug: "4.7-continuous-funding", title: "持续资金", status: "done" },
+        { n: "4.8", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {
@@ -110,12 +110,12 @@ window.SYLLABUS = {
       questions: 6,
       desc: "DevOps 失败几乎都失败在这里。文化债、行为模型、成熟度模型是本章三根支柱。",
       sections: [
-        { n: "5.1", slug: "5.1-defining-culture", title: "什么是组织文化", status: "todo" },
-        { n: "5.2", slug: "5.2-cultural-debt", title: "文化债", status: "todo" },
-        { n: "5.3", slug: "5.3-behavioral-models", title: "行为模型", status: "todo" },
-        { n: "5.4", slug: "5.4-maturity-models", title: "组织成熟度模型", status: "todo" },
-        { n: "5.5", slug: "5.5-operating-models", title: "运营模型与团队结构", status: "todo" },
-        { n: "5.6", slug: "summary", title: "本章总结与练习", status: "todo" }
+        { n: "5.1", slug: "5.1-defining-culture", title: "什么是组织文化", status: "done" },
+        { n: "5.2", slug: "5.2-cultural-debt", title: "文化债", status: "done" },
+        { n: "5.3", slug: "5.3-behavioral-models", title: "行为模型", status: "done" },
+        { n: "5.4", slug: "5.4-maturity-models", title: "组织成熟度模型", status: "done" },
+        { n: "5.5", slug: "5.5-operating-models", title: "运营模型与团队结构", status: "done" },
+        { n: "5.6", slug: "summary", title: "本章总结与练习", status: "done" }
       ]
     },
     {

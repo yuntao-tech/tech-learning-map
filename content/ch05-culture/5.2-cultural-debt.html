@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.2 文化债 · DevOps Foundation 学习站</title>
+<meta name="description" content="文化债（Cultural Debt）是为了赶上这一次交付而反复做出、却损害长期协作能力的妥协。本节给出五种可识别形态、技术债与文化债互相喂养的闭环及其切断点，以及变革疲劳（Change fatigue）这笔最典型的利息该怎么偿还。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch05", sec:"5.2-cultural-debt"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 5 章 · 文化、行为与运营模型</div>
+      <h1 class="page-head__title">5.2 文化债</h1>
+      <div class="page-head__en">Cultural Debt</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        代码欠的账有名字，叫技术债；协作欠的账长期没有名字，于是也就不进任何计划。
+        <strong>文化债说的就是这笔账</strong>：为了赶上这一次交付而反复做出的妥协，
+        每一次都很划算，累加起来却让组织越来越改不动自己。
+        它和技术债一样计息，区别是<strong>没有任何一条流水线会亮红灯提醒它超标</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>文化债在日常里<strong>长什么样</strong> —— 哪些动作是在借债，而不是在「务实」</li>
+        <li>技术债与文化债怎样<strong>互相喂养成一个闭环</strong>，这个闭环最容易在哪一处被切断</li>
+        <li>变革疲劳 <span class="en">Change fatigue</span> 为什么是文化债最典型的一笔利息，偿还要怎么排进日常</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 5-2-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="文化债的五种可识别形态：每一行列出当场省下的本金与后来要付的利息">
+          <text x="24" y="30" class="f-5" font-size="16" font-weight="700">文化债的五种可识别形态 —— 每一行都是一次「这次先这样」的借款</text>
+
+          <text x="38"  y="64" class="f-1" font-size="13.5" font-weight="700">明知不该、却在赶进度时反复做的动作</text>
+          <text x="298" y="64" class="f-3" font-size="13.5" font-weight="700">当场省下的（本金）</text>
+          <text x="520" y="64" class="f-5" font-size="13.5" font-weight="700">后来要付的（利息，而且越付越贵）</text>
+          <line x1="24" y1="76" x2="936" y2="76" class="s-stroke" stroke-width="1.5"/>
+
+          <line x1="286" y1="84" x2="286" y2="418" class="s-stroke" stroke-width="1.2"/>
+          <line x1="508" y1="84" x2="508" y2="418" class="s-stroke" stroke-width="1.2"/>
+
+          <rect x="24" y="88"  width="912" height="58" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="38"  y="123" class="s-ink" font-size="14.5" font-weight="650">事故之后该复盘却跳过</text>
+          <text x="298" y="123" class="s-ink" font-size="13.5">省下当天 2 小时</text>
+          <text x="520" y="112" class="s-ink" font-size="13">同一类故障第四次重演，前三次的结论没人说得出</text>
+          <text x="520" y="133" class="s-muted" font-size="12.5">新人只能靠踩同一个坑来学习</text>
+
+          <rect x="24" y="156" width="912" height="58" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="38"  y="191" class="s-ink" font-size="14.5" font-weight="650">关键知识只在一两个人脑子里</text>
+          <text x="298" y="191" class="s-ink" font-size="13.5">省下写文档的半天</text>
+          <text x="520" y="180" class="s-ink" font-size="13">这两个人休假或离职，交付直接停摆</text>
+          <text x="520" y="201" class="s-muted" font-size="12.5">新人独立值班周期从 3 周变 9 周</text>
+
+          <rect x="24" y="224" width="912" height="58" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="38"  y="259" class="s-ink" font-size="14.5" font-weight="650">反复承诺「下个迭代一定改」</text>
+          <text x="298" y="259" class="s-ink" font-size="13.5">省下本迭代的重构</text>
+          <text x="520" y="248" class="s-ink" font-size="13">承诺本身贬值：再说「下个迭代」已经没人当真</text>
+          <text x="520" y="269" class="s-muted" font-size="12.5">真该动手时，已经没人愿意先开口</text>
+
+          <rect x="24" y="292" width="912" height="58" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="38"  y="327" class="s-ink" font-size="14.5" font-weight="650">用加班掩盖流程问题</text>
+          <text x="298" y="327" class="s-ink" font-size="13.5">这一次按时上线</text>
+          <text x="520" y="316" class="s-ink" font-size="13">流程缺陷被盖住，指标看着正常，没人给它排期</text>
+          <text x="520" y="337" class="s-muted" font-size="12.5">人一走，隐性知识跟着一起走</text>
+
+          <rect x="24" y="360" width="912" height="58" rx="8" class="s-stroke" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="38"  y="395" class="s-ink" font-size="14.5" font-weight="650">招人优先选「能扛」不选「能改」</text>
+          <text x="298" y="395" class="s-ink" font-size="13.5">上手快、抱怨少</text>
+          <text x="520" y="384" class="s-ink" font-size="13">抗压能力越来越强，改造能力越来越弱</text>
+          <text x="520" y="405" class="s-muted" font-size="12.5">债只增不减 —— 剩下的人都已经习惯扛着</text>
+
+          <text x="24" y="446" class="s-muted" font-size="13">本金按小时计，利息按「下一次还有没有人愿意先开口」计 —— 这就是它比技术债更难看见的原因。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 5-2-1　文化债的五种可识别形态。</strong>
+        要看懂的是<strong>中间那一列为什么总是赢</strong>：本金栏里全是「2 小时」「半天」这种当场可见、可交代的收益，
+        利息栏里全是延后发生、无法归因到某一次决定的代价。
+        文化债不是因为人不明事理才产生的，<strong>而是因为每一次单看都划算</strong>。
+        这张表的用法是自查：哪一行在你的团队里已经连续出现三个迭代以上，哪一行就已经在计息。
+        <br><small class="muted">五种形态与「本金 / 利息」这一记账式对照均为本站教学整理，官方文件列出 <em>Cultural debt</em> 这一术语，未以此形式给出形态清单。
+        第二行的「关键知识只在一两个人脑子里」可视为<strong>人身上的单点故障</strong>；
+        <em>Single Point of Failure (SPOF)</em> 是 DOFD v3.4 官方考纲术语表条目；把它从系统层面类比到人身上是本站的教学用法，官方未给出该类比。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-5-2-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-2-1</div>
+        <h3 class="kp__title">文化债<span class="en">Cultural Debt</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">文化债 <span class="en">Cultural Debt</span></span>
+            是组织为了<strong>换取短期交付</strong>而反复做出的、<strong>损害长期协作能力</strong>的妥协；
+            这些妥协的代价不会当场结清，而是<strong>累积、计息，并且越往后越贵</strong>。
+          </p>
+          <p class="mb-0 muted"><small><span class="badge badge--note">📝 教学整理</span>
+            三要件为本站为便于判定所做的拆解，官方文件仅列出 <em>Cultural debt</em> 这一术语，未给出构成要件。</small></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">三个要件</th><th>缺了这一条通常不按文化债处理</th></tr></thead>
+              <tbody>
+                <tr><td><strong>是一次妥协，不是一次失误</strong></td><td>做的人<strong>知道</strong>正确做法是什么，只是这次先不做。一次判断失误不产生债，一次「明知而放过」才产生债</td></tr>
+                <tr><td><strong>换来的是短期交付</strong></td><td>省下的时间当场就兑现了 —— 会没开、文档没写、重构没做，版本按时上线</td></tr>
+                <tr><td><strong>损害的是长期协作能力</strong></td><td>被削掉的是复盘、知识共享、说出坏消息、推动改进这些<strong>能力</strong>，不是某一次的结果</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            与技术债最关键的一处不同：<strong>文化债没有对应的技术信号</strong>。
+            没有编译告警，没有失败的流水线，没有一份可以打开看的欠账清单。
+            它第一次公开显形，通常是在离职面谈、事故复盘的沉默，或者某次改进提案没有任何人接话的时候。
+          </p>
+          <div class="src-note">
+            <em>Cultural debt</em> 逐字列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List）</strong>，
+            同时是 <strong>v3.4 课程大纲 M5 模块</strong>（Culture, Behaviors &amp; Operating Models）的官方子项，
+            因此本节主题词判定为「考纲核心」。
+            上面这句定义性表述（「为短期交付做出的、损害长期协作能力的妥协，代价会累积」）是<strong>本站教学整理</strong>。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解决的痛点，是<strong>一整类欠账长期没有名字</strong>：
+            没有名字就没有度量，没有度量就进不了任何排期，进不了排期就永远由「等有空的时候」来兜底 ——
+            而那个时候从不到来。
+          </p>
+          <ul>
+            <li>某支付团队连续三个季度冲版本。第一个季度取消了每周的架构对齐会，理由是「人手都排满了」；
+              第二个季度事故复盘从 90 分钟压到 15 分钟，只填故障单不追原因；
+              第三个季度新人培训改成「跟着做两周」，文档一个字没写。
+              <strong>每一步单独看都合理，三个季度也确实每次都按时发版了。</strong></li>
+            <li>第四个季度出账：同一个对账超时问题第 4 次复发，前三次的处理人已有两人离职；
+              新人独立值班需要 <strong>9 周</strong>，一年前是 3 周；
+              一位工程师提出「把对账拆开重做」，会上没有任何人接话 ——
+              不是因为方案不好，而是<strong>近一年提出的改进项没有一件真正排上过</strong>。</li>
+            <li>此时如果只做技术复盘，会得出「加个超时重试」的结论。
+              真正的账在别处：<strong>被削掉的是复盘、写文档和提改进这三种能力</strong>，
+              而这三样恰好是发现并修掉对账问题所必需的。</li>
+          </ul>
+          <p class="mb-0">
+            把这类欠账命名为「债」的价值就在这里：<strong>债可以被列出来、可以估算、可以排期偿还</strong>。
+            没有这个名字，它只会以「团队最近士气不高」这种无法行动的形式被讨论掉。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">文化债 <span class="en">Cultural debt</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>技术债 <span class="en">Technical debt</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>欠的是<strong>协作能力</strong>：复盘、知识共享、说出坏消息、推动改进。<strong>没有自动信号</strong>，靠人主动说出来才可见</td>
+                  <td>欠的是<strong>代码与架构</strong>。有告警、有静态扫描、有失败的构建，<strong>系统自己会喊疼</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>组织文化 <span class="en">Organizational culture</span></strong></td>
+                  <td>是<strong>欠账</strong>：可以被列举、估价、偿还，是一份有余额的清单</td>
+                  <td>是<strong>容器</strong>：一个组织默认怎么做事，本身中性，无所谓好坏余额。定义归<a href="5.1-defining-culture.html">5.1</a>，本节不展开</td>
+                </tr>
+                <tr>
+                  <td><strong>变革疲劳 <span class="en">Change fatigue</span></strong></td>
+                  <td>是<strong>本金</strong>：那些反复做出的妥协本身</td>
+                  <td>是<strong>利息的一种</strong>：变革太多太快、或欠得久了反复不兑现，人对变革耗竭并失去信心（见 kp-5-2-3）</td>
+                </tr>
+                <tr>
+                  <td><strong>士气低 / 团队氛围差</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>指向<strong>具体动作</strong>：哪些该做的事被反复跳过了。可以逐条排期</td>
+                  <td>是<strong>感受描述</strong>：无法归因、无法排期、也无法验证是否好转</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>文化债不是「文化不好」，而是「有人一直在明知故犯地借」</strong>。
+            前者听起来是一群人的品性问题，后者是一串可以指出时间、指出动作、指出替代方案的具体决定。
+            考场上凡是把文化债描述成「团队缺乏协作精神」这类品性判断的选项，方向都偏了。</small></p>
+          <p class="mb-0 muted"><small><strong>技术债 <em>Technical debt</em> 不在 DOFD v3.4 的 66 条术语表内，也未列入 v3.4 课程大纲子项</strong>；
+            本站把它作为理解文化债的类比使用，标为延伸。
+            <em>Organizational culture</em> 与 <em>Change fatigue</em> 均为 66 条术语表条目。
+            第三行的<strong>「本金 / 利息」对应关系</strong>与第四行「士气低」的对照均为
+            <span class="badge badge--note">📝 教学整理</span>，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>用<strong>图 5-2-1</strong> 的五行做自查。判据不是「有没有发生过」，而是
+            <strong>「是不是已经变成默认做法」</strong> —— 连续三个迭代以上出现同一行，那一行就在计息：</p>
+          <ul>
+            <li><strong>跳过复盘</strong>：查最近 5 次生产事故，有几次留下了可检索的结论。
+              留不下结论的复盘等于没开，只是把 2 小时也一起赔进去了。</li>
+            <li><strong>知识只在少数人脑子里</strong>：随机挑一个核心服务，问「除了他，还有谁能在半夜独立处理」。
+              答案是「只有他」的服务有几个，就是几笔债。</li>
+            <li><strong>「下个迭代一定改」</strong>：把过去三个迭代承诺过的改进项列出来，数实际完成的比例。
+              低于三成时，这句话在团队内部已经失效了。</li>
+            <li><strong>加班掩盖流程问题</strong>：区分「一次性冲刺」和「常态加班」。
+              常态加班的作用是让坏流程的指标看起来正常，因而<strong>推迟了它被修复的时间</strong>。</li>
+            <li><strong>招人只看「能扛」</strong>：翻最近几次面试记录，有几次问过「你改掉过什么」。
+              一次没问过，说明组织在系统性地筛掉能还债的人。</li>
+          </ul>
+          <p class="mb-0">
+            五项里凡是命中的，处理方式和技术债一致：<strong>写成条目、给出估算、排进迭代</strong>，
+            而不是写进一份「文化建设倡议」。
+            衡量偿还是否见效，可以关注团队层面的员工净推荐值
+            <span class="term">eNPS <span class="en">employee Net Promoter Score</span></span> 等文化类指标，
+            具体度量方法见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+          </p>
+          <p class="mb-0 muted"><small>以上五项自查动作与阈值（三个迭代、三成、5 次事故）均为本站教学整理，
+            官方文件列出 <em>Cultural debt</em> 这一术语，未规定自查清单或判定阈值。
+            <em>employee Net Promoter Score (eNPS)</em> 与 <em>DevOps metrics</em> 是 DOFD v3.4 官方考纲术语表条目。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：给现象、问名词</strong>。题干描述一个组织长期跳过复盘、知识不外传、改进项年年不落地，
+              问这属于什么。方向是 <strong>Cultural debt</strong>。
+              抓两个特征：<strong>「反复 / 长期」</strong>与<strong>「为了赶交付而主动放弃某项做法」</strong><span class="muted">（此判据为本站教学整理）</span>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>技术债</strong>（题干若只讲代码、架构、遗留系统，就该选技术债；只要出现「复盘 / 沟通 / 知识 / 改进不落地」，方向就是文化债）；
+              <strong>组织文化 Organizational culture</strong>（它是中性的容器，不表达欠账；题干强调「累积的代价」时不该选它）；
+              <strong>变革疲劳 Change fatigue</strong>（它特指人在<strong>连续、过多或不兑现的变革</strong>之后对变革本身的耗竭与失去信心，比文化债这本总账窄得多）。</li>
+            <li><strong>相邻考点（官方已确认）</strong>：面对<strong>指责与恐惧文化、大量单点故障、频繁战情室</strong>的组织，
+              应当转向<strong>安全文化 Safety culture</strong> —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              那三种现象正是文化债积到一定程度后的典型外观，
+              但题目问「应转向什么」时，答案是<strong>安全文化</strong>而不是文化债，因为问的是解法不是病名。
+              安全文化本身展开在<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>。</li>
+            <li><strong>排除技巧</strong>：先看题干问的是<strong>「这是什么现象」还是「该怎么办」</strong>。
+              问现象 → 在 Cultural debt / Technical debt / Change fatigue 里按关键词挑；
+              问对策 → 答案往往是一个<strong>正向的目标状态</strong>（安全文化、学习型组织、管理层承诺），不会是「文化债」本身。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            关键词判据与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">每一次「这次先这样」，都是一笔明知故犯的借款；借的是能力，还的是时间。</p>
+          <p class="mb-0 muted"><small>一句话区分：<strong>技术债是系统会喊疼，文化债是人不再吭声</strong>。
+            后者更难被看见，正是因为它的症状就是「没有声音」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-5-2-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-2-2</div>
+        <h3 class="kp__title">技术债与文化债的相互喂养<span class="en">How Technical Debt and Cultural Debt Feed Each Other</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            两种债不是并列的两笔账，而是<strong>互为对方的利息来源</strong>，构成一个自我强化的闭环：
+          </p>
+          <p class="mb-0">
+            技术债累积 → <strong>交付变慢、故障变多</strong> → 时间压力上升 →
+            <strong>做出文化上的妥协</strong>（跳过复盘、不写文档、再拖一轮） → 文化债累积 →
+            <strong>没人有余力、也没人敢推动还技术债</strong> → 技术债继续累积。
+          </p>
+          <div class="src-note">
+            这个双向闭环的表述、六个环节的划分与下面的切断点分析，<strong>均为本站教学整理</strong>，
+            官方 v3.4 课程大纲 M5 列出 <em>Cultural debt</em> 子项，<strong>未以循环图或因果链的形式给出该机制</strong>。
+            其中 <em>Technical debt</em> 不在 66 条术语表内，本节仅作类比使用。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解释的是一个反复出现的失败：<strong>单独还技术债，几乎都还不掉。</strong>
+          </p>
+          <ul>
+            <li>某团队争取到一次「重构冲刺」，两周专门还技术债，管理层也批了。
+              两周里确实拆掉了三个耦合模块。<strong>四个月后，代码复杂度回到了原来的水平。</strong></li>
+            <li>原因不在技术：重构期间没有人改动过<strong>「赶起来就跳过评审」</strong>这条默认做法。
+              冲刺一结束，压力回来，评审又开始被跳过，新的耦合以原来的速度重新长回来。</li>
+            <li>反过来也一样。只讲文化、不动技术：办工作坊、签署团队公约、承诺以后一定复盘 ——
+              但流水线仍然要跑 70 分钟、每周仍有两次线上救火。
+              <strong>公约在第一次救火时就被作废了</strong>，而且作废得非常合理。</li>
+          </ul>
+          <p class="mb-0">
+            所以这个闭环的实际用途是：<strong>判断一次改进为什么会回弹</strong>。
+            凡是只在环上动了一个点、没有同时约束「时间压力 → 妥协」这一段的举措，
+            都会在压力回来的第一周被完整地退回去。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-2-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 920 480" role="img" aria-label="技术债与文化债相互喂养的六环节闭环，以及最容易切断的一处">
+              <defs>
+                <marker id="ah-52-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+                <marker id="ah-52-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+              </defs>
+
+              <!-- 节点 1 技术债累积 -->
+              <rect x="345" y="43" width="230" height="64" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="460" y="70" class="f-3" font-size="15" font-weight="700" text-anchor="middle">技术债累积</text>
+              <text x="460" y="92" class="s-muted" font-size="12.5" text-anchor="middle">构建脆弱 · 改动令人害怕</text>
+
+              <!-- 节点 2 -->
+              <rect x="631" y="131" width="230" height="64" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="746" y="158" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">交付变慢 · 故障变多</text>
+              <text x="746" y="180" class="s-muted" font-size="12.5" text-anchor="middle">计划外工作吃掉容量</text>
+
+              <!-- 节点 3 -->
+              <rect x="631" y="306" width="230" height="64" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="746" y="333" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">时间压力上升</text>
+              <text x="746" y="355" class="s-muted" font-size="12.5" text-anchor="middle">所有事情都在赶</text>
+
+              <!-- 节点 4 -->
+              <rect x="345" y="393" width="230" height="64" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="460" y="420" class="f-5" font-size="14.5" font-weight="700" text-anchor="middle">做出文化上的妥协</text>
+              <text x="460" y="442" class="s-muted" font-size="12.5" text-anchor="middle">跳过复盘 · 不写文档 · 再拖一轮</text>
+
+              <!-- 节点 5 -->
+              <rect x="59" y="306" width="230" height="64" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="174" y="333" class="f-1" font-size="15" font-weight="700" text-anchor="middle">文化债累积</text>
+              <text x="174" y="355" class="s-muted" font-size="12.5" text-anchor="middle">改进不再被排期</text>
+
+              <!-- 节点 6 -->
+              <rect x="59" y="131" width="230" height="64" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <text x="174" y="158" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">没人有余力还技术债</text>
+              <text x="174" y="180" class="s-muted" font-size="12.5" text-anchor="middle">提了也排不进计划</text>
+
+              <!-- 环上箭头 -->
+              <g class="s-1" stroke-width="2.2" fill="none">
+                <line x1="577" y1="92"  x2="629" y2="146" marker-end="url(#ah-52-1)"/>
+                <line x1="746" y1="199" x2="746" y2="302" marker-end="url(#ah-52-1)"/>
+                <line x1="342" y1="400" x2="292" y2="352" marker-end="url(#ah-52-1)"/>
+                <line x1="174" y1="302" x2="174" y2="199" marker-end="url(#ah-52-1)"/>
+                <line x1="292" y1="148" x2="342" y2="98"  marker-end="url(#ah-52-1)"/>
+              </g>
+              <line x1="629" y1="352" x2="578" y2="400" class="s-5" stroke-width="2.6" fill="none" marker-end="url(#ah-52-2)"/>
+
+              <!-- 切断标记 -->
+              <g class="s-5" stroke-width="2.6" stroke-linecap="round">
+                <line x1="595" y1="367" x2="612" y2="385"/>
+                <line x1="589" y1="373" x2="606" y2="391"/>
+              </g>
+              <text x="622" y="400" class="f-5" font-size="13.5" font-weight="700">切断点</text>
+
+              <!-- 中心说明 -->
+              <rect x="310" y="200" width="300" height="100" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="460" y="232" class="f-5" font-size="15" font-weight="700" text-anchor="middle">最容易切断的一处</text>
+              <text x="460" y="256" class="s-ink" font-size="13" text-anchor="middle">在「时间压力 → 妥协」这一段</text>
+              <text x="460" y="278" class="s-ink" font-size="13" text-anchor="middle">用固定容量把偿还排进日常计划</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-2-2　两种债相互喂养的闭环。</strong>
+            要看懂的是<strong>这个环没有起点</strong> —— 从任何一个节点出发都能绕回自己，
+            所以「先还技术债还是先还文化债」是个假问题。
+            真正可操作的是找一处最省力的切口：图中标出的<strong>「时间压力 → 妥协」</strong>那一段。
+            切在这里的原因是，它<strong>只需要一条容量政策就能生效</strong>（每个迭代固定留出偿还容量），
+            不需要先说服任何人相信文化，也不依赖某位管理者的持续意志。
+            其余五段要么需要先有技术能力，要么需要先有信任 —— 而信任正是这个环已经消耗掉的东西。
+            <br><small class="muted">本闭环、六环节划分与切断点判断均为本站教学整理，官方未以此形式给出该机制。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:26%">技术债</th><th style="width:26%">文化债</th><th>这个闭环</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>欠的是什么</strong></td>
+                  <td>代码、架构、测试、环境</td>
+                  <td>复盘、知识共享、说真话、推动改进</td>
+                  <td>两者互为对方的<strong>利息</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>怎么被发现</strong></td>
+                  <td>系统自己会喊：告警、扫描、构建失败</td>
+                  <td><strong>要靠人主动说</strong>，而说这件事本身正在被欠</td>
+                  <td>表现为<strong>改进总是回弹</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>谁能还</strong></td>
+                  <td>工程团队自己能还一部分</td>
+                  <td>需要<strong>管理层放开容量</strong>，团队单方面还不动</td>
+                  <td>只在环上动一点，一定被退回</td>
+                </tr>
+                <tr>
+                  <td><strong>不还的后果</strong></td>
+                  <td>改动越来越慢、越来越贵</td>
+                  <td>变革疲劳、关键人离职、改进彻底停摆</td>
+                  <td><strong>速度与意愿同时归零</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把两者当成两条可以各自推进的工作线</strong>。
+            实际上「没时间还技术债」这句话的主语通常不是技术 —— 是文化债已经吃掉了排期的话语权；
+            而「文化改不动」的原因通常也不是人，是技术债还在源源不断地生产计划外工作。
+            <strong>诊断时看的是环，不是点。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出三列对比；<em>Technical debt</em> 不在 66 条术语表内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>切断这个环，实际动作只有一条主线加三条辅助：</p>
+          <ul>
+            <li><strong>主线 —— 给偿还固定容量</strong>：每个迭代拿出一个明确比例（例如 15%–20%）
+              专门放偿还工作，技术债与文化债共用这份容量，<strong>并且这份容量不接受「这次先挪用」</strong>。
+              关键不在比例多少，在于<strong>它是默认存在的，不需要每次重新申请</strong> ——
+              需要申请的容量在压力下必然是第一个被砍的。</li>
+            <li><strong>辅助一 —— 把偿还项写成正常条目</strong>：进同一个 backlog、同样有验收标准、
+              同样在评审会上被讨论。不要单独建一份「文化改进计划」，那份计划注定跑在正式排期之外。</li>
+            <li><strong>辅助二 —— 先还能产生现金流的那笔</strong>：优先选择<strong>还完之后能省出时间</strong>的项
+              （最常救火的那个模块、最常被问同一个问题的那份文档），
+              省出来的时间直接回补容量，让下一笔偿还不必再谈判。</li>
+            <li><strong>辅助三 —— 把结果贴出来</strong>：偿还的成效必须被看见（这一类故障不再复发、
+              新人独立值班从 9 周降到 4 周，虽然还没回到 3 周的健康基线）。看不见结果的偿还会直接转成变革疲劳，见 kp-5-2-3。</li>
+          </ul>
+          <p>
+            这条主线在<a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步：持续学习与实验（2.5）</a>
+            里有对应的表述：<strong>把改进日常工作置于日常工作之上</strong>。
+            本节只是给出它在文化债场景下的具体形态 —— <strong>「置于之上」在排期表上的意思就是：偿还有固定容量，日常交付没有权力挪用它。</strong>
+          </p>
+          <p class="mb-0 muted"><small>15%–20% 这个比例、四条动作与「先还能产生现金流的那笔」这一排序原则均为本站教学整理，
+            官方文件未规定偿还比例或优先级；
+            「把改进日常工作置于日常工作之上」是第三步的通行阐述，不是 66 条术语表条目（见 2.5 的同名标注）。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度：因果链单点</strong>。题干给出环上的一段（例如「团队因为持续救火而停止复盘」），
+              问接下来会发生什么，或问根因是什么。方向是<strong>文化债的累积</strong>，
+              而不是「团队不专业」「缺乏培训」这类归因到人的说法。</li>
+            <li><strong>干扰项长什么样</strong>：最常见的是<strong>把纯技术解法当答案</strong> ——
+              「增加自动化测试」「引入新工具」「加人」。
+              题干若已经点明改进过但回弹了，纯技术选项一律可疑；
+              第二类是<strong>把「更严格的流程 / 更多审批」当解法</strong>，它在环上属于加大压力，方向相反。</li>
+            <li><strong>排除技巧</strong>：Bloom 1–2 的题不会要求推演复杂因果，
+              但会考<strong>「文化债与技术债是相互影响的」这一层关系</strong>。
+              凡是把两者说成「互不相干」「文化问题与技术无关」的选项，可以直接划掉。</li>
+            <li><strong>注意归属</strong>：本知识点是<strong>本站的教学整理</strong>，不是官方给出的模型。
+              考试不会考「六个环节分别叫什么」，只会考这层相互影响的关系与偿还需要被排期这个结论。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上命题角度与干扰项分析为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">技术债让人没时间，没时间让人跳过该做的事，跳过该做的事让人再也还不动技术债。</p>
+          <p class="mb-0 muted"><small>切口只有一个：<strong>把偿还写进固定容量</strong>。
+            凡是「等这一版发完就开始」的偿还计划，本质上是在环外许愿。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-5-2-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-5-2-3</div>
+        <h3 class="kp__title">变革疲劳<span class="en">Change Fatigue</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">变革疲劳 <span class="en">Change fatigue</span></span>
+            是指人在经历<strong>连续、过多或看不到结果的变革</strong>之后，
+            对变革产生的<strong>耗竭与失去信心</strong>的状态：不再反对，也不再投入，只是等它自己过去。
+          </p>
+          <p>它有<strong>两条同样常见的成因，命题时都会出现</strong>，不要只记住其中一条：</p>
+          <ul>
+            <li><strong>数量 / 频率过载</strong>：变革太多、太快、彼此叠加，人被持续的调整压垮，
+              到后来对任何新一轮变动都只剩麻木。</li>
+            <li><strong>反复承诺未兑现</strong>：每一轮都说「这次一定不一样」，每一轮的结论都没落地，
+              「改进」这个词本身在组织内部贬值。</li>
+          </ul>
+          <p>
+            它是文化债最典型的一笔利息：本金是那些「说了要改却没改」「一轮接一轮地压下来」的妥协，
+            利息是<strong>下一次变革已经调动不起人</strong> ——
+            即使那一次真正准备好了资源、真正会落地。
+          </p>
+          <p class="mb-0 muted"><small><em>Change fatigue</em> 逐字列于 DOFD v3.4 官方考纲术语表（66 条）。
+            <strong>「变革疲劳」为本站译名</strong>。
+            上面的解释性表述（含两条成因的并列）为<strong>本站教学整理</strong>。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解释的是一个常被误读的现象：<strong>同样一封通知，为什么第四次发出去就没人动了。</strong>
+            管理者最容易把它读成「员工抵触变革」，然后加大宣贯力度 —— 这恰好是让它更严重的做法。
+          </p>
+          <ul>
+            <li>某中台部门 18 个月里推了四轮改进：敏捷转型、DevOps 试点、效能提升专项、又一次改进计划。
+              四次的通知文案与承诺强度几乎一样，都强调「这次一定不一样」。</li>
+            <li>第一轮启动会到场率 <strong>82%</strong>，还有人主动报名当推进人。
+              第二轮 <strong>55%</strong> —— 第一轮的结论没有一条落地。
+              第三轮 <strong>28%</strong> —— 改进事项被无限期推迟，问进度的人被回复「先保交付」。
+              第四轮 <strong>9%</strong> —— 上一轮提出问题的那两个人被评价为「不配合」。</li>
+            <li>关键在于<strong>变的不是通知，是收到通知的人对「改进」这个词的估价</strong>。
+              第四轮的方案质量可能是四轮里最好的，但它已经不可能被公平评估了。</li>
+          </ul>
+          <p class="mb-0">
+            所以变革疲劳的真正代价不是这一次推不动，而是<strong>透支了下一次的可能性</strong>。
+            这也是它被归入文化债而不是「员工态度问题」的原因：它是<strong>组织借出去的信用</strong>，且已经还不上。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，四组数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 5-2-3 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 900 420" role="img" aria-label="变革疲劳曲线：四次通知文案完全相同的改进倡议，实际参与度从八成降到不足一成">
+              <text x="24" y="28" class="f-5" font-size="15.5" font-weight="700">四次倡议的通知文案与承诺强度完全相同，变的只是收到通知的人</text>
+
+              <text x="110" y="50" class="s-muted" font-size="12.5">启动会实际参与度</text>
+
+              <!-- 网格 -->
+              <g class="s-stroke" stroke-width="1.2" stroke-dasharray="5 5">
+                <line x1="110" y1="60"  x2="850" y2="60"/>
+                <line x1="110" y1="195" x2="850" y2="195"/>
+              </g>
+              <line x1="110" y1="330" x2="860" y2="330" class="s-stroke" stroke-width="1.8"/>
+              <line x1="110" y1="55"  x2="110" y2="330" class="s-stroke" stroke-width="1.8"/>
+
+              <text x="98" y="65"  class="s-muted" font-size="12" text-anchor="end">100%</text>
+              <text x="98" y="200" class="s-muted" font-size="12" text-anchor="end">50%</text>
+              <text x="98" y="335" class="s-muted" font-size="12" text-anchor="end">0%</text>
+
+              <!-- 曲线 -->
+              <polyline points="200,109 380,182 560,254 740,306" class="s-5" stroke-width="3" fill="none"/>
+              <g class="f-5">
+                <circle cx="200" cy="109" r="6"/>
+                <circle cx="380" cy="182" r="6"/>
+                <circle cx="560" cy="254" r="6"/>
+                <circle cx="740" cy="306" r="6"/>
+              </g>
+              <g class="f-5" font-size="14.5" font-weight="700" text-anchor="middle">
+                <text x="200" y="95">82%</text>
+                <text x="380" y="168">55%</text>
+                <text x="560" y="240">28%</text>
+                <text x="740" y="292">9%</text>
+              </g>
+
+              <!-- 横轴标签 -->
+              <g class="s-ink" font-size="14.5" font-weight="650" text-anchor="middle">
+                <text x="200" y="356">第 1 次倡议</text>
+                <text x="380" y="356">第 2 次倡议</text>
+                <text x="560" y="356">第 3 次倡议</text>
+                <text x="740" y="356">第 4 次倡议</text>
+              </g>
+              <g class="s-muted" font-size="12" text-anchor="middle">
+                <text x="200" y="376">敏捷转型</text>
+                <text x="380" y="376">DevOps 试点</text>
+                <text x="560" y="376">效能提升专项</text>
+                <text x="740" y="376">又一次改进计划</text>
+              </g>
+
+              <!-- 下滑原因 -->
+              <rect x="520" y="80" width="356" height="112" rx="10" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="538" y="104" class="f-1" font-size="13.5" font-weight="700">每一段下滑的直接原因</text>
+              <text x="538" y="128" class="s-ink" font-size="12.5">① 上一轮的结论一条也没落地</text>
+              <text x="538" y="150" class="s-ink" font-size="12.5">② 改进事项被无限期推迟，问进度得到「先保交付」</text>
+              <text x="538" y="172" class="s-ink" font-size="12.5">③ 提出问题的人被评价为「不配合」</text>
+
+              <text x="24" y="404" class="s-muted" font-size="13">利息的形态：不是反对，是不再投入 —— 第四轮方案可能是四轮里最好的，但已经不可能被公平评估。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 5-2-3　变革疲劳曲线。</strong>
+            要看懂的是<strong>输入端始终没变</strong>：四次的通知文案、承诺强度、启动会规格完全一样，
+            下降的只有参与度。所以这条曲线不能被解释成「宣贯力度不够」——
+            <strong>加大力度只会让第五个点更低</strong>。
+            右上角三行才是真正的斜率来源：每一段下滑都对应着上一轮的一次失信。
+            反过来说，<strong>要抬起这条曲线，唯一有效的输入是「上一次承诺的事真的做完了，并且被看见」</strong>。
+            <br><small class="muted">本曲线为本站构造的教学示例，四组数值用于说明机制，非真实调研数据；
+            <em>Change fatigue</em> 是 DOFD v3.4 官方考纲术语表条目，官方未给出此类曲线。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">变革疲劳 <span class="en">Change fatigue</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>文化债 <span class="en">Cultural debt</span></strong></td>
+                  <td>是<strong>后果 / 利息</strong>：具体表现为对下一次倡议不再投入</td>
+                  <td>是<strong>本金 / 总账</strong>：范围大得多，还包括知识断层、复盘缺失、关键人依赖</td>
+                </tr>
+                <tr>
+                  <td><strong>抵制变革 <span class="en">resistance to change</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td><strong>不反对</strong>。人不再表达立场，会上没人提问，通知照收，行动为零</td>
+                  <td><strong>会反对</strong>。有明确的立场与理由，说明人还认为结果与自己有关</td>
+                </tr>
+                <tr>
+                  <td><strong>职业倦怠 <span class="en">burnout</span></strong><br><small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>耗竭<strong>指向变革本身</strong>：对象是一轮又一轮的变动与倡议</td>
+                  <td>耗竭<strong>指向工作整体</strong>：对象是全部工作负荷，不限于变革。两者可以并存，变革过载也可能一路发展成职业倦怠</td>
+                </tr>
+                <tr>
+                  <td><strong>Kubler-Ross 变革曲线</strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>刻画<strong>多次变革累积</strong>后的耗竭与信心流失，不会自然回升</td>
+                  <td>刻画<strong>一次变革之内</strong>个体的情绪阶段，终点是接受。属行为模型范围，展开在<a href="5.3-behavioral-models.html">5.3</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>变革疲劳的人不是不想改，是不再相信「改」会真的发生</strong>。
+            这两者在行为上都表现为「没反应」，但处方完全相反 ——
+            对不想改的人要讲清楚为什么，对不相信的人讲什么都没用，<strong>只有先兑现一次小的承诺</strong>。</small></p>
+          <p class="mb-0 muted"><small><em>Change fatigue</em> 与 <em>Kubler-Ross Change Curve</em> 均为 DOFD v3.4 官方考纲术语表条目；
+            <em>resistance to change</em> 与 <em>burnout</em> 不在 66 条术语表内，本表仅用于辨析，标为延伸。
+            四行对照的维度划分为本站教学整理，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            偿还文化债的方法与技术债同构：<strong>显式地把偿还工作排进日常，而不是等「有空的时候」</strong>。
+            在已经有变革疲劳的组织里，具体动作有先后：
+          </p>
+          <ul>
+            <li><strong>先停，再启</strong>：把正在进行、事实上已经停摆的倡议<strong>公开关闭并说明原因</strong>。
+              关闭一件没结果的事，比再启动一件新的更能修复信用。挂着不动的倡议每天都在计息。</li>
+            <li><strong>一次只推一项</strong>：并行三个变革等于零个。
+              疲劳来自「没结果」，而并行是没结果最可靠的生产方式。</li>
+            <li><strong>先还最小的一笔，并把结果公示</strong>：选一件两周内能完成、且所有人都感受得到的
+              （例如把值班文档补齐、把最常复发的那个告警修掉）。
+              <strong>第一次兑现的意义不在于收益大小，而在于证明「说了会做」这件事还成立。</strong></li>
+            <li><strong>把偿还写进固定容量</strong>：与 kp-5-2-2 的主线一致 ——
+              偿还项进同一个 backlog、占默认比例的容量、不接受挪用。
+              这也是<a href="../ch02-core-principles/2.5-third-way-learning.html">第 2 章 第三步：持续学习与实验（2.5）</a>
+              里「把改进日常工作置于日常工作之上」在排期表上的落地形态。</li>
+            <li><strong>不要用宣贯补信用</strong>：疲劳期加大宣讲、加开动员会、加强考核，
+              都会被读作「又来一次」。<strong>唯一有效的输入是已完成的事实。</strong></li>
+          </ul>
+          <p class="mb-0">
+            推进节奏上还有一条与<a href="5.3-behavioral-models.html">5.3</a>相关的提示：重大变革不应从全员动员起步，
+            而应先让<strong>早期采用者</strong>参与规划、担任推动者 —— 这一点由官方样题答案键确认（见 ⑤ 面），
+            行为模型的完整展开在<a href="5.3-behavioral-models.html">5.3</a>，本节不重复。
+          </p>
+          <p class="mb-0 muted"><small>「先停再启」「一次只推一项」「先还最小一笔」这三条排序与两周的时限均为本站教学整理，
+            官方文件列出 <em>Change fatigue</em> 这一术语，未规定偿还步骤或节奏。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度：给症状、认名词</strong>。题干描述一个组织连续推行多轮改进、员工不再响应，
+              问这是什么。方向是 <strong>Change fatigue</strong>。
+              识别钥匙是两个词同时出现：<strong>「连续 / 多次 / 太快」+「耗竭、不再投入或不再相信」</strong><span class="muted">（此判据为本站教学整理）</span>。
+              题干说「变革太多太快、人被压垮」和题干说「说了几轮都没兑现、没人再当真」，<strong>都指向 Change fatigue</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>抵制变革</strong>（它有明确反对立场，题干若强调「没有反对，只是没有反应」就不该选）；
+              <strong>职业倦怠</strong>（题干若说日常交付照常、只对变革没反应，就不该选倦怠；
+              但<strong>反过来不成立</strong> —— 题干说日常交付也在下滑，并不排除变革疲劳，变革过载本来就会拖垮日常产出）；
+              <strong>文化债</strong>（这是上位概念的总账，题干若明确指向「对变革本身耗竭、失去信心」，选更精确的 Change fatigue）；
+              还有一类是<strong>把解法当病名</strong>，比如给出「加强培训」「加大沟通」作为选项。</li>
+            <li><strong>相邻考点（官方已确认）</strong>：推动重大变革时，
+              应当参与规划并担任变革推动者的是<strong>早期采用者</strong> ——
+              这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              题干若问「变革该先依靠谁」，答案不是管理层、也不是全员，而是早期采用者。
+              该考点的完整展开在<a href="5.3-behavioral-models.html">5.3 行为模型</a>与<a href="../ch08-sharing/index.html">第 8 章 分享、跟随与演进</a>。</li>
+            <li><strong>相邻考点（官方已确认）</strong>：DevOps 的关键成功因素是
+              <strong>管理层对文化变革的承诺</strong> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条与本节直接相关：偿还文化债需要放开容量，而容量的批准权在管理层。
+              考场上凡是把关键成功因素答成「工具选型」「自动化程度」「人员技能」的，都是干扰项。
+              该考点归<a href="../ch08-sharing/index.html">第 8 章 挑战、风险与关键成功因素（8.5）</a>。</li>
+            <li><strong>排除技巧</strong>：先判断题干问的是<strong>状态还是对策</strong>。
+              问状态 → 在 Change fatigue / Cultural debt 里按「耗竭是否特指变革本身」二选一；
+              问对策 → 优先选<strong>指向管理层承诺、指向兑现小承诺</strong>的选项，不选「加强宣贯 / 加强考核」这类加压选项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            钥匙词判据与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">不是不想改，是不再相信改会发生 —— 修它只能靠兑现，不能靠动员。</p>
+          <p class="mb-0 muted"><small>一句话关系：<strong>文化债是本金，变革疲劳是利息</strong>；
+            利息的计法是「变革一轮接一轮、上一次说了又没做」，还款方式是「这一次说了就做，并且让人看见」。
+            <span class="badge badge--note">📝 教学整理</span>（本金 / 利息的对应关系为本站教学整理，官方未以此形式表述）</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>文化债 Cultural debt</strong>：为短期交付反复做出、损害长期协作能力的妥协，代价累积计息（术语见 DOFD v3.4 官方考纲术语表与 M5 模块子项；定义性表述为本站教学整理）</li>
+        <li><strong>与技术债的分界</strong>：技术债是系统会喊疼（告警、构建失败），<strong>文化债是人不再吭声</strong> —— 症状就是没有声音（技术债不在 66 条术语表内，属延伸类比）</li>
+        <li><strong>五种可识别形态</strong>：跳过复盘 / 知识只在少数人脑子里 / 反复承诺「下个迭代一定改」/ 用加班掩盖流程问题 / 招人只看「能扛」（本站教学整理）</li>
+        <li><strong>双向闭环</strong>：技术债 → 交付变慢 → 时间压力 → 文化妥协 → 文化债 → 没人还得动技术债。只在环上动一点，改进必然回弹（本站教学整理）</li>
+        <li><strong>切断点</strong>：切在「时间压力 → 妥协」这一段 —— 给偿还固定容量，且<strong>不接受挪用</strong>。呼应<a href="../ch02-core-principles/2.5-third-way-learning.html">2.5</a>「把改进日常工作置于日常工作之上」</li>
+        <li><strong>变革疲劳 Change fatigue</strong>：在连续、过多或看不到结果的变革之后，对变革产生的耗竭与失去信心 —— <strong>数量/频率过载</strong>与<strong>反复承诺未兑现</strong>两条成因都算。<strong>不是抵制</strong>（抵制会明确反对）；与<strong>职业倦怠</strong>的分界看耗竭指向变革还是指向工作整体，两者可并存。是文化债的典型利息（「本金 / 利息」的对应关系为本站教学整理；「变革疲劳」为本站译名，§5 译法表未收录）</li>
+        <li><strong>两条官方确认</strong>：推动重大变革应由<strong>早期采用者</strong>参与规划并担任推动者；DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>（均由 DOFD v3.4 官方样题答案键确认）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Cultural debt</em>、<em>Change fatigue</em>、<em>Organizational culture</em>、
+      <em>Kubler-Ross Change Curve</em>、<em>Single Point of Failure (SPOF)</em>、
+      <em>employee Net Promoter Score (eNPS)</em>、<em>DevOps metrics</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，出自 DOFD v3.4 Examination Requirements（2022-05）；
+      <strong>该术语表只列出词条、不附定义</strong>，因此本页出现的每一条中文释义都是本站措辞，不是官方逐字定义；
+      <em>Cultural debt</em> 同时是 DOFD v3.4 课程大纲 M5 模块
+      <em>Culture, Behaviors &amp; Operating Models</em> 的官方子项。
+      <strong>三条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「面对指责与恐惧文化、大量单点故障、频繁战情室的组织，应转向<strong>安全文化</strong>」、
+      「推动重大变革时应参与规划并担任变革推动者的是<strong>早期采用者</strong>」、
+      「DevOps 的关键成功因素是<strong>管理层对文化变革的承诺</strong>」。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：文化债的三要件表、「文化债=本金 / 变革疲劳=利息」这套记账隐喻、五种可识别形态（图 5-2-1）、
+      技术债与文化债的双向闭环及其切断点（图 5-2-2）、偿还容量比例与四条动作、
+      变革疲劳曲线（图 5-2-3）与「先停再启 / 一次只推一项 / 先还最小一笔」的排序、
+      各面中的干扰项分析与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      <strong>延伸 · 非考纲</strong>：<em>Technical debt</em>、<em>resistance to change</em>、<em>burnout</em>
+      不在 66 条术语表内，也未列入 v3.4 课程大纲子项，本节仅用于类比与辨析。
+      本节对 <em>Cultural debt</em> 与 <em>Change fatigue</em> 的定义性表述同属<strong>本站教学整理</strong>，已在对应位置就地标注。
+      「变革疲劳」是本站对 <em>Change fatigue</em> 的译名。
+      文中三个案例与全部数字为本站构造的教学示例，非真实调研数据。
+      组织文化的定义见<a href="5.1-defining-culture.html">5.1</a>，行为模型（含 Kubler-Ross 变革曲线、早期采用者）见<a href="5.3-behavioral-models.html">5.3</a>，
+      组织成熟度模型见<a href="5.4-maturity-models.html">5.4</a>；安全文化见<a href="../ch04-frameworks/4.5-safety-culture.html">第 4 章 安全文化（4.5）</a>，
+      文化类指标见<a href="../ch07-metrics/index.html">第 7 章</a>，
+      DevOps 领导力与关键成功因素见<a href="../ch08-sharing/index.html">第 8 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
