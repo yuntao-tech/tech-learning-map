@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.5 DevOps 工具链架构 · DevOps Foundation 学习站</title>
+<meta name="description" content="DevOps toolchain 是官方术语。本节给出工具链八类环节的排布、工具之间靠什么串联（API / 事件 / 制品仓库），以及官方样题答案键确认的一条判断：服务台事件管理系统不属于典型 DevOps 工具链要素。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.5-toolchain-architecture"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.5 DevOps 工具链架构</h1>
+      <div class="page-head__en">Architecting DevOps Toolchains</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        工具链的重点在<strong>「链」</strong>，不在「工具」。
+        一堆各自优秀却互不通气的工具，不构成工具链 —— 它只是一份采购清单，
+        每个交接口都要靠人把状态复制过去。
+        本节回答两件事：<strong>哪些环节在这条链上</strong>，以及<strong>工具之间靠什么串起来</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>DevOps 工具链由哪几类环节构成，判断「是不是工具链要素」的标准是什么</li>
+        <li>为什么<strong>服务台事件管理系统不属于</strong>典型工具链要素 —— 这一条由官方样题答案键确认</li>
+        <li>工具之间靠什么串联，为什么<strong>集成设计比工具选型更重要</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-5-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 480" role="img" aria-label="DevOps 工具链八类环节按价值流排布，标出串联方式，并把服务台事件管理系统标为链外">
+          <defs>
+            <marker id="ah-65-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-65-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <text x="45" y="28" class="f-1" font-size="16" font-weight="700">DevOps 工具链 · 八类环节沿价值流排布</text>
+          <text x="45" y="50" class="s-muted" font-size="13">串联方式只有三种：API 调用 · 事件 / webhook · 共享制品仓库</text>
+
+          <!-- 第一排 -->
+          <rect x="45"  y="72" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="275" y="72" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="505" y="72" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="735" y="72" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="145" y="104" class="s-ink" font-size="16" font-weight="650">① 计划</text>
+            <text x="145" y="124" class="s-muted" font-size="12">Plan</text>
+            <text x="145" y="146" class="s-ink" font-size="12.5">需求 · 待办 · 看板</text>
+
+            <text x="375" y="104" class="s-ink" font-size="16" font-weight="650">② 编码</text>
+            <text x="375" y="124" class="s-muted" font-size="12">Code</text>
+            <text x="375" y="146" class="s-ink" font-size="12.5">版本控制 · 同行评审</text>
+
+            <text x="605" y="104" class="s-ink" font-size="16" font-weight="650">③ 构建</text>
+            <text x="605" y="124" class="s-muted" font-size="12">Build</text>
+            <text x="605" y="146" class="s-ink" font-size="12.5">编译 · 打包制品</text>
+
+            <text x="835" y="104" class="s-ink" font-size="16" font-weight="650">④ 测试</text>
+            <text x="835" y="124" class="s-muted" font-size="12">Test</text>
+            <text x="835" y="146" class="s-ink" font-size="12.5">自动化测试套件</text>
+          </g>
+
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="245" y1="115" x2="271" y2="115" marker-end="url(#ah-65-1)"/>
+            <line x1="475" y1="115" x2="501" y2="115" marker-end="url(#ah-65-1)"/>
+            <line x1="705" y1="115" x2="731" y2="115" marker-end="url(#ah-65-1)"/>
+          </g>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="259" y="176">需求 ID</text>
+            <text x="489" y="176">提交事件</text>
+            <text x="719" y="176">制品仓库</text>
+          </g>
+
+          <!-- 换行连线 -->
+          <path d="M935 115 H958 V205 H145 V226" class="s-1" stroke-width="2" fill="none" marker-end="url(#ah-65-1)"/>
+          <text x="530" y="198" class="s-muted" font-size="12" text-anchor="middle">通过全部测试的同一个制品继续向下游流动</text>
+
+          <!-- 第二排 -->
+          <rect x="45"  y="230" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="275" y="230" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="505" y="230" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="735" y="230" width="200" height="86" rx="10" class="s-stroke s-fill2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="145" y="262" class="s-ink" font-size="16" font-weight="650">⑤ 发布</text>
+            <text x="145" y="282" class="s-muted" font-size="12">Release</text>
+            <text x="145" y="304" class="s-ink" font-size="12.5">决定哪些变更对外</text>
+
+            <text x="375" y="262" class="s-ink" font-size="16" font-weight="650">⑥ 部署</text>
+            <text x="375" y="282" class="s-muted" font-size="12">Deploy</text>
+            <text x="375" y="304" class="s-ink" font-size="12.5">把制品装到环境上</text>
+
+            <text x="605" y="262" class="s-ink" font-size="16" font-weight="650">⑦ 运维</text>
+            <text x="605" y="282" class="s-muted" font-size="12">Operate</text>
+            <text x="605" y="304" class="s-ink" font-size="12.5">容量 · 配置 · 变更执行</text>
+
+            <text x="835" y="262" class="s-ink" font-size="16" font-weight="650">⑧ 监控</text>
+            <text x="835" y="282" class="s-muted" font-size="12">Monitor</text>
+            <text x="835" y="304" class="s-ink" font-size="12.5">遥测 · 告警 · 仪表板</text>
+          </g>
+
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="245" y1="273" x2="271" y2="273" marker-end="url(#ah-65-1)"/>
+            <line x1="475" y1="273" x2="501" y2="273" marker-end="url(#ah-65-1)"/>
+            <line x1="705" y1="273" x2="731" y2="273" marker-end="url(#ah-65-1)"/>
+          </g>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="259" y="334">部署 API</text>
+            <text x="489" y="334">部署事件</text>
+            <text x="719" y="334">遥测 API</text>
+          </g>
+
+          <!-- 回流 -->
+          <path d="M835 316 V356 H22 V115 H41" class="s-3" stroke-width="2" fill="none" stroke-dasharray="7 6" marker-end="url(#ah-65-2)"/>
+          <text x="620" y="345" class="f-3" font-size="12.5" text-anchor="middle">遥测与告警回流至计划</text>
+
+          <!-- 链外 -->
+          <path d="M300 392 V384" class="s-5" stroke-width="2" fill="none" stroke-dasharray="5 5"/>
+          <g class="s-5" stroke-width="2.5">
+            <line x1="292" y1="366" x2="308" y2="382"/>
+            <line x1="308" y1="366" x2="292" y2="382"/>
+          </g>
+
+          <rect x="45" y="392" width="520" height="72" rx="10" class="s-5" stroke-width="2" stroke-dasharray="8 6" fill="var(--dia-fill)"/>
+          <text x="62" y="416" class="f-5" font-size="14.5" font-weight="700">服务台事件管理系统　Service desk incident management</text>
+          <text x="62" y="438" class="s-ink" font-size="12.5">属 ITSM 服务运营范畴，不在「开发到部署」这条链路的环节上</text>
+          <text x="62" y="457" class="s-muted" font-size="12">由 DOFD v3.4 官方样题答案键确认：不属于典型 DevOps 工具链要素</text>
+
+          <rect x="595" y="392" width="340" height="72" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="612" y="414" class="f-1" font-size="13" font-weight="700">判据（本站教学整理）</text>
+          <text x="612" y="436" class="s-ink" font-size="12.5">在链上产出或搬运变更 = 工具链要素</text>
+          <text x="612" y="456" class="s-ink" font-size="12.5">支撑服务运营 ≠ 工具链要素</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-5-1　工具链的形状与它的边界。</strong>
+        要看懂两件事。第一，<strong>每两个环节之间都有一个具体的交接物</strong> ——
+        需求 ID、提交事件、制品仓库、部署 API、遥测 API；交接物是什么，决定了这两个工具能不能自动串上。
+        第二，<strong>右下角的判据把「链外」讲清楚了</strong>：
+        服务台事件管理系统服务的是服务运营，不产出也不搬运这条链上的变更，因此被画在链外。
+        <br><small class="muted">八类环节的划分（计划 → 编码 → 构建 → 测试 → 发布 → 部署 → 运维 → 监控）
+        与三种串联方式的归纳，均为<strong>本站教学整理</strong>，DOFD 官方文件未以此形式给出工具链分类图；
+        <em>DevOps toolchain</em>、<em>Application Programming Interface (API)</em>、<em>IT service management</em>
+        本身是 DOFD v3.4 官方考纲术语表条目。
+        「服务台事件管理系统不属于典型 DevOps 工具链要素」一条由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+        本站只陈述结论，不复制题干与选项原文。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-5-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-5-1</div>
+        <h3 class="kp__title">DevOps 工具链<span class="en">DevOps toolchain</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevOps 工具链 <span class="en">DevOps toolchain</span></span>
+            是把一次变更<strong>从想法送到生产、再把生产的反馈送回源头</strong>所需要的一组工具，
+            它们之间有明确的上下游与交接物。
+          </p>
+          <p>
+            关键词是<strong>「链」</strong>：单个工具再强，如果它的输出要靠人复制到下一个工具里，
+            这条链就是断的。<strong>工具链的质量由最差的那个接口决定，不由最好的那个工具决定。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">环节</th><th style="width:20%">英文</th><th>这一环负责什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 计划</strong></td><td>Plan</td><td>把业务意图变成可跟踪的工作项：需求、待办、看板</td></tr>
+                <tr><td><strong>② 编码</strong></td><td>Code</td><td>版本控制与同行评审 —— 变更的唯一权威来源在这里</td></tr>
+                <tr><td><strong>③ 构建</strong></td><td>Build</td><td>把源码编译打包成<strong>可部署制品</strong>，且只构建一次</td></tr>
+                <tr><td><strong>④ 测试</strong></td><td>Test</td><td>自动化测试给出「这个制品能不能往下走」的判断</td></tr>
+                <tr><td><strong>⑤ 发布</strong></td><td>Release</td><td>决定哪些变更、在什么时候对外可用</td></tr>
+                <tr><td><strong>⑥ 部署</strong></td><td>Deploy</td><td>把同一个制品放到目标环境上，可重复、可回退</td></tr>
+                <tr><td><strong>⑦ 运维</strong></td><td>Operate</td><td>容量、配置与变更执行；对已上线变更的运行管理</td></tr>
+                <tr><td><strong>⑧ 监控</strong></td><td>Monitor</td><td>产出遥测、告警与仪表板，并把它送回计划环节</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>DevOps toolchain</em> 是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）条目，
+            也是 v3.4 课程大纲 M6 模块的子项之一。
+            <strong>上表的八类环节划分与每一环的职责描述为本站教学整理</strong>，官方文件未给出这一分类。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的痛点是<strong>「工具都买齐了，交付却没变快」</strong>。
+          </p>
+          <ul>
+            <li>某中型团队一年内引入了看板工具、代码托管、CI 服务、制品仓库、监控平台，
+              <strong>每一个都是各自领域里的好工具</strong>。但需求编号写在看板里，
+              提交信息里写的是另一套编号，制品版本号是构建机自增的，
+              监控告警里只有服务名。<strong>四套标识，互不认识。</strong></li>
+            <li>后果是每周的交付评审会要开 90 分钟：一半时间在对账 ——
+              「上周那个需求到底上了没有」需要三个人分别打开三个系统截图拼出来。
+              <strong>没人能回答「一个变更从提交到上线平均多久」，因为这条链上没有任何一处记录了同一个 ID。</strong></li>
+            <li>更隐蔽的代价是<strong>状态失真</strong>：人工搬运的状态天然滞后且会漏。
+              看板上显示「已完成」的需求，可能只是开发点了完成，实际制品还卡在测试环境。</li>
+          </ul>
+          <p>
+            工具链架构要解决的就是这件事：让<strong>同一个变更在八个环节里保持同一个身份</strong>，
+            状态由工具自己传递，而不是由人转述。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">DevOps 工具链</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>部署流水线 <span class="en">Deployment pipeline</span></strong></td>
+                  <td>覆盖<strong>计划到监控的全部八类环节</strong>，包含流水线之外的计划、运维与监控</td>
+                  <td>是工具链中<strong>从提交到部署那一段的执行机制</strong>，是工具链的子集，不是同义词</td>
+                </tr>
+                <tr>
+                  <td><strong>单个工具</strong></td>
+                  <td>看的是<strong>接口与交接物</strong>：上游给什么、下游要什么</td>
+                  <td>看的是<strong>功能</strong>：这个工具本身能做什么。功能强不代表接得上</td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 本身</strong></td>
+                  <td>是<strong>手段</strong>：支撑价值流快速流动与反馈的技术底座</td>
+                  <td>是<strong>目标与工作方式</strong>：跨职能协作、快速流动、反馈与持续改进</td>
+                </tr>
+                <tr>
+                  <td><strong>平台工程 <span class="en">Platform Engineering</span></strong><br>
+                    <small class="muted"><span class="badge badge--new">🆕 v3.6 新增</span></small></td>
+                  <td>回答<strong>「有哪些环节、怎么串」</strong></td>
+                  <td>回答<strong>「谁来把这条链做成产品交给开发团队自助使用」</strong>（见
+                    <a href="../ch03-key-practices/3.10-platform-engineering.html">第 3 章 平台工程（3.10）</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>把工具链等同于 CI/CD 流水线</strong>。
+            流水线只覆盖「提交 → 部署」这一段；计划、运维、监控三个环节不在流水线里，
+            但它们恰恰是很多组织断链最严重的地方 —— 上游需求接不进来，下游遥测传不回去。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出四组对比；
+            <em>Deployment pipeline</em>、<em>DevOps toolchain</em> 为官方术语表条目，
+            <em>Platform Engineering</em> 属 v3.6 新增学习目标（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+            v3.4 的 66 条术语表未收录。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>不要从「该买哪个工具」开始。从<strong>画一次真实变更的完整路径</strong>开始：</p>
+          <ul>
+            <li><strong>取一个上周真正上线的变更</strong>，沿八个环节把它经过的每个系统列出来，
+              在每两个系统之间写清楚<strong>交接物是什么</strong>（一个 API 调用？一封邮件？一次口头通知？）。</li>
+            <li><strong>标出所有靠人搬运的接口</strong>。这些点就是工具链的断口，
+              也是端到端度量算不出来的原因 —— 断口两侧没有共同的标识。</li>
+            <li><strong>先补断口，再谈换工具</strong>。多数组织真正缺的不是更好的工具，
+              而是两个已有工具之间的一次集成。</li>
+            <li><strong>用价值流映射对齐视角</strong>：工具链图与价值流映射图应当能一一对应，
+              对不上说明有环节被工具遮住了（见
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>）。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这份四步检查动作为本站教学整理，官方文件未规定工具链的建设步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语归位题（Bloom 1）</strong>：<em>DevOps toolchain</em> 是官方术语表条目，
+              可能直接问它指什么。正确方向是<strong>一组支撑 DevOps 交付、彼此串联的工具</strong>，
+              而不是某一类工具，也不是某一个厂商的产品套件。</li>
+            <li><strong>要素判别题（本节最重要的角度）</strong>：给出四个候选，问<strong>哪个不属于</strong>典型工具链要素。
+              这一角度的一条判断已由 <strong>DOFD v3.4 官方样题答案键</strong>确认，详见本节第三个知识点。</li>
+            <li><strong>干扰项长什么样</strong>：把工具链<strong>缩小</strong>成 CI/CD 流水线，
+              或把它<strong>放大</strong>成「DevOps 就是工具链」。前者漏掉计划与监控，后者把手段当成了目标。</li>
+            <li><strong>排除技巧</strong>：先问这个选项<strong>在不在「变更从想法到生产」这条路径上</strong>。
+              在路径上 → 是要素；只是支撑组织运转 → 不是。</li>
+          </ul>
+          <p class="mb-0 muted"><small>命题角度与干扰项构造方式为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">工具链的价值不在工具里，在工具与工具之间的那个接口上。</p>
+          <p class="mb-0 muted"><small>八环节顺口记：<strong>计划 · 编码 · 构建 · 测试 · 发布 · 部署 · 运维 · 监控</strong> ——
+            前四个把变更做出来，后四个把变更送出去并看住它（八环节划分为本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-5-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-5-2</div>
+        <h3 class="kp__title">用 API 把工具串起来：集成设计与开源<span class="en">Application Programming Interface (API) · Open source</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">应用程序编程接口 <span class="en">Application Programming Interface / API</span></span>
+            是一个系统对外开放、供其他系统按约定调用的入口。
+            在工具链语境里，它的意义只有一条：<strong>让下一个工具不需要人，就能拿到上一个工具的数据和状态。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">串联方式</th><th style="width:34%">怎么工作</th><th>典型用途</th></tr></thead>
+              <tbody>
+                <tr><td><strong>API 调用</strong></td><td>B 主动向 A 要数据，或把结果写回 A</td><td>流水线跑完把结果回写到需求工作项上</td></tr>
+                <tr><td><strong>事件 / webhook</strong></td><td>A 一有变化就推给 B，不用轮询</td><td>代码提交触发构建；部署完成触发监控标记</td></tr>
+                <tr><td><strong>共享制品仓库</strong></td><td>双方不直接对话，交接同一个<strong>物</strong></td><td>构建产出制品，部署环节取走同一个制品</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <span class="term">开源 <span class="en">Open source</span></span>在这条链上的角色是
+            <strong>降低集成成本</strong>：源码与接口公开，遇到官方没提供的对接方式可以自行扩展，
+            不必等厂商排期；社区通常已经写好了常见工具之间的连接件。
+            代价是<strong>集成与升级的责任落回自己身上</strong>。
+          </p>
+          <p class="mb-0 muted"><small><em>Application Programming Interface (API)</em> 与 <em>Open source</em>
+            均为 DOFD v3.4 官方考纲术语表条目。
+            <strong>「三种串联方式」的归纳、以及开源在工具链中的角色描述，为本站教学整理</strong>，官方未以此形式给出。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            痛点有一个名字：<strong>工具孤岛</strong>（本站用语）。
+            每个工具都在自己的库里存着一份对同一件事的描述，而这些描述之间没有连线。
+          </p>
+          <ul>
+            <li>某团队的一个缺陷修复：测试在缺陷系统里建单，开发在代码提交里写自己的编号，
+              发布经理在发布计划表里手填一行，上线后运维在值班记录里再写一次。
+              <strong>同一个变更被人工誊写了 3 次</strong>，每次誊写都可能写错或漏写。</li>
+            <li>某次故障排查要回答「这个服务昨晚有没有变更」，
+              需要有人翻发布计划表 —— 而那张表最后一次更新是两天前。
+              <strong>信息不是不存在，是没有在需要它的地方出现。</strong></li>
+            <li>最贵的一项损失是度量：变更前置时间需要「提交时间」和「上线时间」落在同一个变更上，
+              而这两个时间戳分别躺在两个互不认识的系统里，只能人工抽样估算
+              （指标定义见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）。</li>
+          </ul>
+          <p>
+            API 与事件解决的正是「同一件事被记录多次却对不上号」：
+            <strong>让一份状态在一处产生，在多处被读到，而不是在多处被重新输入。</strong>
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 6-5-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 440" role="img" aria-label="工具孤岛与串联工具链的对比：同一个变更的状态信息需要几次人工搬运">
+              <defs>
+                <marker id="ah-65-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-65-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+                </marker>
+              </defs>
+
+              <line x1="480" y1="16" x2="480" y2="424" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+              <!-- 左：工具孤岛 -->
+              <text x="30" y="32" class="f-5" font-size="16" font-weight="700">架构 A · 工具孤岛</text>
+              <text x="30" y="54" class="s-muted" font-size="12.5">同一个变更的状态，靠人从一个系统抄到下一个</text>
+
+              <rect x="60" y="72" width="180" height="52" rx="9" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="60" y="152" width="180" height="52" rx="9" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="60" y="232" width="180" height="52" rx="9" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="60" y="312" width="180" height="52" rx="9" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="150" y="96"  class="s-ink" font-size="14.5" font-weight="650">需求 / 看板工具</text>
+                <text x="150" y="115" class="s-muted" font-size="12">编号 A-1024</text>
+                <text x="150" y="176" class="s-ink" font-size="14.5" font-weight="650">版本控制</text>
+                <text x="150" y="195" class="s-muted" font-size="12">提交信息里另写一套号</text>
+                <text x="150" y="256" class="s-ink" font-size="14.5" font-weight="650">CI 流水线</text>
+                <text x="150" y="275" class="s-muted" font-size="12">构建号自增，与前两者无关</text>
+                <text x="150" y="336" class="s-ink" font-size="14.5" font-weight="650">发布计划表 / 值班记录</text>
+                <text x="150" y="355" class="s-muted" font-size="12">人手填一行</text>
+              </g>
+
+              <g class="s-5" stroke-width="2" fill="none">
+                <line x1="150" y1="124" x2="150" y2="148" marker-end="url(#ah-65-3)"/>
+                <line x1="150" y1="204" x2="150" y2="228" marker-end="url(#ah-65-3)"/>
+                <line x1="150" y1="284" x2="150" y2="308" marker-end="url(#ah-65-3)"/>
+              </g>
+              <g class="f-5" font-size="12.5" font-weight="650">
+                <text x="264" y="141">人工搬运 ①</text>
+                <text x="264" y="221">人工搬运 ②</text>
+                <text x="264" y="301">人工搬运 ③</text>
+              </g>
+
+              <text x="30" y="392" class="s-ink" font-size="12.5">同一变更的状态被人工搬运 <tspan class="f-5" font-weight="700">3 次</tspan>，每次都可能漏写或滞后</text>
+              <text x="30" y="414" class="s-ink" font-size="12.5">端到端前置时间<tspan class="f-5" font-weight="700">算不出来</tspan>：两端时间戳不属于同一个 ID</text>
+
+              <!-- 右：串联工具链 -->
+              <text x="510" y="32" class="f-1" font-size="16" font-weight="700">架构 B · 串联工具链</text>
+              <text x="510" y="54" class="s-muted" font-size="12.5">同一个变更 ID 贯穿全链，状态由工具自己传递</text>
+
+              <rect x="530" y="72" width="180" height="52" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="530" y="152" width="180" height="52" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="530" y="232" width="180" height="52" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="530" y="312" width="180" height="52" rx="9" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="620" y="96"  class="s-ink" font-size="14.5" font-weight="650">需求 / 看板工具</text>
+                <text x="620" y="115" class="s-muted" font-size="12">编号 A-1024</text>
+                <text x="620" y="176" class="s-ink" font-size="14.5" font-weight="650">版本控制</text>
+                <text x="620" y="195" class="s-muted" font-size="12">提交信息带 A-1024</text>
+                <text x="620" y="256" class="s-ink" font-size="14.5" font-weight="650">CI 流水线</text>
+                <text x="620" y="275" class="s-muted" font-size="12">制品标签带 A-1024</text>
+                <text x="620" y="336" class="s-ink" font-size="14.5" font-weight="650">部署与监控</text>
+                <text x="620" y="355" class="s-muted" font-size="12">部署事件带 A-1024</text>
+              </g>
+
+              <g class="s-1" stroke-width="2" fill="none">
+                <line x1="620" y1="124" x2="620" y2="148" marker-end="url(#ah-65-4)"/>
+                <line x1="620" y1="204" x2="620" y2="228" marker-end="url(#ah-65-4)"/>
+                <line x1="620" y1="284" x2="620" y2="308" marker-end="url(#ah-65-4)"/>
+              </g>
+              <g class="f-1" font-size="12.5" font-weight="650">
+                <text x="734" y="141">① 提交事件 webhook</text>
+                <text x="734" y="221">② 构建结果 API 回写</text>
+                <text x="734" y="301">③ 部署事件 + 遥测 API</text>
+              </g>
+
+              <text x="510" y="392" class="s-ink" font-size="12.5">人工搬运 <tspan class="f-1" font-weight="700">0 次</tspan>：状态在一处产生，在多处被读到</text>
+              <text x="510" y="414" class="s-ink" font-size="12.5">变更前置时间<tspan class="f-1" font-weight="700">由工具链自动产出</tspan>，无需人工对账</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-5-2　同一个变更，两种架构下的搬运次数。</strong>
+            两边的工具是一样的四类，差别只在<strong>接口</strong>：
+            左边每个交接都要人重新输入一次，三次搬运；右边由 webhook 与 API 把同一个变更 ID 带着走，零次搬运。
+            要看懂的是<strong>第二行结论</strong> —— 人工搬运真正吃掉的不是那几分钟，
+            而是<strong>端到端度量的能力</strong>：两端时间戳挂不到同一个 ID 上，前置时间就只能靠估。
+            <br><small class="muted">本对比图与其中的搬运次数为<strong>本站构造的教学示例</strong>，用于说明集成缺失的代价，非真实调研数据。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">API 集成</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>人工搬运状态</strong></td>
+                  <td>状态<strong>在一处产生，在多处被读到</strong>，实时且不会写错</td>
+                  <td>状态在多处被<strong>重新输入</strong>，滞后、会漏、会失真</td>
+                </tr>
+                <tr>
+                  <td><strong>事后拉数据拼报表</strong></td>
+                  <td>集成发生在<strong>流程运行时</strong>，下游立刻能用</td>
+                  <td>集成发生在<strong>汇报时</strong>，只让报表好看，不改变工作方式</td>
+                </tr>
+                <tr>
+                  <td><strong>开源 <span class="en">Open source</span></strong></td>
+                  <td>是<strong>串联的手段</strong>：接口约定与调用方式</td>
+                  <td>是<strong>工具的许可与获取方式</strong>：可自行扩展接口，但集成与升级责任自负</td>
+                </tr>
+                <tr>
+                  <td><strong>统一厂商套件</strong></td>
+                  <td>关注<strong>接口是否开放</strong>，工具可换</td>
+                  <td>用「同一家出品」换取开箱即通，代价是<strong>换任何一环都要动整套</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「工具之间有集成」不等于「数据在流动」</strong>。
+            很多所谓集成只是把 A 的数据定时导一份到 B 的报表里 —— 数据到了，
+            但没有出现在做决定的那个界面上，工作方式一点没变。
+            判据是：<strong>集成的结果有没有改变某个人下一步的动作。</strong></small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该区分；
+            <em>Application Programming Interface (API)</em> 与 <em>Open source</em> 为官方术语表条目。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>工具链设计的原则比工具选型重要。</strong>选型可以换，架构错了要重来：</p>
+          <ul>
+            <li><strong>先定流程，再选工具</strong>：工具应当支撑已经想清楚的价值流，
+              而不是反过来让流程去适配某个工具的默认工作流。</li>
+            <li><strong>把「有没有可用 API」列进选型标准</strong>：功能只影响一个环节的效率，
+              接口影响整条链能不能自动化。<strong>一个功能一般但接口开放的工具，通常优于一个功能强但封闭的工具。</strong></li>
+            <li><strong>一个变更一个 ID，全链带着走</strong>：需求编号写进提交信息，
+              提交号写进制品标签，制品标签写进部署事件。这是端到端度量唯一可行的基础。</li>
+            <li><strong>状态只有一个权威来源</strong>：同一件事在两处都能被修改，
+              迟早会不一致，而不一致时没人知道该信哪一个。</li>
+            <li><strong>ChatOps 是工具链的接入面</strong>：把工具链的事件推到团队聊天频道，
+              并允许在频道里触发操作，让链上发生的事对所有人可见（见
+              <a href="../ch03-key-practices/3.6-chatops.html">第 3 章 ChatOps（3.6）</a>）。
+              它不新增环节，只是给已有的链换一个人人都在的界面。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条设计原则为本站教学整理，官方文件未规定工具链的集成原则；
+            <em>ChatOps</em> 为官方术语表条目。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>术语定义题（Bloom 1）</strong>：<em>Application Programming Interface (API)</em>
+              与 <em>Open source</em> 都是官方术语表条目，可能被直接问定义。
+              API 的正确方向是<strong>系统之间按约定交互的接口</strong>；
+              开源的正确方向是<strong>源码公开、可自由取得与修改的软件</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：把 API 说成<strong>一种编程语言</strong>、
+              <strong>一种开发框架</strong>或<strong>某个具体工具</strong>；
+              把开源说成<strong>「免费」</strong> —— 免费只是常见结果，不是定义，
+              而且工具链里开源的真实代价是集成与维护的人力。</li>
+            <li><strong>场景题</strong>：题干描述工具之间靠人转抄状态、无法端到端度量，
+              问该改进什么。方向是<strong>通过接口集成让数据自动流动</strong>，
+              而不是「再买一个工具」或「加一个人负责同步」。</li>
+            <li><strong>排除技巧</strong>：凡是把答案落在「增加一个新工具」或「增加一道人工汇总」上的选项，
+              在工具链题里几乎都是干扰项 —— 它们把断口留在原地，只是又加了一层。</li>
+          </ul>
+          <p class="mb-0 muted"><small>命题角度、干扰项构造方式与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">数据能自己走过去的地方，就不要让人搬过去。</p>
+          <p class="mb-0 muted"><small>选型口诀：<strong>先问接口，再问功能</strong>。功能决定一个环节多快，接口决定整条链能不能自动跑。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-5-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-5-3</div>
+        <h3 class="kp__title">哪些不属于工具链要素 · 三个反模式<span class="en">What is not a toolchain element</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--hot">📌 高频</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            判断一个系统是不是工具链要素，只看一条：
+            <strong>它在不在「变更从想法到生产、再从生产回到源头」这条链路上产出或搬运东西。</strong>
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:34%">系统</th><th style="width:30%">它在链上做什么</th><th>是不是工具链要素</th></tr></thead>
+              <tbody>
+                <tr><td><strong>版本控制</strong></td><td>持有变更本身，是链的源头</td><td><strong>是</strong> —— 编码环节</td></tr>
+                <tr><td><strong>测试自动化</strong></td><td>给出「这个制品能否往下走」的判断</td><td><strong>是</strong> —— 测试环节</td></tr>
+                <tr><td><strong>监控工具</strong></td><td>产出遥测，把生产的反馈送回源头</td><td><strong>是</strong> —— 监控环节</td></tr>
+                <tr><td><strong>服务台事件管理系统</strong></td><td>受理与跟踪用户报障，支撑服务运营</td>
+                  <td><strong>不是</strong> —— 由 DOFD v3.4 官方样题答案键确认，不属于典型 DevOps 工具链要素</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>「在链上产出或搬运变更」这条判据、以及上表前三行的归类为<strong>本站教学整理</strong>；
+            <strong>最后一行的结论由 DOFD v3.4 官方样题答案键确认</strong>，本站只陈述结论，不复制题干与选项原文。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            某组织把服务台系统当成工具链的中枢，要求所有变更先在服务台建单再走流水线。
+            结果是<strong>建单成为新的排队环节</strong>：服务台系统里并没有代码、制品与测试结果，
+            「这个变更现在到哪了」在那里依然查不到，团队多填了一道单，链条一点没有接上。
+          </p>
+          <p>
+            这类做法的根子，是<strong>「跟 DevOps 有关」和「是工具链的一环」被混为一谈</strong>。
+            把两条官方判断放在一起，边界就出来了：
+          </p>
+          <ul>
+            <li><strong>官方给过的另一条判断恰好构成对照</strong>：
+              对 DevOps 最关键的 ITSM 流程是<strong>组织变革管理、服务连续性管理、事件管理三者皆是</strong>
+              —— 这一条同样由 DOFD v3.4 官方样题答案键确认（见
+              <a href="../ch04-frameworks/4.4-itsm-itil.html">第 4 章 ITSM 与 ITIL（4.4）</a>）。</li>
+            <li>由此得出的结论：<strong>事件管理这个流程对 DevOps 很关键，
+              但服务台的事件管理系统不是工具链要素。</strong>
+              流程重要，说的是它与 DevOps 协作紧密；工具链要素，说的是它在开发到部署这条链路上占一环。
+              <strong>这是两个不同的问题，不要用其中一条去否定另一条。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>开头的场景为<strong>本站构造的教学示例</strong>，用于说明边界混淆的后果，非真实调研数据；
+            「流程重要 ≠ 属于工具链要素」这一表述为本站教学整理，
+            两条被引用的判断本身由 DOFD v3.4 官方样题答案键确认。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">维度</th><th style="width:37%">工具链要素</th><th>服务台事件管理系统</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>处理对象</strong></td>
+                  <td><strong>变更</strong>：需求、代码、制品、部署、遥测</td>
+                  <td><strong>事件</strong>：用户报障、服务中断、请求受理</td>
+                </tr>
+                <tr>
+                  <td><strong>位置</strong></td>
+                  <td>在<strong>开发到部署</strong>这条价值流上</td>
+                  <td>在<strong>服务运营</strong>侧，面向已上线服务的日常支持</td>
+                </tr>
+                <tr>
+                  <td><strong>触发时机</strong></td>
+                  <td>有人想改变系统时</td>
+                  <td>有人遇到问题时</td>
+                </tr>
+                <tr>
+                  <td><strong>与 DevOps 的关系</strong></td>
+                  <td>构成 DevOps 的技术底座</td>
+                  <td><strong>是重要的协作对手方</strong>：事件管理流程对 DevOps 至关重要，
+                    但这不使它成为工具链的一环</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「重要」不等于「属于」</strong>。
+            服务台是反馈的重要来源，也是 DevOps 必须打通的对手方，
+            但官方样题答案键确认它<strong>不属于</strong>典型工具链要素 ——
+            考场上不要因为「它显然跟 DevOps 有关」就把它选成要素。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该对比；
+            <em>IT service management</em>、<em>Service</em>、<em>DevOps toolchain</em> 为官方术语表条目，
+            <em>ITSM</em> 是 v3.4 课程大纲 M4 的模块子项；<em>ITIL</em> 与 <em>ITSM</em> 均未收录于 66 条术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>三个反模式，各自对应一个纠正动作：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">反模式</th><th style="width:34%">现象</th><th>纠正动作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>先选工具再想流程</strong></td>
+                  <td>工具已经买了，于是流程被改造成工具的默认工作流；
+                    没人说得清这个环节为什么这样做</td>
+                  <td>先画出目标价值流与每个交接物，再让工具去满足它。
+                    <strong>工具适配流程，不是流程适配工具</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>每个团队各选各的</strong></td>
+                  <td>五个团队五套流水线、五种制品命名、五个看板；
+                    组织级的部署频率与前置时间<strong>拼不出来</strong></td>
+                  <td>不必强推统一工具，但要统一<strong>交接物与标识</strong>：
+                    变更 ID、制品命名、部署事件格式三者拉齐即可端到端度量</td>
+                </tr>
+                <tr>
+                  <td><strong>把工具链当成 DevOps 本身</strong></td>
+                  <td>工具全上线了，交接与审批照旧，
+                    组织仍然按职能分墙 —— 自动化只是把原来的等待搬到了流水线里</td>
+                  <td>工具链是<strong>手段</strong>。同步推进工作方式与协作方式的改变
+                    （见<a href="../ch05-culture/5.5-operating-models.html">第 5 章 运营模型与团队结构（5.5）</a>）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>「三个反模式」的命名与纠正动作为<strong>本站教学整理</strong>，
+            官方文件未以反模式的形式给出这些内容。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>服务台事件管理系统不属于典型的 DevOps 工具链要素</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              这是本节最高价值的考点。</li>
+            <li><strong>命题角度与干扰项</strong>：要素判别这一角度常以反向问法出现（问「不属于」）。
+              干扰项的构造方式是：把明显落在链上的环节（如版本控制、测试自动化、监控工具等类别）
+              与链外系统并列，考的是能不能识别边界。</li>
+            <li><strong>排除技巧（本站整理）</strong>：对每个选项问一句
+              <strong>「它处理的是变更，还是事件？」</strong>
+              处理变更、制品、遥测的留下；处理用户报障与服务请求的，就是要挑出来的那一个。</li>
+            <li><strong>最容易踩的坑</strong>：因为记得<strong>事件管理是对 DevOps 最关键的 ITSM 流程之一</strong>
+              （同为官方样题答案键确认，见 <a href="../ch04-frameworks/4.4-itsm-itil.html">4.4</a>），
+              就误以为服务台系统也是工具链要素。
+              <strong>两条官方判断不矛盾：一条讲流程重要性，一条讲工具链构成。</strong></li>
+            <li><strong>反向问法的应对</strong>：读到「不属于 / not」时先在题干上做个标记。
+              这类题的错误多数不是不会，而是<strong>把反向读成了正向</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>干扰项分析与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2；
+            两条被引用的判断本身由 DOFD v3.4 官方样题答案键确认，本站只陈述结论，
+            不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">处理「变更」的在链上，处理「报障」的在链外 —— 服务台事件管理系统不是工具链要素。</p>
+          <p class="mb-0 muted"><small>配套记：<strong>重要 ≠ 属于</strong>。
+            事件管理流程对 DevOps 关键（官方确认），服务台系统不是工具链要素（官方确认），两句都要记住。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方确认</strong>：<strong>服务台事件管理系统不属于</strong>典型 DevOps 工具链要素
+          （DOFD v3.4 官方样题答案键确认）</li>
+        <li>本节最值得优先记的一条，常以反向问法出现（<em>本站教学整理</em>）</li>
+        <li><strong>判据</strong>：处理<strong>变更</strong>的在链上（版本控制、测试自动化、监控工具），
+          处理<strong>报障</strong>的在链外（判据为本站教学整理）</li>
+        <li><strong>不矛盾</strong>：事件管理是对 DevOps 最关键的 ITSM 流程之一（同为官方样题答案键确认），
+          但流程重要 ≠ 属于工具链</li>
+        <li><strong>八类环节</strong>：计划 · 编码 · 构建 · 测试 · 发布 · 部署 · 运维 · 监控（划分为本站教学整理）</li>
+        <li><strong>三种串联方式</strong>：API 调用 · 事件 / webhook · 共享制品仓库。
+          <em>API</em> 与 <em>Open source</em> 都是官方术语表条目</li>
+        <li><strong>设计 &gt; 选型</strong>：先定流程再选工具；把「有没有可用 API」列进选型标准；一个变更一个 ID 贯穿全链（设计原则为本站教学整理）</li>
+        <li><strong>三个反模式</strong>：先选工具再想流程 · 各团队各选各的（度量拼不出来）· 把工具链当成 DevOps 本身（反模式命名为本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>DevOps toolchain</em>、<em>Application Programming Interface (API)</em>、
+      <em>Open source</em>、<em>Deployment pipeline</em>、<em>IT service management</em>、<em>ChatOps</em>、
+      <em>Continuous integration</em>、<em>Change lead time</em> 均列于 DOFD v3.4 官方考纲术语表
+      （Concept and Terminology List，2022-05）；术语表只列词条不附定义，本页给出的中文释义均为本站措辞。
+      <em>DevOps Toolchains</em> 是 v3.4 课程大纲 M6 模块
+      <em>Automation &amp; Architecting DevOps Toolchains</em> 的子项。
+      <strong>本节引用的两条官方样题答案键结论</strong>：
+      「<strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>」，
+      以及作为对照的「对 DevOps 最关键的 ITSM 流程是组织变革管理、服务连续性管理、事件管理三者皆是」
+      —— 均出自 DOFD v3.4 官方样题答案键，本站<strong>只陈述结论，不复制题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：八类环节的划分与职责描述、三种串联方式的归纳、
+      「在链上产出或搬运变更」这一要素判据、开源在工具链中的角色描述、
+      五条集成设计原则、三个反模式及其纠正动作、各面中的干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      图 6-5-2 与文中带数字的案例为本站构造的教学示例，非真实调研数据。
+      <em>Platform Engineering</em> 属 <strong>v3.6 新增学习目标</strong>
+      （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），v3.4 的 66 条术语表未收录。
+      本节不涉及具体厂商工具的评价与推荐；VSM 平台与生成式 AI 用例见本章 <a href="6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a>，
+      部署流水线的内部结构见本章 <a href="6.2-deployment-pipeline.html">6.2 部署流水线</a>；端到端指标的定义见
+      <a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

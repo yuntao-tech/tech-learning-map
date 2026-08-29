@@ -42,6 +42,7 @@
       <h1 class="page-head__title">3.8 监控与可观测性</h1>
       <div class="page-head__en">Monitoring and Observability</div>
       <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
         <span class="badge badge--new">🆕 v3.6 新增</span>
         <span class="badge badge--warn">⚠️ 易混淆</span>
       </div>
@@ -65,10 +66,10 @@
     </div>
 
     <div class="src-note">
-      <strong>Monitoring and Observability</strong> 是 <strong>v3.6 新增</strong>的学习目标，
-      来源为 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>。
-      <strong>Observability 本身不出现在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，
-      也不在 v3.4 课程大纲 M3 的子项列表里，因此本节页头与各知识点<strong>不使用「⭐ 考纲核心」</strong>。
+      <strong>Monitoring and Observability</strong> 出自 <strong>PeopleCert 现行产品页公布的学习目标，
+      v3.4 术语表未收录</strong>，是 <strong>v3.6 新增</strong>的<strong>官方</strong>学习目标，不是本站的延伸补充。
+      因此本节页头与主题知识点标「📘 官方模块子项」+「🆕 v3.6 新增」两个徽章：
+      它属于官方文件点名的内容，但因不在 v3.4 的 66 条术语表内，<strong>不使用「⭐ 考纲核心」</strong>。
       v3.6 未公开重新发布权重表，本节的题量占比无法从官方文件推得。
     </div>
 
@@ -171,6 +172,7 @@
         <div class="kp__id">kp-3-8-1</div>
         <h3 class="kp__title">监控 vs 可观测性<span class="en">Monitoring vs Observability</span></h3>
         <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
           <span class="badge badge--new">🆕 v3.6 新增</span>
           <span class="badge badge--warn">⚠️ 易混淆</span>
         </div>
@@ -329,8 +331,8 @@
             文中的 OpenTelemetry、Prometheus、分布式追踪后端等具体技术栈
             <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
             均不在 DOFD 考纲内，本站只点名不展开，工具链整体形态见
-            <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>，
-            AIOps 见<a href="../ch07-metrics/index.html">第 7 章（7.6）</a>。</small></p>
+            <a href="../ch06-automation/6.5-toolchain-architecture.html">第 6 章 自动化与工具链</a>，
+            AIOps 见<a href="../ch07-metrics/7.6-aiops.html">第 7 章（7.6）</a>。</small></p>
         </div>
 
         <div class="face face--exam">
@@ -801,7 +803,7 @@
             官方文件未涉及可观测性数据的采集与保留策略。常见技术栈 OpenTelemetry、Prometheus
             及各类日志与追踪后端 <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
             均不在 DOFD 考纲内，工具链见
-            <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>。</small></p>
+            <a href="../ch06-automation/6.5-toolchain-architecture.html">第 6 章 自动化与工具链</a>。</small></p>
         </div>
 
         <div class="face face--exam">
@@ -854,7 +856,8 @@
         <li><strong>可观测性是混沌工程的前提</strong>（<a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6</a>），
           观察不到就不要注入；它也是<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈</a>的技术底座
           <br><small class="muted">这两条归属为本站教学整理，官方文件未就可观测性作出三步工作法归属或混沌工程前置条件的判定。</small></li>
-        <li><strong>Observability 不在官方 66 条术语表内</strong>，是 <strong>v3.6 新增</strong>的学习目标；
+        <li><strong>Observability 是官方内容但不在 66 条术语表内</strong> —— 它是 <strong>v3.6 新增</strong>的官方学习目标，
+          徽章标「📘 官方模块子项」+「🆕 v3.6 新增」，不是延伸内容；
           <strong>metrics / logs / traces 三大支柱是教学补充</strong>，不必背名称</li>
         <li>同名陷阱：本节的 metrics 是<strong>技术遥测</strong>；考纲术语 <em>DevOps metrics</em>
           按 v3.4 课程大纲 M7 分为 <strong>Speed、Quality、Stability、Culture</strong> 四个维度，
@@ -864,11 +867,11 @@
     </div>
 
     <div class="src-note">
-      <p><strong>官方来源</strong>：<em>Monitoring and Observability</em> 是 <strong>v3.6 新增</strong>的学习目标，
-      出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>；
-      <strong>v3.6 未公开重新发布权重表</strong>，本节题量占比无法从官方文件推得。
-      <strong>Observability 及 metrics / logs / traces 均不在 DOFD v3.4 官方考纲的 66 条术语表内</strong>，
-      也不在 v3.4 课程大纲 M3 的子项列表内，因此本节页头与各知识点均未使用「⭐ 考纲核心」。
+      <p><strong>官方来源</strong>：<em>Monitoring and Observability</em> 出自
+      <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>，属 <strong>v3.6 新增</strong>的
+      <strong>官方</strong>学习目标；<strong>v3.6 未公开重新发布权重表</strong>，本节题量占比无法从官方文件推得。
+      因此本节页头与主题知识点标「📘 官方模块子项」+「🆕 v3.6 新增」；因不在 v3.4 的 66 条术语表内，未使用「⭐ 考纲核心」。
+      <em>metrics / logs / traces</em> 三大支柱既不在术语表内，也未出现在 v3.6 学习目标里，属本站教学补充。
       本节引用的官方术语表条目为 <em>Microservices</em>、<em>Single Point of Failure (SPOF)</em>、
       <em>Constraint</em>、<em>Resilience engineering</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、
       <em>DevOps metrics</em>、<em>Shift left</em>、<em>Continuous deployment</em>。</p>
@@ -885,7 +888,7 @@
       「新问题测试」判据，以及各面中的干扰项分析与排除技巧，官方均未以此形式给出，已分别就地标注。
       文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
       OpenTelemetry、Prometheus 等具体技术栈不在考纲内，本节仅点名，展开见
-      <a href="../ch06-automation/index.html">第 6 章 自动化与工具链</a>；
+      <a href="../ch06-automation/6.5-toolchain-architecture.html">第 6 章 自动化与工具链</a>；
       绩效指标体系与 AIOps 见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</p>
     </div>
 

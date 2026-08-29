@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.5 价值驱动指标与看板 · DevOps Foundation 学习站</title>
+<meta name="description" content="活动指标量的是「做了多少」，价值驱动指标量的是「用户和业务得到了什么」。本节给出两套看板的对照图、一句话识别虚荣指标的方法，以及分层看板的设计原则与三条反模式。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.5-value-driven-metrics"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.5 价值驱动指标与看板</h1>
+      <div class="page-head__en">Value Driven Metrics and Dashboards</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        一套指标全绿，业务却没有任何变化 —— 这是度量最常见的失败方式，
+        而且它不是因为数字造假，是因为<strong>量错了东西</strong>。
+        活动指标回答「做了多少」，价值驱动指标回答「用户和业务得到了什么」。
+        本节的判据只有一句：<strong>这个数字变好了，会因此做出什么不同的决定？</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>价值驱动指标与活动指标的分界在哪，为什么活动指标「容易好看却毫无意义」</li>
+        <li>怎样用一句话把虚荣指标从看板上摘出去</li>
+        <li>看板为什么必须分层，以及三条最常见的看板反模式</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-5-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 486" role="img" aria-label="同一个团队同一个季度的两套看板：活动指标全部变好，价值驱动指标没有一个变好">
+          <defs>
+            <marker id="ah-75-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <!-- 左：活动指标 -->
+          <text x="24" y="24" class="f-4" font-size="16" font-weight="700">活动指标看板</text>
+          <text x="24" y="44" class="s-muted" font-size="12.5">量的是：团队做了多少动作</text>
+          <rect x="24" y="56" width="440" height="300" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill)"/>
+
+          <rect x="40" y="72" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="56" y="98" class="s-ink" font-size="14.5" font-weight="650">代码提交数</text>
+          <text x="56" y="118" class="s-muted" font-size="12">Code commit</text>
+          <text x="432" y="108" class="f-4" font-size="16" font-weight="700" text-anchor="end">↑ 340 / 周</text>
+
+          <rect x="40" y="142" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="56" y="168" class="s-ink" font-size="14.5" font-weight="650">迭代完成故事点</text>
+          <text x="56" y="188" class="s-muted" font-size="12">Velocity</text>
+          <text x="432" y="178" class="f-4" font-size="16" font-weight="700" text-anchor="end">↑ 62 / 迭代</text>
+
+          <rect x="40" y="212" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="56" y="238" class="s-ink" font-size="14.5" font-weight="650">工单关闭数</text>
+          <text x="56" y="258" class="s-muted" font-size="12">Tickets closed</text>
+          <text x="432" y="248" class="f-4" font-size="16" font-weight="700" text-anchor="end">↑ 118 / 月</text>
+
+          <rect x="40" y="282" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="56" y="308" class="s-ink" font-size="14.5" font-weight="650">需求评审场次</text>
+          <text x="56" y="328" class="s-muted" font-size="12">评审会与方案宣讲的场数</text>
+          <text x="432" y="318" class="f-4" font-size="16" font-weight="700" text-anchor="end">↑ 26 场 / 月</text>
+
+          <!-- 右：价值驱动指标 -->
+          <text x="496" y="24" class="f-1" font-size="16" font-weight="700">价值驱动指标看板</text>
+          <text x="496" y="44" class="s-muted" font-size="12.5">量的是：用户和业务得到了什么</text>
+          <rect x="496" y="56" width="440" height="300" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+
+          <rect x="512" y="72" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="98" class="s-ink" font-size="14.5" font-weight="650">新功能 30 天使用率</text>
+          <text x="528" y="118" class="s-muted" font-size="12">目标用户中实际用过一次的比例</text>
+          <text x="904" y="108" class="f-5" font-size="16" font-weight="700" text-anchor="end">4%</text>
+
+          <rect x="512" y="142" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="168" class="s-ink" font-size="14.5" font-weight="650">客户满意度</text>
+          <text x="528" y="188" class="s-muted" font-size="12">季度调研</text>
+          <text x="904" y="178" class="f-5" font-size="16" font-weight="700" text-anchor="end">持平</text>
+
+          <rect x="512" y="212" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="238" class="s-ink" font-size="14.5" font-weight="650">客户续约率</text>
+          <text x="528" y="258" class="s-muted" font-size="12">同比</text>
+          <text x="904" y="248" class="f-5" font-size="16" font-weight="700" text-anchor="end">−2 个百分点</text>
+
+          <rect x="512" y="282" width="408" height="60" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="528" y="308" class="s-ink" font-size="14.5" font-weight="650">人工处理工单量</text>
+          <text x="528" y="328" class="s-muted" font-size="12">本应被新功能替代</text>
+          <text x="904" y="318" class="f-5" font-size="16" font-weight="700" text-anchor="end">无变化</text>
+
+          <!-- 中间连接 -->
+          <line x1="466" y1="206" x2="494" y2="206" class="s-1" stroke-width="2" marker-end="url(#ah-75-1)"/>
+
+          <!-- 结论条 -->
+          <rect x="24" y="380" width="912" height="86" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="480" y="410" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">同一个团队 · 同一个季度 · 同一批工作</text>
+          <text x="480" y="436" class="s-ink" font-size="13.5" text-anchor="middle">左边四个数字全部在变好，右边没有一个变好。</text>
+          <text x="480" y="456" class="s-muted" font-size="13" text-anchor="middle">左边度量的是「投入」，右边度量的是「结果」—— 只看左边，永远发现不了这个季度白干了。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-5-1　两套看板，一个季度。</strong>
+        要看懂的不是哪套指标「更好」，而是<strong>左边那套完全可以在右边毫无变化的情况下全部变好</strong> ——
+        活动指标与业务结果之间没有内建的因果保证。
+        真正危险的地方在于：左边全绿时，团队、管理层、汇报材料都会认为一切正常，
+        <strong>没有任何机制会主动提出右边的问题</strong>。价值驱动指标的作用，就是把右边那一列强制放进同一块屏幕。
+        <br><small class="muted">图中数字为本站构造的教学示例，用于说明两类指标的脱钩机制，非真实调研数据。
+        <em>Code commit</em>、<em>Velocity</em> 两个词条列于 DOFD v3.4 官方考纲术语表；
+        「活动指标 / 价值驱动指标」两栏的对照排布为本站教学整理。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-5-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-5-1</div>
+        <h3 class="kp__title">价值驱动指标<span class="en">Value Driven Metrics</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">价值驱动指标 <span class="en">Value Driven Metrics</span></span>
+            是以<strong>「用户和业务得到了什么」</strong>为衡量对象的指标：
+            它的数值变化对应的是使用、留存、成本、风险、客户结果这类<strong>价值流末端的事实</strong>，
+            而不是团队在价值流中间做了多少动作。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">三个判定要件</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>有一个受益人</strong></td><td>能说清「谁因为这个数字变好而变得更好」。答案必须是用户、客户或业务，不能是团队自己</td></tr>
+                <tr><td><strong>落在价值流末端</strong></td><td>衡量的是交付<strong>之后</strong>发生的事：被不被用、有没有替代掉人工、成本降没降，而不是交付过程本身的产出量</td></tr>
+                <tr><td><strong>变化能改变决定</strong></td><td>数字变好或变坏时，<strong>有人会因此做出不同的选择</strong> —— 继续投入、调整优先级、砍掉功能。做不到这一条的，见 <a href="#kp-7-5-2">kp-7-5-2</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Value Driven Metrics</strong> 逐字列于 DOFD v3.4 课程大纲
+            M7 <em>Measurement, Metrics, and Reporting</em> 的模块子项，属官方模块构成；
+            v3.4 的 66 条官方考纲术语表未单列该词条。上表三个判定要件为本站教学整理，官方未给出判定清单。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要解决的痛点，出现在<strong>度量做得「很好」之后</strong>：
+            数据齐、图表多、每周都发，但<strong>没有任何一个决定因为这些数字而改变过</strong>。
+          </p>
+          <ul>
+            <li>某内部平台团队用一年时间把部署频率从每月 3 次做到每月 40 次，
+              这条交付流动指标与看板上的四个活动指标一起全部翻倍，季度评审顺利通过。</li>
+            <li>同一年里，平台的目标用户 —— 公司内 26 个业务团队 —— 只有 <strong>3 个</strong>把主要流程迁了过来。
+              其余 23 个继续用旧的工单流程，理由是新平台不支持各自的审批场景。
+              这条信息<strong>不在任何一块看板上</strong>，因为没人度量「被采纳」。</li>
+            <li>机制是这样跑偏的：<strong>能量的东西被优先量 → 被量的东西被优先做 → 做得多的方向被当成正确方向</strong>。
+              部署频率容易从流水线自动取数，采纳率要去问 26 个团队，
+              于是一年之后，团队把力气全花在了容易被量的那一半上。</li>
+          </ul>
+          <p>
+            价值驱动指标切断这条链路的方式，是<strong>先定结果，再定动作</strong>：
+            每一块投入先写下「预期哪个末端数字会变化」，再开工。
+            末端数字没变，无论中间做了多少，都算这块投入没有兑现。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            「能量→被做→被当成正确方向」这条机制链为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">价值驱动指标</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>活动指标</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>量<strong>结果</strong>：功能被用了吗、客户满意了吗、成本降了吗</td>
+                  <td>量<strong>投入与产出量</strong>：提交数、故事点、工单关闭数、会议数。<strong>可以在结果毫无变化时全部变好</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>交付流动指标</strong><br><small class="muted">变更前置时间、部署频率等</small></td>
+                  <td>回答<strong>「交付出去的东西有没有产生价值」</strong></td>
+                  <td>回答<strong>「交付这件事本身跑得快不快、稳不稳」</strong>。它们不是虚荣指标，但也不能证明价值<br><small class="muted">这一族指标的定义与四大分类见本章 <a href="7.2-dora-metrics.html">7.2</a>、<a href="7.3-four-metric-families.html">7.3</a>，本节不展开</small></td>
+                </tr>
+                <tr>
+                  <td><strong>财务报表口径</strong></td>
+                  <td>粒度到<strong>单个功能或单条价值流</strong>，可在几周内反馈</td>
+                  <td>粒度到<strong>部门或公司</strong>，季度或年度才结算，无法指导下一个迭代的取舍</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong></td>
+                  <td>持续<strong>监测</strong>末端结果，是运行期的仪表</td>
+                  <td>是一次性的<strong>分析活动</strong>：画出当前流程、找出等待与浪费<br><small class="muted">见<a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>活动指标不等于坏指标</strong>。
+            提交数、故事点在诊断负荷时有用，部署频率、变更前置时间这类<strong>交付流动指标</strong>在诊断流动问题时非常有用 ——
+            问题只出在<strong>拿任何一类去当价值的证明</strong>。
+            判据不是「这个指标量的是不是活动」，而是<strong>「有没有人拿它去回答一个它答不了的问题」</strong>。</small></p>
+          <p class="mb-0 muted"><small>「活动指标」这一提法与上表四行对照均为本站教学整理，
+            DOFD v3.4 课程大纲 M7 列出 <em>Value Driven Metrics</em> 子项，但未给出与其他指标族的对照表；
+            <em>Value stream mapping</em>、<em>Velocity</em>、<em>Deployment frequency</em>、<em>Change lead time</em> 列于 66 条官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把一条价值驱动指标真正立起来，需要四个具体动作，缺一条它就会退化成装饰：</p>
+          <ul>
+            <li><strong>每个功能配一条结果假设</strong>：立项时写死一句「上线 30 天后，<em>某个末端数字</em> 从 A 变到 B」。
+              写不出这句话的功能，说明没人知道它为谁解决什么问题。</li>
+            <li><strong>指标定义写在代码旁边</strong>：「使用率」的分子分母各是什么、去不去重、算不算内部账号 ——
+              定义含糊的指标一定会在争论中被重新解释成好看的那种算法。</li>
+            <li><strong>反向指标成对出现</strong>：只挂「使用量」，团队会去堆弹窗引导；
+              配上「人工工单量」和「留存」，堆量的做法立刻会在另一个数字上露出代价。</li>
+            <li><strong>到期就结算</strong>：30 天到了必须给结论 —— 兑现、部分兑现、没兑现。
+              没兑现的功能进入「砍掉 / 改造 / 再等一轮」的明确处置，<strong>不允许静静留在系统里</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四个动作为本站教学整理，官方文件把 <em>Value Driven Metrics</em> 列为 M7 模块子项，
+            未规定具体实施步骤或验收周期。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              它是价值驱动指标在考试里的根：<strong>凡是问「指标 / 实践应当对齐什么」，方向永远指向业务目标</strong>，
+              不指向技术先进性、工具能力或团队产出量。</li>
+            <li><strong>本站教学判据</strong>：题干出现<strong>「业务价值 / 客户结果 / 对齐业务目标」</strong>时，
+              正确选项通常是描述<strong>结果</strong>的那一个；出现<strong>「产出量 / 完成了多少 / 更快更多」</strong>时，
+              那一般是被排除的干扰方向。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>①用交付流动指标顶替</strong> —— 选项给部署频率或变更前置时间，读起来很像 DevOps 的正确答案，
+              但它们回答的是交付效率，不是业务价值（这一族属本章 <a href="7.2-dora-metrics.html">7.2</a>、<a href="7.3-four-metric-families.html">7.3</a> 的考点）；
+              <strong>②用团队产出顶替</strong> —— 给 <em>Velocity</em>、故事点、提交数；
+              <strong>③用工具或成熟度顶替</strong> —— 给「引入了哪些工具」「达到了哪一级」。</li>
+            <li><strong>排除技巧</strong>：读每个选项时问一句<strong>「这句话的主语是团队，还是用户/业务？」</strong>
+              主语是团队的，先划掉一轮，剩下的通常就是价值驱动方向。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            除已注明由官方样题答案键确认的一条外，判据与排除技巧均为本站教学推断，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">价值驱动指标问的是「用户和业务因此得到了什么」，不是「团队做了多少」。</p>
+          <p class="mb-0 muted"><small>一句话推论：把指标念一遍，如果句子的主语是团队自己，那它多半是活动指标。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-5-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-5-2</div>
+        <h3 class="kp__title">活动指标与虚荣指标的识别<span class="en">Activity Metrics &amp; Vanity Metrics</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>活动指标</strong>量的是「做了多少」：提交数、故事点、工单关闭数、上线次数。
+            <strong>虚荣指标</strong>是另一个维度的判定 —— 指<strong>无论怎么变化都不会改变任何决定</strong>的数字。
+          </p>
+          <p>
+            识别方法只有一句话，对任何指标都成立：
+          </p>
+          <p class="anchor-line">这个数字变好了，会因此做出什么不同的决定？</p>
+          <p class="mb-0">
+            答得出，它是有效指标；<strong>答不上来、或者答案是「说明干得不错」，它就是虚荣指标</strong>。
+            注意这条判据<strong>不看指标量的是活动还是价值</strong> —— 价值类的数字同样可能是虚荣的。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            虚荣指标不是被误选的，是被<strong>制度筛选出来的</strong>：
+            当指标同时承担「评价人」的功能时，只会上涨的那些数字必然胜出。
+          </p>
+          <ul>
+            <li>某组织把「迭代完成故事点」纳入团队季度评分。两个季度后，
+              平均 <em>Velocity</em> 从 48 涨到 <strong>77</strong>，看上去效率提升了 60%。</li>
+            <li>实际发生的是<strong>估点通胀</strong>：同样一件事，上季度估 3 点，这季度估 5 点。
+              没有人作弊，每个人只是在估点时「考虑得更充分了一点」。
+              交付到用户手上的东西一件没多，而这个数字<strong>只会上涨，永远不会下跌</strong>。</li>
+            <li>更深的代价是<strong>信息通道被关闭</strong>：一旦数字关系到评分，
+              坏消息就不再往上走。指标从「看清现状的窗口」变成「需要管理的印象」，
+              这正是<a href="../ch05-culture/5.2-cultural-debt.html">第 5 章 文化债（5.2）</a>累积的典型方式之一。</li>
+          </ul>
+          <p>
+            所以虚荣指标的治理不是「换一个更好的指标」，而是<strong>切断指标与个人评价的连接</strong>。
+            <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong> ——
+            这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认（展开见<a href="../ch08-sharing/8.3-leadership.html">第 8 章 DevOps 领导力（8.3）</a>）。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            「虚荣指标」一词不在 DOFD v3.4 的 66 条官方考纲术语表内，属本站教学整理的提法。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:19%">维度</th><th style="width:27%">活动指标</th><th style="width:27%">虚荣指标</th><th>价值驱动指标</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>量什么</strong></td>
+                  <td>做了多少动作</td>
+                  <td>任何东西 —— 活动或价值都可能</td>
+                  <td>用户与业务得到了什么</td>
+                </tr>
+                <tr>
+                  <td><strong>判定依据</strong></td>
+                  <td>看<strong>衡量对象</strong>是不是过程动作</td>
+                  <td>看<strong>能不能改变决定</strong></td>
+                  <td>看<strong>衡量对象</strong>是不是末端结果</td>
+                </tr>
+                <tr>
+                  <td><strong>典型走势</strong></td>
+                  <td>可升可降，反映负荷变化</td>
+                  <td><strong>几乎只升不降</strong>（累计值、总量、覆盖数）</td>
+                  <td>会难看，也会停在原地</td>
+                </tr>
+                <tr>
+                  <td><strong>有没有用</strong></td>
+                  <td><strong>有用</strong>：诊断流动与瓶颈的原始材料</td>
+                  <td><strong>没用</strong>：占位置，还制造一切正常的错觉</td>
+                  <td><strong>有用</strong>：证明投入是否兑现</td>
+                </tr>
+                <tr>
+                  <td><strong>正确处置</strong></td>
+                  <td>留在团队层，别拿去证明价值</td>
+                  <td><strong>从看板上摘掉</strong></td>
+                  <td>放到产品层与组织层，配上主人</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>活动指标和虚荣指标不是同一个坐标轴上的两个刻度</strong>。
+            前者按<strong>衡量对象</strong>分类，后者按<strong>能否触发决定</strong>分类。
+            一个活动指标（如流水线失败率）完全可以是有效指标，
+            一个价值类数字（如「累计注册用户总数」）也完全可以是虚荣指标 —— 它只会涨，涨了也不改变任何事。</small></p>
+          <p class="mb-0 muted"><small>上表四列对照与「两个坐标轴」这一说法均为本站教学整理，官方未以此形式给出分类；
+            <em>Velocity</em>、<em>DevOps metrics</em> 列于 66 条官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>做一次看板清洗，对每个数字连问四句，任何一句答不上来就摘掉它：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">要问的话</th><th>答不上来说明什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>变好了会做什么不同的决定？</strong></td><td>核心判据。答案若是「说明干得不错」，这就是虚荣指标</td></tr>
+                <tr><td><strong>它有可能变难看吗？</strong></td><td>一个永远不会下跌的数字，不携带任何新信息</td></tr>
+                <tr><td><strong>谁是这个数字的主人？</strong></td><td>没有名字的数字，变坏时不会有人动。看板上每个数字都要有主人</td></tr>
+                <tr><td><strong>能下钻到可行动的层级吗？</strong></td><td>只有一个总数、点不进去，就无法从「变差了」走到「该改哪里」</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            清洗的结果通常是<strong>指标数量大幅减少</strong>。
+            这是好事：一块屏幕上放 30 个数字，等于一个都没放 —— 没人能同时盯 30 个方向。
+          </p>
+          <div class="src-note">
+            这套四问清洗法为本站教学整理，官方文件未给出指标筛选流程。
+            其中「切断指标与个人评价的连接」这一原则的官方依据是：
+            <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（由 DOFD v3.4 官方样题答案键确认）。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这是本节最可能被直接命中的考点，且常以<strong>反向问法</strong>出现（问「以下哪一项<strong>不是</strong>」）。
+              <strong>凡把指标用于考核 / 控制个人的方向，在 DOFD 语境下一律不成立</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：与正确答案并列的干扰方向，通常是 DevOps 领导力语境下<strong>本身成立</strong>的正面表述，
+              因此不能靠「哪个听起来不好」来选，只能靠<strong>「哪一项把指标指向了人而不是系统」</strong>来定位。
+              难点不在识别，而在紧张时把「不是」读成「是」。</li>
+            <li><strong>排除技巧（本站整理）</strong>：遇到指标相关的选项，看它是<strong>朝向系统</strong>还是<strong>朝向人</strong>。
+              朝向系统（看清流动、暴露约束、验证结果）的表述在 DevOps 语境里是对的；
+              <strong>朝向人（排名、考核、问责个人）的表述一律是错的方向</strong>。</li>
+            <li><strong>与本章 <a href="7.1-why-measure.html">7.1</a> 的呼应</strong>：度量的三种误用在本章 <a href="7.1-why-measure.html">7.1 为什么必须度量</a> 展开，本节只负责「量错对象」这一类误用。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            除已注明由官方样题答案键确认的一条外，判据与排除技巧均为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">答不出「会因此做什么不同的决定」，这个数字就是虚荣指标。</p>
+          <p class="mb-0 muted"><small>补一条走势判据：<strong>只会涨、不会跌的数字，几乎一定是虚荣的</strong>。
+            指标的价值来自它有可能变难看。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-5-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-5-3</div>
+        <h3 class="kp__title">DevOps 看板的分层设计<span class="en">DevOps Dashboards</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">DevOps 看板 <span class="en">DevOps Dashboards</span></span>
+            是把指标持续呈现给<strong>特定受众</strong>、用于<strong>触发决定</strong>的视图。
+            它的设计单位不是「指标」，而是<strong>「谁在看 · 看到之后能做什么」</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">四条设计原则</th><th>含义</th></tr></thead>
+              <tbody>
+                <tr><td><strong>面向受众分层</strong></td><td>团队看流动，管理层看结果。同一块屏幕服务不同受众，结果是谁都用不上</td></tr>
+                <tr><td><strong>显示趋势而非快照</strong></td><td>单个数值无法判断好坏。「87%」不带上下文毫无意义，「连续四周从 95% 掉到 87%」才是信息</td></tr>
+                <tr><td><strong>能下钻到可行动层级</strong></td><td>从「变差了」必须能点到「哪条服务、哪个环节、哪一批变更」，否则看见了也动不了</td></tr>
+                <tr><td><strong>每个数字都有主人</strong></td><td>每条指标写上一个具体的人或团队。没有主人的数字，变红了只会被截图，不会被处理</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>DevOps Dashboards</strong> 属 <strong>v3.6 新增学习目标</strong>
+            （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+            v3.4 的 66 条官方考纲术语表与 M7 模块子项均未收录。
+            上表四条设计原则为本站教学整理，官方未公布看板的设计规范。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            看板出问题的方式很固定：<strong>先做成一块给所有人看的大屏，再变成没人看的大屏。</strong>
+          </p>
+          <ul>
+            <li>某公司在办公区挂了一块「统一 DevOps 大屏」，18 个指标一屏排满，
+              从流水线时长一直到季度营收，全部用红黄绿三色块显示。</li>
+            <li>团队看不到自己能动的东西 —— 屏幕上是全公司 40 个服务的汇总，
+              自己那条流水线的时长被平均掉了。管理层也看不出结论 ——
+              绿色只说明「大多数还行」，<strong>而真正出问题的那两个服务被平均值遮住了</strong>。</li>
+            <li>三个月后这块屏幕的作用只剩一个：季度汇报截图。
+              指标只往上汇总、不往下反馈，团队从来没从这块屏上得到过一条可以行动的信息。</li>
+          </ul>
+          <p>
+            分层设计要解决的正是这件事：<strong>不同受众的决策周期和可行动范围根本不同</strong>。
+            团队的动作以天计，管理层的动作以季度计；
+            把两者塞进同一张表，等于让两边都拿到对自己无效的粒度。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，用于说明分层的必要性，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 7-5-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 508" role="img" aria-label="分层看板设计：团队层、产品层、组织层各自的受众、指标与触发动作，以及可下钻的连接">
+              <defs>
+                <marker id="ah-75-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 团队层 -->
+              <rect x="24" y="20" width="288" height="316" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="24" y="20" width="288" height="48" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="168" y="42" class="f-4" font-size="16" font-weight="700" text-anchor="middle">团队层</text>
+              <text x="168" y="60" class="s-muted" font-size="12" text-anchor="middle">Team · 看流动</text>
+
+              <text x="44" y="94" class="s-ink" font-size="13" font-weight="700">谁在看</text>
+              <text x="44" y="116" class="s-muted" font-size="12.5">交付团队自己 · 每天</text>
+
+              <text x="44" y="148" class="s-ink" font-size="13" font-weight="700">看什么</text>
+              <text x="44" y="170" class="s-muted" font-size="12.5">在制品数量与阻塞项</text>
+              <text x="44" y="190" class="s-muted" font-size="12.5">周期时间分布</text>
+              <text x="44" y="210" class="s-muted" font-size="12.5">流水线绿灯率与失败原因</text>
+
+              <text x="44" y="244" class="s-ink" font-size="13" font-weight="700">数字变差时做什么</text>
+              <text x="44" y="266" class="s-muted" font-size="12.5">当天调整：拉动阻塞项、</text>
+              <text x="44" y="286" class="s-muted" font-size="12.5">停止接新活、修流水线</text>
+              <text x="44" y="316" class="f-4" font-size="12.5" font-weight="650">粒度：单条流水线 · 单个工作项</text>
+
+              <!-- 产品层 -->
+              <rect x="336" y="20" width="288" height="316" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="336" y="20" width="288" height="48" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="480" y="42" class="f-1" font-size="16" font-weight="700" text-anchor="middle">产品层</text>
+              <text x="480" y="60" class="s-muted" font-size="12" text-anchor="middle">Product · 看使用</text>
+
+              <text x="356" y="94" class="s-ink" font-size="13" font-weight="700">谁在看</text>
+              <text x="356" y="116" class="s-muted" font-size="12.5">产品负责人 · 每周或每迭代</text>
+
+              <text x="356" y="148" class="s-ink" font-size="13" font-weight="700">看什么</text>
+              <text x="356" y="170" class="s-muted" font-size="12.5">新功能采纳率与留存</text>
+              <text x="356" y="190" class="s-muted" font-size="12.5">关键路径完成率</text>
+              <text x="356" y="210" class="s-muted" font-size="12.5">结果假设的兑现情况</text>
+
+              <text x="356" y="244" class="s-ink" font-size="13" font-weight="700">数字变差时做什么</text>
+              <text x="356" y="266" class="s-muted" font-size="12.5">改优先级、改需求、</text>
+              <text x="356" y="286" class="s-muted" font-size="12.5">或直接砍掉没被用的功能</text>
+              <text x="356" y="316" class="f-1" font-size="12.5" font-weight="650">粒度：单个功能 · 单条价值流</text>
+
+              <!-- 组织层 -->
+              <rect x="648" y="20" width="288" height="316" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="648" y="20" width="288" height="48" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="792" y="42" class="f-3" font-size="16" font-weight="700" text-anchor="middle">组织层</text>
+              <text x="792" y="60" class="s-muted" font-size="12" text-anchor="middle">Organization · 看结果</text>
+
+              <text x="668" y="94" class="s-ink" font-size="13" font-weight="700">谁在看</text>
+              <text x="668" y="116" class="s-muted" font-size="12.5">管理层 · 每季度</text>
+
+              <text x="668" y="148" class="s-ink" font-size="13" font-weight="700">看什么</text>
+              <text x="668" y="170" class="s-muted" font-size="12.5">业务成果与成本</text>
+              <text x="668" y="190" class="s-muted" font-size="12.5">客户满意度</text>
+              <text x="668" y="210" class="s-muted" font-size="12.5">员工净推荐值 eNPS</text>
+
+              <text x="668" y="244" class="s-ink" font-size="13" font-weight="700">数字变差时做什么</text>
+              <text x="668" y="266" class="s-muted" font-size="12.5">调整投资方向、</text>
+              <text x="668" y="286" class="s-muted" font-size="12.5">移除跨团队的组织约束</text>
+              <text x="668" y="316" class="f-3" font-size="12.5" font-weight="650">粒度：产品组合 · 整个组织</text>
+
+              <!-- 下钻箭头 -->
+              <path d="M792 336 L792 366 L480 366" class="s-2" stroke-width="2" fill="none"/>
+              <path d="M480 366 L168 366" class="s-2" stroke-width="2" fill="none" marker-end="url(#ah-75-2)"/>
+              <line x1="480" y1="336" x2="480" y2="366" class="s-2" stroke-width="2"/>
+              <text x="632" y="388" class="f-2" font-size="12.5" font-weight="650" text-anchor="middle">可下钻 —— 三层必须能追到同一批原始数据</text>
+
+              <!-- 结论条 -->
+              <rect x="24" y="404" width="912" height="88" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="480" y="432" class="s-ink" font-size="15" font-weight="700" text-anchor="middle">为什么不该让三层看同一张表</text>
+              <text x="480" y="458" class="s-ink" font-size="13" text-anchor="middle">团队层的数字每天都在抖动 —— 送到组织层就是噪音，会引来对正常波动的追问。</text>
+              <text x="480" y="480" class="s-ink" font-size="13" text-anchor="middle">组织层的数字一个季度才动一次 —— 送到团队层就是无法指导今天动作的死数。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-5-2　三层看板，三种粒度。</strong>
+            要看懂的是最后一行「粒度」和第三行「数字变差时做什么」这两条 ——
+            <strong>决定一个指标该放在哪一层的，不是它重不重要，而是这一层的人能对它做什么</strong>。
+            团队能改今天的动作，产品能改要做什么，组织能改往哪里投钱；
+            把组织层的季度数字挂到团队墙上，团队看一眼就知道自己动不了它，于是不再看。
+            <strong>但三层不是三套割裂的数据</strong> —— 底部的下钻箭头表示它们必须能追溯到同一批原始数据，
+            否则组织层看到的结果和团队层看到的现象会互相矛盾。
+            <br><small class="muted"><em>employee Net Promoter Score (eNPS)</em> 列于 DOFD v3.4 官方考纲术语表；
+            本图的三层划分、各层指标归属与下钻结构均为本站教学整理，官方未给出看板分层模型。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">看板 <span class="en">Dashboard</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>汇报报表</strong></td>
+                  <td>为<strong>做决定</strong>而存在，天天看，允许难看</td>
+                  <td>为<strong>说明情况</strong>而存在，周期性产出，天然倾向于好看。看板一旦只在汇报前被打开，它已经变成报表</td>
+                </tr>
+                <tr>
+                  <td><strong>告警 <span class="en">Alerting</span></strong></td>
+                  <td><strong>人主动去看</strong>，用于发现趋势与慢性劣化</td>
+                  <td><strong>系统主动找人</strong>，用于已经确定阈值的即时故障。趋势类指标不该做成告警，会把人训练成忽略告警</td>
+                </tr>
+                <tr>
+                  <td><strong>成绩单 / 团队排名</strong></td>
+                  <td>朝向<strong>系统</strong>：暴露约束在哪里</td>
+                  <td>朝向<strong>人</strong>：排出谁强谁弱。<strong>用指标控制与评价员工不属于 DevOps 领导力的目标</strong>（DOFD v3.4 官方样题答案键确认）</td>
+                </tr>
+                <tr>
+                  <td><strong>看板方法 <span class="en">Kanban</span></strong></td>
+                  <td>是<strong>指标呈现视图</strong>，回答「结果怎么样」</td>
+                  <td>是<strong>工作流管理实践</strong>：可视化工作流、限制在制品、拉动。中文都叫「看板」，是两件事<br><small class="muted">见<a href="../ch03-key-practices/3.7-kanban.html">第 3 章 Kanban（3.7）</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>中文的「看板」同时对应 Dashboard 与 Kanban 两个完全不同的英文词</strong>。
+            <em>Kanban</em> 是 66 条官方考纲术语表里的工作流管理实践（属 M3 关键实践），
+            <em>DevOps Dashboards</em> 是 v3.6 新增的指标呈现主题。
+            看到中文「看板」，先确认原词是哪一个。</small></p>
+          <p class="mb-0 muted"><small>上表前两行与第四行的对照为本站教学整理，官方未以此形式给出区分；
+            第三行括注的判断由 DOFD v3.4 官方样题答案键确认。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>建看板时按分层原则落地，同时避开三条最常见的反模式：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">反模式</th><th>它长什么样 · 为什么有害</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>做成给领导看的成绩单</strong></td>
+                  <td>看板只在季度汇报前被打开，指标选择的标准变成「哪个好看放哪个」。
+                    一旦它承担评价功能，<strong>坏消息就不再出现在上面</strong> —— 而看板存在的意义正是尽早暴露坏消息</td>
+                </tr>
+                <tr>
+                  <td><strong>指标只上不下</strong></td>
+                  <td>数据层层向上汇总给管理层，却从不以团队可用的粒度回流。
+                    团队被要求提供数据，却从数据里得不到任何东西，
+                    下一步必然是<strong>应付式填报</strong>，源头数据随之失真</td>
+                </tr>
+                <tr>
+                  <td><strong>用红黄绿掩盖真实分布</strong></td>
+                  <td>「95% 的服务是绿的」听起来很好，但出事的永远是那 5%。
+                    三色块把分布压成一个字，<strong>长尾、离群点、正在恶化的趋势全部消失</strong>。
+                    正确做法是保留分布与趋势线，颜色只做辅助标记</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>落地时的具体检查动作：</p>
+          <ul class="mb-0">
+            <li><strong>一层一屏，一屏不超过 7 个数字</strong>。放不下说明还没想清楚这一层的人要做什么决定。</li>
+            <li><strong>每个数字旁边写主人的名字</strong>。写不出名字的先摘掉，别留在上面占位。</li>
+            <li><strong>每个数字都能点开</strong>。点不开的数字只能引发追问，不能引发行动。</li>
+            <li><strong>默认显示区间而不是当前值</strong>：至少四个周期的趋势，配上正常波动范围。</li>
+            <li><strong>定期做减法</strong>：每季度砍掉过去三个月里一次也没触发过决定的指标。</li>
+          </ul>
+          <div class="src-note">
+            三条反模式与上述检查动作均为本站教学整理，官方未公布看板反模式清单。
+            <em>DevOps Dashboards</em> 作为主题属 v3.6 新增学习目标（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）；
+            「不以指标评价个人」这一条的官方依据是 DOFD v3.4 官方样题答案键确认的判断
+            ——「用指标控制和评价员工不属于 DevOps 领导力的目标」。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>版本定位先记牢</strong>：<em>DevOps Dashboards</em> 是 <strong>v3.6 新增</strong>的学习目标，
+              <strong>v3.4 的 66 条术语表与 M7 模块子项里都没有它</strong>。
+              而 <em>Value Driven Metrics</em> 在 v3.4 的 M7 子项中已逐字存在。两者的版本身份不同，容易记反。</li>
+            <li><strong>命题角度</strong>：Bloom 1–2 层级下，看板类题目通常问<strong>用途</strong>而非实现 ——
+              「看板的目的是什么」「哪一项描述了合理的看板做法」。
+              正确方向永远是<strong>「让相关方看见真实情况以便做出决定」</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>①考核导向</strong> —— 「用于评估团队绩效 / 对团队排名」，
+              这一方向由 <strong>DOFD v3.4 官方样题答案键</strong>确认为错误（用指标控制和评价员工不属于 DevOps 领导力的目标）；
+              <strong>②工具导向</strong> —— 「集成尽可能多的工具数据源」，把手段说成目的；
+              <strong>③展示导向</strong> —— 「向管理层展示 DevOps 转型的成果」，听着正面，但落点是汇报不是决策。</li>
+            <li><strong>排除技巧（本站整理）</strong>：看选项的落点是<strong>「让人做出更好的决定」</strong>
+              还是<strong>「让人被更好地评价」</strong>。后者一律排除，无论表述多正面。</li>
+            <li><strong>时间分配提示</strong>：本章 v3.4 最多出 <strong>2 题</strong>，占 40 题的 5%、八个模块最低
+              （DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。
+              看板部分<strong>按理解学，不要按应试时间投入</strong> —— 记住「分层 + 有主人 + 能下钻」这一层即可，不必深挖实现。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文；
+            除已注明由官方样题答案键确认的一条外，命题角度分析与排除技巧均为本站教学推断，
+            官方仅公布考试范围为 Bloom 1–2，未公布 v3.6 的题数分布。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">看板上每个数字，都要有一个主人的名字和一个可能的动作。</p>
+          <p class="muted"><small>分层口诀：<strong>团队看流动、产品看使用、组织看结果</strong>；
+            三层粒度不同，但必须能下钻到同一批原始数据。</small></p>
+          <p class="mb-0 muted"><small>中文陷阱提醒：Dashboard 和 Kanban 在中文里都叫「看板」，
+            考试里见到 <em>Kanban</em> 一律指工作流管理实践，不是 <em>Dashboard</em>。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>本章题量</strong>：v3.4 官方考试要求下本章<strong>最多 2 题</strong>，占 40 题的 5%，八个模块最低
+          （DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。
+          <strong>按理解学，不要在这一章堆应试时间</strong> —— 本节的价值在于校准「指标该量什么」的判断，不在得分</li>
+        <li><strong>核心分界</strong>：活动指标量「做了多少」，价值驱动指标量「用户和业务得到了什么」。
+          <strong>活动指标可以在业务毫无变化时全部变好</strong></li>
+        <li><strong>虚荣指标一句话判定</strong>：这个数字变好了，会因此做出什么不同的决定？答不上来就摘掉它（本站教学整理）</li>
+        <li><strong>官方确认一</strong>：决定哪些 DevOps 原则与实践对组织最有益的，是<strong>业务战略与目标</strong>
+          —— 指标必须对齐业务目标，不对齐工具或产出量（DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>官方确认二</strong>：<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标
+          —— 看板朝向系统，不朝向人（DOFD v3.4 官方样题答案键确认）</li>
+        <li><strong>看板四原则</strong>：面向受众分层 · 显示趋势不显示快照 · 能下钻到可行动层级 · <strong>每个数字都有主人</strong>（本站教学整理）</li>
+        <li><strong>三条反模式</strong>：做成给领导看的成绩单 · 指标只上不下 · 用红黄绿掩盖真实分布（本站教学整理）</li>
+        <li><strong>版本身份别记反</strong>：<em>Value Driven Metrics</em> 是 v3.4 的 M7 模块子项；
+          <em>DevOps Dashboards</em> 是 <strong>v3.6 新增</strong>学习目标。中文「看板」还可能指 <em>Kanban</em>，那是另一回事</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Value Driven Metrics</em> 逐字列于 DOFD v3.4 课程大纲
+      M7 <em>Measurement, Metrics, and Reporting</em> 的模块子项，属官方模块构成；
+      <em>DevOps Dashboards</em> 属 <strong>v3.6 新增学习目标</strong>，
+      出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标，v3.4 文件未收录。
+      本节涉及的 <em>Velocity</em>、<em>Code commit</em>、<em>Deployment frequency</em>、<em>Change lead time</em>、
+      <em>DevOps metrics</em>、<em>employee Net Promoter Score (eNPS)</em>、<em>Value stream mapping</em>、<em>Kanban</em>
+      列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；该表只列词条、不附定义，
+      因此本站给出的中文释义均为本站措辞。
+      <strong>两条关键判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」，
+      「<strong>用指标控制和评价员工不属于</strong> DevOps 领导力的目标」。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「活动指标 / 虚荣指标 / 价值驱动指标」三分法与各对照表、
+      虚荣指标的一问识别法与四问清洗法、价值驱动指标的三个判定要件与四个落地动作、
+      看板四条设计原则、三条反模式、三层看板模型（图 7-5-2）、
+      以及各面中的命题角度分析与排除技巧，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例均为本站构造的教学示例，非真实调研数据。
+      本章 <a href="7.2-dora-metrics.html">7.2</a> 讲部署频率 / 变更前置时间 / 变更失败率 / 平均恢复时间 MTTR 四个指标
+      （四者均列于 66 条官方考纲术语表；「DORA」这一名称本身不在 DOFD 考纲内，属业界通称），
+      速度 / 质量 / 稳定性 / 文化四类指标见本章 <a href="7.3-four-metric-families.html">7.3</a>，
+      AIOps 见本章 <a href="7.6-aiops.html">7.6</a>，
+      度量的必要性与常见误用见本章 <a href="7.1-why-measure.html">7.1</a>；
+      价值流映射见<a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章（4.6）</a>，
+      文化债见<a href="../ch05-culture/5.2-cultural-debt.html">第 5 章（5.2）</a>，
+      DevOps 领导力见<a href="../ch08-sharing/index.html">第 8 章</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

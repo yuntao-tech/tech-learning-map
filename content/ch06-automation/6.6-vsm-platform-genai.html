@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.6 VSM 平台与生成式 AI 用例 · DevOps Foundation 学习站</title>
+<meta name="description" content="VSM 平台是工具链之上的度量层，把价值流管理从一次性画图变成持续可见；生成式 AI 在 DevOps 中的用例集中在产出侧，它加快的是产出，不是判断 —— 约束不在编码时，加快编码只会把在制品堆得更快。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"6.6-vsm-platform-genai"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.6 VSM 平台与生成式 AI 用例</h1>
+      <div class="page-head__en">VSM Platforms and Generative AI Use Cases</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        本节两个主题都是 PeopleCert 现行产品页公布的<strong>官方学习目标</strong>（v3.6 新增），而且都容易被高估。
+        <strong>VSM 平台</strong>不生产任何东西，它只是把散落在各工具里的数据接起来，
+        让价值流从「画过一次的图」变成「每天都在更新的曲线」。
+        <strong>生成式 AI</strong> 也不做决定，它加快的是<strong>产出</strong>，不是<strong>判断</strong> ——
+        如果排队最长的那一段本来就不在编码，加快编码只会把在制品堆得更快。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>VSM 平台凭什么把价值流管理从「一次性画图」变成「持续可见」，它和工具链是什么关系</li>
+        <li>生成式 AI 在 DevOps 里具体用在哪几处，哪些环节它只能出草稿</li>
+        <li>为什么「AI 把编码提速了 3 倍」不等于交付变快 —— 约束在哪一环决定了这个提速值不值钱</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-6-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 510" role="img" aria-label="VSM 平台位于工具链之上的度量层：各环节工具向上供数，平台自动计算端到端流动指标并反馈回各环节">
+          <defs>
+            <marker id="ah-66-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-66-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="ah-66-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 顶层：持续可见的流动指标 -->
+          <rect x="30" y="36" width="820" height="114" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+          <text x="48" y="64" class="f-1" font-size="16" font-weight="700">持续可见的端到端流动指标 · 每天刷新</text>
+
+          <rect x="48"  y="80" width="150" height="50" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <rect x="210" y="80" width="150" height="50" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <rect x="372" y="80" width="150" height="50" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <rect x="534" y="80" width="150" height="50" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <rect x="696" y="80" width="150" height="50" rx="8" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <g text-anchor="middle">
+            <text x="123" y="103" class="s-ink" font-size="14" font-weight="650">变更前置时间</text>
+            <text x="123" y="122" class="s-muted" font-size="12">需求到生产可用</text>
+            <text x="285" y="103" class="s-ink" font-size="14" font-weight="650">周期时间</text>
+            <text x="285" y="122" class="s-muted" font-size="12">开工到完成</text>
+            <text x="447" y="103" class="s-ink" font-size="14" font-weight="650">部署频率</text>
+            <text x="447" y="122" class="s-muted" font-size="12">按天统计</text>
+            <text x="609" y="103" class="s-ink" font-size="14" font-weight="650">在制品与排队</text>
+            <text x="609" y="122" class="s-muted" font-size="12">哪一段在等</text>
+            <text x="771" y="103" class="s-ink" font-size="14" font-weight="650">流动效率</text>
+            <text x="771" y="122" class="s-muted" font-size="12">处理 ÷ 总时长</text>
+          </g>
+
+          <!-- 平台向上算出指标 -->
+          <g class="s-1" stroke-width="2" fill="none">
+            <line x1="250" y1="192" x2="250" y2="156" marker-end="url(#ah-66-1)"/>
+            <line x1="480" y1="192" x2="480" y2="156" marker-end="url(#ah-66-1)"/>
+            <line x1="710" y1="192" x2="710" y2="156" marker-end="url(#ah-66-1)"/>
+          </g>
+          <text x="365" y="178" class="f-1" font-size="12.5" font-weight="650" text-anchor="middle">自动计算</text>
+          <text x="595" y="178" class="f-1" font-size="12.5" font-weight="650" text-anchor="middle">持续更新</text>
+
+          <!-- 中层：VSM 平台 -->
+          <rect x="30" y="196" width="820" height="104" rx="12" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="48" y="226" class="f-3" font-size="17" font-weight="700">VSM 平台 —— 工具链之上的度量层</text>
+          <text x="48" y="254" class="s-ink" font-size="13.5">从各工具拉取事件与时间戳 → 按同一件工作串成一条链 → 算出端到端指标</text>
+          <text x="48" y="280" class="s-muted" font-size="13">不替代任何一个环节工具，也不执行任何一个环节的动作</text>
+
+          <!-- 工具向上供数 -->
+          <g class="s-3" stroke-width="2" fill="none">
+            <line x1="94"  y1="352" x2="94"  y2="306" marker-end="url(#ah-66-2)"/>
+            <line x1="232" y1="352" x2="232" y2="306" marker-end="url(#ah-66-2)"/>
+            <line x1="370" y1="352" x2="370" y2="306" marker-end="url(#ah-66-2)"/>
+            <line x1="508" y1="352" x2="508" y2="306" marker-end="url(#ah-66-2)"/>
+            <line x1="646" y1="352" x2="646" y2="306" marker-end="url(#ah-66-2)"/>
+            <line x1="784" y1="352" x2="784" y2="306" marker-end="url(#ah-66-2)"/>
+          </g>
+          <text x="163" y="332" class="f-3" font-size="12.5" font-weight="650" text-anchor="middle">向上供数</text>
+          <text x="439" y="332" class="s-muted" font-size="12.5" text-anchor="middle">事件 + 时间戳</text>
+          <text x="715" y="332" class="f-3" font-size="12.5" font-weight="650" text-anchor="middle">只读，不干预</text>
+
+          <!-- 底层：工具链 -->
+          <rect x="30"  y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="168" y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="306" y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="444" y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="582" y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <rect x="720" y="356" width="128" height="76" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+          <g text-anchor="middle">
+            <text x="94"  y="385" class="s-ink" font-size="14" font-weight="650">需求与看板</text>
+            <text x="94"  y="407" class="s-muted" font-size="12">卡片状态变更</text>
+            <text x="232" y="385" class="s-ink" font-size="14" font-weight="650">代码仓库</text>
+            <text x="232" y="407" class="s-muted" font-size="12">提交 · 合并 · 评审</text>
+            <text x="370" y="385" class="s-ink" font-size="14" font-weight="650">CI 构建</text>
+            <text x="370" y="407" class="s-muted" font-size="12">构建 · 制品</text>
+            <text x="508" y="385" class="s-ink" font-size="14" font-weight="650">测试</text>
+            <text x="508" y="407" class="s-muted" font-size="12">用例结果</text>
+            <text x="646" y="385" class="s-ink" font-size="14" font-weight="650">部署与发布</text>
+            <text x="646" y="407" class="s-muted" font-size="12">部署记录</text>
+            <text x="784" y="385" class="s-ink" font-size="14" font-weight="650">监控与告警</text>
+            <text x="784" y="407" class="s-muted" font-size="12">遥测 · 故障 · 恢复</text>
+          </g>
+          <text x="30" y="458" class="s-muted" font-size="13">工具链层 —— 各环节工具照常工作，接不接平台都不影响它们交付</text>
+
+          <!-- 指标回流 -->
+          <path d="M850 93 L928 93 L928 394 L856 394" class="s-5" stroke-width="2" fill="none" marker-end="url(#ah-66-3)"/>
+          <text x="892" y="228" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">指标回流</text>
+          <text x="892" y="248" class="s-muted" font-size="12" text-anchor="middle">下一处</text>
+          <text x="892" y="266" class="s-muted" font-size="12" text-anchor="middle">改哪里</text>
+
+          <!-- 底注 -->
+          <text x="30" y="490" class="s-muted" font-size="12.5">读法：箭头全部从下往上供数，只有最右一条向下 —— 平台唯一往回给的东西是「指标」，不是「指令」</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-6-1　VSM 平台在工具链之上的位置。</strong>
+        这张图要看懂的是<strong>方向</strong>：六个环节工具向上供数，平台向上算出指标，
+        而平台往回给的只有一条线 —— <strong>指标</strong>。
+        它不接管任何一个环节，工具链少了它照样能把代码送上生产，只是送得<strong>不可见</strong>。
+        把它理解成「又一个工具链环节」是本节最常见的误读。
+        <br><small class="muted">本图的三层结构与「只读、不干预」的表述为本站教学整理，
+        官方将 <em>VSM Platforms</em> 列为 v3.6 学习目标（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+        未给出此类分层示意图。
+        底层六格是按<strong>数据来源</strong>做的归并，工具链的完整八类环节见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>；
+        其中「监控与告警」指链上的监控工具，<strong>不含服务台事件管理系统</strong> ——
+        后者不属于典型 DevOps 工具链要素（DOFD v3.4 官方样题答案键确认），但其记录仍可作为平台的数据源。
+        顶层五个指标的<strong>选取与中文释义</strong>为本站教学整理 ——
+        变更前置时间、周期时间、部署频率列于 DOFD v3.4 官方考纲术语表（表内不附定义）；
+        「变更前置时间」本页两种口径并存，见 kp-6-6-1 ④「口径先定，再看数字」；
+        「在制品与排队」「流动效率」既不在术语表也不在 v3.4 模块子项内；
+        指标本身的展开见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-6-6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-6-1</div>
+        <h3 class="kp__title">VSM 平台<span class="en">VSM Platforms</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">VSM 平台 <span class="en">VSM Platform</span></span>
+            是<strong>工具链之上的一层度量层</strong>：它从需求、代码、构建、测试、部署、事件等各环节工具里
+            拉取事件与时间戳，按同一件工作把这些事件串成一条链，
+            <strong>自动计算端到端的流动指标并持续更新</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">它做三件事</th><th>具体是什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>汇聚</strong></td><td>把分散在多个工具里的记录读到一处。数据本来就存在，只是各自躺在各自的系统里，从来没被拼起来过</td></tr>
+                <tr><td><strong>关联</strong></td><td>靠一个共同的标识（需求编号、工单号）把「这张卡片、这次提交、这次构建、这次部署」认成<strong>同一件工作</strong>。关联不上，就只有一堆各环节的局部数据</td></tr>
+                <tr><td><strong>计算</strong></td><td>用时间戳之差算出端到端的<strong>变更前置时间、周期时间、部署频率、各段等待时长</strong>，并按天刷新（本页两种口径并存，见 kp-6-6-1 ④「口径先定，再看数字」）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>VSM Platforms</em> 是 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的官方学习目标</strong>，
+            属官方内容，因此本知识点标 <span class="badge badge--plain">📘 官方模块子项</span> 与
+            <span class="badge badge--new">🆕 v3.6 新增</span> 两个徽章；它晚于 v3.4，
+            v3.4 的 66 条术语表未收录「VSM 平台」这一词条（表内收录的是 <em>Value stream mapping</em>），故不标「⭐ 考纲核心」。
+            上表「汇聚 / 关联 / 计算」三件事为本站教学整理的拆解。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是<a href="../ch03-key-practices/3.9-vsm.html">第 3 章 价值流管理（3.9）</a>里点明的那个问题：
+            <strong>映射做完就过期</strong>。
+          </p>
+          <ul>
+            <li>某团队 3 月开了两天工作坊画价值流映射图，量出前置时间 34 天，其中等待 27 天。
+              图贴在墙上，改进项排了六条。</li>
+            <li>4 月改了分支策略，5 月拆开了测试环境，7 月换了发布窗口。
+              到 9 月要回答「这半年的改进有没有效」时，<strong>墙上的图还停在 3 月</strong>，
+              唯一的办法是再开一次工作坊重新量 —— 而两次的口径不一样，数字没法比。</li>
+            <li>根子在采集方式：数据来源是<strong>人问人</strong>（访谈、翻工单、凭印象估等待时长）。
+              采集成本高 → 采集频率低 → 频率低就只能看到快照，看不到趋势。</li>
+          </ul>
+          <p>
+            VSM 平台把采集从「人问人」换成「从工具读事件」。
+            采集成本一次性投入之后趋近于零，于是频率可以是<strong>每天</strong>。
+            价值流从此不再是一张会过期的图，而是<strong>一条能验证改进是否有效的曲线</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">VSM 平台</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong></td>
+                  <td>持续运行的<strong>系统</strong>，产出是每天更新的数据</td>
+                  <td>一次性的<strong>分析活动</strong>，产出是一张图。展开见 <a href="../ch03-key-practices/3.9-vsm.html">3.9</a></td>
+                </tr>
+                <tr>
+                  <td><strong>工具链 <span class="en">DevOps toolchain</span></strong></td>
+                  <td>是工具链<strong>之上</strong>的度量层，只读数据，不执行环节动作</td>
+                  <td>是把工作从需求送到生产的那一串工具，每一个都<strong>真的在干活</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>DevOps 仪表盘 <span class="en">DevOps Dashboards</span></strong><br><small class="muted"><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></small></td>
+                  <td>重点在<strong>把跨工具的数据关联成端到端的一条链</strong>，展示只是最后一步</td>
+                  <td>重点在<strong>展示</strong>。数据从哪来、能不能串成一条链，不是它要回答的问题</td>
+                </tr>
+                <tr>
+                  <td><strong>AIOps</strong></td>
+                  <td>回答<strong>「工作流得快不快、卡在哪一段」</strong>，对象是价值流</td>
+                  <td>回答<strong>「系统运行得正不正常」</strong>，对象是运行中的服务。归<a href="../ch07-metrics/index.html">第 7 章</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>VSM 平台不是「又一个工具链环节」</strong>。
+            它不写代码、不构建、不部署 —— 把它从工具链里拿掉，交付照常进行，只是<strong>没人看得见交付流得怎么样</strong>。
+            凡是把 VSM 平台描述成「负责某个交付环节」的说法，方向就已经错了。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出四组对照。
+            <em>VSM Platforms</em>、<em>DevOps Dashboards</em>、<em>AIOps</em> 三者均为
+            <strong>PeopleCert 现行 DevOps Foundation 产品页公布的官方学习目标</strong>（v3.6 新增），
+            属官方内容，标「📘 官方模块子项 + 🆕 v3.6 新增」；v3.4 的 66 条术语表均未收录，故不标「⭐ 考纲核心」；
+            <em>Value stream mapping</em> 与 <em>DevOps toolchain</em> 列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>上平台之前先想清楚一件事：<strong>能不能关联，比能采多少数据重要得多。</strong></p>
+          <ul>
+            <li><strong>先接两端，中间后补</strong>：只要拿到「需求创建时间」和「生产可用时间」，
+              <strong>精益价值流口径的端到端前置时间</strong>就已经能算（DORA 口径的 <em>Change lead time</em> 另从代码提交起算，见下一条）。中间各段先空着，不影响这条主线成立。
+              反过来，先把六个工具全接上却串不成一条链，得到的仍然只是六份局部数据。</li>
+            <li><strong>关联标识要先立规矩</strong>：提交信息里带需求编号、部署记录里带制品版本号 ——
+              这是组织约定，不是平台功能。规矩不立，平台接得再多也串不起来。</li>
+            <li><strong>口径先定，再看数字</strong>：「前置时间从哪一刻开始算」必须只有一个答案。
+              有两种都成立的口径：<strong>DOFD / DORA 口径</strong>的 <em>Change lead time</em> 从<strong>代码提交</strong>算到在生产运行；
+              <strong>精益价值流口径</strong>的 lead time 从<strong>需求被接受</strong>算起，包含需求排队。
+              VSM 平台通常两条都出，但每张图必须写明用的是哪一种，否则每次开会都在争口径，没人讨论改进
+              （两种口径的展开见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）。</li>
+            <li><strong>拿它找排队最长的那一段</strong>：平台最有价值的输出不是某个漂亮数字，
+              而是「哪一段在等」。这一段就是当前的约束，改它才有意义 ——
+              见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</li>
+            <li><strong>数据源不必局限于「工具链要素」</strong>：官方样题答案键确认
+              <strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>，
+              但它记录的故障与恢复时间，仍然是 VSM 平台算稳定性相关指标时会用到的数据。
+              <span class="muted">（前半句由 DOFD v3.4 官方样题答案键确认；后半句「仍可作为数据源」为本站教学推断。）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实施要点为本站教学整理，官方将 <em>VSM Platforms</em> 列为学习目标，
+            未规定实施步骤或接入顺序。工具链本身的构成见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：辨析「一次性」与「持续」</strong>。
+              题干若强调「持续采集、自动计算、跨工具汇聚」，指向的是 VSM 平台；
+              若强调「工作坊、绘制当前状态图、识别浪费」，指向的是价值流映射。
+              这是本节唯一必须分清的一条线。</li>
+            <li><strong>干扰项长什么样</strong>：
+              把 VSM 平台说成<strong>「一款画价值流映射图的绘图工具」</strong>（把它降回映射）、
+              说成<strong>「工具链中负责部署的一环」</strong>（把度量层塞进执行层）、
+              说成<strong>「用来替换现有 CI 或部署工具」</strong>（它不替代任何环节工具）。
+              三种写法都读得通顺，但都改变了它所在的层。</li>
+            <li><strong>排除技巧</strong>：先问选项描述的东西<strong>「干不干活」</strong>。
+              凡是描述里出现「构建 / 测试 / 部署 / 发布」这类动作的，都不是 VSM 平台 ——
+              它只读数据、只算指标。<span class="muted">（此判据为本站教学整理）</span></li>
+            <li><strong>关联考点</strong>：官方样题答案键确认
+              <strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>，
+              这是「工具链由哪些要素构成」类题目的硬事实，与本节的层次辨析常一起出现。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布 v3.6 的命题规律与题型分布，上述命题角度分析为本站教学推断；
+            其中「服务台事件管理系统不属于典型 DevOps 工具链要素」一条由 DOFD v3.4 官方样题答案键确认。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">映射产出一张会过期的图，平台产出一条每天更新的曲线。</p>
+          <p class="mb-0 muted"><small>层次口诀：<strong>工具链在下面干活，平台在上面看着，看完只往回给指标，不给指令。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-6-6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-6-2</div>
+        <h3 class="kp__title">生成式 AI 在 DevOps 中的用例<span class="en">Generative AI Use Cases</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">生成式 AI <span class="en">Generative AI</span></span>
+            在 DevOps 中的用例，指用生成模型<strong>产出初稿</strong>的那些场景 ——
+            它写出来的是<strong>候选物</strong>，要经过与人写的东西同一道评审和同一条流水线，才算数。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:30%">用例</th><th>它产出的是什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>代码生成与补全</strong></td><td>函数实现、样板代码、重复结构的填充</td></tr>
+                <tr><td><strong>测试用例生成</strong></td><td>针对已有函数或接口的用例骨架、边界值与异常路径的候选清单</td></tr>
+                <tr><td><strong>流水线配置与 IaC 生成</strong></td><td>构建与部署配置、<span class="term">基础设施即代码 <span class="en">Infrastructure as Code / IaC</span></span>的初始模板</td></tr>
+                <tr><td><strong>日志与告警的自然语言摘要</strong></td><td>把成千上万行日志压成几句「发生了什么、从什么时候开始」</td></tr>
+                <tr><td><strong>事故复盘草稿</strong></td><td>按时间戳把事件、告警、部署记录拼成一份时间线初稿</td></tr>
+                <tr><td><strong>文档生成</strong></td><td>接口说明、变更说明、操作手册的第一版</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Generative AI Use Cases</em> 是 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的官方学习目标</strong>，
+            属官方内容，因此本知识点标 <span class="badge badge--plain">📘 官方模块子项</span> 与
+            <span class="badge badge--new">🆕 v3.6 新增</span> 两个徽章；
+            它晚于 v3.4，v3.4 的 66 条官方考纲术语表未收录（故不标「⭐ 考纲核心」），
+            v3.4 课程大纲 M6 模块的对应子项是 <em>AI and Machine Learning</em>。
+            上表六类用例的<strong>分类与排序</strong>为本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>它对准的痛点很具体：<strong>大量「结构重复、必须有人写、写出来又没多少判断含量」的产出物</strong>。</p>
+          <ul>
+            <li>某团队每上线一个新服务，要写构建配置、部署清单、告警规则、接口文档，
+              平均花 <strong>2.5 天</strong>。其中约八成时间在做同一件事：
+              <strong>把上一个服务的文件复制过来，逐处改名字和端口</strong>。
+              这类工作没人愿意做，因此也最容易漏改一处、留下一个指向旧服务的配置。</li>
+            <li>另一个场景是事故复盘。故障恢复通常在半夜，
+              <strong>最该写时间线的人正是刚熬完通宵的那个人</strong>。
+              结果复盘一拖再拖，最后写成一句「已修复」，这次事故的学习价值归零。</li>
+          </ul>
+          <p>
+            这两类工作的共同特征，恰好是生成式 AI 擅长的：
+            <strong>有大量既有范例、结构高度重复、而且产出物错了能被检查出来</strong>。
+            它把「从零写一份」变成「审一份初稿」 ——
+            事故时间线的初稿在恢复后十分钟就能摆在桌上，人只需要补充「为什么」。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据；
+            「有范例 / 结构重复 / 错了能被检查出来」这一适用性判据为本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">生成式 AI 用例</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>自动化 <span class="en">Automation</span></strong></td>
+                  <td>产出的是<strong>需要有人确认的候选物</strong>，每次结果可能不同</td>
+                  <td>执行的是<strong>已经确定的步骤</strong>，同样输入必须给出同样结果 —— 可重复正是它的价值</td>
+                </tr>
+                <tr>
+                  <td><strong>AI 与机器学习 <span class="en">AI and Machine Learning</span></strong><br><small class="muted"><span class="badge badge--plain">📘 官方模块子项</span></small></td>
+                  <td>是其中<strong>「生成内容」这一类用途</strong>：写代码、写用例、写摘要</td>
+                  <td>是更大的范畴，还包括预测、分类、异常检测等<strong>不生成内容</strong>的用途</td>
+                </tr>
+                <tr>
+                  <td><strong>AIOps</strong><br><small class="muted"><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></small></td>
+                  <td>面向<strong>工程产出</strong>：帮人更快写出东西</td>
+                  <td>面向<strong>运行中的系统</strong>：告警降噪、异常检测、事件关联。归<a href="../ch07-metrics/index.html">第 7 章</a></td>
+                </tr>
+                <tr>
+                  <td><strong>ChatOps</strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>解决的是<strong>「谁来写这份东西」</strong></td>
+                  <td>解决的是<strong>「在哪里协作、操作留不留痕」</strong>。见 <a href="../ch03-key-practices/3.6-chatops.html">3.6 ChatOps</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>自动化和生成式 AI 的输出性质不同</strong>。
+            自动化的输出是<strong>结果</strong>（这个部署做完了），生成式 AI 的输出是<strong>提案</strong>（这段代码你看行不行）。
+            把生成物当成自动化的结果直接放行，是这一节所有风险的起点。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出该对照。
+            <em>AI and Machine Learning</em> 是 DOFD v3.4 课程大纲 M6 模块子项，未收录于 66 条术语表；
+            <em>ChatOps</em> 列于 DOFD v3.4 官方考纲术语表；
+            <em>Generative AI Use Cases</em> 与 <em>AIOps</em> 属 v3.6 新增学习目标
+            （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>选场景比选模型重要。一个场景值不值得交给生成式 AI，看三条：</p>
+          <ul>
+            <li><strong>有没有大量既有范例</strong>：团队里已经有十几份同类文件，生成物才有对齐的对象。</li>
+            <li><strong>结构是不是重复的</strong>：越是样板化的产出，收益越大；越是需要权衡的产出，收益越小。</li>
+            <li><strong>错了能不能被自动检查出来</strong>：这条是底线。
+              生成的测试用例跑一遍就知道对不对；生成的一条权限规则，可能几个月之后才有人发现它开得太宽。</li>
+          </ul>
+          <p>落地时的三个固定动作：</p>
+          <ul class="mb-0">
+            <li><strong>生成物走同一条路</strong>：进同一个代码仓库、同一条部署流水线、同一道同行评审。
+              不能因为「是 AI 写的」就走捷径，也不能因为「是 AI 写的」就不写测试。</li>
+            <li><strong>高影响面的生成物先在非生产环境跑</strong>：流水线配置与 IaC 模板尤其如此 ——
+              它们一旦执行就直接改变环境，而不是等着谁去调用。相关内容见本章 <a href="6.3-iac.html">6.3 基础设施即代码</a>。</li>
+            <li><strong>把「谁能解释这段代码」当验收条件</strong>：提交者要能说清生成物为什么这么写。
+              解释不了，说明这段代码还没有主人。</li>
+          </ul>
+          <div class="src-note">
+            以上三条选场景判据与三个落地动作均为本站教学整理。
+            官方将 <em>Generative AI Use Cases</em> 列为 v3.6 学习目标
+            （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+            <strong>未规定具体的采用条件或实施清单</strong>。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：识别典型用例</strong>。给一组场景，问哪一项是生成式 AI 在 DevOps 中的用例。
+              正确方向落在<strong>「产出文本或代码的初稿」</strong>这一类：
+              代码生成与补全、测试用例生成、流水线与 IaC 配置生成、日志摘要、复盘草稿、文档。</li>
+            <li><strong>干扰项类型一：混入 AIOps 的职责</strong>。
+              告警降噪、异常检测、事件关联 —— 这些是对<strong>运行中系统</strong>做分析，
+              属<a href="../ch07-metrics/index.html">第 7 章</a>的范围，不是「生成内容」。</li>
+            <li><strong>干扰项类型二：越界描述</strong>。
+              「无需人工评审即可合入」「由 AI 决定是否发布」「取代自动化测试」——
+              这类选项把 AI 从<strong>产出</strong>推到了<strong>判断</strong>，一律错。</li>
+            <li><strong>排除技巧</strong>：先看选项里 AI 的<strong>宾语</strong>。
+              宾语是「一段文本 / 一份配置 / 一份代码」→ 属于用例；
+              宾语是「一个决定 / 一次放行 / 一个结论」→ 不属于。
+              <span class="muted">（此判据为本站教学整理）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布 v3.6 的命题规律与题型分布，上述分析为本站教学推断。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">生成式 AI 交出来的是初稿，不是结论。</p>
+          <p class="mb-0 muted"><small>六类用例记一句：<strong>写代码、写用例、写配置、写摘要、写复盘、写文档 —— 全是「写」。</strong>
+            凡不是「写点什么」的场景，先怀疑它是不是走错了章。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-6-6-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-6-6-3</div>
+        <h3 class="kp__title">边界与风险：加快的是产出，不是判断<span class="en">Limits &amp; Risks of Generative AI</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+        <p class="mb-0 muted"><small>本 kp 是对 v3.6 学习目标 <em>Generative AI Use Cases</em> 的本站教学展开，官方未给出该分界。</small></p>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            一条边界：<strong>生成式 AI 加快的是「产出」，不加快「判断」。</strong>
+          </p>
+          <ul class="mb-0">
+            <li><strong>产出</strong>是可以被检查的东西 —— 一段代码、一份配置、一段摘要。
+              它的对错由测试、扫描、评审来裁定。</li>
+            <li><strong>判断</strong>是决定 —— 这版能不能上生产、这个风险接不接受、下一步该改哪一环。
+              判断没有可自动核对的标准答案，也没有人替它承担后果。</li>
+          </ul>
+          <div class="src-note">
+            「产出 vs 判断」这一分界为<strong>本站教学整理</strong>，官方未以此形式表述。
+            官方将 <em>Generative AI Use Cases</em> 列为 v3.6 学习目标
+            （出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>因为三个风险都出现在同一个动作上：<strong>把生成物当成结论直接放行</strong>。</p>
+          <ul>
+            <li><strong>评审被跳过</strong>。生成代码看起来完整、命名规整、注释齐全，
+              评审者容易只扫一眼就通过。但<strong>对生产变更进行同行评审属于第二步 · 反馈</strong> ——
+              这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              生成式 AI 是<strong>为第二步供稿的</strong>，不是第二步的替代品。
+              见<a href="../ch02-core-principles/2.4-second-way-feedback.html">第 2 章 第二步 · 反馈（2.4）</a>。</li>
+            <li><strong>训练数据带来安全与许可风险</strong>。生成物学自大量既有代码，
+              可能复现其中不安全的写法，也可能带来来源与许可不清的片段。
+              这两类问题都不会在功能测试里暴露，必须靠安全与合规检查抓 ——
+              见<a href="../ch03-key-practices/3.5-devsecops.html">第 3 章 DevSecOps（3.5）</a>。</li>
+            <li><strong>幻觉的代价在基础设施代码里被放大</strong>。
+              文档里一句编造的话，读者读到会疑惑；
+              而 IaC 里一条编造的规则会被流水线<strong>原样执行到真实环境</strong>。
+              某团队让模型生成一段存储桶配置，其中一条访问规则比实际需要开得宽 ——
+              功能测试全绿，因为功能确实正常，问题在三周后的安全扫描里才被发现。</li>
+          </ul>
+          <p class="mb-0 muted"><small>上述存储桶案例为本站构造的教学示例，非真实事件；
+            「幻觉代价在不同产出物上不对称」这一说法为本站教学整理。</small></p>
+        </div>
+
+        <!-- ============ 图 6-6-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 530" role="img" aria-label="生成式 AI 用例按产出侧与判断侧划分，以及在非约束环节提速导致在制品堆积的警示">
+              <defs>
+                <marker id="ah-66-4" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+                </marker>
+              </defs>
+
+              <!-- 左：产出侧 -->
+              <rect x="30" y="36" width="440" height="292" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="52" y="66" class="f-1" font-size="17" font-weight="700">产出侧 —— AI 生成初稿</text>
+              <text x="52" y="90" class="s-muted" font-size="12.5">可以被测试、扫描、评审检查出来的东西</text>
+              <g class="s-ink" font-size="14">
+                <circle cx="62" cy="116" r="4" class="f-1"/><text x="78" y="121">代码生成与补全</text>
+                <circle cx="62" cy="148" r="4" class="f-1"/><text x="78" y="153">测试用例生成</text>
+                <circle cx="62" cy="180" r="4" class="f-1"/><text x="78" y="185">流水线配置与 IaC 生成</text>
+                <circle cx="62" cy="212" r="4" class="f-1"/><text x="78" y="217">日志与告警的自然语言摘要</text>
+                <circle cx="62" cy="244" r="4" class="f-1"/><text x="78" y="249">事故复盘草稿</text>
+                <circle cx="62" cy="276" r="4" class="f-1"/><text x="78" y="281">文档生成</text>
+              </g>
+              <text x="52" y="312" class="f-1" font-size="12.5" font-weight="650">共同点：交出来的是草稿，进同一道评审才算数</text>
+
+              <!-- 分隔 -->
+              <line x1="480" y1="36" x2="480" y2="328" class="s-stroke" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+              <!-- 右：判断侧 -->
+              <rect x="490" y="36" width="440" height="292" rx="12" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="512" y="66" class="f-5" font-size="17" font-weight="700">判断侧 —— 只能人做</text>
+              <text x="512" y="90" class="s-muted" font-size="12.5">没有可自动核对的标准答案，后果也由人承担</text>
+              <g class="s-ink" font-size="14">
+                <circle cx="522" cy="116" r="4" class="f-5"/><text x="538" y="121">这一版能不能上生产</text>
+                <circle cx="522" cy="148" r="4" class="f-5"/><text x="538" y="153">这段生成代码安不安全</text>
+                <circle cx="522" cy="180" r="4" class="f-5"/><text x="538" y="185">许可与来源干不干净</text>
+                <circle cx="522" cy="212" r="4" class="f-5"/><text x="538" y="217">事故的根因与改进承诺</text>
+                <circle cx="522" cy="244" r="4" class="f-5"/><text x="538" y="249">约束在哪一环、下一步改哪里</text>
+                <circle cx="522" cy="276" r="4" class="f-5"/><text x="538" y="281">业务价值与优先级</text>
+              </g>
+              <text x="512" y="312" class="f-5" font-size="12.5" font-weight="650">AI 至多提供素材，签字的仍然是人</text>
+
+              <!-- 警示带 -->
+              <rect x="30" y="356" width="900" height="146" rx="12" class="s-2" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="52" y="384" class="f-2" font-size="15" font-weight="700">警示 —— 当约束不在编码时</text>
+
+              <rect x="52"  y="398" width="230" height="58" rx="9" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+              <rect x="310" y="398" width="270" height="58" rx="9" class="s-5" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+              <rect x="608" y="398" width="280" height="58" rx="9" class="s-2" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+              <g text-anchor="middle">
+                <text x="167" y="424" class="s-ink" font-size="14.5" font-weight="650">编码产出提速 3 倍</text>
+                <text x="167" y="444" class="s-muted" font-size="12">非约束环节</text>
+                <text x="445" y="424" class="f-5" font-size="14.5" font-weight="650">评审 / 部署仍是约束</text>
+                <text x="445" y="444" class="s-muted" font-size="12">通过速率一点没变</text>
+                <text x="748" y="424" class="f-2" font-size="14.5" font-weight="650">在制品堆得更快</text>
+                <text x="748" y="444" class="s-muted" font-size="12">前置时间不降反升</text>
+              </g>
+              <g class="s-2" stroke-width="2" fill="none">
+                <line x1="284" y1="427" x2="306" y2="427" marker-end="url(#ah-66-4)"/>
+                <line x1="582" y1="427" x2="604" y2="427" marker-end="url(#ah-66-4)"/>
+              </g>
+              <text x="52" y="482" class="s-muted" font-size="12.5">约束理论的直接推论：在非约束环节提速，只会让在制品在约束前面排得更长</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 6-6-2　产出侧、判断侧，与在错误环节提速的代价。</strong>
+            左右两栏要看的是<strong>分界线的位置</strong>：左侧每一项都能被测试、扫描或评审判定对错，
+            右侧每一项都没有可自动核对的答案 —— 这就是 AI 能不能替人做的判据。
+            底部那条链要看的是<strong>顺序</strong>：提速发生在第一格，约束仍在第二格，
+            于是第三格的结果是在制品更多、前置时间更长。
+            <strong>产出变快与交付变快之间，隔着一个「约束在哪」的问题。</strong>
+            <br><small class="muted">「产出 vs 判断」的分栏与底部因果链均为本站教学整理，官方未以此形式给出。
+            约束相关概念见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>，
+            <em>Constraint</em> 与 <em>Theory of Constraints</em> 列于 DOFD v3.4 官方考纲术语表。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">对比对象</th><th style="width:37%">本知识点：产出与判断的边界</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>自动化 <span class="en">Automation</span></strong><br><small class="muted"><span class="badge badge--plain">📘 官方模块子项</span></small></td>
+                  <td>讲的是<strong>哪些事能交出去、哪些事必须留给人</strong> —— 判断每一次都要重新做，因为每一份生成物都不同</td>
+                  <td>讲的是<strong>判断已经前置固化进脚本</strong>：步骤和判据在写脚本那一刻就定死了，因此执行时无需每次判断</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>这一行是本节这个知识点的位置：它不与自动化并列，而是划出<strong>自动化划不进来的那一块</strong> ——
+            凡判据无法预先写死的事，都留在判断侧。下表把这条边界落到四个具体场景上。</small></p>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">同一个场景</th><th style="width:37%">AI 能做到哪一步</th><th>必须由人做的那一步</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>写一段业务代码</strong></td>
+                  <td>给出可运行的实现与补全</td>
+                  <td>判断它符不符合本系统的约定、边界条件对不对、要不要合入</td>
+                </tr>
+                <tr>
+                  <td><strong>生成一份 IaC 模板</strong></td>
+                  <td>给出结构完整的配置文件</td>
+                  <td>判断权限开到多大、这个变更能不能作用到生产环境</td>
+                </tr>
+                <tr>
+                  <td><strong>摘要一次告警风暴</strong></td>
+                  <td>压缩成几句「发生了什么、从何时开始」</td>
+                  <td>判断根因是什么、要不要回滚、改进项承诺给谁</td>
+                </tr>
+                <tr>
+                  <td><strong>提升交付速度</strong></td>
+                  <td>让编码这一段的产出更快</td>
+                  <td>判断<strong>约束到底在不在编码这一段</strong>，以及提速值不值得</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「AI 写完了代码」和「这段代码可以上生产」是两件事</strong>。
+            前者是产出完成，后者是判断完成。
+            把两者当成一件事，等于把同行评审这一道反馈从流程里删掉 ——
+            而<strong>同行评审属于第二步 · 反馈，这一归属由 DOFD v3.4 官方样题答案键确认</strong>。</small></p>
+          <p class="mb-0 muted"><small>以上两张表均为本站教学整理，官方既未给出「产出 vs 判断」与自动化的这组对照，
+            也未给出「AI 能做到哪 / 人必须做什么」的分工表。
+            <em>Automation</em> 是 DOFD v3.4 课程大纲 M6 模块子项，未收录于 66 条术语表。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>评审标准不因来源下降</strong>：生成代码走同一道同行评审。
+              实践中反而要更警觉 —— 提交者对自己没写过的代码，往往解释不了「为什么这么写」。
+              把「能解释」列为合入条件，比多加一条规则有效。</li>
+            <li><strong>高影响面的生成物加一道机器检查</strong>：IaC、权限策略、网络规则这类产出，
+              人眼评审容易漏掉「开得太宽」，必须靠策略扫描与非生产环境验证兜住。</li>
+            <li><strong>许可与来源检查纳入安全流程</strong>：把依赖与代码片段的来源核查放进流水线，
+              而不是等法务在发版前一天来问。见<a href="../ch03-key-practices/3.5-devsecops.html">3.5 DevSecOps</a>。</li>
+            <li><strong>先量约束，再决定在哪提速</strong>：这是本节和 VSM 平台的接点。
+              先用平台看清排队最长的那一段，
+              如果它是评审或部署，那么<strong>加快编码不但不缩短前置时间，还会让在制品更快堆起来</strong> ——
+              <a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>
+              的结论在这里可以直接用：非约束环节的提速不会提升整体产出。</li>
+            <li><strong>把节省下来的时间还给判断</strong>：AI 省下的是写初稿的时间。
+              如果这些时间没有流向评审、测试与复盘，而是变成「同样时间里塞进更多需求」，
+              整条价值流的质量只会更差。</li>
+          </ul>
+          <div class="src-note">
+            以上五条实践建议为<strong>本站教学整理</strong>，官方未规定生成式 AI 的采用规范。
+            其中「非约束环节提速不提升整体产出」是约束理论的结论，
+            <em>Theory of Constraints</em> 与 <em>Constraint</em> 列于 DOFD v3.4 官方考纲术语表；
+            <strong>约束理论支持三步工作法中的第一步</strong>这一归属由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的两条</strong>：
+              <strong>对生产变更进行同行评审属于第二步</strong>；
+              <strong>约束理论支持三步工作法中的第一步</strong>（不是全部三步）。
+              两条均由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              本节的两个结论都建立在它们之上：AI 生成物仍要过第二步的评审；
+              提速要提在约束那一段，才对第一步 · 流动有意义。</li>
+            <li><strong>命题角度：问限制而不是问能力</strong>。
+              v3.6 把生成式 AI 列为学习目标，考查方向偏向「它不能做什么」——
+              正确方向是「生成物需要人评审」「不替代测试与安全检查」。</li>
+            <li><strong>干扰项长什么样</strong>：
+              「生成式 AI 可以取代同行评审」「有了 AI 就不再需要自动化测试」
+              「AI 可以自行决定是否部署到生产」——
+              三种写法的共同特征是<strong>把人的判断整个拿掉</strong>。</li>
+            <li><strong>第二类干扰项：把提速直接等同于交付变快</strong>。
+              「使用生成式 AI 后编码加快，因此变更前置时间必然缩短」——
+              这句话缺了一个前提：<strong>约束必须在编码这一段</strong>。
+              不成立的因果，是这一类题最常用的陷阱。</li>
+            <li><strong>排除技巧</strong>：凡选项把 AI 放到<strong>「决定」「放行」「取代评审 / 测试」</strong>的位置，
+              一律先划掉；剩下的选项里，选那个把 AI 放在<strong>「起草、辅助、加快产出」</strong>位置的。
+              <span class="muted">（此判据为本站教学整理）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，不复制任何官方样题的题干与选项原文。
+            官方未公布 v3.6 的命题规律与题型分布，命题角度分析为本站教学推断；
+            文中引用的两条判断由 DOFD v3.4 官方样题答案键确认，本站只陈述结论。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">产出可以交给模型，判断不能；在非约束环节提速，只会把队伍排得更长。</p>
+          <p class="mb-0 muted"><small>一句反问自查：<strong>「快出来的东西，卡在谁那里？」</strong>
+            答得出这个名字，才知道该不该上这个工具。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>VSM 平台是度量层</strong>：汇聚 → 关联 → 计算，位于工具链<strong>之上</strong>，只读数据、不执行环节动作，<strong>不替代任何一个环节工具</strong></li>
+        <li><strong>它解决什么</strong>：价值流映射做完就过期；平台把采集从「人问人」换成「从工具读事件」，于是价值流<strong>持续可见</strong>（见 <a href="../ch03-key-practices/3.9-vsm.html">3.9</a>）</li>
+        <li><strong>辨析线</strong>：一次性画图 = 价值流映射；持续更新的数据 = VSM 平台。选项里出现构建 / 测试 / 部署动作的，都不是它</li>
+        <li><strong>生成式 AI 六类用例</strong>：代码生成与补全、测试用例生成、流水线与 IaC 生成、日志与告警摘要、事故复盘草稿、文档生成 —— 全是「写点什么」</li>
+        <li><strong>三条风险</strong>：生成代码必须过同行评审（<strong>同行评审属第二步，DOFD v3.4 官方样题答案键确认</strong>）；训练数据带来安全与许可风险；幻觉在 IaC 里的代价远高于在文档里</li>
+        <li><strong>最核心的一句</strong>：它加快的是<strong>产出</strong>，不是<strong>判断</strong>。约束若在评审或部署，加快编码只会把<strong>在制品堆得更快</strong>（<strong>约束理论支持第一步，DOFD v3.4 官方样题答案键确认</strong>）</li>
+        <li><strong>边界</strong>：AIOps 归<a href="../ch07-metrics/index.html">第 7 章</a>，价值流管理的概念展开归 <a href="../ch03-key-practices/3.9-vsm.html">3.9</a></li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>VSM Platforms</em> 与 <em>Generative AI Use Cases</em> 均为
+      <strong>v3.6 新增学习目标</strong>，出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的学习目标</strong>；
+      本节提及的 <em>DevOps Dashboards</em>、<em>AIOps</em> 同属该批新增内容。
+      它们是 <strong>PeopleCert 现行产品页公布的官方学习目标</strong>，只是晚于 v3.4 的术语表与模块大纲 ——
+      属<strong>官方内容，不是延伸内容</strong>。
+      因此页头与两个主题知识点同时标 <span class="badge badge--plain">📘 官方模块子项</span> 与
+      <span class="badge badge--new">🆕 v3.6 新增</span>；
+      又因这些词条<strong>均未收录于 DOFD v3.4 的 66 条官方考纲术语表（Concept and Terminology List）</strong>，
+      <strong>不标「⭐ 考纲核心」</strong>，也<strong>不标「🧭 延伸 · 非考纲」</strong>。
+      对照表中引用到的术语表词条（如 <em>ChatOps</em>）按其自身判定另行标注。
+      v3.4 课程大纲 M6 模块的相关子项是 <em>AI and Machine Learning</em>；
+      <em>Value stream mapping</em>、<em>DevOps toolchain</em>、<em>ChatOps</em>、<em>Constraint</em>、
+      <em>Theory of Constraints</em>、<em>Cycle time</em>、<em>Change lead time</em>、<em>Deployment frequency</em>
+      列于 DOFD v3.4 官方考纲术语表。
+      <strong>该术语表只列词条、不附定义，因此本节所有中文释义均为本站措辞。</strong>
+      <strong>三条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「服务台事件管理系统<strong>不属于</strong>典型 DevOps 工具链要素」、
+      「对生产变更进行同行评审属于<strong>第二步</strong>」、
+      「约束理论支持三步工作法中的<strong>第一步</strong>」。本站只陈述结论，
+      <strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：VSM 平台「汇聚 / 关联 / 计算」三段拆解、三层结构示意（图 6-6-1）、
+      五条接入实施要点、生成式 AI 六类用例的分类与排序、选场景三判据、
+      「产出 vs 判断」分界与图 6-6-2、各面中的干扰项分析与排除技巧，
+      官方均未以此形式给出，已分别在对应位置就地标注。
+      文中三个数字化案例（价值流映射过期、新服务样板文件、存储桶权限过宽）为本站构造的教学示例，非真实事件或调研数据。
+      官方未公布 v3.6 的命题规律与题型分布，各「⑤ 考试怎么考」中的命题角度分析为本站教学推断。
+      AIOps 的展开见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>；
+      价值流管理的概念展开见<a href="../ch03-key-practices/3.9-vsm.html">第 3 章 价值流管理（3.9）</a>；
+      工具链构成见本章 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>，基础设施即代码见本章 <a href="6.3-iac.html">6.3 基础设施即代码</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

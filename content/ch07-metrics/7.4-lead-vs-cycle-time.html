@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.4 前置时间 vs 周期时间 · DevOps Foundation 学习站</title>
+<meta name="description" content="变更前置时间（Change lead time）与周期时间（Cycle time）都在 DOFD v3.4 官方考纲术语表内，区别只在起点：一个从「被接受」算起，一个从「开始动手」算起，终点同为「在生产可用」。本节并列讲清前置时间的两种口径（DORA 从代码提交起算、精益价值流从需求被接受起算），用一个 20 天的变更把差值算出来，并给出流动效率的读法。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.4-lead-vs-cycle-time"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.4 前置时间 vs 周期时间</h1>
+      <div class="page-head__en">Change Lead Time vs Cycle Time</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        这两个指标量的是<strong>同一个变更</strong>，终点也是<strong>同一个点</strong>（在生产上可用），
+        唯一的差别在<strong>起点</strong>：变更前置时间从「这件事被接受」开始计时，
+        周期时间从「真的有人动手」开始计时。
+        中间那一段差值，就是这个变更在队列里躺着的时间 ——
+        <strong>它通常比所有加工时间加起来还长，而且没有任何工程改进会顺手把它消掉。</strong>
+      </p>
+      <p class="page-head__lede">
+        <strong>但「前置时间从哪儿起算」有两种口径，都对，本节的第一件事就是把它们分清楚：</strong>
+        <strong>DOFD / DORA 口径</strong>从<strong>代码提交</strong>算到在生产上运行 ——
+        <a href="7.2-dora-metrics.html">7.2</a> 的 DORA 四指标用的是它；
+        <strong>精益价值流口径</strong>从<strong>需求被接受</strong>算起，把需求排队也计入 ——
+        <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>与本节后面的算例用的是它。
+        <strong>起点不同，是因为量的东西不同：一个量提交之后的交付段，一个量整条价值流。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>两把尺子的起点分别画在哪一步，为什么终点必须是同一个</li>
+        <li>一个 20 天才上线的变更，周期时间只有 8 天，剩下的 <strong>12 天去哪了</strong></li>
+        <li>流动效率怎么算，为什么它比「让开发再快 30%」更能指出该改哪里</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 452" role="img" aria-label="一条时间轴上标出变更前置时间与周期时间的两个起点和共同终点，等待段被单独着色，差值为十二天">
+          <defs>
+            <marker id="ah-74-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 三个关键时刻的标签 -->
+          <text x="56" y="30" class="f-1" font-size="15.5" font-weight="700">① 需求被接受</text>
+          <text x="564" y="30" class="f-3" font-size="15.5" font-weight="700" text-anchor="middle">② 实际开始动手</text>
+          <text x="904" y="30" class="f-5" font-size="15.5" font-weight="700" text-anchor="end">③ 在生产可用（共同终点）</text>
+
+          <!-- 三条竖直参考线 -->
+          <path d="M60 40 L60 300"  class="s-1" stroke-width="2" fill="none" stroke-dasharray="7 5"/>
+          <path d="M564 40 L564 300" class="s-3" stroke-width="2" fill="none" stroke-dasharray="7 5"/>
+          <path d="M900 40 L900 300" class="s-5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+
+          <!-- 量程条 · 变更前置时间 -->
+          <rect x="60" y="48" width="840" height="30" rx="8" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="480" y="68" font-size="15.5" text-anchor="middle"><tspan class="f-1" font-weight="700">变更前置时间 Change lead time</tspan><tspan class="s-ink">　＝ 20 天（① → ③）</tspan></text>
+
+          <!-- 量程条 · 周期时间 -->
+          <rect x="564" y="88" width="336" height="30" rx="8" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="732" y="108" font-size="15.5" text-anchor="middle"><tspan class="f-3" font-weight="700">周期时间 Cycle time</tspan><tspan class="s-ink">　＝ 8 天（② → ③）</tspan></text>
+
+          <!-- 差值标注 -->
+          <path d="M62 134 L562 134" class="s-5" stroke-width="2" fill="none" marker-start="url(#ah-74-1)" marker-end="url(#ah-74-1)"/>
+          <path d="M60 126 L60 142" class="s-5" stroke-width="2" fill="none"/>
+          <path d="M564 126 L564 142" class="s-5" stroke-width="2" fill="none"/>
+          <text x="312" y="158" class="f-5" font-size="14" font-weight="700" text-anchor="middle">差值 ＝ 12 天　全部发生在开工之前</text>
+
+          <!-- 分段条 -->
+          <rect x="60"  y="176" width="504" height="42" rx="6" class="s-5" stroke-width="1.8" fill="var(--dia-fill)" stroke-dasharray="6 4"/>
+          <rect x="564" y="176" width="84"  height="42" rx="6" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="648" y="176" width="126" height="42" rx="6" class="s-5" stroke-width="1.8" fill="var(--dia-fill)" stroke-dasharray="6 4"/>
+          <rect x="774" y="176" width="42"  height="42" rx="6" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <rect x="816" y="176" width="84"  height="42" rx="6" class="s-5" stroke-width="1.8" fill="var(--dia-fill)" stroke-dasharray="6 4"/>
+
+          <text x="312" y="203" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">待排期 · 排队等待 12 天</text>
+
+          <!-- 分段标签（上下两行错开） -->
+          <path d="M711 220 L711 240" class="s-stroke" stroke-width="1.4"/>
+          <path d="M858 220 L858 240" class="s-stroke" stroke-width="1.4"/>
+          <text x="606" y="234" class="s-ink" font-size="13" text-anchor="middle">编码 2 天</text>
+          <text x="795" y="234" class="s-ink" font-size="13" text-anchor="middle">测试与评审 1 天</text>
+          <text x="711" y="256" class="s-muted" font-size="13" text-anchor="middle">等评审与测试环境 3 天</text>
+          <text x="858" y="256" class="s-muted" font-size="13" text-anchor="middle">等发布窗口 2 天</text>
+
+          <!-- 时间轴 -->
+          <path d="M60 284 L900 284" class="s-stroke" stroke-width="1.6"/>
+          <g class="s-stroke" stroke-width="1.6">
+            <path d="M60 284 L60 292"/><path d="M228 284 L228 292"/><path d="M396 284 L396 292"/>
+            <path d="M564 284 L564 292"/><path d="M732 284 L732 292"/><path d="M900 284 L900 292"/>
+          </g>
+          <g class="s-muted" font-size="12" text-anchor="middle">
+            <text x="60"  y="306">第 0 天</text>
+            <text x="228" y="306">第 4 天</text>
+            <text x="396" y="306">第 8 天</text>
+            <text x="564" y="306">第 12 天</text>
+            <text x="732" y="306">第 16 天</text>
+            <text x="900" y="306">第 20 天</text>
+          </g>
+
+          <!-- 图例 -->
+          <rect x="60" y="322" width="18" height="14" rx="3" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="86" y="334" class="s-muted" font-size="12.5">处理：真的有人在动它（合计 3 天）</text>
+          <rect x="380" y="322" width="18" height="14" rx="3" class="s-5" stroke-width="1.8" fill="var(--dia-fill)" stroke-dasharray="4 3"/>
+          <text x="406" y="334" class="s-muted" font-size="12.5">等待：在某个队列里（合计 17 天）</text>
+
+          <!-- 结论框 -->
+          <rect x="60" y="352" width="400" height="88" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="78" y="378" class="f-1" font-size="15.5" font-weight="700">区别只在起点，不在终点</text>
+          <text x="78" y="402" class="s-ink" font-size="12.5">变更前置时间起点 ＝ 变更被接受（①）</text>
+          <text x="78" y="424" class="s-ink" font-size="12.5">周期时间起点 ＝ 实际开始动手（②）</text>
+
+          <rect x="500" y="352" width="400" height="88" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="518" y="378" class="f-5" font-size="15.5" font-weight="700">读数：20 − 8 ＝ 12 天</text>
+          <text x="518" y="402" class="s-ink" font-size="12.5">端到端时间的 60% 花在开工之前</text>
+          <text x="518" y="424" class="s-ink" font-size="12.5">改开发速度，最多只动得了右边那 8 天</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-4-1　两把尺子，同一个终点。</strong>
+        要看懂的只有一件事：<strong>两条量程条的右端对齐在同一个点（③ 在生产可用），左端却不在同一个点</strong> ——
+        所以两者的差值完全由起点决定，与终点无关。
+        差值那 12 天不属于任何一个工程环节，它是这个变更「被接受了但还没轮到」的时间。
+        下排分段条把 20 天拆开后可以看到：实线的处理段加起来只有 3 天，其余 17 天都是虚线的等待段。
+        <br><small class="muted">本图采用<strong>精益价值流口径</strong>（前置时间从需求被接受起算）；
+        换成 <strong>DORA 口径</strong>（从代码提交起算）时，①会右移到②之后，量程条只剩提交之后的那一段 —— 两种口径都成立，见本节 ① 面的对照表。
+        本例为<strong>本站构造的教学示例</strong>，数字用于说明起点差异如何产生差值，非真实调研数据。
+        <em>Change lead time</em> 与 <em>Cycle time</em> 均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+        <strong>「处理时间 / 等待时间」两词不在该 66 条术语表内</strong>，本站作为教学补充引入，同一标注见
+        <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-4-1</div>
+        <h3 class="kp__title">变更前置时间<span class="en">Change Lead Time</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--hot">📌 高频</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">变更前置时间 <span class="en">Change lead time</span></span>
+            是一个变更<strong>从被接受</strong>（需求受理、工单建立、待办条目创建）
+            <strong>到在生产上可用</strong>为止经过的全部时间，
+            <strong>包含中间所有的排队与等待</strong>，不扣除任何一段。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">三个要件</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>起点</strong></td><td><strong>精益价值流口径</strong>（本节算例采用）：这件事<strong>被接受、进入待办</strong>的那一刻。注意不是「有人想到它」，也不是「有人开始做它」<br><small class="muted"><strong>DOFD / DORA 口径</strong>另把起点定在<strong>代码提交</strong> <span class="en">code commit</span>，见下方「两种口径」一段</small></td></tr>
+                <tr><td><strong>终点</strong></td><td><strong>在生产上可用</strong>。不是「开发说做完了」，也不是「测试通过了」</td></tr>
+                <tr><td><strong>包含什么</strong></td><td><strong>全部时间，一秒不减</strong>。排期等待、评审等待、环境等待、发布窗口等待都算在里面 —— 这正是它存在的意义</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><strong>两种口径 —— 都对，起点不同是因为量的东西不同：</strong></p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:24%">口径</th><th style="width:26%">起点 → 终点</th><th>它在量什么 · 谁用它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>DOFD / DORA 口径</strong></td>
+                  <td><strong>代码提交</strong> <span class="en">code commit</span> → 变更<strong>在生产上运行</strong></td>
+                  <td>量<strong>提交之后的交付段</strong>：评审、构建、测试、审批、发布窗口、部署。
+                    <strong>DORA 四指标里的 <em>Change lead time</em> 用的就是这一种</strong>，见本章 <a href="7.2-dora-metrics.html">7.2</a></td>
+                </tr>
+                <tr>
+                  <td><strong>精益价值流口径</strong></td>
+                  <td><strong>需求被接受、进入待办</strong> → 变更<strong>在生产上可用</strong></td>
+                  <td>量<strong>整条价值流</strong>：在上面那一段之前，还多算了需求排队与排期等待。
+                    <strong>价值流映射用的是这一种</strong>，见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>，本节后面的 20 天算例也采用它</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            差别只在起点：<strong>精益口径的起点更早，因此同一个变更用精益口径算出的数一定不小于 DORA 口径</strong>，
+            多出来的正是「已受理但还没轮到开工」以及编码本身那几段。
+            <strong>两者不是一个对一个错，而是两个不同的指标口径</strong> ——
+            真正会出事的只有一种情况：<strong>报表里不写明用的是哪一种</strong>，或者两种混在同一条趋势线上。
+          </p>
+          <p class="mb-0 muted"><small><strong>Change lead time</strong>、<strong>Code commit</strong>
+            逐字列于 DOFD v3.4 官方考纲术语表；
+            v3.4 课程大纲 M7 模块的子项逐字写作 <em>Change lead/cycle time</em>，把两者并列为一个子项。
+            该术语表只列词条、不附定义，<strong>上表两种口径的对照与措辞为本站教学整理</strong>；
+            「DORA 口径从代码提交起算、精益价值流口径从需求被接受起算」是两种口径各自的通行定义。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它解决的是一个每周都在发生的争吵：<strong>同一件事，两边报出的时间差了一个数量级，而且两边都没说谎。</strong>
+          </p>
+          <ul>
+            <li>某团队的季度复盘会上，开发负责人说「这个改动两天就做完了」，
+              业务方说「我三月初提的，四月才用上」。会开了 40 分钟，没有结论 ——
+              因为一方报的是加工时间，另一方报的是<strong>从提出到可用</strong>的时间，两把尺子的起点差了三周。</li>
+            <li>缺少一个覆盖全程的指标，会产生一个很具体的后果：<strong>没有人对环节之间的排队负责</strong>。
+              每个环节的负责人都能证明自己那一段很快，端到端却越来越慢，
+              而这条「变慢」在任何一份分环节报表里都不出现。</li>
+            <li>更隐蔽的一层：<strong>不量端到端，就无法判断改进有没有用</strong>。
+              把构建从 20 分钟压到 6 分钟，听上去是胜利；
+              但如果这个变更本来就要等 12 天才开工，端到端几乎纹丝不动。</li>
+          </ul>
+          <p>
+            变更前置时间的机制很简单：<strong>它把「所有人都不负责的那些间隙」强行算进同一个数里</strong>。
+            一旦这个数被公开报告，间隙就有了归属。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，用于说明起点不一致如何造成分歧，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">变更前置时间 <span class="en">Change lead time</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>周期时间 <span class="en">Cycle time</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>起点是<strong>「被接受」</strong>。<strong>含开工前的排队</strong></td>
+                  <td>起点是<strong>「开始动手」</strong>。<strong>不含开工前的排队</strong>。终点与它完全相同</td>
+                </tr>
+                <tr>
+                  <td><strong>平均恢复时间 <span class="en">MTTR</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>量的是<strong>交付一个变更</strong>要多久 —— 计划内的工作，从待办走到生产</td>
+                  <td>量的是<strong>恢复一次故障</strong>要多久 —— 计划外的事件，从服务受损走到服务恢复。<br><small class="muted">两者的归属见 <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法（2.1）</a>：前者是流动的指标，后者是反馈的指标（指标与三步工作法的归属映射为本站教学整理）</small></td>
+                </tr>
+                <tr>
+                  <td><strong>部署频率 <span class="en">Deployment frequency</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>量<strong>一件事走完要多久</strong>（时长）</td>
+                  <td>量<strong>单位时间走完多少件</strong>（速率）。两者可以背离：一天发 20 次，单件仍可能要等 30 天才轮到</td>
+                </tr>
+                <tr>
+                  <td><strong>处理时间</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>含等待，是<strong>日历时间</strong></td>
+                  <td>只算真的有人在动它的时间，是<strong>工时口径</strong>。图 7-4-1 里是那 3 天</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>它与周期时间的差别只在起点，终点是同一个</strong>。
+            很多人以为区别在终点（比如「一个到测试完成、一个到上线」）—— 不是。
+            两者的终点都是<strong>在生产上可用</strong>，从终点方向永远分不开它们。</small></p>
+          <p class="mb-0 muted"><small>「处理时间」一词与上表的四组对照维度为<strong>本站教学整理</strong>，
+            官方术语表只列出 <em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
+            <em>Mean Time to Repair/Recover (MTTR)</em> 四个词条，未以此形式给出对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>这个指标不难算，难在<strong>起点的定义要先谈好并写下来</strong>。起点没谈拢，数字就没法比。</p>
+          <ul>
+            <li><strong>先选口径，再把起点钉在一个有时间戳的动作上</strong>：
+              讲 DORA 四指标就取<strong>代码提交</strong>的时间戳；做价值流分析就取<strong>需求进入待办列</strong>或<strong>工单被受理</strong>的时刻。
+              <strong>两种口径都对，但一张报表只能用一种，并且把用的是哪一种写进度量口径文档。</strong>
+              <br><small class="muted">对照关系：<a href="7.2-dora-metrics.html">7.2</a> 讲 DORA 四指标用<strong>提交起点</strong>；
+              本节的 20 天算例与 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>用<strong>需求受理起点</strong>。
+              按本节口径，第一次代码提交发生在②之后 —— 所以拿提交起点去和本节的周期时间相减，会得出「前置时间短于周期时间」这种不成立的结果。
+              <strong>混用口径是本条唯一真正的错误，选哪一种都不是。</strong></small></li>
+            <li><strong>终点钉在「用户可用」，不是「部署完成」</strong>：如果部署与放量是解耦的
+              （见 <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章 持续交付 vs 持续部署（3.3）</a>），
+              就要明确报的是哪一个，否则同一条流水线能报出两个差很多的数。</li>
+            <li><strong>按单个变更算，不按批次算</strong>：一次发布里打包了 9 个变更，
+              那是 9 条各自的前置时间，不是 1 条。按批次算会把先做完的那几个的等待时间抹掉。</li>
+            <li><strong>看分布，不看平均值</strong>：「大多数 3 天、少数 60 天」和「全部 12 天」的平均值可能一样，
+              但改进方向完全不同。至少同时报<strong>中位数与 85 分位</strong>。</li>
+            <li><strong>不要拿它考核个人</strong>：它是一条<strong>价值流的属性</strong>，不是某个人的产出速度。
+              一旦挂钩个人绩效，最快的优化方式是晚一点建工单。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实施建议为<strong>本站教学整理</strong>，
+            官方文件把 <em>Change lead time</em> 列为需掌握的术语，未规定统计口径与报告方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>主要命题角度：给场景问指标名</strong>。题干描述「从客户提出需求 / 从变更被提交，
+              到它在生产上可用」这样一段跨度，问对应哪个指标。
+              <strong>起点词是唯一的钥匙</strong>：出现「提出 / 受理 / 进入待办」（<strong>精益价值流口径</strong>）
+              或「代码提交 / code commit」（<strong>DOFD / DORA 口径</strong>），方向都是变更前置时间；
+              只有出现「开始处理 / 进入开发」才是周期时间。</li>
+            <li><strong>干扰项一：周期时间</strong>。它与正确答案共享整个后半句（「到在生产上可用」），
+              只差起点。<strong>只读后半句永远分不开这两项 —— 必须回头找起点词。</strong></li>
+            <li><strong>干扰项二：MTTR</strong>。构造方式是把题干里的「变更」偷换成「故障 / 中断 / 服务不可用」。
+              排除技巧：先判断题干说的是<strong>计划内的变更</strong>还是<strong>计划外的故障</strong>，
+              一句话就能整组划掉。</li>
+            <li><strong>干扰项三：部署频率</strong>。它是<strong>速率</strong>不是<strong>时长</strong>。
+              题干问「多久」选时长类，问「多频繁 / 每天多少次」才是它。</li>
+            <li><strong>陷阱写法</strong>：把变更前置时间描述成「<strong>部署这个动作本身花的时间</strong>」。
+              那只是最后一小段，不是端到端。看到「部署耗时」「发布用了多少分钟」就该警惕。</li>
+            <li><strong>时间分配提示</strong>：本章在 v3.4 官方考试要求中最多出 <strong>2 题</strong>
+              （DOFD v3.4 Examination Requirements，2022-05；<strong>v3.6 未公开重新发布权重表</strong>）——
+              题量小，但「起点决定差值」是理解整条流动因果链的枢纽，
+              <strong>按理解重要性学，不要按理解重要性分配应试时间</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>DOFD v3.4 官方样题答案键中<strong>没有直接涉及本对术语的条目</strong>，
+            上述命题角度、干扰项构造与排除技巧均为<strong>本站教学推断</strong>；
+            官方仅公布考试范围为 Bloom 1–2，未公布命题规律。以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">精益价值流口径从「别人提出」那一刻开始计时；DORA 口径从「代码提交」开始计时 —— 两条秒表，等待都算钱。</p>
+          <p class="mb-0 muted"><small>补一句反问自检：<strong>如果这个数字里没有包含任何排队，那量的多半不是它。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-4-2</div>
+        <h3 class="kp__title">周期时间<span class="en">Cycle Time</span></h3>
+        <div class="badge-row"><span class="badge badge--core">⭐ 考纲核心</span><span class="badge badge--warn">⚠️ 易混淆</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">周期时间 <span class="en">Cycle time</span></span>
+            是一个变更<strong>从真正开始被处理</strong>（有人把它从待办拉进「进行中」）
+            <strong>到在生产上可用</strong>为止的时间。
+            它<strong>不含开工之前的排队</strong>，量的是<strong>加工过程本身有多长</strong>。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">三个要件</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr><td><strong>起点</strong></td><td><strong>实际开始动手</strong>的那一刻。看板上就是卡片离开待办列、进入第一个在制品列的时间戳</td></tr>
+                <tr><td><strong>终点</strong></td><td><strong>与变更前置时间完全相同</strong>：在生产上可用。这是两者唯一不分岔的地方</td></tr>
+                <tr><td><strong>包含什么</strong></td><td>开工之后的<strong>全部</strong>时间 —— 包括加工中间的等待（等评审、等环境、等发布窗口）。<strong>它不等于纯加工时间</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>Cycle time</strong> 逐字列于 DOFD v3.4 官方考纲术语表，与
+            <em>Change lead time</em> 在 v3.4 课程大纲 M7 子项 <em>Change lead/cycle time</em> 中并列出现。
+            上表的起点划法属本站教学整理。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            如果变更前置时间已经覆盖全程，为什么还要第二把尺子？
+            因为<strong>只有一个端到端数字时，看到它变长，没人知道该动哪里。</strong>
+          </p>
+          <ul>
+            <li>某平台团队的变更前置时间从 14 天涨到 20 天，管理层的第一反应是「开发太慢了，加人」。
+              加了 3 个人之后，端到端时间不但没降，反而继续往上走 —— 因为瓶颈根本不在编码，
+              人一多，待办列反而排得更长。</li>
+            <li>把周期时间单独量出来之后，事情才清楚：<strong>周期时间一直稳定在 8 天，
+              涨的全是开工前的排队（6 天 → 12 天）。</strong>
+              真正的原因是上游需求受理量翻倍，而在制品限制没有跟着调。</li>
+          </ul>
+          <p>
+            周期时间的作用就在这里：<strong>它把「排队排得久」和「做得慢」拆成两个可以分别追查的数</strong>。
+            两个数一起看，才能判断该去改流入速率，还是去改加工过程。
+            单独看任何一个，都会得出错误的行动。
+          </p>
+          <p class="mb-0 muted"><small>本案例为<strong>本站构造的教学示例</strong>，数字用于说明两个指标的诊断分工，非真实调研数据。
+            「在制品限制」的展开见 <a href="../ch03-key-practices/3.7-kanban.html">第 3 章 看板（3.7）</a>。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">周期时间 <span class="en">Cycle time</span></th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>变更前置时间 <span class="en">Change lead time</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>起点＝<strong>开始动手</strong>。缩短它靠改<strong>加工过程</strong>：自动化、并行、减少交接</td>
+                  <td>起点＝<strong>被接受</strong>。缩短它还要额外改<strong>队列</strong>：限制在制品、缩小批量、砍掉审批等待</td>
+                </tr>
+                <tr>
+                  <td><strong>处理时间</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td><strong>含</strong>开工之后的等待（等评审、等环境、等窗口）</td>
+                  <td><strong>不含</strong>任何等待，只算真的有人在动它的那部分。图 7-4-1 里周期时间 8 天，处理时间只有 3 天</td>
+                </tr>
+                <tr>
+                  <td><strong>Velocity</strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>量<strong>单件走完的时长</strong>，与迭代边界无关，随时可算</td>
+                  <td>量<strong>一个 Sprint 完成的工作量</strong>，属 Scrum，绑定时间盒。<br><small class="muted">见 <a href="../ch04-frameworks/4.2-agile-scrum.html">第 4 章 敏捷与 Scrum（4.2）</a></small></td>
+                </tr>
+                <tr>
+                  <td><strong>平均恢复时间 <span class="en">MTTR</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>对象是<strong>一个计划内的变更</strong></td>
+                  <td>对象是<strong>一次计划外的故障</strong>。两者都以「多久」计量，但量的不是同一类事件</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>周期时间不是「纯加工时间」</strong>。
+            它只砍掉了<strong>开工之前</strong>的排队，开工之后的等评审、等环境、等发布窗口全都还在里面。
+            把周期时间当成「团队实际干活花的时间」，会高估加工效率 —— 图 7-4-1 里这个高估是 8 天对 3 天。</small></p>
+          <p class="mb-0 muted"><small>「处理时间」一词及上表对照维度为<strong>本站教学整理</strong>；
+            <em>Cycle time</em>、<em>Velocity</em>、<em>MTTR</em> 三个词条列于 DOFD v3.4 官方考纲术语表，
+            官方未以此形式给出对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <ul>
+            <li><strong>用看板列的时间戳，不用会上报的数</strong>：卡片进入第一个在制品列 → 进入「已上线」列，
+              两个时间戳相减。会议室里凭印象报的数字通常只包含加工，不包含开工后的等待。</li>
+            <li><strong>把「开始动手」的定义写进完成的定义旁边</strong>：
+              「分析算不算开始？」「排期会上认领算不算？」不同答案会让周期时间差出好几天。
+              定义可以选，但必须固定，否则趋势线毫无意义。</li>
+            <li><strong>同一个工作项，两个数一起报</strong>：只报周期时间会让团队显得很快，
+              只报前置时间会让团队觉得冤。两个数并排，讨论才会落在队列上而不是落在人身上。</li>
+            <li><strong>拆开看每一段</strong>：周期时间偏长时，先看它内部哪一段最厚 ——
+              通常不是编码，而是「等评审」或「等发布窗口」。这一步的做法见
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>。</li>
+            <li><strong>不要跨工作项拼装</strong>：拿 A 的编码时间加 B 的测试时间凑一个周期时间，
+              算出来的数不对应任何真实存在的变更。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实施建议为<strong>本站教学整理</strong>，官方文件未规定周期时间的采集方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度与本节 <a href="#kp-7-4-1">变更前置时间</a>那一半是对称的</strong>：题干描述「从团队开始处理 / 从进入开发，
+              到在生产上可用」，答案方向是周期时间。<strong>钥匙同样是起点词</strong>：
+              出现「开始处理 / 开始动手 / 进入开发 / 被拉进在制品」，就是它。</li>
+            <li><strong>干扰项一：变更前置时间</strong>。这是最主要的一个，两者后半句一模一样。
+              <strong>排除技巧：把题干的终点部分整句遮住，只读起点。终点不具备任何区分力。</strong></li>
+            <li><strong>干扰项二：把它描述成「纯加工时间」</strong>。选项写成「团队实际投入工时」之类。
+              周期时间是<strong>日历时间</strong>，含开工后的等待，不是工时。</li>
+            <li><strong>干扰项三：Velocity</strong>。构造方式是在题干里塞进「每个 Sprint」。
+              一旦出现迭代边界与「完成多少工作量」，方向就转向 Velocity，不再是时长类指标。</li>
+            <li><strong>关于术语混乱的一条实战提醒</strong>：<strong>不同资料对 lead time 与 cycle time 的定义并不统一</strong>
+              —— 有的精益资料把 cycle time 定义为「两件成品产出之间的间隔」，与本节的用法不同。
+              考试是<strong>开卷</strong>且<strong>仅限官方 Learner Workbook 与 Quick Reference Guide</strong>
+              （现行 v3.6 考试形式，出自 PeopleCert 现行 DevOps Foundation 产品页公布的考试信息），所以遇到定义冲突时，
+              <strong>以手边那本官方教材的表述为准，不要套用其他体系的定义</strong>。
+              <span class="muted">（「不同资料定义不一」是本站观察，非官方表述。）</span></li>
+          </ul>
+          <p class="mb-0 muted"><small>DOFD v3.4 官方样题答案键中<strong>没有直接涉及本对术语的条目</strong>，
+            上述命题角度、干扰项构造与排除技巧均为<strong>本站教学推断</strong>；
+            官方仅公布考试范围为 Bloom 1–2。以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">从「自己动手」那一刻开始计时，量的是加工过程有多长。</p>
+          <p class="mb-0 muted"><small>两句连起来记：<strong>前置时间从别人提出算起，周期时间从自己动手算起，两者在同一个终点收尾。</strong></small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-4-3</div>
+        <h3 class="kp__title">差值与流动效率：等待到底占了多少<span class="en">The Gap &amp; Flow Efficiency</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            两个指标真正的用处，不在各自的绝对值，而在<strong>它们的差与比</strong>：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">算式</th><th style="width:20%">图 7-4-1 的数</th><th>它告诉你什么</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>差值</strong><br><small class="muted">前置时间 − 周期时间</small></td>
+                  <td><strong>20 − 8 ＝ 12 天</strong></td>
+                  <td><strong>开工之前的排队时长</strong>。这一段完全不受开发效率影响</td>
+                </tr>
+                <tr>
+                  <td><strong>周期时间 ÷ 前置时间</strong></td>
+                  <td><strong>8 ÷ 20 ＝ 40%</strong></td>
+                  <td>补数 <strong>60%</strong> 就是<strong>开工前排队占端到端的比例</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>流动效率</strong> <span class="badge badge--note">📝 教学整理</span><br><small class="muted">处理时间 ÷ 前置时间</small></td>
+                  <td><strong>3 ÷ 20 ＝ 15%</strong></td>
+                  <td>把开工<strong>前后</strong>的等待一起算进去：85% 的时间没有任何人在动它</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <strong>两个比值的关系</strong>：<em>周期时间 ÷ 前置时间</em> 只剔除开工前的排队；
+            <em>流动效率 ＝ 处理时间 ÷ 前置时间</em> 把开工后的等待也一并剔除，因此总是更低。
+            <strong>只有当周期时间内部不含任何等待时，两个比值才相等</strong> ——
+            许多资料直接把流动效率写成「周期时间 ÷ 前置时间」，成立的正是这个前提。
+            本站在 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>
+            采用<strong>处理时间口径</strong>，与本节一致，两处的示例都落在 15%。
+            <br><strong>「流动效率 / 处理时间 / 等待时间」三个词均不在 DOFD v3.4 官方考纲术语表的 66 条内</strong>，
+            上表的三个算式与它们的读法均为<strong>本站教学整理</strong>，官方未给出此类公式。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要挡住的是一个非常昂贵的决策错误：<strong>把改进预算全部投在加工环节上。</strong>
+          </p>
+          <ul>
+            <li>某公司立项「研发提效」，目标写的是「开发效率提升 30%」。半年后编码环节确实快了，
+              端到端却几乎没动 —— 因为 20 天里只有 3 天是加工，提速 30% 只省下 0.9 天，
+              端到端 20 天变成 19.1 天，<strong>改善 4.5%</strong>。</li>
+            <li>同一时期，隔壁团队做了一件便宜得多的事：把「需求受理后等排期」的 12 天压到 4 天
+              （每周一次的排期会改成每天 15 分钟的拉取）。<strong>端到端 20 天 → 12 天，改善 40%。</strong>
+              没有增加一个人，没有引入一个工具。</li>
+          </ul>
+          <p>
+            差值与流动效率的机制就是<strong>把这个对比提前变成一个数</strong>：
+            15% 意味着<strong>剩下 85% 的时间根本不需要谁更努力，只需要不排队</strong>。
+            立项之前先算这个数，可以避免把钱花在只占 15% 的那一段上。
+          </p>
+          <p class="mb-0 muted"><small>本案例与两组数字为<strong>本站构造的教学示例</strong>，
+            用于说明「改加工」与「改队列」的收益差，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 7-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 424" role="img" aria-label="同一个二十天的变更用三种量法展开：前置时间二十天、周期时间八天占百分之四十、处理时间三天占百分之十五，并对比改加工与改队列两种改进的收益">
+              <defs>
+                <marker id="ah-74-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <text x="60" y="26" class="s-ink" font-size="15" font-weight="700">同一个 20 天，三种量法</text>
+              <text x="900" y="26" class="s-muted" font-size="12.5" text-anchor="end">条形长度按天数等比例绘制</text>
+
+              <!-- 条 A：前置时间 -->
+              <rect x="60" y="44" width="840" height="34" rx="7" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="80" y="66" class="s-ink" font-size="15" font-weight="650">变更前置时间 20 天　——　这是分母，改进前后都拿它作比较基准</text>
+
+              <!-- 条 B：周期时间 -->
+              <rect x="60" y="96" width="336" height="34" rx="7" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="396" y="96" width="504" height="34" rx="7" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 4"/>
+              <text x="228" y="118" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">周期时间 8 天</text>
+              <text x="648" y="118" class="s-muted" font-size="13" text-anchor="middle">开工前排队 12 天</text>
+
+              <!-- 条 C：处理时间 -->
+              <rect x="60" y="148" width="126" height="34" rx="7" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="186" y="148" width="714" height="34" rx="7" class="s-stroke" stroke-width="1.6" stroke-dasharray="6 4"/>
+              <text x="123" y="170" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">处理 3 天</text>
+              <text x="543" y="170" class="s-muted" font-size="13" text-anchor="middle">等待合计 17 天（开工前 12 天 ＋ 开工后 5 天）</text>
+
+              <!-- 算式 -->
+              <text x="60" y="212" font-size="14"><tspan class="f-3" font-weight="700">周期时间 ÷ 前置时间 ＝ 8 ÷ 20 ＝ 40%</tspan><tspan class="s-ink">　→　另外 60% 全部消耗在开工之前</tspan></text>
+              <text x="60" y="240" font-size="14"><tspan class="f-1" font-weight="700">流动效率 ＝ 处理时间 ÷ 前置时间 ＝ 3 ÷ 20 ＝ 15%</tspan><tspan class="s-ink">　→　85% 的时间没有人在动它</tspan></text>
+
+              <!-- 两种改进的收益对比 -->
+              <rect x="60" y="266" width="400" height="128" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <text x="80" y="292" class="f-5" font-size="15.5" font-weight="700">改加工：开发效率 +30%</text>
+              <text x="80" y="318" class="s-ink" font-size="12.5">处理 3 天 → 2.1 天</text>
+              <text x="80" y="342" class="s-ink" font-size="12.5">端到端 20 天 → 19.1 天</text>
+              <rect x="80" y="356" width="200" height="20" rx="5" class="s-5" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+              <text x="296" y="371" class="f-5" font-size="14" font-weight="700">改善 4.5%</text>
+
+              <rect x="500" y="266" width="400" height="128" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill)"/>
+              <text x="520" y="292" class="f-1" font-size="15" font-weight="700">改队列：开工前排队 12 天 → 4 天</text>
+              <text x="520" y="318" class="s-ink" font-size="12.5">处理 3 天不变，一个人也没多加</text>
+              <text x="520" y="342" class="s-ink" font-size="12.5">端到端 20 天 → 12 天</text>
+              <rect x="520" y="356" width="200" height="20" rx="5" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="736" y="371" class="f-1" font-size="14" font-weight="700">改善 40%</text>
+
+              <path d="M466 330 L494 330" class="s-3" stroke-width="2" fill="none" marker-end="url(#ah-74-2)"/>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-4-2　15% 这个数字决定了改进该投在哪。</strong>
+            要看懂的是三条形的<strong>长度比</strong>，以及它推出的那个结论：
+            当加工只占 15% 时，<strong>把加工提速 30%，端到端只改善 4.5%</strong>；
+            而把开工前的队列砍掉三分之二，<strong>端到端改善 40%</strong>，且处理时间一天没变。
+            这就是为什么两个指标要一起报 —— <strong>差值指向的那一段，才是收益最大的地方</strong>。
+            <br><small class="muted">本图数据为<strong>本站构造的教学示例</strong>，非真实调研数据。
+            「流动效率 / 处理时间 / 等待时间」三词不在 DOFD v3.4 官方 66 条术语表内，属本站教学补充；
+            同一算法与 15% 的示例见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">流动效率（处理 ÷ 前置）</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>资源利用率</strong><br><small class="muted"><span class="badge badge--note">📝 教学整理</span></small></td>
+                  <td>看的是<strong>工作</strong>有多少时间在被处理。分母是一个变更的日历时间</td>
+                  <td>看的是<strong>人</strong>有多少时间在忙。分母是人的工时。<strong>两者往往此消彼长</strong>：人排满了，工作就要排队</td>
+                </tr>
+                <tr>
+                  <td><strong>差值（前置 − 周期）</strong></td>
+                  <td>是一个<strong>比例</strong>，可跨团队比较，但看不出等待卡在哪一段</td>
+                  <td>是一个<strong>绝对天数</strong>，且明确指向<strong>开工之前</strong>那一段，可以直接换算成「少等几天」</td>
+                </tr>
+                <tr>
+                  <td><strong>部署频率 <span class="en">Deployment frequency</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>暴露<strong>等待占比</strong></td>
+                  <td>暴露<strong>批量与节奏</strong>。频率高不代表流动效率高：一天发 20 次，单件仍可能等 12 天才开工</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong><br><small class="muted"><span class="badge badge--core">⭐ 考纲核心</span></small></td>
+                  <td>是一个<strong>比值</strong>：两个时间戳相减即可算出，随时可复算，用来判断「要不要查」</td>
+                  <td>是一次<strong>分析活动</strong>：把每一段的处理与等待都画出来，用来回答「卡在哪一段」<br><small class="muted">方法见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a></small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>流动效率低，不代表团队不努力</strong>。
+            它的分母是日历时间，被队列、审批、发布窗口撑大 ——
+            <strong>它是价值流的诊断结果，不是团队的努力程度</strong>。把它当成考核指标，
+            最快的提升方式是修改统计口径，而不是缩短队列。</small></p>
+          <p class="mb-0 muted"><small>「资源利用率」与上表四组对照为<strong>本站教学整理</strong>；
+            <em>Deployment frequency</em> 与 <em>Value stream mapping</em> 列于 DOFD v3.4 官方考纲术语表，
+            <em>流动效率</em> 不在其中。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>用法只有一条主线：<strong>先算差值，再决定改哪里，最后回来重测同一个数。</strong></p>
+          <ul>
+            <li><strong>第一步：把差值算出来并公开</strong>。哪怕只有粗略的两个数，
+              「20 和 8」比任何一份改进提案都更能定住讨论方向。</li>
+            <li><strong>第二步：按差值大小决定投入</strong>。差值远大于周期时间（如 12 : 8），
+              说明约束在<strong>流入与排期</strong>，该动的是限制在制品、缩小批量、砍审批层级；
+              差值很小而周期时间很长，说明约束在<strong>加工过程</strong>，该动的是自动化与交接。
+              这就是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>在指标上的落点。</li>
+            <li><strong>第三步：拆开周期时间内部</strong>。周期时间 8 天里若有 5 天是等评审与等窗口，
+              那么「加工过程」这四个字里其实也主要是等待 —— 用价值流映射把这 5 天定位到具体段。</li>
+            <li><strong>只报给流程改进用，不挂钩绩效</strong>。一旦流动效率进了考核表，
+              第一个被优化的会是「什么时候建工单」。</li>
+            <li><strong>改完回来重测同一条口径</strong>。口径变了，前后两个数就不可比，
+              改进的效果也就无从证明。</li>
+          </ul>
+          <p class="mb-0 muted"><small>这份三步用法与投入判据为<strong>本站教学整理</strong>，
+            官方文件未规定如何依据这两个指标分配改进投入。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先说清楚不会怎么考</strong>：<strong>「流动效率」不在 66 条官方术语表内</strong>，
+              <strong>不会</strong>作为名词直接被问定义，公式也不需要背。
+              考的是它背后的理解：<strong>哪个指标能暴露等待</strong>。</li>
+            <li><strong>会考的角度：给场景问方向</strong>。题干描述「团队加工很快但交付很慢 / 大量时间花在排队」，
+              问该看哪个指标或该做什么。方向是<strong>端到端的变更前置时间</strong>与
+              <strong>价值流映射</strong>，不是「提高个人产出」。</li>
+            <li><strong>干扰项一：提高利用率 / 让每个人都忙起来</strong>。这是最典型的反向干扰
+              —— <strong>见到「更忙」「更多并行」「提高资源利用率」，先划掉</strong>。
+              提高利用率会拉长队列，与缩短前置时间的方向相反。</li>
+            <li><strong>干扰项二：用速率顶替时长</strong>。题干问「怎么知道等待占了多少」，
+              选项给部署频率。频率答不了「单件等了多久」这个问题。</li>
+            <li><strong>干扰项三：把两个指标的差值说成「测试用了多久」或「部署用了多久」</strong>。
+              差值是<strong>开工之前</strong>的排队，不是流水线里的任何一段。</li>
+          </ul>
+          <p class="mb-0 muted"><small>DOFD v3.4 官方样题答案键中<strong>没有直接涉及本知识点的条目</strong>，
+            上述命题角度、干扰项构造与排除技巧均为<strong>本站教学推断</strong>；
+            官方仅公布考试范围为 Bloom 1–2。以上不复制任何官方样题的题干与选项原文。
+            本章练习将提供仿真题（仿真题，非官方真题）。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">差值是账单，上面写着这个组织在等待上花掉了多少天。</p>
+          <p class="muted"><small>配套一句：<strong>加工只占 15%，努力的上限就是 15%</strong> ——
+            剩下的 85% 不靠努力，靠不排队。</small></p>
+          <p class="mb-0 muted"><small>三个数一组记：<strong>20（前置）· 8（周期）· 3（处理）</strong>，
+            差 12 天在开工前，差 5 天在开工后，真正在动它的只有 3 天。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>考试权重提示</strong>：本章 v3.4 最多 <strong>2 题</strong>，全书最低（DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。<strong>读懂即可，不要在这一章堆应试时间</strong></li>
+        <li><strong>区别只在起点，终点相同</strong>：两者都终于<strong>在生产上可用</strong>。
+          <strong>变更前置时间</strong>从「需求被接受」算起，<strong>周期时间</strong>从「实际开始动手」算起（本节采用的精益价值流口径）</li>
+        <li><strong>前置时间有两种口径，都对，必须写明用哪一种</strong>：
+          <strong>DOFD / DORA 口径</strong>从<strong>代码提交</strong>算到在生产上运行（<a href="7.2-dora-metrics.html">7.2</a> 的 DORA 四指标用它）；
+          <strong>精益价值流口径</strong>从<strong>需求被接受</strong>算起、含需求排队（本节算例与 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a> 用它）。
+          起点不同因为量的东西不同 —— <strong>错的只有混用，不是选错</strong></li>
+        <li><strong>两个词都在 66 条官方术语表内</strong>（<em>Change lead time</em>、<em>Cycle time</em>），
+          v3.4 课程大纲 M7 子项逐字写作 <em>Change lead/cycle time</em></li>
+        <li><strong>起点词就是钥匙</strong>：「提出 / 受理 / 进入待办」→ 前置时间；
+          「开始处理 / 进入开发」→ 周期时间。<strong>终点词不具备区分力，别读后半句</strong>（判据为本站教学整理）</li>
+        <li><strong>与 MTTR 的分界</strong>：这两个量的是<strong>交付一个变更</strong>，MTTR 量的是<strong>恢复一次故障</strong>；
+          前者属流动，后者属反馈（该归属为本站教学整理，见 <a href="../ch02-core-principles/2.1-three-ways.html">2.1</a>）</li>
+        <li><strong>差值 ＝ 开工前的排队</strong>：示例中 20 − 8 ＝ 12 天，占端到端 60%，与开发效率无关</li>
+        <li><strong>周期时间不是纯加工时间</strong>：它含开工后的等评审、等环境、等窗口。示例中周期 8 天里只有 3 天在加工</li>
+        <li><strong>流动效率 ＝ 处理时间 ÷ 前置时间</strong>（示例 3 ÷ 20 ＝ 15%）——
+          <strong>该词不在 66 条术语表内</strong>，不会考定义，但「哪个指标暴露等待」会考（公式为本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Change lead time</em>、<em>Cycle time</em>、<em>Deployment frequency</em>、
+      <em>Mean Time to Repair/Recover (MTTR)</em>、<em>Velocity</em>、<em>Value stream mapping</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      v3.4 课程大纲 M7 <em>Measurement, Metrics, and Reporting</em> 的子项逐字写作
+      <strong><em>Change lead/cycle time</em></strong>，本节主题即该子项。
+      <strong>该术语表只列词条、不附定义</strong>，因此本节给出的每一条中文释义与起点 / 终点划法，
+      均为本站措辞与教学整理，官方未以此形式给出定义。
+      <strong>变更前置时间存在两种通行口径，本节并列给出、都成立</strong>：
+      <strong>DOFD / DORA 口径</strong>从代码提交算到在生产上运行（本章 <a href="7.2-dora-metrics.html">7.2</a> 采用），
+      <strong>精益价值流口径</strong>从需求被接受算起并含需求排队（本节算例与
+      <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a> 采用）。
+      两者起点不同是因为量的范围不同，不是相互矛盾；<strong>同一张报表内不可混用</strong>。
+      「开卷且仅限官方 Learner Workbook 与 Quick Reference Guide」出自
+      <strong>PeopleCert 现行 DevOps Foundation 产品页公布的考试信息</strong>（现行版本 v3.6）。
+      题数分布「本章最多 2 题」出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      <strong>v3.6 未公开重新发布权重表</strong>。
+      <strong>教学整理部分</strong>：「处理时间 / 等待时间 / 流动效率 / 资源利用率」四个词均不在 66 条术语表内
+      （同一标注见 <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>）；
+      三个算式（差值、周期 ÷ 前置、流动效率）及其读法、各面的实施建议、
+      「不同资料对 lead time 与 cycle time 定义不一」这一观察、
+      指标与三步工作法的归属映射、
+      以及所有命题角度与干扰项分析，官方均未以此形式给出，已分别在对应位置就地标注。
+      <strong>DOFD v3.4 官方样题答案键中没有直接涉及本对术语的条目</strong>，
+      本节不引用任何样题结论，也不复制官方样题的题干与选项原文。
+      图 7-4-1、图 7-4-2 中的全部数字（20 / 8 / 3 天、15%、4.5% 与 40%）为
+      <strong>本站构造的教学示例</strong>，非真实调研数据。
+      DORA 四指标的整体框架见本章 <a href="7.2-dora-metrics.html">7.2 DORA 四大指标</a> ——「DORA」这一名称本身不在 66 条术语表内，
+      表内收录的是四个指标各自的名称（同一标注见
+      <a href="../ch03-key-practices/3.9-vsm.html">第 3 章 价值流管理（3.9）</a>）；价值流映射的作图方法见
+      <a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

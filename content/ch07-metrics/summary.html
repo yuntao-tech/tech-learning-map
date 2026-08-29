@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.7 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 7 章度量、指标与报告的总结：7.1–7.6 知识地图、一页纸复习表、九对易混淆汇总、把全书散落的指标按速度／质量／稳定性／文化四类归位并对应到三步工作法的总表，以及本章官方术语速查与考试权重。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.7 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章的<strong>考试权重是全书最低的：最多 2 题，占 40 题的 5%</strong>
+        （DOFD v3.4 Examination Requirements，2022-05）。
+        但它的<strong>理解权重是全书最高的之一</strong> ——
+        前六章讲的每一件事（流动、反馈、持续改进、持续交付、看板、文化）最后都要变成一个可读的数字，
+        而<strong>那四个数字就是本章的 DORA 四大指标</strong>。
+        <strong>结论：按理解学，不按应试时间投入。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>只有 2 题的一章，为什么值得花远超 5% 的时间 —— 时间该花在哪一段</li>
+        <li>全书散落在第 2、3、7 章的指标，如何收拢成「速度 / 质量 / 稳定性 / 文化」四类，各自服务三步工作法的哪一步</li>
+        <li>本章哪些主题词<strong>不在</strong> 66 条术语表内，以及其中哪些仍然是官方内容（AIOps、DevOps Dashboards 是官方学习目标，Value Driven Metrics 是官方模块子项，只有 DORA 这个成组称呼不是官方措辞）</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-7-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 872" role="img" aria-label="第 7 章六节串成的知识地图：为什么度量、DORA 四指标、四类指标族、时间指标辨析、价值驱动与看板、AIOps，并回流到重新度量">
+          <defs>
+            <marker id="ah-77-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-77-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <text x="16" y="28" class="s-ink" font-size="17" font-weight="700">第 7 章 · 六节是一条「先立判据，再读数，最后自动化」的链</text>
+          <text x="16" y="52" class="s-muted" font-size="13">为什么度量（7.1）→ 四个数字（7.2）→ 四类指标族（7.3）→ 两个时间指标的边界（7.4）→ 价值与看板（7.5）→ AIOps（7.6）</text>
+          <text x="16" y="76" class="s-muted" font-size="12.5">整张卡片可点击跳转该小节　·　左侧竖箭头 = 阅读顺序　·　底部虚线回环 = 指标驱动改进后重新度量</text>
+
+          <!-- ============ 7.1 ============ -->
+          <a href="7.1-why-measure.html">
+            <rect x="62" y="96" width="906" height="88" rx="12" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="126" r="19" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="131" class="f-1" font-size="14" font-weight="700" text-anchor="middle">7.1</text>
+            <line x1="112" y1="151" x2="160" y2="151" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="170" class="s-muted" font-size="12.5" text-anchor="middle">先立判据</text>
+            <line x1="210" y1="108" x2="210" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="126" class="s-ink" font-size="16" font-weight="700">为什么必须度量</text>
+            <text x="222" y="148" class="s-muted" font-size="12.5">The Importance of Measurement</text>
+            <text x="222" y="170" class="f-1" font-size="12" font-weight="650">官方模块子项（M7）· 不在 66 条术语表</text>
+            <line x1="478" y1="108" x2="478" y2="172" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="124" class="s-ink" font-size="13.5">没有度量，「改进了」只是一种感觉；改进的方向由数据决定</text>
+            <text x="490" y="148" class="s-muted" font-size="12.5">本节先回答「测什么才算数」，后五节才谈具体测哪几个数字</text>
+            <text x="490" y="170" class="s-muted" font-size="12.5">节内术语：DevOps metrics（在 66 条术语表内）</text>
+          </a>
+          <line x1="136" y1="186" x2="136" y2="206" class="s-1" stroke-width="2" marker-end="url(#ah-77-1)"/>
+
+          <!-- ============ 7.2 ============ -->
+          <a href="7.2-dora-metrics.html">
+            <rect x="62" y="210" width="906" height="88" rx="12" class="s-3" stroke-width="2.4" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="240" r="19" class="s-3" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="245" class="f-3" font-size="14" font-weight="700" text-anchor="middle">7.2</text>
+            <line x1="112" y1="265" x2="160" y2="265" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="284" class="s-muted" font-size="12.5" text-anchor="middle">全书枢纽</text>
+            <line x1="210" y1="222" x2="210" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="240" class="s-ink" font-size="16" font-weight="700">四个数字</text>
+            <text x="222" y="262" class="s-muted" font-size="12.5">本站称「DORA 四大指标」</text>
+            <text x="222" y="284" class="f-3" font-size="12" font-weight="650">四个指标名各自在术语表内 · DORA 一词不在</text>
+            <line x1="478" y1="222" x2="478" y2="286" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="238" class="s-ink" font-size="13.5">部署频率 · 变更前置时间 · 变更失败率 · 平均恢复时间 MTTR</text>
+            <text x="490" y="262" class="s-muted" font-size="12.5">前两个测速度，后两个测出事之后 —— 四个一起好才叫高绩效</text>
+            <text x="490" y="284" class="s-muted" font-size="12.5">这一节是全书因果链的收口：前六章的改动都在这四个数字上现形</text>
+          </a>
+          <line x1="136" y1="300" x2="136" y2="320" class="s-1" stroke-width="2" marker-end="url(#ah-77-1)"/>
+
+          <!-- ============ 7.3 ============ -->
+          <a href="7.3-four-metric-families.html">
+            <rect x="62" y="324" width="906" height="88" rx="12" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="354" r="19" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="359" class="f-4" font-size="14" font-weight="700" text-anchor="middle">7.3</text>
+            <line x1="112" y1="379" x2="160" y2="379" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="398" class="s-muted" font-size="12.5" text-anchor="middle">四类归位</text>
+            <line x1="210" y1="336" x2="210" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="354" class="s-ink" font-size="16" font-weight="700">速度 / 质量 / 稳定性 / 文化</text>
+            <text x="222" y="376" class="s-muted" font-size="12.5">DevOps Metrics - Speed, Quality, Stability, Culture</text>
+            <text x="222" y="398" class="f-4" font-size="12" font-weight="650">官方模块子项（M7）· DevOps metrics 在术语表内</text>
+            <line x1="478" y1="336" x2="478" y2="400" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="352" class="s-ink" font-size="13.5">四类是官方给的分类框，比四个具体数字覆盖面更宽</text>
+            <text x="490" y="376" class="s-muted" font-size="12.5">文化类是最容易被漏掉的一类：eNPS、团队满意度也是指标</text>
+            <text x="490" y="398" class="s-muted" font-size="12.5">本页的「全书指标归属总表」就是按这四类收拢的</text>
+          </a>
+          <line x1="136" y1="414" x2="136" y2="434" class="s-1" stroke-width="2" marker-end="url(#ah-77-1)"/>
+
+          <!-- ============ 7.4 ============ -->
+          <a href="7.4-lead-vs-cycle-time.html">
+            <rect x="62" y="438" width="906" height="88" rx="12" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="468" r="19" class="s-2" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="473" class="f-2" font-size="14" font-weight="700" text-anchor="middle">7.4</text>
+            <line x1="112" y1="493" x2="160" y2="493" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="512" class="s-muted" font-size="12.5" text-anchor="middle">边界辨析</text>
+            <line x1="210" y1="450" x2="210" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="468" class="s-ink" font-size="16" font-weight="700">前置时间 vs 周期时间</text>
+            <text x="222" y="490" class="s-muted" font-size="12.5">Change lead/cycle time</text>
+            <text x="222" y="512" class="f-2" font-size="12" font-weight="650">考纲核心 · 两个词都在 66 条术语表内</text>
+            <line x1="478" y1="450" x2="478" y2="514" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="466" class="s-ink" font-size="13.5">差别只在起点：一个从「需求被接受」起算，一个从「开始动手」起算</text>
+            <text x="490" y="490" class="s-muted" font-size="12.5">前置时间包含排队等待，周期时间不含 —— 这是本章最考细节的一节</text>
+            <text x="490" y="512" class="s-muted" font-size="12.5">精益价值流口径；DORA 口径从代码提交起算（7.2），两者都对</text>
+          </a>
+          <line x1="136" y1="528" x2="136" y2="548" class="s-1" stroke-width="2" marker-end="url(#ah-77-1)"/>
+
+          <!-- ============ 7.5 ============ -->
+          <a href="7.5-value-driven-metrics.html">
+            <rect x="62" y="552" width="906" height="88" rx="12" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="582" r="19" class="s-5" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="587" class="f-5" font-size="14" font-weight="700" text-anchor="middle">7.5</text>
+            <line x1="112" y1="607" x2="160" y2="607" class="s-5" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="626" class="s-muted" font-size="12.5" text-anchor="middle">指向价值</text>
+            <line x1="210" y1="564" x2="210" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="582" class="s-ink" font-size="16" font-weight="700">价值驱动指标与看板</text>
+            <text x="222" y="604" class="s-muted" font-size="12.5">Value Driven Metrics · DevOps Dashboards</text>
+            <text x="222" y="626" class="f-5" font-size="12" font-weight="650">官方模块子项（M7）+ v3.6 新增 · 均不在术语表</text>
+            <line x1="478" y1="564" x2="478" y2="628" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="580" class="s-ink" font-size="13.5">把「做了多少」换成「产生了多少价值」，并把结果摆到同一块看板上</text>
+            <text x="490" y="604" class="s-muted" font-size="12.5">活动指标越漂亮，越可能掩盖价值没有增加这件事</text>
+            <text x="490" y="626" class="s-muted" font-size="12.5">看板要让 Dev、Ops、业务看同一份数据，否则又回到各说各话</text>
+          </a>
+          <line x1="136" y1="642" x2="136" y2="662" class="s-1" stroke-width="2" marker-end="url(#ah-77-1)"/>
+
+          <!-- ============ 7.6 ============ -->
+          <a href="7.6-aiops.html">
+            <rect x="62" y="666" width="906" height="88" rx="12" class="s-1" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <circle cx="136" cy="696" r="19" class="s-1" stroke-width="1.8" fill="var(--dia-fill)"/>
+            <text x="136" y="701" class="f-1" font-size="14" font-weight="700" text-anchor="middle">7.6</text>
+            <line x1="112" y1="721" x2="160" y2="721" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="136" y="740" class="s-muted" font-size="12.5" text-anchor="middle">让数据自动</text>
+            <line x1="210" y1="678" x2="210" y2="742" class="s-stroke" stroke-width="1"/>
+            <text x="222" y="696" class="s-ink" font-size="16" font-weight="700">AIOps</text>
+            <text x="222" y="718" class="s-muted" font-size="12.5">AI for IT Operations</text>
+            <text x="222" y="740" class="f-1" font-size="12" font-weight="650">v3.6 新增学习目标 · 不在 v3.4 术语表</text>
+            <line x1="478" y1="678" x2="478" y2="742" class="s-stroke" stroke-width="1"/>
+            <text x="490" y="694" class="s-ink" font-size="13.5">数据量大到人读不完时，用模型做关联、降噪与异常检测</text>
+            <text x="490" y="718" class="s-muted" font-size="12.5">它处理的是「告警太多」这个新问题，不是替代前五节的判据</text>
+            <text x="490" y="740" class="s-muted" font-size="12.5">前提是先有 7.1–7.5 的可信数据；数据不干净，模型只会放大噪声</text>
+          </a>
+
+          <!-- ============ 回环 ============ -->
+          <path d="M 515 754 L 515 776 Q 515 788 503 788 L 42 788 Q 30 788 30 776 L 30 152 Q 30 140 42 140 L 56 140"
+                class="s-5" stroke-width="2" fill="none" stroke-dasharray="7 5" marker-end="url(#ah-77-2)"/>
+          <text x="282" y="776" class="f-5" font-size="12.5" font-weight="650" text-anchor="middle">度量不是终点：指标驱动改进，改完再重新读数 —— 这条回路就是第三步工作法</text>
+
+          <text x="16" y="816" class="s-muted" font-size="12">六节的阅读顺序与底部「改进后重新度量」回环为本站教学整理，官方未以此形式给出章节结构图。</text>
+          <text x="16" y="838" class="s-muted" font-size="12">v3.4 课程大纲 M7 的四个子项：The Importance of Measurement · DevOps Metrics - Speed, Quality, Stability, Culture</text>
+          <text x="16" y="858" class="s-muted" font-size="12">· Change lead/cycle time · Value Driven Metrics。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-7-1　第 7 章的六节链条。</strong>
+        这张图要看懂的是<strong>为什么 7.2 那一格的框线最粗</strong>：
+        7.1 只是立判据，7.3–7.5 是把判据铺开，7.6 是数据多到人读不完之后的应对 ——
+        而 <strong>7.2 的四个数字是全书唯一一处「前六章的所有改动都会在这里现形」的收口</strong>。
+        缩小批量（第 2 章）、持续交付（第 3 章）、限制在制品（第 3 章看板）、安全文化（第 4 章）
+        最终都只表现为这四个数字的变化。
+        底部虚线回环则说明本章不是一个终点：读数之后要改，改完要再读，这条回路本身就是第三步工作法。
+        <br><small class="muted">六节顺序、「7.2 是全书收口」这一判断、以及底部回环均为<strong>本站教学整理</strong>；
+        M7 的四个官方模块子项名称出自 v3.4 课程大纲，
+        <em>AIOps</em> 与 <em>DevOps Dashboards</em> 出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 投入建议 ============ -->
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 2 题的一章，时间该怎么分</div>
+      <p>
+        本章是<strong>全书题数最低的一章</strong>：最多 2 题，占 40 题的 5%
+        （DOFD v3.4 Examination Requirements，2022-05）。
+        按应试逻辑，它排在复习序列的最后。但按理解逻辑，它排在最前 ——
+        因为<strong>第 2、3、4、5 章讲的所有改动，验证方式都在这一章</strong>。
+      </p>
+      <ul class="mb-0">
+        <li><strong>必须一次记牢的（应试 + 理解都要）</strong>：四个指标的<strong>名字与方向</strong>
+          （部署频率越高越好、变更前置时间越短越好、变更失败率越低越好、MTTR 越短越好），
+          以及<strong>变更前置时间与周期时间的起点差别</strong>。这两条是本章最可能落到那 2 题上的地方。</li>
+        <li><strong>要花时间但不为考试的</strong>：四类指标族与三步工作法的对应关系（本页的归属总表）。
+          它不直接得分，但学完之后，前六章会从「一堆实践」变成「一条有因果的链」。</li>
+        <li><strong>知道名字即可的</strong>：AIOps、DevOps Dashboards、Value Driven Metrics
+          <strong>三者都不在 66 条术语表内，但都是官方内容</strong>
+          （前两者出自 PeopleCert 现行产品页公布的学习目标，后者是 v3.4 课程大纲 M7 子项）——
+          认得词、说得出它解决什么问题即可。</li>
+      </ul>
+      <p class="mb-0 muted"><small>本框的复习优先级与「最可能落到那 2 题上」的判断为<strong>本站教学推断</strong>；官方只公布每模块题数上限，未公布命题规律、题型分布或具体考点落点。</small></p>
+    </div>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查的优先级排</strong>，与下面的易混淆汇总表配合使用。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:14%">小节</th><th style="width:31%">核心结论</th><th style="width:26%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="7.1-why-measure.html">7.1 为什么必须度量</a></strong><br><small class="muted">The Importance of Measurement</small></td>
+            <td>没有度量，「改进了」只是感觉。度量的作用是<strong>把争论变成读数</strong>，并指出下一处该动哪里</td>
+            <td>说不出数字，就说不出改没改</td>
+            <td>把「测得多」当成「测得好」；以及把指标用来评价人 —— <strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（该条由 DOFD v3.4 官方样题答案键确认，落点在<a href="../ch08-sharing/8.3-leadership.html">第 8 章（8.3）</a>）</td>
+          </tr>
+          <tr>
+            <td><strong><a href="7.2-dora-metrics.html">7.2 四个数字</a></strong><br><small class="muted">部署频率 · 变更前置时间 · 变更失败率 · MTTR</small></td>
+            <td>四个指标<strong>两两成对</strong>：前两个测「多快能交付」，后两个测「出事之后怎么样」。<strong>四个一起好才算高绩效</strong></td>
+            <td>两个测速度，两个测出事之后；只快不稳不算数</td>
+            <td>只盯部署频率，把它当成 DevOps 成绩单；以及漏掉稳定性那一半 —— 光靠提高发布次数刷不出高绩效</td>
+          </tr>
+          <tr>
+            <td><strong><a href="7.3-four-metric-families.html">7.3 速度 / 质量 / 稳定性 / 文化</a></strong><br><small class="muted">DevOps Metrics - Speed, Quality, Stability, Culture</small></td>
+            <td>官方给的是<strong>四类分类框</strong>，不是四个具体数字。它比 7.2 覆盖更宽，尤其多出<strong>文化</strong>这一类</td>
+            <td>四个抽屉：多快 · 好不好 · 稳不稳 · 人怎么样</td>
+            <td>把这四类和 7.2 的四个指标划等号 —— <strong>一个是分类，一个是实例</strong>；以及忘掉文化类指标（eNPS 在术语表内）</td>
+          </tr>
+          <tr>
+            <td><strong><a href="7.4-lead-vs-cycle-time.html">7.4 前置时间 vs 周期时间</a></strong><br><small class="muted">Change lead/cycle time</small></td>
+            <td>两者<strong>终点相同、起点不同</strong>：变更前置时间从<strong>需求被接受、进入待办</strong>起算，<strong>包含排队等待</strong>；周期时间从<strong>开始动手</strong>起算，<strong>不含排队</strong>（精益价值流口径）。<strong>前置时间另有 DORA 口径：从代码提交起算</strong>，7.2 用的是它</td>
+            <td>前置时间的起点<strong>要先说清用哪种口径</strong>（DORA 取代码提交 / 精益取需求被接受），周期时间从「<strong>开始动手</strong>」算起</td>
+            <td>把两个词当同义词；或者反过来记成前置时间更短。同一口径下<strong>前置时间 ≥ 周期时间</strong>，差额是开工前的排队。<strong>两种口径都对，混用才错</strong></td>
+          </tr>
+          <tr>
+            <td><strong><a href="7.5-value-driven-metrics.html">7.5 价值驱动指标与看板</a></strong><br><small class="muted">Value Driven Metrics · DevOps Dashboards</small></td>
+            <td>价值驱动指标问的是<strong>「产生了什么结果」</strong>，不是「做了多少动作」。看板的作用是让各方<strong>看同一份数据</strong></td>
+            <td>不问干了多少，问变好了没有</td>
+            <td>把活动指标（提交数、故事点、上线次数）当成价值指标；以及以为 <em>Value Driven Metrics</em> 是术语表条目 —— <strong>它是 M7 模块子项，不在 66 条内</strong></td>
+          </tr>
+          <tr>
+            <td><strong><a href="7.6-aiops.html">7.6 AIOps</a></strong><br><small class="muted">v3.6 新增学习目标</small></td>
+            <td>用机器学习对海量运维数据做<strong>关联、降噪、异常检测</strong>，解决的是「告警太多、人看不过来」这个问题</td>
+            <td>不是替人做决定，是先把噪声筛掉再交给人</td>
+            <td>把它当成 v3.4 的考纲术语（<strong>它不在 66 条术语表内</strong>）；以及以为上了 AIOps 就不需要前五节的判据</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语与官方名称</strong>的依据：<em>Deployment frequency</em>、<em>Change lead time</em>、
+      <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、<em>Cycle time</em>、
+      <em>DevOps metrics</em>、<em>employee Net Promoter Score (eNPS)</em>
+      均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>The Importance of Measurement</em>、<em>DevOps Metrics - Speed, Quality, Stability, Culture</em>、
+      <em>Change lead/cycle time</em>、<em>Value Driven Metrics</em> 是 v3.4 课程大纲 M7 的四个模块子项，
+      <strong>四者本身都不在 66 条术语表内</strong>；<em>AIOps</em> 与 <em>DevOps Dashboards</em>
+      出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）。
+      <strong>「核心结论」「记忆锚点」「最易错点」三列是本站教学整理</strong> ——
+      官方也未以复习表形式给出这些内容。
+      7.1 行末尾的「用指标控制和评价员工不属于 DevOps 领导力的目标」由
+      <strong>DOFD v3.4 官方样题答案键</strong>确认，本站只陈述结论，不复制题干与选项原文。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总 · 九对</div>
+
+    <p>
+      本章的易混淆有一个共同特点：<strong>混淆的双方常常是同一个数字的不同切法</strong>，
+      光背定义分不开，必须记住<strong>起点、终点、单位</strong>三件事中变的是哪一件。
+      看表的方法：遮住「分界线」一列，逐对说出分界线，说不出来的那一对就是要回去重读的地方。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:22%">易混的一对</th><th style="width:40%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>变更前置时间 vs 周期时间</strong><br>
+              <small class="muted"><a href="7.4-lead-vs-cycle-time.html">7.4</a> —— 本章最容易错的一对</small></td>
+            <td>两者<strong>终点相同（变更进入生产），起点不同</strong>。<br>
+              <strong>变更前置时间 <span class="en">Change lead time</span></strong>从<strong>需求被接受、进入待办</strong>起算，<strong>包含排队等待</strong>（精益价值流口径；DORA 口径改从代码提交起算）。<br>
+              <strong>周期时间 <span class="en">Cycle time</span></strong>从<strong>开始动手</strong>起算，<strong>不含排队</strong>。<br>
+              因此<strong>前置时间 ≥ 周期时间</strong>，差额就是开工前的排队。</td>
+            <td>干扰项把两者写成同义词，或把前置时间描述成「开发耗时」。<br>
+              判据：<strong>问「这件事从起点等了多久」，答案就是前置时间</strong>（起点由口径决定）。
+              两个词都在 66 条官方术语表内，v3.4 课程大纲 M7 把它们合并为一个子项
+              <em>Change lead/cycle time</em> —— <strong>合并成一个子项不等于它们是同一个指标</strong><br>
+              <small class="muted">官方术语表只列词条、不附定义。<strong>变更前置时间存在两种口径，都成立</strong>：
+              <strong>DOFD / DORA 口径</strong>从<strong>代码提交</strong>算到在生产上运行 ——
+              <a href="7.2-dora-metrics.html">7.2</a> 的 DORA 四指标用它；
+              <strong>精益价值流口径</strong>从<strong>需求被接受</strong>算起、含需求排队 ——
+              <a href="7.4-lead-vs-cycle-time.html">7.4</a> 的算例与
+              <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>用它。
+              <strong>起点不同是因为量的东西不同，不是相互矛盾；错的只有混用，不是选错。</strong>
+              本行上方的对照采用精益价值流口径
+              <span class="badge badge--note">📝 教学整理</span></small></td>
+          </tr>
+          <tr>
+            <td><strong>周期时间 vs MTTR</strong><br><small class="muted"><a href="7.4-lead-vs-cycle-time.html">7.4</a> · <a href="7.2-dora-metrics.html">7.2</a></small></td>
+            <td>两者都是「一段时长」，但<strong>计时器由不同事件启动</strong>。<br>
+              <strong>周期时间</strong>由<strong>开始做一件计划中的工作</strong>启动，测的是<strong>正常流动</strong>。<br>
+              <strong>平均恢复时间 <span class="en">MTTR</span></strong>由<strong>一次故障发生</strong>启动，测的是<strong>异常恢复</strong>。</td>
+            <td>干扰项把 MTTR 说成「修一个 bug 要多久」——
+              那可能只是一次普通的开发任务，落在周期时间上。<br>
+              判据：<strong>计时起点是「有人开始做」还是「系统出事了」</strong>。
+              两者都在 66 条术语表内，但分属<strong>速度类</strong>与<strong>稳定性类</strong>两个不同指标族</td>
+          </tr>
+          <tr>
+            <td><strong>Velocity vs 流动度量</strong><br><small class="muted"><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch04-frameworks/4.2-agile-scrum.html">4.2</a> · <a href="../ch03-key-practices/3.7-kanban.html">3.7</a></small></td>
+            <td><strong>Velocity</strong> 测的是<strong>一个团队一个迭代完成了多少工作量</strong>，
+              单位是团队自定的（故事点），<strong>只对这个团队自己有意义</strong>，用于下个迭代的容量预测。<br>
+              <strong>流动度量</strong>（前置时间、周期时间、在制品数）测的是<strong>工作穿过整条价值流有多快</strong>，
+              单位是时间与件数，<strong>可以跨团队比较</strong>。</td>
+            <td>干扰项把 Velocity 当成 DevOps 的交付速度指标，或者用它跨团队排名 ——
+              <strong>故事点是团队内部的相对刻度，跨团队没有可比性</strong>，
+              一旦用于比较，团队会把点数估大而不是把交付变快。<br>
+              <em>Velocity</em> 与 <em>Flow</em> 都在 66 条官方术语表内；
+              「流动度量 / flow metrics」这个成组说法<strong>不是官方措辞</strong>
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+          </tr>
+          <tr>
+            <td><strong>活动指标 vs 价值驱动指标</strong><br><small class="muted"><a href="7.5-value-driven-metrics.html">7.5</a></small></td>
+            <td><strong>活动指标</strong>回答「<strong>做了多少</strong>」：提交数、上线次数、完成的故事点、关闭的工单数。<br>
+              <strong>价值驱动指标 <span class="en">Value Driven Metrics</span></strong>回答「<strong>产生了什么结果</strong>」：
+              业务成效、客户可感知的改善、成本与风险的变化。<br>
+              判据：<strong>这个数字变好，用户或业务方能不能感觉到</strong>。</td>
+            <td>干扰项把「部署次数翻倍」「工单关闭率提升」当成价值指标。
+              活动指标不是坏东西，它是<strong>过程读数</strong>；错在<strong>拿它当结果汇报</strong>。<br>
+              另一个陷阱：以为 <em>Value Driven Metrics</em> 在 66 条术语表内 ——
+              <strong>它是 v3.4 课程大纲 M7 的模块子项，不在术语表内</strong>
+              <span class="badge badge--plain">📘 官方模块子项</span></td>
+          </tr>
+          <tr>
+            <td><strong>监控告警 vs AIOps</strong><br><small class="muted"><a href="7.6-aiops.html">7.6</a> · <a href="../ch03-key-practices/3.8-observability.html">3.8</a></small></td>
+            <td><strong>监控告警</strong>按<strong>人事先写好的规则</strong>判断：某指标越过阈值就报警。规则由人维护。<br>
+              <strong>AIOps</strong> 用模型从<strong>历史数据里学出模式</strong>，做关联、降噪与异常检测，
+              目标是把「几千条告警」压成「几条值得看的事件」。<br>
+              判据：<strong>判断依据是写死的阈值，还是从数据里学出来的模式</strong>。</td>
+            <td>干扰项把「有自动告警」「有监控大屏」说成 AIOps。<br>
+              反向陷阱：把 AIOps 说成「让 AI 替人做运维决策」——
+              它处理的是<strong>信息过载</strong>，不是决策权转移。<br>
+              <em>AIOps</em> 属 <span class="badge badge--plain">📘 官方模块子项</span>
+              <span class="badge badge--new">🆕 v3.6 新增</span>学习目标，
+              <strong>不在 v3.4 的 66 条术语表内</strong>；<em>Observability</em> 同为 v3.6 新增，也不在术语表内
+              —— <strong>两者都是官方内容，不标「🧭 延伸 · 非考纲」</strong></td>
+          </tr>
+          <tr>
+            <td><strong>成熟度模型 vs 指标</strong><br><small class="muted"><a href="7.1-why-measure.html">7.1</a> · <a href="../ch05-culture/5.4-maturity-models.html">5.4</a></small></td>
+            <td><strong>成熟度模型</strong>是<strong>自评</strong>：组织对照分级表判断自己在哪一级，输出是一个<strong>等级</strong>。<br>
+              <strong>指标</strong>是<strong>实测</strong>：从系统与流程里读出的数字，输出是一个<strong>读数</strong>。<br>
+              判据：<strong>等级是说出来的，读数是量出来的</strong>。两者可以严重不一致。</td>
+            <td>干扰项把「成熟度评到最高级」当成高绩效的证据。<br>
+              <strong>自评与实测冲突时，先信实测</strong>。
+              <em>High-performing organizations</em> 在 66 条术语表内，
+              <em>Organizational maturity models</em> <strong>不在</strong>（它是 v3.4 课程大纲 M5 的模块子项，见 <a href="../ch05-culture/5.4-maturity-models.html">5.4</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>部署频率 vs 变更前置时间</strong><br><small class="muted"><a href="7.2-dora-metrics.html">7.2</a></small></td>
+            <td>两个都属速度类，但一个是<strong>频次</strong>，一个是<strong>时长</strong>。<br>
+              <strong>部署频率 <span class="en">Deployment frequency</span></strong>：单位时间内部署到生产多少次，测<strong>节奏</strong>。<br>
+              <strong>变更前置时间</strong>：一个变更走完全程要多久，测<strong>延迟</strong>。<br>
+              两者可以背离：发得勤，但每个变更仍要等两周排队。</td>
+            <td>干扰项把「部署频率高」直接等同于「交付快」。
+              判据：<strong>频率描述的是流水线开动的次数，前置时间描述的是一件事从提出到上线要等多久</strong>。
+              两个词都在 66 条官方术语表内</td>
+          </tr>
+          <tr>
+            <td><strong>变更失败率 vs MTTR</strong><br><small class="muted"><a href="7.2-dora-metrics.html">7.2</a></small></td>
+            <td>两个都在「出事之后」这一侧，但一个测<strong>频率</strong>，一个测<strong>时长</strong>。<br>
+              <strong>变更失败率 <span class="en">Change failure rate</span></strong>：有多少比例的变更导致了生产问题 —— <strong>稳定性</strong>。<br>
+              <strong>MTTR</strong>：出事之后多久恢复 —— <strong>同属稳定性</strong>。<br>
+              一个组织可以失败率不低但 MTTR 极短，整体依然稳。</td>
+            <td>干扰项把变更失败率按字面归到质量类 —— 名字里有「失败」，
+              但它度量的是<strong>已经跨过生产那条线</strong>的变更，属<strong>稳定性</strong>（见 <a href="7.3-four-metric-families.html">7.3</a>）。
+              判据：<strong>问「多久出一次」还是「出了多久好」</strong>。
+              这一对也是理解第 2 章第二步工作法的抓手 ——
+              <a href="../ch02-core-principles/2.4-second-way-feedback.html">反馈（2.4）</a>缩短的正是 MTTR 这一段
+              <span class="badge badge--note">📝 教学整理</span></td>
+          </tr>
+          <tr>
+            <td><strong>DORA 四大指标 vs 四类指标族</strong><br><small class="muted"><a href="7.2-dora-metrics.html">7.2</a> · <a href="7.3-four-metric-families.html">7.3</a></small></td>
+            <td><strong>四类指标族</strong>是<strong>分类框</strong>：速度 / 质量 / 稳定性 / 文化，出自 v3.4 课程大纲 M7 子项。<br>
+              <strong>那四个指标</strong>是<strong>具体实例</strong>：部署频率、变更前置时间、变更失败率、MTTR。<br>
+              四个实例只覆盖了<strong>速度与稳定性两类</strong>（部署频率、变更前置时间＝速度；变更失败率、MTTR＝稳定性），
+              <strong>质量类与文化类它一个都没有</strong> ——
+              质量类要用缺陷逃逸率、测试通过率一类的读数，文化类要用 eNPS。</td>
+            <td>干扰项把「四类」和「四个」对齐成一一对应。判据：<strong>那四个指标只落在速度与稳定性两类里，
+              质量类与文化类都没有对应的 DORA 指标</strong>。<br>
+              另一个陷阱：把 <strong>DORA</strong> 这个缩写当成考纲术语 ——
+              <strong>它不在 66 条术语表内，也不是 v3.4 的模块子项</strong>；
+              术语表里有的是那四个指标各自的名字
+              <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）与
+      v3.4 课程大纲的模块子项；<em>AIOps</em>、<em>Observability</em>、<em>DevOps Dashboards</em>
+      出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）。
+      <strong>「分界线」与「诱导你选错的地方」两列是本站教学整理</strong>，用于描述命题角度与干扰项的构造方式；
+      官方未以对照表形式给出这些区分，本站也不复制任何官方样题的题干与选项原文。
+      「四个指标两两成对」「质量类与文化类没有对应的 DORA 指标」等判断句均为本站教学整理。
+      <strong>官方术语表只列词条、不附定义。变更前置时间存在两种通行口径，本章并列采用、两者都成立</strong>：
+      <strong>DOFD / DORA 口径</strong>从<strong>代码提交</strong>算到在生产上运行，
+      <a href="7.2-dora-metrics.html">7.2</a> 讲 DORA 四指标时用的是它；
+      <strong>精益价值流口径</strong>从<strong>需求被接受</strong>算起并含需求排队，
+      <a href="7.4-lead-vs-cycle-time.html">7.4</a> 的算例、
+      <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6 价值流映射</a>与本页对照表用的是它，
+      同口径下<strong>前置时间 &ge; 周期时间</strong>。
+      <strong>起点不同是因为量的东西不同，不是口径冲突；同一张报表内不可混用，且必须写明用的是哪一种。</strong>
+      两种口径的完整辨析见 <a href="7.4-lead-vs-cycle-time.html">7.4</a>。
+      「DORA」「流动度量 / flow metrics」「活动指标」三个说法<strong>都不是官方措辞</strong>，已就地标注。
+    </div>
+
+    <!-- ============ 全书指标归属总表 ============ -->
+    <div class="divider-label">全书指标归属总表</div>
+
+    <p>
+      这是本页最值得带走的一张表。全书出现过的指标散落在<strong>第 1、2、3、4、5、7 章</strong>，
+      单看任何一章都看不出它们的关系。下表按 <strong>M7 官方给的四类</strong>把它们收拢，
+      并标出每个指标<strong>服务于三步工作法的哪一步</strong>。
+      <strong>「哪类指标服务哪一步」这张映射在
+      <a href="../ch02-core-principles/2.1-three-ways.html">第 2 章 三步工作法（2.1）</a>已经建立</strong>，
+      本表不重复它，只把全书出现过的具体指标按它归位。
+    </p>
+    <p>
+      读法：<strong>先看「服务于哪一步」这一列</strong>。
+      如果一个组织的第一步（流动）做得好，速度类的数字会先动；第二步（反馈）见效，质量与稳定性类才会动。
+      文化类是<strong>双向不对称</strong>的：<strong>恶化时它最先动</strong>
+      （士气下滑通常先于交付指标恶化，见 <a href="7.3-four-metric-families.html">7.3</a>），
+      <strong>改善时它最慢兑现</strong>（第三步是长期投入）。
+      <strong>数字动的顺序，能反过来说明改动落在了哪一步。</strong>
+      <span class="muted">这一读法为本站教学整理，官方未给出各类指标的响应先后。</span>
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:9%">四类</th>
+            <th style="width:23%">指标</th>
+            <th style="width:14%">在 66 条术语表内？</th>
+            <th style="width:18%">全书主要出处</th>
+            <th style="width:14%">服务于三步工作法</th>
+            <th>一句话作用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="6"><strong>速度</strong><br><small class="muted">Speed</small></td>
+            <td><strong>部署频率</strong><br><small class="muted"><em>Deployment frequency</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="7.2-dora-metrics.html">7.2</a> · <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2</a> · <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>测交付节奏。频率上不去，通常是批量太大或闸门太多</td>
+          </tr>
+          <tr>
+            <td><strong>变更前置时间</strong><br><small class="muted"><em>Change lead time</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="7.4-lead-vs-cycle-time.html">7.4</a> · <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2</a> · <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>测端到端延迟，<strong>包含排队</strong>。价值流映射优化的就是这个数</td>
+          </tr>
+          <tr>
+            <td><strong>周期时间</strong><br><small class="muted"><em>Cycle time</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="7.4-lead-vs-cycle-time.html">7.4</a> · <a href="../ch03-key-practices/3.7-kanban.html">3.7</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>测动手之后的耗时，<strong>不含排队</strong>。看板上限制在制品先改的是它</td>
+          </tr>
+          <tr>
+            <td><strong>流动 <span class="en">Flow</span></strong><br><small class="muted">流动状态本身</small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch02-core-principles/2.2-first-way-flow.html">2.2</a> · <a href="../ch04-frameworks/4.3-lean.html">4.3</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>速度类所有指标共同描述的那个对象：工作有没有在往前走</td>
+          </tr>
+          <tr>
+            <td>在制品数量<br><small class="muted">WIP</small></td>
+            <td><span class="badge badge--note">📝 教学整理</span></td>
+            <td><a href="../ch03-key-practices/3.7-kanban.html">3.7</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>看板的控制变量。<em>Kanban</em> 在术语表内，「在制品数量」这一指标名不在</td>
+          </tr>
+          <tr>
+            <td>浪费<br><small class="muted"><em>Waste</em> · <em>Lean types of Waste (DOWNTIME)</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch04-frameworks/4.3-lean.html">4.3</a></td>
+            <td><strong>第一步 · 流动</strong></td>
+            <td>消除不增值活动直接改善的是<strong>流动</strong>，所以本站把它归在速度类（DOWNTIME 为<strong>八项</strong>）</td>
+          </tr>
+
+          <tr>
+            <td rowspan="2"><strong>质量</strong><br><small class="muted">Quality</small></td>
+            <td>测试通过率与覆盖<br><small class="muted"><em>Testing (unit, acceptance, integration)</em> 的读数</small></td>
+            <td><span class="badge badge--note">📝 教学整理</span></td>
+            <td><a href="../ch03-key-practices/3.1-continuous-testing.html">3.1</a> · <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td>左移的直接读数。术语表收录的是 <em>Testing (unit, acceptance, integration)</em> 这个术语，不是某个具体比率</td>
+          </tr>
+          <tr>
+            <td>缺陷逃逸率<br><small class="muted">逃到生产的缺陷占比</small></td>
+            <td><span class="badge badge--note">📝 教学整理</span></td>
+            <td><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch03-key-practices/3.1-continuous-testing.html">3.1</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td>质量类的典型读数：<strong>缺陷是在生产前被拦住，还是漏到了用户面前</strong>。这一指标名不在术语表内</td>
+          </tr>
+
+          <tr>
+            <td rowspan="4"><strong>稳定性</strong><br><small class="muted">Stability</small></td>
+            <td><strong>变更失败率</strong><br><small class="muted"><em>Change failure rate</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="7.2-dora-metrics.html">7.2</a> · <a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td>测有多少比例的<strong>已上生产</strong>的变更导致服务降级。名字里有「失败」，但分界线是<strong>有没有跨过生产那条线</strong>，属稳定性不属质量（见 <a href="7.3-four-metric-families.html">7.3</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>平均恢复时间 MTTR</strong><br><small class="muted"><em>Mean Time to Repair/Recover</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="7.2-dora-metrics.html">7.2</a> · <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4</a> · <a href="../ch02-core-principles/2.6-chaos-engineering.html">2.6</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td>出事之后多久恢复。混沌工程与韧性工程直接冲这个数去</td>
+          </tr>
+          <tr>
+            <td>单点故障数量<br><small class="muted"><em>Single Point of Failure (SPOF)</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4</a> · <a href="../ch04-frameworks/4.5-safety-culture.html">4.5</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td>结构性风险的存量读数。<em>SPOF</em> 是术语表条目，「数量」这一计量方式是本站说法</td>
+          </tr>
+          <tr>
+            <td>可用性<br><small class="muted"><em>availability</em></small></td>
+            <td><span class="badge badge--note">📝 教学整理</span></td>
+            <td><a href="../ch03-key-practices/3.4-sre-resilience.html">3.4</a> · <a href="../ch03-key-practices/3.8-observability.html">3.8</a></td>
+            <td><strong>第二步 · 反馈</strong></td>
+            <td><em>availability</em> 逐字出现在 Blueprint 的官方定义句中，但<strong>不是术语表条目</strong>，也未被官方定义为一个指标</td>
+          </tr>
+
+          <tr>
+            <td rowspan="3"><strong>文化</strong><br><small class="muted">Culture</small></td>
+            <td><strong>eNPS</strong><br><small class="muted"><em>employee Net Promoter Score</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a> · <a href="7.3-four-metric-families.html">7.3</a></td>
+            <td><strong>第三步 · 持续改进</strong></td>
+            <td>文化类里唯一在术语表内的量化指标：员工愿不愿意推荐这里</td>
+          </tr>
+          <tr>
+            <td>团队满意度<br><small class="muted"><em>team satisfaction</em></small></td>
+            <td><span class="badge badge--note">📝 教学整理</span></td>
+            <td><a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1</a> · <a href="7.3-four-metric-families.html">7.3</a></td>
+            <td><strong>第三步 · 持续改进</strong></td>
+            <td><em>team satisfaction</em> 逐字出现在 Blueprint 的定义句与 BENEFITS 中，是官方要达成的结果，<strong>官方未把它规定为一个指标</strong></td>
+          </tr>
+          <tr>
+            <td>变革疲劳<br><small class="muted"><em>Change fatigue</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch05-culture/5.2-cultural-debt.html">5.2</a></td>
+            <td><strong>第三步 · 持续改进</strong></td>
+            <td>它是<strong>现象</strong>不是指标；本站把它当作文化类读数的定性信号，用来解释 eNPS 为什么会掉</td>
+          </tr>
+
+          <tr>
+            <td><strong>结果</strong><br><small class="muted">Outcome</small></td>
+            <td><strong>高绩效组织</strong><br><small class="muted"><em>High-performing organizations</em></small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch01-exploring-devops/1.2-why-it-matters.html">1.2</a> · <a href="../ch05-culture/5.4-maturity-models.html">5.4</a></td>
+            <td><strong>三步全部</strong></td>
+            <td>不是第五类指标，而是<strong>四类同时向好之后的判定结果</strong>。它是被测出来的，不是自评出来的</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge--note">📝 教学整理</span><br><small class="muted"><strong>不属四类中的任何一类</strong>（本站判断）</small></td>
+            <td><strong>Velocity</strong><br><small class="muted">团队速率</small></td>
+            <td><span class="badge badge--core">⭐ 考纲核心</span></td>
+            <td><a href="../ch04-frameworks/4.2-agile-scrum.html">4.2</a> · <a href="7.3-four-metric-families.html">7.3</a></td>
+            <td>—<br><small class="muted">Scrum 侧产能度量，不描述价值流流动</small></td>
+            <td>团队内部相对刻度，<strong>不可跨团队比较</strong>。<a href="7.3-four-metric-families.html">7.3</a> 把它列为速度类题目的<strong>典型干扰项</strong>：看到 Velocity 先想 Sprint 和故事点，别想流水线</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      <strong>本表的归类与三步工作法映射为本站教学整理</strong>，官方未以此形式给出指标归属表。
+      具体地：<strong>四类分类框</strong>（速度 / 质量 / 稳定性 / 文化）出自 v3.4 课程大纲 M7 子项
+      <em>DevOps Metrics - Speed, Quality, Stability, Culture</em>，这一部分是官方的；
+      <strong>把每个具体指标放进哪一类、以及「服务于三步工作法的哪一步」这一列，全部是本站的编排</strong> ——
+      官方术语表只逐条列出术语名，未标注它们分属哪一类，也未把指标与三步工作法建立对应。
+      表中标 <span class="badge badge--core">⭐ 考纲核心</span> 的条目，其英文术语名逐字出现在
+      DOFD v3.4 官方考纲术语表（Concept and Terminology List）内；
+      标 <span class="badge badge--note">📝 教学整理</span> 的条目<strong>不在术语表内</strong>，
+      是本站为补全四类而列出的常见读数。
+      <em>availability</em> 与 <em>team satisfaction</em> 逐字出自
+      PeopleCert《DevOps Foundation® Blueprint》的定义句与 BENEFITS 段落，
+      但官方在那里描述的是<strong>要达成的结果</strong>，未把它们规定为指标。
+      「速度类先动、质量与稳定性类次之、文化类<strong>恶化最先 / 改善最慢</strong>」这一读法是本站的教学推断。
+      <strong>变更失败率归<span class="en">稳定性</span>类</strong>（不是质量类）与
+      <strong>Velocity 不属四类中的任何一类</strong>两条判断，与本章
+      <a href="7.3-four-metric-families.html">7.3</a> 的口径一致。
+      <em>Lean types of Waste (DOWNTIME)</em> 为<strong>八项</strong>，不是七种。
+    </div>
+
+    <!-- ============ 图 7-7-2 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 424" role="img" aria-label="四类指标族与三步工作法的对应关系：速度对第一步，质量与稳定性对第二步，文化对第三步">
+          <defs>
+            <marker id="ah-77-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="16" y="26" class="s-ink" font-size="17" font-weight="700">四类指标族 ↔ 三步工作法：哪一步见效，哪一类先动</text>
+          <text x="16" y="50" class="s-muted" font-size="12.5">左列为 v3.4 课程大纲 M7 子项给出的四类；右列为三步工作法。中间的连线是本站教学整理。</text>
+
+          <!-- 左列标题 -->
+          <text x="30" y="76" class="s-muted" font-size="12.5" font-weight="650">四类指标族（官方分类框）</text>
+          <text x="650" y="76" class="s-muted" font-size="12.5" font-weight="650">三步工作法（官方原则）</text>
+
+          <!-- 左 · 速度 -->
+          <rect x="30" y="86" width="300" height="62" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="46" y="112" class="f-1" font-size="15" font-weight="700">速度 Speed</text>
+          <text x="46" y="134" class="s-muted" font-size="12">部署频率 · 变更前置时间 · 周期时间 · 浪费</text>
+
+          <!-- 左 · 质量 -->
+          <rect x="30" y="160" width="300" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="46" y="186" class="f-3" font-size="15" font-weight="700">质量 Quality</text>
+          <text x="46" y="208" class="s-muted" font-size="12">测试读数 · 缺陷逃逸率</text>
+
+          <!-- 左 · 稳定性 -->
+          <rect x="30" y="234" width="300" height="62" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="46" y="260" class="f-4" font-size="15" font-weight="700">稳定性 Stability</text>
+          <text x="46" y="282" class="s-muted" font-size="12">变更失败率 · MTTR · 单点故障 SPOF · 可用性</text>
+
+          <!-- 左 · 文化 -->
+          <rect x="30" y="308" width="300" height="62" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="46" y="334" class="f-5" font-size="15" font-weight="700">文化 Culture</text>
+          <text x="46" y="356" class="s-muted" font-size="12">eNPS · 团队满意度 · 变革疲劳信号</text>
+
+          <!-- 右 · 第一步 -->
+          <rect x="650" y="86" width="300" height="62" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="666" y="112" class="f-1" font-size="15" font-weight="700">第一步 · 流动</text>
+          <text x="666" y="134" class="s-muted" font-size="12">缩短从被接受到上线的整段时间</text>
+
+          <!-- 右 · 第二步 -->
+          <rect x="650" y="196" width="300" height="62" rx="10" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="666" y="222" class="f-3" font-size="15" font-weight="700">第二步 · 反馈</text>
+          <text x="666" y="244" class="s-muted" font-size="12">让问题更早暴露、更快被修复</text>
+
+          <!-- 右 · 第三步 -->
+          <rect x="650" y="306" width="300" height="62" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="666" y="332" class="f-5" font-size="15" font-weight="700">第三步 · 持续改进</text>
+          <text x="666" y="354" class="s-muted" font-size="12">实验与学习成为日常，改善见效最慢</text>
+
+          <!-- 连线 -->
+          <line x1="334" y1="117" x2="644" y2="117" class="s-1" stroke-width="2" marker-end="url(#ah-77-3)"/>
+          <line x1="334" y1="191" x2="644" y2="223" class="s-1" stroke-width="2" marker-end="url(#ah-77-3)"/>
+          <line x1="334" y1="265" x2="644" y2="231" class="s-1" stroke-width="2" marker-end="url(#ah-77-3)"/>
+          <line x1="334" y1="339" x2="644" y2="337" class="s-1" stroke-width="2" marker-end="url(#ah-77-3)"/>
+
+          <text x="489" y="108" class="s-muted" font-size="12" text-anchor="middle">最先动</text>
+          <text x="489" y="196" class="s-muted" font-size="12" text-anchor="middle">次之</text>
+          <text x="489" y="240" class="s-muted" font-size="12" text-anchor="middle">次之</text>
+          <text x="489" y="330" class="s-muted" font-size="12" text-anchor="middle">改善最慢 / 恶化最先</text>
+
+          <text x="16" y="398" class="s-muted" font-size="12">四类分类框出自 v3.4 课程大纲 M7 子项 DevOps Metrics - Speed, Quality, Stability, Culture；三步工作法出自 PeopleCert DevOps Foundation Blueprint。</text>
+          <text x="16" y="418" class="s-muted" font-size="12">把四类对应到三步、每一类里放哪些指标、以及「哪一类先动」的先后次序，均为本站教学整理，官方未给出该映射。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-7-2　四类指标族对应到三步工作法。</strong>
+        这张图要看懂的是<strong>为什么质量和稳定性两类都指向第二步</strong>：
+        它们分别回答<strong>生产之前</strong>与<strong>生产之后</strong>两段的问题 ——
+        缺陷有没有被提前拦住，以及上了生产的变更出事的<strong>频率</strong>与出事后的<strong>时长</strong>，
+        而改善这三者靠的都是把反馈回路做快。
+        <strong>变更失败率画在稳定性框里</strong>，因为它度量的是已经跨过生产那条线的变更（见 <a href="7.3-four-metric-families.html">7.3</a>）。
+        另一个要点是文化类的<strong>双向不对称</strong>：<strong>恶化时它最先动</strong>，
+        <strong>改善时它最慢兑现</strong> —— 所以拿三个月的 eNPS 变化去评价一次转型的成效，
+        几乎一定会得出错误结论；但同一段 eNPS 的下滑，反而是最早的预警。
+        <br><small class="muted">左列四类为官方分类框，右列三步为官方原则；<strong>中间的连线、各类的成员归属、以及「先动 / 次之 / 改善最慢 · 恶化最先」的次序都是本站教学整理</strong>，官方未给出这一映射。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 官方样题答案键与本章的关系 ============ -->
+    <div class="divider-label">官方样题答案键与本章的关系</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 直接落在本章的：一条也没有</div>
+      <p>
+        本章与其他章不同：<strong>DOFD v3.4 官方样题答案键里，没有任何一条的正式讲解落点在第 7 章。</strong>
+        这与本章 2 题的权重是一致的。但有一条<strong>判断落点是「指标该怎么用」</strong>，
+        虽然正式讲解在第 8 章，本章复习时必须一并记住：
+      </p>
+      <ul>
+        <li><strong>用指标控制和评价员工，不属于 DevOps 领导力的目标。</strong>
+          → 由 <strong>DOFD v3.4 官方样题答案键</strong>确认，正式讲解在
+          <a href="../ch08-sharing/8.3-leadership.html">第 8 章（8.3 DevOps 领导力）</a>。
+          它与本章的关系是：<strong>7.1 之所以先讲「测什么才算数」，正是因为指标一旦变成考核工具，
+          被测的人就会开始优化数字而不是优化能力</strong> ——
+          这时候数据仍在，但已经不再反映现实。
+          <span class="muted">—— 这一因果解释为本站教学整理，官方只确认了正确答案方向。</span></li>
+      </ul>
+      <p class="mb-0 muted"><small>本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+        本章其余所有关于「会怎么考」的说法，均为本站对命题角度的推断，已在各处就地标注。</small></p>
+    </div>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章展开或引用过、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目。
+      不在术语表内的主题词见下方 ⚠️ 区块。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:28%">官方术语</th><th style="width:19%">固定中文</th><th style="width:13%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>DevOps metrics</em></td><td>DevOps 指标</td><td><a href="7.1-why-measure.html">7.1</a> · <a href="7.3-four-metric-families.html">7.3</a></td><td>本章的总名词。官方在 M7 子项里把它展开为速度 / 质量 / 稳定性 / 文化四类</td></tr>
+          <tr><td><em>Deployment frequency</em></td><td>部署频率</td><td><a href="7.2-dora-metrics.html">7.2</a></td><td>单位时间部署到生产的次数，测交付节奏，属速度类</td></tr>
+          <tr><td><em>Change lead time</em></td><td>变更前置时间</td><td><a href="7.2-dora-metrics.html">7.2</a> · <a href="7.4-lead-vs-cycle-time.html">7.4</a></td><td>从代码提交到在生产上运行的整段时间（<strong>DORA 口径</strong>，7.2 采用）；精益价值流口径改从<strong>需求被接受</strong>起算并含需求排队（7.4、4.6 采用）。<strong>两种口径都对，必须写明用哪一种</strong></td></tr>
+          <tr><td><em>Cycle time</em></td><td>周期时间</td><td><a href="7.4-lead-vs-cycle-time.html">7.4</a></td><td>从开始动手到进入生产，<strong>不含排队</strong>。<strong>前置时间 ≥ 周期时间</strong></td></tr>
+          <tr><td><em>Change failure rate</em></td><td>变更失败率</td><td><a href="7.2-dora-metrics.html">7.2</a></td><td>导致生产问题的变更占比，<strong>属稳定性类</strong>（跨过了生产那条线，不属质量类）</td></tr>
+          <tr><td><em>Mean Time to Repair/Recover (MTTR)</em></td><td>平均恢复时间 MTTR</td><td><a href="7.2-dora-metrics.html">7.2</a></td><td>故障发生到恢复的平均时长，属稳定性类。<strong>官方词条同时写了 Repair 与 Recover</strong></td></tr>
+          <tr><td><em>Velocity</em></td><td>Velocity<br><small class="muted">团队速率</small></td><td><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch04-frameworks/4.2-agile-scrum.html">4.2</a></td><td>敏捷侧的容量预测工具，团队内部相对刻度，<strong>不可跨团队比较</strong></td></tr>
+          <tr><td><em>employee Net Promoter Score (eNPS)</em></td><td>员工净推荐值 eNPS<br><small class="muted">本站译名</small></td><td><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch01-exploring-devops/1.4-values-goals-stakeholders.html">1.4</a></td><td>文化类里唯一在术语表内的量化指标</td></tr>
+          <tr><td><em>Flow</em></td><td>流动</td><td><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch02-core-principles/2.2-first-way-flow.html">2.2</a></td><td>速度类指标共同描述的那个对象，第一步工作法的核心词</td></tr>
+          <tr><td><em>Constraint</em></td><td>约束</td><td><a href="7.1-why-measure.html">7.1</a> · <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3</a></td><td>度量的一个直接用途：找出该动哪一处。<strong>约束理论服务于第一步</strong>（由官方样题答案键确认，见 2.3）</td></tr>
+          <tr><td><em>Kanban</em></td><td>Kanban 看板</td><td><a href="7.5-value-driven-metrics.html">7.5</a> · <a href="../ch03-key-practices/3.7-kanban.html">3.7</a></td><td>可视化在制品与流动状态的实践。<strong>它与 <em>DevOps Dashboards</em> 不是一回事</strong></td></tr>
+          <tr><td><em>High-performing organizations</em></td><td>高绩效组织</td><td><a href="7.2-dora-metrics.html">7.2</a> · <a href="../ch05-culture/5.4-maturity-models.html">5.4</a></td><td>四类指标同时向好之后的判定结果，是<strong>测出来的</strong>，不是自评出来的</td></tr>
+          <tr><td><em>Single Point of Failure (SPOF)</em></td><td>单点故障 SPOF</td><td><a href="7.3-four-metric-families.html">7.3</a> · <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4</a></td><td>稳定性类的结构性风险读数，本章只作为归属表条目引用</td></tr>
+          <tr><td><em>Value stream mapping</em></td><td>价值流映射</td><td><a href="7.4-lead-vs-cycle-time.html">7.4</a> · <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a></td><td>把前置时间拆成逐段等待与逐段作业的方法，与 7.4 共用同一套时间概念</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称</strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List）。
+      <strong>「本章出处」与「一句话定位」两列为本站教学整理</strong> ——
+      官方术语表只逐条列出术语名，也未标注每条术语分属哪个模块，
+      因此本表里的每一条中文释义都是本站措辞，把这些术语挂到具体小节也是本站的编排结果。
+      <em>employee Net Promoter Score (eNPS)</em> 的中文「员工净推荐值」为本站译名。
+      「约束理论服务于三步工作法中的第一步」由 <strong>DOFD v3.4 官方样题答案键</strong>确认，
+      正式讲解在<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。
+    </div>
+
+    <!-- ============ 主题词 / 准确的说法 ============ -->
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 这些主题词不在 66 条官方术语表内</div>
+      <p>
+        本章最容易踩的一类错，是把下面这些词当成「考纲核心术语」——
+        <strong>本章四个最响亮的名字，一个都不在术语表里</strong>。它们各有各的准确说法：
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:30%">主题词</th><th style="width:13%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><em>DORA</em> / DORA 四大指标<br>四个关键指标</td>
+              <td><a href="7.2-dora-metrics.html">7.2</a></td>
+              <td><strong>既不在 66 条术语表内，也不是 v3.4 课程大纲的模块子项。</strong>
+                在术语表内的是这四个指标<strong>各自的名字</strong> ——
+                <em>Deployment frequency</em>、<em>Change lead time</em>、<em>Change failure rate</em>、
+                <em>Mean Time to Repair/Recover (MTTR)</em>。
+                「DORA」这个缩写与「四大指标」这一成组说法，是业界与本站为方便记忆而用的归并称呼
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span><br>
+                <small class="muted">应试落点：题干问的一定是某个<strong>具体指标名</strong>，不会考「DORA 是什么的缩写」。</small></td>
+            </tr>
+            <tr>
+              <td><em>AIOps</em><br>AI 驱动的 IT 运营</td>
+              <td><a href="7.6-aiops.html">7.6</a></td>
+              <td>出自 <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>。
+                它是<strong>官方内容</strong>，只是晚于 v3.4 的术语表与模块大纲，因此标
+                <span class="badge badge--plain">📘 官方模块子项</span> +
+                <span class="badge badge--new">🆕 v3.6 新增</span>，
+                <strong>既不标「⭐ 考纲核心」，也不标「🧭 延伸 · 非考纲」</strong>。
+                v3.4 课程大纲 M6 里与它最接近的子项是 <em>AI and Machine Learning</em>（那是第 6 章的内容）</td>
+            </tr>
+            <tr>
+              <td><em>Value Driven Metrics</em><br>价值驱动指标</td>
+              <td><a href="7.5-value-driven-metrics.html">7.5</a></td>
+              <td>是 <strong>v3.4 课程大纲 M7 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>，
+                因此标 <span class="badge badge--plain">📘 官方模块子项</span>，不标「⭐ 考纲核心」。
+                这个词组也逐字出现在 Blueprint 的 CALMS-M 描述句里
+                （<em>Value-driven metrics … support trust and performance improvement</em>，官方原文）——
+                <strong>它是官方措辞，不是本站归纳</strong>，展开见 <a href="7.5-value-driven-metrics.html">7.5</a></td>
+            </tr>
+            <tr>
+              <td><em>DevOps Dashboards</em><br>DevOps <strong>看板</strong></td>
+              <td><a href="7.5-value-driven-metrics.html">7.5</a></td>
+              <td>出自 <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>。
+                它是<strong>官方内容</strong>，因此标 <span class="badge badge--plain">📘 官方模块子项</span> +
+                <span class="badge badge--new">🆕 v3.6 新增</span>，<strong>不标「🧭 延伸 · 非考纲」</strong>。
+                在术语表内的是 <em>Kanban</em> —— <strong>一个是可视化流动的实践，一个是汇总指标的展示面</strong>。
+                中文的「看板」同时对应 <em>Dashboard</em> 与 <em>Kanban</em> 两个完全不同的英文词 ——
+                <strong>本站沿用「看板」，并在 <a href="7.5-value-driven-metrics.html">7.5</a> 就地提示这处撞名：
+                考试里见到 <em>Kanban</em> 一律指工作流管理实践</strong></td>
+            </tr>
+            <tr>
+              <td><em>The Importance of Measurement</em><br>为什么必须度量（7.1 英文名）</td>
+              <td><a href="7.1-why-measure.html">7.1</a></td>
+              <td>是 <strong>v3.4 课程大纲 M7 的官方模块子项</strong>，<strong>不在 66 条术语表内</strong>。
+                在术语表内的是 <em>DevOps metrics</em> —— 一个是模块子项名，一个是术语名，不要互换</td>
+            </tr>
+            <tr>
+              <td><em>DevOps Metrics - Speed, Quality, Stability, Culture</em><br>四类指标族（7.3 英文名）</td>
+              <td><a href="7.3-four-metric-families.html">7.3</a></td>
+              <td>是 <strong>v3.4 课程大纲 M7 的官方模块子项</strong>，<strong>整条不在 66 条术语表内</strong>；
+                但其中的 <em>DevOps metrics</em> 是术语表条目。
+                「速度 / 质量 / 稳定性 / 文化」这四类<strong>是官方给的分类框</strong>，
+                但<strong>每一类下面具体放哪些指标，官方没有列</strong> —— 本页归属总表里的归类是本站教学整理</td>
+            </tr>
+            <tr>
+              <td><em>Change lead/cycle time</em><br>前置时间与周期时间（7.4 英文名）</td>
+              <td><a href="7.4-lead-vs-cycle-time.html">7.4</a></td>
+              <td>作为<strong>合并写法</strong>是 v3.4 课程大纲 M7 的官方模块子项；
+                而 <em>Change lead time</em> 与 <em>Cycle time</em> <strong>各自都在 66 条术语表内</strong>。
+                <strong>合并成一个子项不等于它们是同一个指标</strong></td>
+            </tr>
+            <tr>
+              <td>「流动度量」<br><em>flow metrics</em></td>
+              <td><a href="7.3-four-metric-families.html">7.3</a></td>
+              <td><strong>不是官方措辞</strong>，是业界对「前置时间 / 周期时间 / 在制品数」这一组指标的统称。
+                官方术语表里有的是 <em>Flow</em> 这个词本身
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td>SLI / SLO / 错误预算<br>MTBF · MTTD</td>
+              <td><a href="7.2-dora-metrics.html">7.2</a> · <a href="../ch03-key-practices/3.4-sre-resilience.html">3.4</a></td>
+              <td><strong>既不在术语表，也不在任何模块子项内</strong> —— 属 SRE 与运维工程的常用度量。
+                官方术语表里与之相邻的只有 <em>Site Reliability Engineering</em> 与
+                <em>Mean Time to Repair/Recover (MTTR)</em>
+                <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td><em>Monitoring and Observability</em><br>监控与可观测性</td>
+              <td><a href="7.6-aiops.html">7.6</a> · <a href="../ch03-key-practices/3.8-observability.html">3.8</a></td>
+              <td>出自 <strong>PeopleCert 现行产品页公布的学习目标，v3.4 术语表未收录</strong>，
+                同属 <span class="badge badge--plain">📘 官方模块子项</span> +
+                <span class="badge badge--new">🆕 v3.6 新增</span> 这一档。
+                它是 AIOps 的数据前提：没有可信的遥测，模型只会放大噪声</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>判定依据：DOFD v3.4 官方考纲 66 条术语表逐字比对 + v3.4 课程大纲模块子项 + PeopleCert 现行产品页学习目标。
+        徽章口径：主题词逐字出现在 66 条术语表内才标「⭐ 考纲核心」；只出现在 v3.4 课程大纲模块子项内，
+        或出自 PeopleCert 现行产品页公布的学习目标（v3.6 增量，另叠加「🆕 v3.6 新增」），均标「📘 官方模块子项」——
+        <strong>v3.6 增量是官方内容，不标「🧭 延伸 · 非考纲」</strong>。
+        表中「准确的说法」一列的解释与对比为本站教学整理。</small></p>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>以下四项均出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；v3.6 未公开重新发布权重表。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">2</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">5%</div><div class="stat__k">2 ÷ 40，按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">第 8 位</div><div class="stat__k">八个模块中权重最低</div></div>
+      <div class="stat"><div class="stat__v">0</div><div class="stat__k">官方答案键正式落点在本章的条目</div></div>
+    </div>
+
+    <p>
+      全卷 40 题、及格线 <strong>26 / 40</strong>，允许错 14 题。
+      本章即便两题全错，也只占容错额度的七分之一。
+      <strong>但这不是可以跳过本章的理由</strong> —— 第 2、3 章里凡是问「怎么知道改进有效」的地方，
+      本站建议都回到本章的四个指标上找判据
+      <span class="muted">（这是本站的复习方法建议，官方未公布任何跨模块的命题关联）</span>。
+      把本章当成第 2、3 章的<strong>验算工具</strong>，性价比远高于把它当成 2 题的得分点。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:36%">模块</th><th style="width:14%">最多题数</th><th>与本章的关系</th></tr></thead>
+        <tbody>
+          <tr><td>3　Key DevOps Practices</td><td class="num">7</td><td>并列最高。持续交付、看板、SRE 的效果<strong>全部由本章的指标来验证</strong></td></tr>
+          <tr><td>4　Business &amp; Technology Frameworks</td><td class="num">7</td><td>并列最高。<strong>Velocity 在 Agile 那一章、价值流映射在 4.6</strong>，都与本章共用时间概念</td></tr>
+          <tr><td>5　Culture, Behaviors &amp; Operating Models</td><td class="num">6</td><td>成熟度模型（5.4）与本章的「指标」是一对易混：一个自评，一个实测</td></tr>
+          <tr><td>1　Exploring DevOps</td><td class="num">5</td><td>eNPS 与高绩效组织首次出现在 1.2 / 1.4，本章把它们归入四类框</td></tr>
+          <tr><td>6　Automation &amp; Architecting DevOps Toolchains</td><td class="num">5</td><td>指标的数据来源在那一章：流水线与工具链产生本章要读的数字</td></tr>
+          <tr><td>2　Core DevOps Principles</td><td class="num">4</td><td>三步工作法在那一章。<strong>本章的四类指标正是三步的读数</strong>（该映射为本站教学整理）</td></tr>
+          <tr><td>8　Sharing, Shadowing and Evolving</td><td class="num">4</td><td>「用指标控制和评价员工不属于领导力目标」这条答案键结论落在 8.3</td></tr>
+          <tr><td><strong>7　Measurement, Metrics, and Reporting</strong></td><td class="num"><strong>2</strong></td><td><strong>本章 · 全书最低</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题）同源。
+      <strong>v3.6 未公开重新发布权重表</strong>，因此本页仍以 v3.4 的分布作为唯一可引用依据。
+      5% 由题数上限 2 ÷ 40 计算得到，是<strong>占比上限</strong>而非实测比重；
+      「第 8 位」为<strong>本站按上表题数排序算出的名次</strong>，官方未给出名次表述。
+      右列「与本章的关系」为本站教学整理。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>与<strong>全书指标归属总表</strong>做自测更有效：
+        遮住「分界线」一列逐对说出分界线；再遮住归属总表的「服务于三步工作法」一列，
+        逐个指标说出它服务于哪一步。说不出来的那一行，就是要回去重读的小节。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        官方样题受版权保护，本站不复制其题干与选项原文；
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 2 题</strong>，占全卷 40 题的 <strong>5%</strong>，<strong>八个模块里权重最低</strong>（来源：DOFD v3.4 Examination Requirements，2022-05；官方给的是每模块题数上限，不是固定配额）。<strong>按理解学，不按应试时间投入</strong></li>
+        <li><strong>四个数字两两成对</strong>：部署频率 + 变更前置时间测速度，变更失败率 + MTTR 测出事之后。<strong>四个一起好才叫高绩效</strong>，只刷部署频率不算</li>
+        <li><strong>前置时间 vs 周期时间</strong>：终点相同、起点不同。周期时间从<strong>开始动手</strong>起算（不含排队）；前置时间的起点看口径 —— <strong>DORA 口径从代码提交</strong>起算（7.2），<strong>精益价值流口径从需求被接受</strong>起算并含排队（7.4、4.6）。同口径下<strong>前置时间 ≥ 周期时间</strong>；<strong>两种口径都对，混用才错</strong></li>
+        <li><strong>四类 ≠ 四个</strong>：速度 / 质量 / 稳定性 / 文化是官方的<strong>分类框</strong>（M7 子项），那四个指标是<strong>实例</strong>，且<strong>质量与文化两类它都不覆盖</strong> —— 质量类用测试与缺陷读数，文化类用 eNPS</li>
+        <li><strong>本章四个最响亮的名字都不在 66 条术语表内</strong>：<strong>DORA</strong>（不是官方措辞）·<strong>AIOps</strong>（v3.6 官方学习目标）·<strong>Value Driven Metrics</strong>（M7 官方模块子项，且逐字见于 Blueprint 的 CALMS-M 描述句）·<strong>DevOps Dashboards</strong>（v3.6 官方学习目标）。<strong>后三个仍是官方内容，只有 DORA 这个成组称呼不是</strong>；术语表里有的是四个指标各自的名字</li>
+        <li><strong>指标不是考核工具</strong>：<strong>用指标控制和评价员工不属于 DevOps 领导力的目标</strong>（该条由 DOFD v3.4 官方样题答案键确认，正式讲解在<a href="../ch08-sharing/8.3-leadership.html">第 8 章（8.3）</a>）。同理，<strong>成熟度模型是自评、指标是实测</strong>，冲突时先信实测</li>
+        <li><strong>Velocity 与 AIOps 的两个陷阱</strong>：Velocity 是<strong>团队内部相对刻度</strong>，不可跨团队比较，<strong>也不是 DevOps 的流动速度指标</strong>（它在术语表内，但不属四类中的任何一类）；AIOps 解决的是<strong>告警太多</strong>，不是替人做决定，且它以可信数据为前提</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数与考试形式出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      并同时说明 <strong>v3.6 未公开重新发布权重表</strong>。<br>
+      <em>DevOps metrics</em>、<em>Deployment frequency</em>、<em>Change lead time</em>、<em>Cycle time</em>、
+      <em>Change failure rate</em>、<em>Mean Time to Repair/Recover (MTTR)</em>、<em>Velocity</em>、
+      <em>employee Net Promoter Score (eNPS)</em>、<em>Flow</em>、<em>Constraint</em>、<em>Kanban</em>、
+      <em>High-performing organizations</em>、<em>Single Point of Failure (SPOF)</em>、
+      <em>Value stream mapping</em>、<em>Waste</em>、<em>Lean types of Waste (DOWNTIME)</em>、
+      <em>Change fatigue</em>、<em>Testing (unit, acceptance, integration)</em>
+      均列于 <strong>DOFD v3.4 官方考纲术语表（Concept and Terminology List，66 条）</strong>，
+      出自 DOFD v3.4 Examination Requirements（2022-05）；<strong>该术语表只列出词条、不附定义</strong>，
+      因此本页术语速查表与归属总表里的每一条中文释义都是本站措辞，不是官方逐字定义。<br>
+      v3.4 课程大纲 M7 的四个模块子项为 <em>The Importance of Measurement</em>、
+      <em>DevOps Metrics - Speed, Quality, Stability, Culture</em>、<em>Change lead/cycle time</em>、
+      <em>Value Driven Metrics</em>，<strong>四者本身均不在 66 条术语表内</strong>。<br>
+      <em>AIOps</em>、<em>DevOps Dashboards</em>、<em>Monitoring and Observability</em>
+      出自 <strong>PeopleCert 现行产品页公布的学习目标</strong>，<strong>v3.4 术语表未收录</strong> ——
+      它们<strong>是官方内容</strong>，只是晚于 v3.4 的术语表与模块大纲，因此统一标
+      <strong>📘 官方模块子项 + 🆕 v3.6 新增</strong>，既不标「⭐ 考纲核心」，也不标「🧭 延伸 · 非考纲」；
+      <em>Value-driven metrics</em> 一词另逐字出现在 <strong>PeopleCert DevOps Foundation Blueprint</strong>
+      的 CALMS-M 描述句里（<em>Value-driven metrics for people, process and technology support trust and
+      performance improvement.</em>，官方原文）；
+      <em>availability</em> 与 <em>team satisfaction</em> 逐字出自
+      PeopleCert《DevOps Foundation® Blueprint》，官方在那里描述的是要达成的结果，未把它们规定为指标。<br>
+      本页引用的答案键结论共两条，均由 <strong>DOFD v3.4 官方样题答案键</strong>确认：
+      「用指标控制和评价员工不属于 DevOps 领导力的目标」（正式讲解在<a href="../ch08-sharing/8.3-leadership.html">第 8 章（8.3）</a>）、
+      「约束理论服务于三步工作法中的第一步」（正式讲解在<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>）。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。<br>
+      <strong>本站教学整理部分</strong>：图 7-7-1 的六节顺序与「改进后重新度量」回环、
+      图 7-7-2 的四类指标族 ↔ 三步工作法映射与「先动 / 次之 / 最慢」次序、
+      <strong>全书指标归属总表的全部归类与「服务于哪一步」一列</strong>、
+      一页纸复习表的三列、易混淆汇总表的两列、术语速查表的「本章出处」与「一句话定位」两列、
+      以及「第 8 位」这一名次，官方均未以此形式给出，已在各自下方就地标注。
+      「DORA」「流动度量 / flow metrics」「活动指标」「在制品数量」「测试通过率与覆盖」「可用性」
+      等说法不是官方措辞，SLI / SLO / 错误预算 / MTBF / MTTD 既不在术语表也不在模块子项内，均已就地标为延伸或教学整理。
+      本页不含任何官方样题原文，练习题上线后将标注「仿真题，非官方真题」。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

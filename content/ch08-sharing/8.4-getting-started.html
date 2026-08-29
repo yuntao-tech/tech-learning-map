@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.4 组织考量与如何起步 · DevOps Foundation 学习站</title>
+<meta name="description" content="决定哪些 DevOps 原则与实践对组织最有益的是业务战略与目标，推动重大变革时担任变革推动者的是早期采用者——两条官方样题答案键确认的事实，加上一条从「量出现状」开始、不需要等重组等预算的起步路径与试点选择判据。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch08", sec:"8.4-getting-started"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 8 章 · 分享、跟随与演进</div>
+      <h1 class="page-head__title">8.4 组织考量与如何起步</h1>
+      <div class="page-head__en">Organizational Considerations and Getting Started</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--core">⭐ 考纲核心</span>
+        <span class="badge badge--hot">📌 高频</span>
+      </div>
+      <p class="page-head__lede">
+        大多数 DevOps 转型不是死在技术上，而是死在<strong>第一步选错了方向</strong>：
+        先买了工具，先动了组织架构，先把所有团队一起拉进来。
+        这一节回答三个问题 —— <strong>由什么来决定该做哪些实践</strong>，
+        <strong>在不重组、不加预算、不换工具的前提下，明天早上具体做什么</strong>，
+        以及<strong>第一个试点该挑哪一个、为什么不能挑最难的那个</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>决定哪些 DevOps 原则与实践对组织最有益的，到底是什么（官方样题答案键有明确结论）</li>
+        <li>「从你所在的地方开始」具体是哪五步，每一步该交出什么产出物</li>
+        <li>第一个试点怎么挑，为什么<strong>最难的那个系统一定不能选</strong></li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 8-4-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 428" role="img" aria-label="起步五步路径：量出现状、找到约束、选一个试点、用数据证明、扩散，每一步对应一件产出物">
+          <defs>
+            <marker id="ah-84-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-84-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+          </defs>
+
+          <text x="20" y="30" class="f-1" font-size="15" font-weight="700">起步路径 —— 不需要等重组、等预算、等新工具</text>
+          <text x="480" y="30" class="s-muted" font-size="12.5">上排 = 动作　下排 = 这一步必须交出的产出物</text>
+
+          <!-- 五个步骤 -->
+          <rect x="20"  y="52" width="160" height="96" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <rect x="210" y="52" width="160" height="96" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <rect x="400" y="52" width="160" height="96" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <rect x="590" y="52" width="160" height="96" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+          <rect x="780" y="52" width="160" height="96" rx="12" class="s-1" stroke-width="2.2" fill="var(--dia-fill-2)"/>
+
+          <g text-anchor="middle">
+            <text x="100" y="88"  class="f-1"    font-size="16" font-weight="700">① 量出现状</text>
+            <text x="100" y="112" class="s-ink"  font-size="13">价值流映射</text>
+            <text x="100" y="133" class="s-muted" font-size="12">端到端交付时间</text>
+
+            <text x="290" y="88"  class="f-1"    font-size="16" font-weight="700">② 找到约束</text>
+            <text x="290" y="112" class="s-ink"  font-size="13">最大的那一段等待</text>
+            <text x="290" y="133" class="s-muted" font-size="12">不是最忙的那一段</text>
+
+            <text x="480" y="88"  class="f-1"    font-size="16" font-weight="700">③ 选一个试点</text>
+            <text x="480" y="112" class="s-ink"  font-size="13">有痛感 · 看得见</text>
+            <text x="480" y="133" class="s-muted" font-size="12">不选最难的系统</text>
+
+            <text x="670" y="88"  class="f-1"    font-size="16" font-weight="700">④ 用数据证明</text>
+            <text x="670" y="112" class="s-ink"  font-size="13">同一把尺子前后比</text>
+            <text x="670" y="133" class="s-muted" font-size="12">起步前先量基线</text>
+
+            <text x="860" y="88"  class="f-1"    font-size="16" font-weight="700">⑤ 扩散</text>
+            <text x="860" y="112" class="s-ink"  font-size="13">带着做法与数据走</text>
+            <text x="860" y="133" class="s-muted" font-size="12">下一个团队，不是全部</text>
+          </g>
+
+          <!-- 步骤之间的箭头 -->
+          <g class="s-1" stroke-width="2.2" fill="none">
+            <line x1="182" y1="100" x2="206" y2="100" marker-end="url(#ah-84-1)"/>
+            <line x1="372" y1="100" x2="396" y2="100" marker-end="url(#ah-84-1)"/>
+            <line x1="562" y1="100" x2="586" y2="100" marker-end="url(#ah-84-1)"/>
+            <line x1="752" y1="100" x2="776" y2="100" marker-end="url(#ah-84-1)"/>
+          </g>
+
+          <!-- 步骤到产出物的竖线 -->
+          <g class="s-4" stroke-width="1.8" fill="none">
+            <line x1="100" y1="150" x2="100" y2="184" marker-end="url(#ah-84-2)"/>
+            <line x1="290" y1="150" x2="290" y2="184" marker-end="url(#ah-84-2)"/>
+            <line x1="480" y1="150" x2="480" y2="184" marker-end="url(#ah-84-2)"/>
+            <line x1="670" y1="150" x2="670" y2="184" marker-end="url(#ah-84-2)"/>
+            <line x1="860" y1="150" x2="860" y2="184" marker-end="url(#ah-84-2)"/>
+          </g>
+
+          <!-- 产出物 -->
+          <rect x="20"  y="190" width="160" height="76" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <rect x="210" y="190" width="160" height="76" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <rect x="400" y="190" width="160" height="76" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <rect x="590" y="190" width="160" height="76" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <rect x="780" y="190" width="160" height="76" rx="10" class="s-4" stroke-width="1.8" fill="var(--dia-fill)"/>
+
+          <g text-anchor="middle">
+            <text x="100" y="216" class="f-4"   font-size="12.5" font-weight="700">产出物</text>
+            <text x="100" y="238" class="s-ink" font-size="13">一张标了等待</text>
+            <text x="100" y="257" class="s-ink" font-size="13">时间的现状图</text>
+
+            <text x="290" y="216" class="f-4"   font-size="12.5" font-weight="700">产出物</text>
+            <text x="290" y="238" class="s-ink" font-size="13">被指认出来的</text>
+            <text x="290" y="257" class="s-ink" font-size="13">那一个约束点</text>
+
+            <text x="480" y="216" class="f-4"   font-size="12.5" font-weight="700">产出物</text>
+            <text x="480" y="238" class="s-ink" font-size="13">写下来的试点</text>
+            <text x="480" y="257" class="s-ink" font-size="13">范围与成功判据</text>
+
+            <text x="670" y="216" class="f-4"   font-size="12.5" font-weight="700">产出物</text>
+            <text x="670" y="238" class="s-ink" font-size="13">前后对照的</text>
+            <text x="670" y="257" class="s-ink" font-size="13">一组同口径数据</text>
+
+            <text x="860" y="216" class="f-4"   font-size="12.5" font-weight="700">产出物</text>
+            <text x="860" y="238" class="s-ink" font-size="13">可复用的做法</text>
+            <text x="860" y="257" class="s-ink" font-size="13">与一份支持者名单</text>
+          </g>
+
+          <!-- 常见起步错误 -->
+          <rect x="20" y="296" width="920" height="112" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="44" y="326" class="f-5" font-size="15" font-weight="700">✕ 四种最常见的起步方式 —— 它们都跳过了①和②，因此都停在原地</text>
+          <text x="44" y="358" class="s-ink" font-size="14">✕ 先买工具　　✕ 先重组　　✕ 一次铺开所有团队　　✕ 选一个没人关心的系统做试点</text>
+          <text x="44" y="386" class="s-muted" font-size="12.5">共同点：在还不知道约束在哪的时候就开始花钱、动人、铺面 —— 改的位置和真正的等待没有关系</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 8-4-1　起步五步路径与它的四种反面。</strong>
+        要看懂的是：<strong>前两步不产生任何改进，只产生事实</strong> —— 一张标了等待时间的现状图，和一个被指认出来的约束点。
+        跳过这两步，第三步的试点就只能靠拍脑袋挑，第四步也拿不出前后对照的数据。
+        下方那条带子里的四种做法之所以失败，原因是同一个：<strong>在还不知道约束在哪的时候就动手</strong>。
+        <br><small class="muted">本五步顺序、各步的产出物定义与「四种常见起步方式」清单均为<strong>本站教学整理</strong>，
+        DOFD v3.4 课程大纲 M8 列出 <em>Getting Started</em> 与 <em>Organizational Considerations</em> 两个子项，但未规定起步步骤或顺序。
+        图中「价值流映射 <em>Value stream mapping</em>」与「约束 <em>Constraint</em>」是 DOFD v3.4 官方考纲术语表条目，
+        展开见<a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a>与<a href="../ch02-core-principles/2.3-theory-of-constraints.html">第 2 章 约束理论（2.3）</a>。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-8-4-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-4-1</div>
+        <h3 class="kp__title">组织考量<span class="en">Organizational Considerations</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--core">⭐ 考纲核心</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <span class="term">组织考量 <span class="en">Organizational Considerations</span></span>
+            指的是：在把 DevOps 推进到一个组织之前，<strong>必须先想清楚的一组组织层面的前置问题</strong> ——
+            这家组织想达成什么、现在的交付实际长什么样、由谁来推动、从哪里开始。
+          </p>
+          <p>
+            它的作用是<strong>筛选</strong>：DevOps 的原则与实践是一整套，
+            但对某一家组织来说，只有其中一部分能真正解决它眼下的问题。
+            组织考量就是决定「筛哪些进来」的那道判断。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">要问的四件事</th><th>它决定了什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>业务战略与目标</strong></td><td><strong>选哪些原则与实践</strong>。目标是缩短上市时间、还是降低故障率、还是满足合规审计，导出的实践完全不同</td></tr>
+                <tr><td><strong>当前交付现状</strong></td><td><strong>从哪一段动手</strong>。端到端交付时间是多少、时间花在哪一段等待上</td></tr>
+                <tr><td><strong>谁来推动</strong></td><td><strong>由谁进规划</strong>。变革推动者从哪来，抵触会出现在哪一层</td></tr>
+                <tr><td><strong>起步范围</strong></td><td><strong>先动几个团队</strong>。一个试点，还是一次铺开</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><em>Organizational considerations</em> 逐字列于 DOFD v3.4 官方考纲术语表，
+            同时是 v3.4 课程大纲 M8 的模块子项；<strong>上表把它拆成「四件事」是本站教学整理</strong>，官方未以此形式给出维度划分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它存在的原因，是一种非常具体、也非常常见的失败：<strong>组织买齐了 DevOps，却没有变快。</strong>
+          </p>
+          <ul>
+            <li>某集团 IT 成立了 DevOps 推进办公室，第一年采购了流水线平台、容器平台与自动化测试套件，
+              培训覆盖 <strong>1200 人</strong>。<strong>18 个月后部署频率几乎没有变化。</strong></li>
+            <li>后来才量出来：一个需求从提出到上线平均 <strong>93 天</strong>，其中写代码到测试通过只占 <strong>9 天</strong>，
+              剩下 <strong>84 天</strong>全部花在需求排期等待与变更评审委员会的双周会上。
+              <strong>被自动化掉的，恰好是原本就最快的那一段。</strong></li>
+            <li>更大的代价在后面：因为拿不出任何业务侧看得懂的改善，第二年预算被砍，
+              结论被写成「DevOps 在这种业务里不适用」。</li>
+          </ul>
+          <p>
+            机制是清楚的：<strong>脱离业务战略与目标去选实践 → 选到不触碰主要矛盾的那一批 →
+            投入没有可见回报 → 支持撤走 → 变革被判死刑。</strong>
+            组织考量就是插在最前面、防止这条链条启动的那一步。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">组织考量</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>组织成熟度模型 <span class="en">Organizational maturity models</span></strong><br>
+                    <small class="muted">见<a href="../ch05-culture/5.4-maturity-models.html">第 5 章 组织成熟度模型（5.4）</a></small></td>
+                  <td>问<strong>「该往哪走」</strong>：从业务目标出发，决定选哪些原则与实践</td>
+                  <td>问<strong>「现在在哪一级」</strong>：一把量尺，描述当前状态，本身不告诉你该选什么实践</td>
+                </tr>
+                <tr>
+                  <td><strong>关键成功因素</strong><br><small class="muted">见 <a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a></small></td>
+                  <td>是<strong>起步前的输入判断</strong>：决定方向与范围</td>
+                  <td>是<strong>贯穿全程的成败条件</strong>：即使方向选对了，条件不具备照样失败</td>
+                </tr>
+                <tr>
+                  <td><strong>工具与技术选型</strong></td>
+                  <td>先确定<strong>要解决哪个问题</strong>，工具是这个答案的下游</td>
+                  <td>只回答<strong>用什么实现</strong>。工具选得再对，问题选错了照样没有效果</td>
+                </tr>
+                <tr>
+                  <td><strong>价值流映射 <span class="en">Value stream mapping</span></strong><br>
+                    <small class="muted">见<a href="../ch04-frameworks/4.6-value-stream-mapping.html">第 4 章 价值流映射（4.6）</a></small></td>
+                  <td>是一组<strong>判断</strong>：想要什么、从哪起步、谁来推</td>
+                  <td>是一种<strong>方法</strong>：把现状测出来，为上面的判断提供事实</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>组织考量决定「选什么」，成熟度模型只描述「现在几级」</strong>。
+            成熟度评估结果是一份现状描述，它不能替你决定该做哪些实践 ——
+            做那个决定的是业务战略与目标。把成熟度得分当成行动清单，是本节最常见的误用。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这四组区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把「组织考量」变成可执行动作，就是在起步前逼出四个书面答案：</p>
+          <ul>
+            <li><strong>把业务战略与目标写成一句能被反驳的话</strong>。
+              「提升效率」不算；「让新资费产品从签批到上线由 6 周缩到 2 周」才算 ——
+              后者能直接推导出该动哪一段流程。商业视角与 IT 视角如何对齐，见
+              <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>。</li>
+            <li><strong>量出端到端交付时间，并拆出等待段</strong>。这是事实，不是意见，
+              也是后面所有争论的共同地基（图 8-4-1 第①步）。</li>
+            <li><strong>点名变革推动者</strong>，不是点名负责人。这两者常常不是同一个人（见 kp-8-4-2）。</li>
+            <li><strong>把起步范围写小</strong>。范围写不小，说明还没想清楚约束在哪。</li>
+          </ul>
+          <p class="mb-0">
+            一条反向检验：<strong>如果去掉「DevOps」这个词，你还说得清楚要改善什么，那方向大概率是对的；
+            说不清楚，就说明目标是「做 DevOps」本身</strong> —— 这正是最贵的那种起步。
+          </p>
+          <div class="src-note">
+            这四个书面答案与上面的反向检验句均为<strong>本站教学整理</strong>。
+            DOFD v3.4 课程大纲把 <em>Organizational Considerations</em> 列为 M8 子项，
+            <em>Organizational considerations</em> 列于官方考纲术语表，但官方未给出实施清单。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>决定哪些 DevOps 原则与实践对组织最有益的，是业务战略与目标</strong>
+              —— 这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认，不是本站推断。
+              这条在 <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">第 1 章 商业视角与 IT 视角（1.3）</a>
+              已经展开过一次，本节只用它的另一面：<strong>它同时也是「起步方向由谁决定」的答案</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：本站归纳，这类题最容易误选的是三个方向 ——
+              <strong>IT 自身的能力与资源</strong>（听起来务实，但那是约束条件，不是决定因素）、
+              <strong>早期采用者的热情</strong>（这是推动力，不是选择依据 —— 见下一条陷阱）、
+              <strong>先进工具的可得性</strong>（工具永远在答案的下游）。
+              三个干扰项有一个共同特征：<strong>全部站在 IT 内部往外看</strong>。</li>
+            <li><strong>排除技巧</strong>：凡是从 IT 内部条件出发的选项，整组划掉 ——
+              <strong>官方样题答案键确认的那一条给出的方向是业务战略与目标</strong>；
+              把它推广成一条通用排除法，是本站教学整理。</li>
+            <li><strong>最需要防的一个陷阱</strong>：把这一条与「谁来担任变革推动者」搞混。
+              <strong>「早期采用者」是「谁来推」的正确答案，却是「由什么来决定选哪些实践」的干扰项。</strong>
+              两条都由官方样题答案键确认，问的却是两件事：<strong>一条问方向，一条问人</strong>。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            干扰项特征归纳与排除技巧为本站教学整理，官方仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">先问业务要什么，再问 IT 能做什么 —— 方向来自业务战略与目标，不来自 IT 手里有什么。</p>
+          <p class="mb-0 muted"><small>配套记一句反问：<strong>「不提 DevOps 这个词，你要改善的是什么？」</strong>
+            答不上来，说明还没做组织考量。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-8-4-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-4-2</div>
+        <h3 class="kp__title">如何起步：从你所在的地方开始<span class="en">Getting Started</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--hot">📌 高频</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            起步 <span class="en">Getting Started</span> 的核心不是一份路线图，而是一个态度：
+            <strong>用现在的组织结构、现在的预算、现在的工具开始</strong>。
+            不等重组，不等新预算，不等平台上线 —— 因为这三件事都不是起步的前置条件。
+          </p>
+          <p>
+            具体化成动作，就是<strong>先量、再动；先小、再大</strong>：
+            第一个动作是<strong>测量</strong>，不是采购，也不是画新的组织架构图。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:20%">步骤</th><th style="width:44%">做什么</th><th>交出什么</th></tr></thead>
+              <tbody>
+                <tr><td><strong>① 量出现状</strong></td>
+                  <td>用<a href="../ch04-frameworks/4.6-value-stream-mapping.html">价值流映射（4.6）</a>测出端到端交付时间，标出每一段的等待</td>
+                  <td>一张标了等待时间的现状图</td></tr>
+                <tr><td><strong>② 找到约束</strong></td>
+                  <td>指认<strong>最大的那一段等待</strong>，它就是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束（2.3）</a>；注意不是「看起来最忙」的那一段</td>
+                  <td>被指认出来的那一个约束点</td></tr>
+                <tr><td><strong>③ 选一个试点</strong></td>
+                  <td>在约束附近挑一个有痛感、边界清晰、能被看见的范围（判据见 kp-8-4-3）</td>
+                  <td>写下来的试点范围与成功判据</td></tr>
+                <tr><td><strong>④ 用数据证明</strong></td>
+                  <td>用起步前量过的同一把尺子做前后对比（<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>）</td>
+                  <td>前后对照的一组同口径数据</td></tr>
+                <tr><td><strong>⑤ 扩散</strong></td>
+                  <td>把做法和数据一起带到下一个团队，而不是同时带到所有团队；扩散链本身见
+                    <a href="8.1-devops-in-enterprise.html">8.1 企业中的 DevOps</a></td>
+                  <td>可复用的做法与一份支持者名单</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="src-note">
+            <em>Getting Started</em> 是 DOFD v3.4 课程大纲 M8 的<strong>官方模块子项</strong>，
+            但<strong>不在</strong>官方考纲术语表 66 条之内，因此本知识点标 <span class="badge badge--plain">📘 官方模块子项</span>。
+            <strong>上面这条「先量 → 找约束 → 试点 → 证明 → 扩散」的五步顺序，以及「从你所在的地方开始」这一表述，均为本站教学整理</strong>，
+            官方未规定起步步骤。表中 <em>Value stream mapping</em>、<em>Constraint</em> 是官方考纲术语表条目。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它要拆的是一个死锁：<strong>「等条件齐了再开始」。</strong>
+          </p>
+          <ul>
+            <li>某公司把 DevOps 立项为「明年的组织变革项目」，先等新事业部挂牌、再等年度预算、
+              再等统一平台招标。<strong>14 个月过去，交付流程一个字都没改。</strong></li>
+            <li>同一时期，另一条产品线上的 6 个人用手边已有的构建服务器，
+              把回归测试从 <strong>3 天</strong>压到 <strong>40 分钟</strong>，没花一分新预算。
+              第二年的平台预算最后是拿着这组数字批下来的。</li>
+            <li>死锁的形状是这样的：<strong>没有数据 → 拿不到预算 → 不敢开始 → 更没有数据。</strong>
+              这个环只有一个出口 —— <strong>用现有条件先做出一个可测量的小结果，拿它去换资源。</strong></li>
+          </ul>
+          <p>
+            另一半原因是<strong>风险</strong>。一次铺开所有团队，等于把一个尚未验证的做法同时押在全组织身上；
+            做法不对时，代价是全组织的信任，还会直接制造
+            <span class="term">变革疲劳 <span class="en">Change fatigue</span></span>
+            —— 人们不再相信下一次变革会有结果。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            <em>Change fatigue</em> 是 DOFD v3.4 官方考纲术语表条目；把它作为「一次铺开」的后果来解释，是本站教学整理。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">从你所在的地方开始</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>先买工具</strong></td>
+                  <td>先量出约束，再决定要不要工具、要哪一种</td>
+                  <td>先定工具，再去找它能解决的问题。<strong>工具永远能装上，但装在非约束上等于零收益</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>先重组</strong></td>
+                  <td>用<strong>现有</strong>结构做出结果，让结构跟着已被验证的做法调整</td>
+                  <td>先改汇报线与部门墙。改完之后，原来那些等待通常原样还在，只是换了个部门名字</td>
+                </tr>
+                <tr>
+                  <td><strong>一次铺开所有团队</strong></td>
+                  <td>一个试点，一组数据，再进下一个团队</td>
+                  <td>全组织同时启动。做法未经验证，失败代价是全组织的信任与变革疲劳</td>
+                </tr>
+                <tr>
+                  <td><strong>「先做个小的」</strong></td>
+                  <td>小<strong>且</strong>疼<strong>且</strong>看得见 —— 三个条件同时成立</td>
+                  <td>只满足「小」。挑一个没人关心的系统，做成了也换不来下一步（见 kp-8-4-3）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「从小处开始」不等于「随便挑个小的开始」</strong>。
+            这两句话在中文里几乎一样，结果却完全相反 ——
+            前者要求试点<strong>疼且可见</strong>，后者只要求<strong>安全</strong>，
+            而安全恰恰意味着做成了也没人在意。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这四组区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p><strong>起步时最先要找的不是预算，是人。</strong>具体找谁，官方有明确结论：</p>
+          <div class="callout callout--exam">
+            <div class="callout__title">⭐ 官方样题答案键确认</div>
+            <p class="mb-0">推动重大变革时，<strong>应当参与规划并担任变革推动者的是早期采用者</strong>
+              <span class="en">early adopters</span> —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              这条在 <a href="../ch05-culture/5.3-behavioral-models.html">第 5 章 行为模型（5.3）</a> 已从行为模型角度展开，
+              本节只用它的起步含义：<strong>「找谁」这个问题在第③步之前就要有答案。</strong></p>
+          </div>
+          <ul>
+            <li><strong>早期采用者不是被任命的，是被识别出来的</strong>：
+              已经在自己团队里写自动化脚本的人、公开抱怨等待的人、不等审批就把流程改顺的人。
+              名字通常不在组织架构图的关键位置上。</li>
+            <li><strong>让他们进规划，不是只做执行</strong>。官方确认的是「参与规划并担任变革推动者」——
+              只让他们干活、不让他们参与决定做什么，等于把最稀缺的资源用在最不稀缺的地方。</li>
+            <li><strong>不要把起步押在最抵触的人身上</strong>。起步阶段的任务是产出证据，不是说服所有人；
+              说服是第⑤步扩散时用数据完成的事。</li>
+            <li><strong>不要等所有人都同意</strong>。等到全体同意再开始，起步时间就变成了组织里最慢那个人的函数。</li>
+          </ul>
+          <p class="mb-0 muted"><small>「早期采用者」这一判断由 <strong>DOFD v3.4 官方样题答案键</strong>确认；
+            上面四条识别与使用方式为本站教学整理。
+            <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+            <em>Early adopters</em> 一词本身不在 DOFD v3.4 官方考纲术语表 66 条内，
+            「创新扩散」的完整采用者曲线（创新者 / 早期采用者 / 早期大多数 / 晚期大多数 / 落后者）同样不在其中，仅作理解背景 ——
+            <strong>但上面那条结论由官方样题答案键确认：词不在术语表，不代表结论不会考。</strong></small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>官方已确认的一条</strong>：<strong>推动重大变革时，应参与规划并担任变革推动者的是早期采用者</strong>
+              —— 由 <strong>DOFD v3.4 官方样题答案键</strong>确认。
+              题干里的钥匙是两个动作：<strong>「参与规划」+「担任推动者」</strong>，指向的是人群，不是职级。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>高层管理者</strong>（他们提供承诺与授权 —— 那是 <a href="8.5-challenges-csf.html">8.5</a> 关键成功因素的答案，不是「谁当推动者」的答案）、
+              <strong>晚期大多数或落后者</strong>（他们是变革要争取的对象，不是发起者）、
+              <strong>全体员工</strong>（听起来最政治正确，恰恰是最典型的错误方向 —— 起步不需要全员）。</li>
+            <li><strong>排除技巧</strong>：先分清题干问的是<strong>「谁来推」</strong>还是<strong>「靠什么成功」</strong>。
+              问「谁来推动、谁进规划」→ 早期采用者；问「关键成功因素是什么」→ 方向转向管理层对文化变革的承诺（见 <a href="8.5-challenges-csf.html">8.5</a>）。
+              两条都是官方确认的事实，混用会稳定丢分。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上仅描述命题角度与干扰项构造方式，<strong>不复制任何官方样题的题干与选项原文</strong>；
+            命题角度分析、干扰项归纳与排除技巧均为本站教学推断，官方未公布命题规律，仅公布考试范围为 Bloom 1–2。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">从你现在站的地方开始：先量再动，先小再大；先找早期采用者，不找全体同意。</p>
+          <p class="mb-0 muted"><small>五步口诀：<strong>量 → 找 → 试 → 证 → 扩</strong>。
+            前两步只出事实，第三步才第一次动手 —— 顺序反了，后面每一步都失去依据。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-8-4-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-8-4-3</div>
+        <h3 class="kp__title">第一个试点怎么挑<span class="en">Choosing the First Pilot</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            试点是起步路径的第③步：<strong>一个被刻意选出来、用来产生证据的小范围</strong>。
+            它的产出不是技术成果，而是<strong>一组能说服别人的数据，和一份愿意跟着做的人的名单</strong>。
+          </p>
+          <p>合格的试点同时满足四条判据：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">判据</th><th style="width:40%">含义</th><th>检验问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>痛感真实</strong></td><td>这里的问题现在就在疼，且疼的人自己承认</td><td>不改它，下个月还会出同样的事吗？</td></tr>
+                <tr><td><strong>边界清晰</strong></td><td>范围说得出口，依赖数得过来，改动不会外溢到不受控的地方</td><td>能一句话说清楚「改的是哪一段」吗？</td></tr>
+                <tr><td><strong>有支持者</strong></td><td>范围内有早期采用者，且有一个能拍板的人不反对</td><td>点得出具体名字吗？</td></tr>
+                <tr><td><strong>成功可被看见</strong></td><td>改善能用一个别人也认的指标表达出来，且那个指标有人在看</td><td>做成了，谁会主动来问？</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>这四条判据与检验问题为本站教学整理</strong>，
+            DOFD v3.4 官方文件未给出试点选择标准。<em>Getting Started</em> 是 M8 官方模块子项，但不含具体判据。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>试点选错有两种典型死法，方向相反，结局一样：</p>
+          <ul>
+            <li><strong>死法一：挑了最难的那个。</strong>
+              某公司把 22 年历史的核心结算系统选为第一个试点 —— 理由是「这里最痛」。
+              环境无法复制、没有自动化测试、只有两个人看得懂那套批处理。
+              <strong>做了 7 个月，流水线仍然跑不通。</strong>
+              结论被写成「DevOps 在这种老系统上行不通」，而真正被验证的只是<strong>「7 个月不够重写一套遗留系统」</strong>。</li>
+            <li><strong>死法二：挑了没人关心的那个。</strong>
+              另一家挑了内部用的报表工具，部署频率从每月 1 次提到每天 5 次，全部指标漂亮。
+              但这个系统坏了也没人报障，改快了也没人受益。<strong>去要下一阶段资源时，没有一个业务方能替它说话。</strong></li>
+          </ul>
+          <p>
+            两种死法暴露同一个机制：<strong>试点是用来换取信任的，而信任只有旁观者看得见的时候才会产生。</strong>
+            太难 → 看不到结果；太边缘 → 看到了也不在乎。四条判据就是同时挡住这两侧的护栏。
+          </p>
+          <p class="mb-0 muted"><small>以上两个案例均为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <!-- ============ 图 8-4-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 780 566" role="img" aria-label="试点选择的二维判据：横轴为可见度，纵轴为痛感，四个象限分别标出该选与不该选">
+              <defs>
+                <marker id="ah-84-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="s-muted"/>
+                </marker>
+              </defs>
+
+              <!-- 象限底 -->
+              <rect x="124" y="56"  width="278" height="196" rx="10" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <rect x="418" y="56"  width="278" height="196" rx="10" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <rect x="124" y="268" width="278" height="196" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+              <rect x="418" y="268" width="278" height="196" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+
+              <!-- 坐标轴 -->
+              <line x1="110" y1="480" x2="110" y2="40"  class="s-stroke" stroke-width="2" marker-end="url(#ah-84-3)"/>
+              <line x1="100" y1="480" x2="716" y2="480" class="s-stroke" stroke-width="2" marker-end="url(#ah-84-3)"/>
+
+              <!-- 轴标签 -->
+              <text x="46" y="222" class="s-ink" font-size="15" font-weight="700">痛</text>
+              <text x="46" y="244" class="s-ink" font-size="15" font-weight="700">感</text>
+              <text x="78" y="70"  class="s-muted" font-size="13">高</text>
+              <text x="78" y="452" class="s-muted" font-size="13">低</text>
+              <text x="140" y="504" class="s-muted" font-size="13">低</text>
+              <text x="676" y="504" class="s-muted" font-size="13">高</text>
+              <text x="410" y="506" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">可见度 —— 做成了，组织里其他人看不看得见</text>
+
+              <!-- 右上：首选 -->
+              <g text-anchor="middle">
+                <text x="557" y="98"  class="f-3"    font-size="17" font-weight="700">✓ 首选试点</text>
+                <text x="557" y="130" class="s-ink"  font-size="14">痛感真实　·　成功看得见</text>
+                <text x="557" y="158" class="s-muted" font-size="13">再确认边界清晰、点得出支持者</text>
+                <text x="557" y="196" class="f-5"    font-size="13.5" font-weight="700">⚠ 但不要选全组织最难的那一个</text>
+                <text x="557" y="222" class="s-muted" font-size="12.5">痛感高 ≠ 难度高，把最难的留到第二批</text>
+              </g>
+
+              <!-- 左上：可做但先补尺子 -->
+              <g text-anchor="middle">
+                <text x="263" y="98"  class="f-1"    font-size="16" font-weight="700">△ 可以做，先补一把尺子</text>
+                <text x="263" y="130" class="s-ink"  font-size="14">是真疼，但赢了没人知道</text>
+                <text x="263" y="158" class="s-muted" font-size="13">先约定一个业务方也认的指标</text>
+                <text x="263" y="184" class="s-muted" font-size="13">否则第⑤步扩散时拿不到支持</text>
+              </g>
+
+              <!-- 左下：不要选 -->
+              <g text-anchor="middle">
+                <text x="263" y="322" class="f-5"    font-size="16" font-weight="700">✕ 不要选</text>
+                <text x="263" y="354" class="s-ink"  font-size="14">没人疼，也没人看</text>
+                <text x="263" y="382" class="s-muted" font-size="13">做成了也换不来下一步的资源</text>
+                <text x="263" y="408" class="s-muted" font-size="13">「挑个安全的先试试」多半落在这里</text>
+              </g>
+
+              <!-- 右下：容易做成表演 -->
+              <g text-anchor="middle">
+                <text x="557" y="322" class="f-5"    font-size="16" font-weight="700">✕ 容易做成表演</text>
+                <text x="557" y="354" class="s-ink"  font-size="14">看得见，但没人真的需要</text>
+                <text x="557" y="382" class="s-muted" font-size="13">本来就不疼，改善空间也小</text>
+                <text x="557" y="408" class="s-muted" font-size="13">数据好看，说服不了任何人</text>
+              </g>
+
+              <!-- 底注 -->
+              <text x="410" y="540" class="s-muted" font-size="13" text-anchor="middle">四条判据：痛感真实 · 边界清晰 · 有支持者 · 成功可被看见 —— 四个都满足才是试点</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 8-4-2　试点选择的两条轴。</strong>
+            要看懂的是：<strong>只有右上角是首选，而右上角里还挖掉了一块 —— 全组织最难的那个系统</strong>。
+            痛感高常常和技术难度高同时出现，但两者不是一回事：难度高会让试点跑不出结果，
+            而试点没有结果就没有证据，整条起步路径在第④步断掉。
+            左上角不是不能做，只是必须先补一个别人也认的指标；下面两个象限的共同问题是<strong>没人真的疼</strong>。
+            <br><small class="muted">本二维判据图与四个象限的处置建议均为<strong>本站教学整理</strong>，官方未给出试点选择模型。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:22%">对比对象</th><th style="width:39%">试点</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>概念验证 <span class="en">PoC</span></strong><br>
+                    <small class="muted"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+                  <td>目的是<strong>产生可扩散的证据</strong>：数据 + 支持者。技术跑通但没人信，试点仍然失败</td>
+                  <td>目的是<strong>验证技术可行性</strong>：能不能跑通。跑通就算成功，不关心有没有人在意</td>
+                </tr>
+                <tr>
+                  <td><strong>全面铺开</strong></td>
+                  <td>一个范围，可撤回，失败代价局限在范围内</td>
+                  <td>全组织同时启动，失败代价是全组织的信任与变革疲劳</td>
+                </tr>
+                <tr>
+                  <td><strong>「最难的系统」</strong></td>
+                  <td>挑<strong>疼且做得完</strong>的：要在一个能拿出数据的周期内出结果</td>
+                  <td>挑<strong>疼但做不完</strong>的：结果不是「DevOps 无效」的证据，而是根本没有证据</td>
+                </tr>
+                <tr>
+                  <td><strong>成熟度评估</strong><br>
+                    <small class="muted">见<a href="../ch05-culture/5.4-maturity-models.html">第 5 章 组织成熟度模型（5.4）</a></small></td>
+                  <td>产出<strong>一组前后对照的真实数据</strong></td>
+                  <td>产出<strong>一个当前所处等级的描述</strong>。它不能替代试点，因为评分不会说服怀疑者</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>「痛感高」和「难度高」被当成了同一件事</strong>。
+            正因为最难的系统往往也最痛，「先啃硬骨头」听起来才特别正当。
+            但试点的唯一任务是<strong>在有限时间内产出证据</strong> ——
+            一个啃不动的系统提供的不是负面证据，而是<strong>零证据</strong>，这是最差的一种结果。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这些区分；<em>PoC</em> 不在 DOFD v3.4 官方考纲术语表 66 条内。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把图 8-4-2 的两条轴变成挑选动作，一共四步：</p>
+          <ul>
+            <li><strong>先落在约束附近</strong>。候选范围必须与第②步指认出来的约束有关，
+              否则改得再漂亮也不会缩短端到端交付时间 —— 这是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论（2.3）</a>的直接推论。</li>
+            <li><strong>用四条判据逐个打分</strong>，四条都过才进候选。
+              最常被跳过的是「成功可被看见」—— 它不影响技术成败，只影响下一轮资源。</li>
+            <li><strong>做一次难度体检</strong>：环境能不能复制、有没有可用的自动化测试、
+              懂这套系统的人是不是只剩一两个。三项里有两项为否，换一个候选。</li>
+            <li><strong>先量基线再动手</strong>。基线只能在改动之前量，事后补不出来；
+              没有基线，第④步的「证明」就只剩下叙述。</li>
+          </ul>
+          <p class="mb-0">
+            还有一条时间约束：<strong>试点要在一个资源周期内出结果</strong>。
+            拖过一个预算或考核周期，即使做成了，当初支持它的人可能已经不在那个位置上。
+          </p>
+          <div class="src-note">
+            这四步挑选动作、难度体检三项与「一个资源周期内出结果」的时间约束均为<strong>本站教学整理</strong>，
+            DOFD v3.4 官方文件未给出试点选择方法。<em>Constraint</em>、<em>Value stream mapping</em> 是官方考纲术语表条目。
+          </div>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>先说清楚边界</strong>：<strong>这四条试点判据本身不是考点</strong>，官方未给出试点选择标准。
+              本节真正的两个官方考点都在前两个知识点里，且都由 <strong>DOFD v3.4 官方样题答案键</strong>确认 ——
+              <strong>方向由业务战略与目标决定</strong>，<strong>变革推动者是早期采用者</strong>。</li>
+            <li><strong>常见的场景题写法</strong>：给一段「某组织决定推行 DevOps，接下来最应该做什么」的描述。
+              正确方向指向<strong>与业务战略与目标对齐、先量出现状</strong>；
+              干扰项则是<strong>先采购工具链平台</strong>、<strong>先成立独立的 DevOps 部门</strong>、
+              <strong>先给全体员工做培训</strong>、<strong>先在所有团队同时推行</strong>。</li>
+            <li><strong>干扰项的共同特征</strong>：它们都是<strong>规模大、动静大、听起来很有决心</strong>的动作。
+              本站的归纳是：<strong>小批量、先度量、再扩散</strong>这一方向与三步工作法一致，
+              因此<strong>凡是「一次性、全组织、先投入」的选项，优先怀疑</strong>（本站教学推断）。</li>
+            <li><strong>排除技巧</strong>：读到「下一步该做什么」时，先问选项<strong>产出的是事实还是动静</strong>。
+              产出事实（度量、对齐目标、找出约束）的通常是对的；产出动静（采购、改组、全员）的通常是干扰项。</li>
+          </ul>
+          <p class="mb-0 muted"><small>本面的命题角度分析、干扰项共同特征与排除技巧均为<strong>本站教学推断</strong>，
+            官方未公布命题规律；以上不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">疼、看得见、有人愿意干、边界画得出 —— 四个都满足才是试点，而第一个试点永远不选最难的系统。</p>
+          <p class="mb-0 muted"><small>反面口诀同样好用：<strong>不疼的不选，没人看的不选，没人撑的不选，划不出边界的不选。</strong>
+            四条里少一条，试点就变成了演示。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>官方确认一</strong>：决定哪些 DevOps 原则与实践对组织最有益的，是<strong>业务战略与目标</strong>
+          （DOFD v3.4 官方样题答案键确认，另见
+          <a href="../ch01-exploring-devops/1.3-business-it-perspective.html">1.3</a>）</li>
+        <li><strong>常见干扰方向</strong>：IT 自身的能力与资源 / 早期采用者的热情 / 先进工具的可得性 ——
+          三者都站在 IT 内部往外看（<strong>本站教学整理</strong>，官方未公布干扰项构造）</li>
+        <li><strong>官方确认二</strong>：推动重大变革时，应参与规划并担任<strong>变革推动者的是早期采用者</strong>
+          （DOFD v3.4 官方样题答案键确认，另见 <a href="../ch05-culture/5.3-behavioral-models.html">5.3</a>）</li>
+        <li><strong>两条别混</strong>：一条问<strong>方向</strong>（业务战略与目标），一条问<strong>人</strong>（早期采用者）。
+          「早期采用者」是第二条的答案，却是第一条的干扰项</li>
+        <li><strong>组织考量 <span class="en">Organizational considerations</span></strong> 是官方考纲术语表条目：
+          起步前先想清楚<strong>要什么、现状如何、谁来推、先动多大范围</strong></li>
+        <li><strong>起步五步</strong>：量 → 找约束 → 试点 → 证明 → 扩散，<strong>前两步只出事实，第三步才动手</strong>；
+          <strong>从你所在的地方开始</strong> —— 不等重组、不等预算、不等新工具，死锁的唯一出口是先做出一个可测量的小结果（本站教学整理）</li>
+        <li><strong>试点四判据</strong>：痛感真实 · 边界清晰 · 有支持者 · 成功可被看见；<strong>第一个试点不选最难的系统</strong>。
+          四种失败起步：先买工具 / 先重组 / 一次铺开所有团队 / 选没人关心的系统（本站教学整理）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<em>Organizational considerations</em>、<em>Value stream mapping</em>、<em>Constraint</em>、<em>Change fatigue</em>
+      均逐字列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List，2022-05）；
+      该术语表只列词条、不附定义，因此本页给出的中文释义均为本站措辞。
+      <em>Organizational Considerations</em> 与 <em>Getting Started</em> 是 DOFD v3.4 课程大纲 M8
+      <em>Sharing, Shadowing and Evolving</em> 的<strong>官方模块子项</strong>，其中 <em>Getting Started</em> 不在术语表 66 条内。
+      <strong>两条判断由 DOFD v3.4 官方样题答案键确认</strong>：
+      「决定哪些 DevOps 原则与实践对组织最有益的是<strong>业务战略与目标</strong>」、
+      「推动重大变革时应参与规划并担任变革推动者的是<strong>早期采用者</strong>」。
+      本站只陈述结论，<strong>不复制官方样题的题干与选项原文</strong>。
+      <strong>教学整理部分</strong>：「组织考量四件事」拆分、起步五步路径与各步产出物（图 8-4-1）、
+      「四种常见起步方式」清单、「从你所在的地方开始」这一表述、试点四条判据与二维判据图（图 8-4-2）、
+      难度体检与时间约束、各面的干扰项分析与排除技巧 —— 官方均未以此形式给出，已分别在对应位置就地标注。
+      文中所有带数字的案例为本站构造的教学示例，非真实调研数据。
+      创新扩散的完整采用者曲线与 PoC 一词不在官方 66 条术语表内，属延伸背景。
+      关键成功因素与风险不在本节展开，见 <a href="8.5-challenges-csf.html">8.5 挑战、风险与关键成功因素</a>；
+      成熟度评估见<a href="../ch05-culture/5.4-maturity-models.html">第 5 章 组织成熟度模型（5.4）</a>；
+      度量口径见<a href="../ch07-metrics/index.html">第 7 章 度量、指标与报告</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

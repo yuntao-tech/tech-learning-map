@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.7 本章总结与练习 · DevOps Foundation 学习站</title>
+<meta name="description" content="第 6 章自动化与工具链架构的总结：以部署流水线为主轴的知识地图、一页纸复习表、九对易混淆概念、官方样题答案键确认的本章结论、本章官方术语速查与考试权重。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch06", sec:"summary"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 6 章 · 自动化与工具链架构</div>
+      <h1 class="page-head__title">6.7 本章总结与练习</h1>
+      <div class="page-head__en">Chapter Summary</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📖 本章总结</span>
+        <span class="badge badge--warn">⚠️ 易混淆汇总</span>
+      </div>
+      <p class="page-head__lede">
+        本章六节看似讲了六样东西，其实只讲了一条链子：<strong>一次代码提交如何被自动送到生产，以及这条链子跑在什么之上、由什么工具拼成</strong>。
+        这一页把六节挂回这条链，把最容易混的九对并排放好，
+        再单独拎出<strong>本章那条有官方样题答案键背书的结论</strong>。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>六节在部署流水线这条主轴上各自站在哪个位置，哪一节是 v3.6 新增</li>
+        <li>哪一条结论有官方答案键背书，哪些只是本站的教学归类 —— 两者必须分清</li>
+        <li>考前十分钟应该复查哪九对概念，以及本章在 40 题里占多少</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 6-7-1　本章知识地图 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 890" role="img" aria-label="第 6 章六节以部署流水线为主轴的知识地图：自动化的价值与边界在上游，部署流水线是主轴，工具链、基础设施即代码、云容器微服务是支撑，VSM 平台与生成式 AI 是 v3.6 新增的覆盖层">
+          <defs>
+            <marker id="ah-67-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="ah-67-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="ah-67-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+          </defs>
+
+          <!-- 标题与图例 -->
+          <text x="20" y="28" class="s-ink" font-size="17" font-weight="700">第 6 章 · 以部署流水线为主轴串起 6.1–6.6</text>
+          <rect x="20" y="42" width="18" height="13" class="s-stroke" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+          <text x="44" y="54" class="s-muted" font-size="12.5">v3.4 既有主题</text>
+          <rect x="152" y="42" width="18" height="13" class="s-stroke" stroke-width="1.5" stroke-dasharray="4 3" fill="var(--dia-fill-2)"/>
+          <text x="176" y="54" class="s-muted" font-size="12.5">虚线框 + v3.6 角标 = v3.6 新增</text>
+          <text x="404" y="54" class="s-muted" font-size="12.5">节号带虚线下划 = 可点击跳转该小节</text>
+
+          <!-- ============ 上游：6.1 为什么自动化 ============ -->
+          <a href="6.1-why-automate.html">
+            <rect x="16" y="72" width="250" height="92" rx="10" class="s-2" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="28" y="94" class="f-2" font-size="12.5" font-weight="700">6.1</text>
+            <line x1="28" y1="99" x2="52" y2="99" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="141" y="124" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">自动化的价值与边界</text>
+            <text x="141" y="148" class="s-muted" font-size="12" text-anchor="middle">先判断该不该自动化</text>
+          </a>
+          <text x="286" y="102" class="s-ink" font-size="14" font-weight="650">本章的因果起点：自动化是让工作流动得更快、更可重复的手段，不是目的。</text>
+          <text x="286" y="126" class="s-muted" font-size="12.5">自动化一个本身就有问题的流程，只会更快地产生更多返工 —— 先简化，再自动化。</text>
+          <text x="286" y="150" class="s-muted" font-size="12.5">先想清楚哪些该自动化、哪些不该，下面这条流水线才有意义。</text>
+          <line x1="141" y1="166" x2="141" y2="188" class="s-2" stroke-width="2.5" marker-end="url(#ah-67-2)"/>
+
+          <!-- ============ 主轴：6.2 部署流水线 ============ -->
+          <rect x="16" y="196" width="948" height="166" rx="14" class="s-1" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+          <a href="6.2-deployment-pipeline.html">
+            <rect x="28" y="206" width="290" height="32" rx="7" class="s-1" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="40" y="227" class="f-1" font-size="13.5" font-weight="700">6.2</text>
+            <line x1="40" y1="232" x2="64" y2="232" class="s-1" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="76" y="227" class="s-ink" font-size="14" font-weight="650">部署流水线 —— 本章主轴</text>
+          </a>
+
+          <rect x="32" y="252" width="164" height="76" rx="9" class="s-1" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="114" y="282" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">代码提交</text>
+          <text x="114" y="306" class="s-muted" font-size="12" text-anchor="middle">触发流水线</text>
+          <line x1="198" y1="290" x2="214" y2="290" class="s-1" stroke-width="2.2" marker-end="url(#ah-67-1)"/>
+
+          <rect x="216" y="252" width="164" height="76" rx="9" class="s-1" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="298" y="282" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">构建与集成</text>
+          <text x="298" y="306" class="s-muted" font-size="12" text-anchor="middle">主线随时可构建</text>
+          <line x1="382" y1="290" x2="398" y2="290" class="s-1" stroke-width="2.2" marker-end="url(#ah-67-1)"/>
+
+          <rect x="400" y="252" width="164" height="76" rx="9" class="s-1" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="482" y="282" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">自动化测试</text>
+          <text x="482" y="306" class="s-muted" font-size="12" text-anchor="middle">每次变更都判一遍</text>
+          <line x1="566" y1="290" x2="582" y2="290" class="s-1" stroke-width="2.2" marker-end="url(#ah-67-1)"/>
+
+          <rect x="584" y="252" width="164" height="76" rx="9" class="s-1" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="666" y="282" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">制品与环境准备</text>
+          <text x="666" y="306" class="s-muted" font-size="12" text-anchor="middle">环境由 6.3 产出</text>
+          <line x1="750" y1="290" x2="766" y2="290" class="s-1" stroke-width="2.2" marker-end="url(#ah-67-1)"/>
+
+          <rect x="768" y="252" width="164" height="76" rx="9" class="s-1" stroke-width="1.6" fill="var(--dia-fill-2)"/>
+          <text x="850" y="282" class="s-ink" font-size="14" font-weight="650" text-anchor="middle">部署到生产</text>
+          <text x="850" y="306" class="s-muted" font-size="12" text-anchor="middle">人点头 or 自动放行</text>
+
+          <text x="32" y="350" class="s-muted" font-size="12.5">五个阶段各自的实践细节在第 3 章；本章问的是「这条链条由什么工具拼成、跑在什么之上」。</text>
+          <line x1="490" y1="364" x2="490" y2="386" class="s-1" stroke-width="2.5" marker-end="url(#ah-67-1)"/>
+
+          <!-- ============ 支撑：6.5 工具链 ============ -->
+          <rect x="16" y="394" width="948" height="150" rx="14" class="s-3" stroke-width="2" fill="none"/>
+          <a href="6.5-toolchain-architecture.html">
+            <rect x="28" y="404" width="300" height="32" rx="7" class="s-3" stroke-width="1.5" fill="var(--dia-fill-2)"/>
+            <text x="40" y="425" class="f-3" font-size="13.5" font-weight="700">6.5</text>
+            <line x1="40" y1="430" x2="64" y2="430" class="s-3" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="76" y="425" class="s-ink" font-size="14" font-weight="650">DevOps 工具链架构</text>
+          </a>
+          <text x="348" y="425" class="s-muted" font-size="12.5">按八类环节把工具串成一条链，而不是挑一个「最好的工具」。</text>
+
+          <rect x="32" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="83" y="473" class="s-ink" font-size="13" text-anchor="middle">① 计划</text>
+          <rect x="144" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="195" y="473" class="s-ink" font-size="13" text-anchor="middle">② 编码</text>
+          <rect x="256" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="307" y="473" class="s-ink" font-size="13" text-anchor="middle">③ 构建</text>
+          <rect x="368" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="419" y="473" class="s-ink" font-size="13" text-anchor="middle">④ 测试</text>
+          <rect x="480" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="531" y="473" class="s-ink" font-size="13" text-anchor="middle">⑤ 发布</text>
+          <rect x="592" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="643" y="473" class="s-ink" font-size="13" text-anchor="middle">⑥ 部署</text>
+          <rect x="704" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="755" y="473" class="s-ink" font-size="13" text-anchor="middle">⑦ 运维</text>
+          <rect x="816" y="446" width="102" height="44" rx="8" class="s-3" stroke-width="1.4" fill="var(--dia-fill-2)"/>
+          <text x="867" y="473" class="s-ink" font-size="13" text-anchor="middle">⑧ 监控</text>
+
+          <text x="32" y="510" class="s-muted" font-size="12.5">八类环节的划分为本站教学整理，官方未公布类别清单；与 6.5 正文、对比表、速查清单使用的是同一套划分。</text>
+          <text x="32" y="532" class="f-4" font-size="12.5" font-weight="650">注：服务台事件管理系统不属于典型 DevOps 工具链要素 —— 由 DOFD v3.4 官方样题答案键确认。</text>
+          <line x1="490" y1="546" x2="490" y2="566" class="s-3" stroke-width="2.5" marker-end="url(#ah-67-3)"/>
+
+          <!-- ============ 底座：6.3 与 6.4 ============ -->
+          <a href="6.3-iac.html">
+            <rect x="16" y="574" width="464" height="104" rx="12" class="s-4" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="32" y="602" class="f-4" font-size="13" font-weight="700">6.3</text>
+            <line x1="32" y1="607" x2="56" y2="607" class="s-4" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="68" y="602" class="s-ink" font-size="15" font-weight="650">基础设施即代码</text>
+            <text x="32" y="630" class="s-muted" font-size="12.5">环境、网络与配置写成代码，与应用一起进版本库、进流水线。</text>
+            <text x="32" y="654" class="s-muted" font-size="12.5">针对的痛点是环境漂移：手工搭的环境，流水线再快也不可重复。</text>
+          </a>
+          <a href="6.4-cloud-containers-microservices.html">
+            <rect x="500" y="574" width="464" height="104" rx="12" class="s-5" stroke-width="1.8" fill="var(--dia-fill-2)"/>
+            <text x="516" y="602" class="f-5" font-size="13" font-weight="700">6.4</text>
+            <line x1="516" y1="607" x2="540" y2="607" class="s-5" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="552" y="602" class="s-ink" font-size="15" font-weight="650">云、容器与微服务</text>
+            <text x="516" y="630" class="s-muted" font-size="12.5">云给弹性资源，容器给一致的运行单元，微服务给独立部署的边界。</text>
+            <text x="516" y="654" class="s-muted" font-size="12.5">三者共同决定「部署一次的代价」，也就决定流水线能跑多频繁。</text>
+          </a>
+          <line x1="490" y1="680" x2="490" y2="702" class="s-1" stroke-width="2.5" marker-end="url(#ah-67-1)"/>
+
+          <!-- ============ 覆盖层：6.6 v3.6 新增 ============ -->
+          <a href="6.6-vsm-platform-genai.html">
+            <rect x="16" y="710" width="948" height="96" rx="14" class="s-2" stroke-width="2" stroke-dasharray="7 5" fill="var(--dia-fill-2)"/>
+            <text x="32" y="738" class="f-2" font-size="13" font-weight="700">6.6</text>
+            <line x1="32" y1="743" x2="56" y2="743" class="s-2" stroke-width="1.4" stroke-dasharray="3 2"/>
+            <text x="68" y="738" class="s-ink" font-size="15" font-weight="650">VSM 平台与生成式 AI 用例</text>
+            <text x="948" y="738" class="f-5" font-size="12" font-weight="700" text-anchor="end">v3.6 新增</text>
+            <text x="32" y="766" class="s-muted" font-size="12.5">VSM 平台把上面这条链各段的数据接起来，让端到端的流动第一次可以被连续度量。</text>
+            <text x="32" y="790" class="s-muted" font-size="12.5">生成式 AI 用例落在链上的具体环节（补测试、写文档、辅助排查），不替流水线做放行决定。</text>
+          </a>
+
+          <!-- ============ 页脚说明 ============ -->
+          <text x="20" y="830" class="s-muted" font-size="12.5">「以部署流水线为主轴把 6.1–6.6 串起来」是本站教学整理，官方未给出这张结构图。</text>
+          <text x="20" y="852" class="s-muted" font-size="12.5">v3.4 M6 的官方子项是：CI/CD · Cloud, Containers, and Microservices · AI and Machine Learning · Automation · DevOps Toolchains。</text>
+          <text x="20" y="874" class="s-muted" font-size="12.5">Infrastructure as Code、VSM Platform、Generative AI 均不在 66 条官方术语表内，见本页「主题词 / 准确的说法」区块。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-7-1　本章六节的归位图。</strong>
+        这张图要看懂的是<strong>「本章为什么这么排」</strong>：6.1 在链条上游回答「该不该自动化」，
+        6.2 是那条链本身，6.5 是拼出这条链的工具，6.3 与 6.4 是这条链跑在其上的基础设施与运行底座，
+        6.6 是横跨全链的度量与增强层。任何一节记不清时，先问它站在链条的哪一段 ——
+        位置确定之后，它解决的痛点和它的易混对象也就跟着确定。
+        虚线框的 6.6 是 v3.6 学习目标新增；本章有多节的主题词不在 66 条官方术语表内
+        （6.1 <em>Automation</em>、6.3 <em>Infrastructure as Code</em>、6.4 <em>Cloud</em>、6.6 全部），
+        逐条出处见下方「主题词 / 准确的说法」表。
+        <br>图里还有一条容易被跳过的信息：<strong>箭头是从上往下的</strong>。
+        先有「该不该自动化」的判断，才轮到那条链；链定下来，才谈得上用什么工具拼、跑在什么底座上；
+        底座稳定之后，端到端的数据才接得起来。顺序倒过来做 —— 先买工具、再补流程、最后才问该不该自动化 ——
+        正是 6.1 与 6.5 反复指出的那类失败路径。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 一页纸复习表 ============ -->
+    <div class="divider-label">一页纸复习表</div>
+
+    <p>每节一行。<strong>「最易错点」一列按考前复查的优先级排</strong>，与后面的易混淆汇总表配合使用。</p>
+
+    <p>
+      本页往下有四张表，用途不同，别混着看：
+      <strong>这张复习表</strong>回答「每节留下什么」；<strong>易混淆汇总表</strong>回答「相邻的两个概念怎么切开」；
+      <strong>术语速查表</strong>回答「哪些词逐字在官方 66 条里」；
+      <strong>「主题词 / 准确的说法」表</strong>回答「哪些看起来像考点的词其实不是」。
+      时间只够看一张时，看最后那张 —— 它纠正的是<strong>方向性错误</strong>，其余三张纠正的是精度。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:15%">小节</th><th style="width:32%">核心结论</th><th style="width:25%">记忆锚点</th><th>最易错点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong><a href="6.1-why-automate.html">6.1 自动化的价值与边界</a></strong><br><small class="muted">Automation</small></td>
+            <td>自动化把重复、易错、频繁的工作交给机器，目的是<strong>让流动更快且可重复</strong>；判断与例外处理仍留给人。
+              它<strong>不改变流程本身的好坏，只放大它</strong> —— 所以顺序是先简化再自动化，且投入优先落在约束环节上</td>
+            <td>先简化，再自动化；自动化先落在约束上</td>
+            <td>把「自动化程度」本身当成目标；把一个混乱流程原样自动化 —— 那只会更快地产生返工</td>
+          </tr>
+          <tr>
+            <td><strong><a href="6.2-deployment-pipeline.html">6.2 部署流水线</a></strong><br><small class="muted">Deployment pipeline</small></td>
+            <td>把一次提交从构建、测试到部署的全过程<strong>固化成自动执行的路径</strong>，每次变更走同一条路。
+              「同一条路」是它全部价值的来源：路固定了，失败才可复现，回退才有确定的落点</td>
+            <td>流水线是那条路，持续交付与持续部署是在这条路上的两种走法</td>
+            <td>用「有没有部署流水线」区分持续交付与持续部署 —— 两者都用流水线，区别在最后一步是不是人点头。
+              另一处：把流水线当成工具链的全部，它只覆盖「提交 → 部署」那一段</td>
+          </tr>
+          <tr>
+            <td><strong><a href="6.3-iac.html">6.3 基础设施即代码</a></strong><br><small class="muted">Infrastructure as Code / IaC</small></td>
+            <td>环境、网络、配置以<strong>代码形式定义并纳入版本控制</strong>，由流水线重复地创建出一致的环境。
+              于是环境成为<strong>可评审、可回滚、可重建的交付物</strong>，与应用代码走同一条变更路径</td>
+            <td>环境不是搭出来的，是从代码里长出来的</td>
+            <td>把「写了部署脚本」等同于 IaC —— 判据是<strong>能否重复地把环境收敛到同一状态</strong>，不是有没有脚本</td>
+          </tr>
+          <tr>
+            <td><strong><a href="6.4-cloud-containers-microservices.html">6.4 云、容器与微服务</a></strong><br><small class="muted">Cloud, Containers, and Microservices</small></td>
+            <td>云提供按需资源，容器提供<strong>一致的运行单元</strong>，微服务提供<strong>可独立部署的边界</strong>；三者共同压低单次部署的代价。
+              单次代价降下来，高频部署才成立 —— 这是它们与流水线之间的因果关系</td>
+            <td>降低部署代价的三件套：资源可弹、运行一致、边界可独立发布</td>
+            <td>把容器说成「更轻的虚拟机」；把「服务拆得多」直接当成微服务，忽略共享数据库导致的仍需同步发布</td>
+          </tr>
+          <tr>
+            <td><strong><a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a></strong><br><small class="muted">DevOps toolchain</small></td>
+            <td>按交付的<strong>八类环节</strong>选工具并让它们互相集成，形成端到端可追溯的链条；不是某一个产品。
+              评价标准是<strong>接口与交接物</strong>：上游给什么、下游要什么，接不上就等于没有链</td>
+            <td>工具链是一条链，评价它的是接口与端到端可见性，不是单点功能</td>
+            <td><strong>把服务台事件管理系统当成典型工具链要素</strong>（官方答案键已确认它不属于）；把「买齐工具」当成完成 DevOps</td>
+          </tr>
+          <tr>
+            <td><strong><a href="6.6-vsm-platform-genai.html">6.6 VSM 平台与生成式 AI 用例</a></strong> <small class="muted">· v3.6 新增</small><br><small class="muted">VSM Platforms / Generative AI Use Cases</small></td>
+            <td>VSM 平台把工具链各段数据接起来做<strong>持续</strong>的端到端度量；生成式 AI 用于辅助具体环节的产出。
+              两者都建立在工具链已经接通的前提上 —— 链是断的，平台就没有数据可接，AI 也只能改善单点</td>
+            <td>VSM 平台看整条链，生成式 AI 帮某一格干活</td>
+            <td>把 VSM 平台与价值流映射混为一谈 —— 前者是持续采集数据的软件，后者是一次性的分析活动</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语名称</strong>（<em>Deployment pipeline</em> / <em>Containers</em> / <em>Microservices</em> / <em>DevOps toolchain</em> 等）
+      列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）；
+      <em>Automation</em>、<em>Cloud, Containers, and Microservices</em>、<em>AI and Machine Learning</em> 是 DOFD v3.4 课程大纲 M6 的官方模块子项；
+      <em>VSM Platforms</em> 与 <em>Generative AI Use Cases</em> 出自 PeopleCert 现行 DevOps Foundation 产品页公布的<strong>官方学习目标</strong>（v3.6 新增），
+      标「📘 官方模块子项 + 🆕 v3.6 新增」；
+      <em>infrastructure-as-code</em> 逐字出现在 PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句中，标「📘 官方模块子项」。
+      <strong>「记忆锚点」与「最易错点」两列是本站教学整理</strong>，官方未以此形式给出复习表；
+      6.5 一行的核心结论另有 DOFD v3.4 官方样题答案键背书，见本页「官方样题答案键确认的本章考点」。
+    </div>
+
+    <!-- ============ 易混淆汇总 ============ -->
+    <div class="divider-label">易混淆汇总 · 九对</div>
+
+    <p>
+      这九对是本站判断最容易被相邻选项拖走的地方。看表的方法：<strong>先记「分界线」那一列，再记「诱导你选错的地方」</strong>；
+      能一句话说出分界线，就不会被相邻选项拖走。
+    </p>
+
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr><th style="width:21%">易混的一对</th><th style="width:39%">分界线（一句话）</th><th>诱导你选错的地方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>声明式 vs 命令式 IaC</strong><br><small class="muted">6.3 · <span class="badge badge--note">📝 教学整理</span></small></td>
+            <td>声明式写<strong>期望的最终状态</strong>，由工具算出差异并把环境收敛过去；命令式写<strong>达到该状态要执行的步骤序列</strong></td>
+            <td>把「写成了脚本」直接当成 IaC。判据是<strong>能否重复地把环境收敛到同一状态</strong>，不是有没有脚本。
+              再往深一层：同一份声明式定义反复执行，结果应当相同 —— <strong>可重复执行而结果不变</strong>，才是它与「跑一遍安装脚本」的真正分界</td>
+          </tr>
+          <tr>
+            <td><strong>容器 vs 虚拟机</strong><br><small class="muted">6.4</small></td>
+            <td>容器<strong>共享宿主机操作系统内核</strong>，只打包应用与其依赖；虚拟机各自运行一套完整的操作系统</td>
+            <td>把容器说成「更小更快的虚拟机」。分界在隔离层次，由此才带来启动代价与镜像体积的差别。
+              这条差别决定的是<strong>部署一次要付多少代价</strong>：镜像小、启动快，流水线才跑得起高频部署 ——
+              这也是 6.4 被放在流水线底座位置的原因。
+              <em>Containers</em> 在官方术语表内，<strong>虚拟机 <span class="en">Virtual machine</span> 不在</strong>，此处仅作对照 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+          </tr>
+          <tr>
+            <td><strong>微服务 vs 松耦合架构</strong><br><small class="muted">6.4 · 「松耦合」不在考纲术语表内 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></small></td>
+            <td>微服务是一种<strong>具体架构风格</strong>：小而自治、可独立部署；松耦合是一个<strong>更宽的属性</strong>，单体内部同样可以做到模块松耦合</td>
+            <td>把「拆成很多服务」直接读成松耦合。若多个服务共享同一数据库、必须一起发布，服务数量再多也没换来独立部署。
+              验收方法只有一个：<strong>能不能只发布其中一个服务而不动其它服务</strong>。做不到，拆分就只带来了分布式的代价，没带来它的好处</td>
+          </tr>
+          <tr>
+            <td><strong>部署流水线 vs 持续交付</strong><br><small class="muted">6.2 / <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></small></td>
+            <td>部署流水线是<strong>机制</strong>（那条自动执行的路径）；持续交付是<strong>能力状态</strong>（产物随时可按需发布到生产）</td>
+            <td>把两者当同义词。<strong>官方答案键确认：依赖部署流水线实现「按需一键部署」的实践叫持续交付</strong> —— 说明流水线是手段，被问的是能力名</td>
+          </tr>
+          <tr>
+            <td><strong>持续集成 vs 部署流水线</strong><br><small class="muted">6.2 / <a href="../ch03-key-practices/3.2-continuous-integration.html">3.2</a></small></td>
+            <td>持续集成是<strong>一种实践</strong>：频繁把变更合入主线，每次合入都由自动化测试判过。
+              部署流水线是<strong>承载这一实践的机制</strong>：那条从提交一路走到部署的自动执行路径。
+              持续集成只占流水线<strong>前段</strong>，它止于「主线随时可构建、可测试」，不回答变更怎么上生产</td>
+            <td>题干描述「每次提交都自动构建并跑测试」时，落点是<strong>持续集成</strong>；
+              描述「一次提交经过构建、测试、部署的固定路径」时，落点是<strong>部署流水线</strong>。
+              判据：被问的是<strong>团队的做法</strong>还是<strong>那条路本身</strong>。
+              另一处陷阱是把持续集成读成「有一台 CI 服务器」—— 装了工具但每人一条长期分支、两周才合一次，那不是持续集成</td>
+          </tr>
+          <tr>
+            <td><strong>工具链 vs DevOps 本身</strong><br><small class="muted">6.5 / <a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1</a></small></td>
+            <td>工具链是<strong>实现手段的集合</strong>；DevOps 是包含文化、原则与实践的工作方式，官方定义句里一个工具名都没有</td>
+            <td>题干堆砌工具名时顺势选「引入某类工具即完成转型」。判据：工具能改变<strong>流动与反馈</strong>才有意义，买齐工具不等于做了 DevOps。
+              官方 Blueprint 的定义句写的是人如何协同工作、达成什么结果，<strong>一个工具名都没有出现</strong> ——
+              这是最硬的一条反证（<a href="../ch01-exploring-devops/1.1-defining-devops.html">1.1</a>）</td>
+          </tr>
+          <tr>
+            <td><strong>VSM 平台 vs 价值流映射</strong><br><small class="muted">6.6 / <a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a></small></td>
+            <td>价值流映射是<strong>一次性</strong>画出当前状态、找出约束的分析活动；VSM 平台是<strong>持续</strong>采集工具链数据、做端到端度量的软件</td>
+            <td>中文只差几个字，英文都能缩成 VSM。分界用「一次还是持续」来记：
+              映射产出的是一张<strong>当前状态图</strong>，平台产出的是一条<strong>不断刷新的数据流</strong></td>
+          </tr>
+          <tr>
+            <td><strong>自动化 vs 优化</strong><br><small class="muted">6.1 / <a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3</a></small></td>
+            <td>优化是<strong>改流程本身</strong>（去掉不必要的环节与等待）；自动化是<strong>让保留下来的环节由机器执行</strong>，两者顺序不能倒</td>
+            <td>选项写「先把现有流程全面自动化以提升效率」。约束之外的环节自动化得再彻底，端到端时间也不会变短 ——
+              这正是<a href="../ch02-core-principles/2.3-theory-of-constraints.html">约束理论</a>在本章的落点。
+              更糟的一种：流程里本来就有不必要的审批与等待，原样自动化之后这些环节被固化进了脚本，从此更难拆掉</td>
+          </tr>
+          <tr>
+            <td><strong>生成式 AI 用例 vs AIOps</strong><br><small class="muted">6.6 / <a href="../ch07-metrics/index.html">第 7 章</a> · 两者均 v3.6 新增</small></td>
+            <td>生成式 AI 辅助人<strong>产出内容</strong>（代码、测试、文档、变更说明）；AIOps 用机器学习<strong>分析运维遥测</strong>，做告警降噪与定位</td>
+            <td>看到「AI」就二选一乱猜。分界在作用对象：一个作用于<strong>交付过程的产出物</strong>，一个作用于<strong>运行期的信号</strong>。
+              再加一条时间线判据：生成式 AI 用在<strong>变更上生产之前</strong>，AIOps 用在<strong>之后</strong>。
+              两者都不替人做放行决定 —— 题干出现「由 AI 决定是否发布」时，方向就已经错了。
+              AIOps 的正式讲解在<a href="../ch07-metrics/index.html">第 7 章</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>官方术语</strong>的判定依据是 DOFD v3.4 官方考纲术语表（Concept and Terminology List）
+      与 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标（v3.6 新增）；
+      表中若干非考纲词（虚拟机、松耦合、声明式 / 命令式）已就地标注。
+      <strong>「分界线」与「诱导你选错的地方」两列是本站教学整理</strong>。
+    </div>
+
+    <!-- ============ 官方样题答案键确认的本章考点 ============ -->
+    <div class="divider-label">官方样题答案键确认的本章考点</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 这一条不是推断，是官方确认</div>
+      <p>
+        本页绝大多数「命题角度」都标注为教学推断。下面这一条不同 ——
+        它来自 <strong>DOFD v3.4 官方样题答案键</strong>，是<strong>关于官方文件的事实陈述</strong>：
+        官方在这个判断上给出了明确的正确答案方向。
+        以本章主题词为落点的只有这一条；另有一条答案键结论（持续交付 vs 部署流水线）归属
+        <a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">第 3 章（3.3）</a>，本页在易混淆表中引用。
+        本页其余命题角度均为本站推断。
+      </p>
+      <ul>
+        <li><strong>服务台事件管理系统不属于典型 DevOps 工具链要素。</strong>
+          → 见 <a href="6.5-toolchain-architecture.html">6.5 DevOps 工具链架构</a>。
+          这一条的价值在于给出了一条<strong>反向判据</strong>：工具链要素是围绕<strong>交付流动本身</strong>组织的能力类别，
+          面向最终用户报障与服务请求受理的服务台系统属于服务管理侧，不在这条链上。
+          这一条最可能以反向设问出现 —— 要求从若干候选中排除不属于工具链要素的那一项，
+          落点就在服务台事件管理系统，而不在计划、编码、构建、测试、发布、部署、运维、监控任一环节上。</li>
+      </ul>
+      <p class="mb-0 muted"><small>事件管理作为 ITSM 流程本身对 DevOps 的重要性另有官方答案键确认，见
+        <a href="../ch04-frameworks/4.4-itsm-itil.html">第 4 章 ITSM 与 ITIL（4.4）</a> —— 两条说的不是一回事：
+        一条说事件管理这个<strong>流程</strong>重要，一条说服务台的那套<strong>系统</strong>不算工具链要素。</small></p>
+    </div>
+
+    <!-- ============ 图 6-7-2 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 980 330" role="img" aria-label="第 6 章唯一一条官方样题答案键结论的记忆卡片：左卡为不属于工具链要素的服务台事件管理系统，右卡为八类工具链环节">
+          <text x="16" y="26" class="s-ink" font-size="17" font-weight="700">DOFD v3.4 官方样题答案键确认的第 6 章结论</text>
+          <text x="16" y="50" class="s-muted" font-size="12.5">左卡是官方确认的那半句；右卡是本站按 6.5 的八类环节整理的对照面 —— 官方未公布工具链的环节清单。</text>
+
+          <!-- 左卡：官方确认的排除项 -->
+          <rect x="12" y="70" width="452" height="216" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="30" y="98" class="f-1" font-size="14" font-weight="700">✗ 不属于典型 DevOps 工具链要素</text>
+          <text x="446" y="98" class="s-muted" font-size="12" text-anchor="end">官方确认 · 见 6.5</text>
+          <line x1="30" y1="110" x2="446" y2="110" class="s-1" stroke-width="1.2"/>
+          <text x="30" y="142" class="s-ink" font-size="15" font-weight="650">服务台事件管理系统</text>
+          <text x="30" y="168" class="s-muted" font-size="12.5">它服务的是服务运营：受理报障与服务请求，</text>
+          <text x="30" y="190" class="s-muted" font-size="12.5">既不产出、也不搬运这条链上的变更。</text>
+          <line x1="30" y1="212" x2="446" y2="212" class="s-1" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="30" y="238" class="f-2" font-size="12.5">不矛盾的一点：事件管理这个 ITSM 流程</text>
+          <text x="30" y="260" class="f-2" font-size="12.5">对 DevOps 很关键（同为答案键确认，见 4.4）——</text>
+          <text x="30" y="280" class="f-2" font-size="12.5">流程重要 ≠ 那套系统属于工具链。</text>
+
+          <!-- 右卡：属于的八类环节 -->
+          <rect x="500" y="70" width="468" height="216" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="518" y="98" class="f-3" font-size="14" font-weight="700">✓ 落在链上的八类环节</text>
+          <text x="950" y="98" class="s-muted" font-size="12" text-anchor="end">本站教学整理 · 见 6.5</text>
+          <line x1="518" y1="110" x2="950" y2="110" class="s-3" stroke-width="1.2"/>
+          <rect x="518" y="124" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="569" y="146" class="s-ink" font-size="13" text-anchor="middle">① 计划</text>
+          <rect x="630" y="124" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="681" y="146" class="s-ink" font-size="13" text-anchor="middle">② 编码</text>
+          <rect x="742" y="124" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="793" y="146" class="s-ink" font-size="13" text-anchor="middle">③ 构建</text>
+          <rect x="518" y="166" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="569" y="188" class="s-ink" font-size="13" text-anchor="middle">④ 测试</text>
+          <rect x="630" y="166" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="681" y="188" class="s-ink" font-size="13" text-anchor="middle">⑤ 发布</text>
+          <rect x="742" y="166" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="793" y="188" class="s-ink" font-size="13" text-anchor="middle">⑥ 部署</text>
+          <rect x="518" y="208" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="569" y="230" class="s-ink" font-size="13" text-anchor="middle">⑦ 运维</text>
+          <rect x="630" y="208" width="102" height="34" rx="7" class="s-3" stroke-width="1.3" fill="none"/>
+          <text x="681" y="230" class="s-ink" font-size="13" text-anchor="middle">⑧ 监控</text>
+          <text x="518" y="268" class="s-muted" font-size="12.5">判据：在链上产出或搬运变更的，是工具链要素；</text>
+          <text x="518" y="288" class="s-muted" font-size="12.5">只支撑服务运营的，不是。</text>
+
+          <text x="16" y="316" class="s-muted" font-size="12.5">左卡结论出自 DOFD v3.4 官方样题答案键，本站只陈述结论，不复制题干与选项原文；右卡的八类环节划分与「在链上产出或搬运变更」这条判据为本站教学整理。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 6-7-2　本章官方确认结论的记忆卡片。</strong>
+        这张图要看懂的是<strong>一条边界，两个方向</strong>：官方只钉死了左边那半句 ——
+        服务台事件管理系统不在链上；右边八格是本站为了让这条边界能被反向使用而整理的对照面。
+        考前只需要记住左卡；答题时如果选项里出现的是右边八格中的任何一类，就不是要排除的那一项。
+        右卡的环节划分与判据是本站教学整理，官方未公布工具链的环节清单。
+      </figcaption>
+    </figure>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 反过来说：本章哪些内容没有官方背书</div>
+      <ul class="mb-0">
+        <li>「六节 → 部署流水线」的归位（图 6-7-1）是本站教学整理，官方未给出这张结构图。</li>
+        <li>工具链的八类环节划分（计划 · 编码 · 构建 · 测试 · 发布 · 部署 · 运维 · 监控）是本站为便于记忆所做的归类，
+          <strong>官方未公布类别清单</strong> —— 唯一有官方依据的是「服务台事件管理系统不属于典型要素」这条反向判据。</li>
+        <li>声明式 / 命令式 IaC、容器与虚拟机的对照、松耦合，都是本站为讲清概念引入的对照物，不在考纲术语表内。</li>
+        <li>本页的<strong>结构</strong> —— 六节的排布、八类环节、四张表的分栏方式 —— 都是本站的教学编排，
+          官方未以此形式给出，换一本教材完全可以排成另一个样子。
+          本章可<strong>逐字引为官方</strong>的内容另行列出：v3.4 M6 的五个子项名、66 条术语表里落在本章的词条、
+          Blueprint 的 CALMS-A 描述句、v3.4 Course Description 的三个量化区间、
+          v3.4 Examination Requirements 的题数分布，以及 PeopleCert 现行产品页公布的 v3.6 学习目标。</li>
+      </ul>
+    </div>
+
+    <!-- ============ 本章官方术语速查 ============ -->
+    <div class="divider-label">本章官方术语速查</div>
+
+    <p>
+      <strong>取舍口径</strong>：本表只收本章正文真正展开过、且<strong>逐字出现在 DOFD v3.4 官方考纲 66 条术语表内</strong>的条目；
+      本章的三个主题词（<span class="en">Infrastructure as Code</span> / <span class="en">VSM Platform</span> /
+      <span class="en">Generative AI</span>）<strong>都不在表内</strong>，见下方单独列表。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:30%">官方术语</th><th style="width:20%">固定中文</th><th style="width:12%">本章出处</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><em>Deployment pipeline</em></td><td>部署流水线</td><td>6.2 · 6.5</td><td>本章主轴；持续交付与持续部署共用，<strong>不能用它来区分两者</strong></td></tr>
+          <tr><td><em>Code commit</em></td><td>代码提交</td><td>6.2</td><td>触发流水线的最小单位；提交越小，一次失败要回溯的范围越小</td></tr>
+          <tr><td><em>Continuous integration</em></td><td>持续集成</td><td>6.2</td><td>流水线前段：每次合入都被自动化测试判过。判据是<strong>合入频率</strong>，不是装没装 CI 服务器</td></tr>
+          <tr><td><em>Continuous testing</em></td><td>持续测试</td><td>6.2</td><td>流水线每一格都在判，不是末端一道闸门；它是流水线能自动放行的前提</td></tr>
+          <tr><td><em>Continuous delivery</em></td><td>持续交付</td><td>6.2<br><small class="muted">正式讲解见<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></small></td><td>随时可发布，最后一步由人点头；它是<strong>能力状态</strong>，不是某个工具</td></tr>
+          <tr><td><em>Continuous deployment</em></td><td>持续部署</td><td>6.2<br><small class="muted">正式讲解见<a href="../ch03-key-practices/3.3-delivery-vs-deployment.html">3.3</a></small></td><td>通过全部测试即自动上生产；关键词是<strong>「自动」+「每个」</strong>，两个都在才是它</td></tr>
+          <tr><td><em>DevOps toolchain</em></td><td>DevOps 工具链</td><td>6.5</td><td>按八类环节串起来的工具集合，不是某一个产品；它的质量由<strong>最差的那个接口</strong>决定</td></tr>
+          <tr><td><em>Application Programming Interface (API)</em></td><td>应用程序编程接口 API</td><td>6.4 · 6.5</td><td>工具之间、服务之间的集成契约；工具链能不能连起来看的就是它。选型时「有没有可用 API」应当是一条硬标准</td></tr>
+          <tr><td><em>Containers</em></td><td>容器</td><td>6.4</td><td>共享宿主机内核的一致运行单元；一致性来自镜像，与「更轻的虚拟机」这种说法无关</td></tr>
+          <tr><td><em>Microservices</em></td><td>微服务</td><td>6.4</td><td>可独立部署的服务边界，不等于「服务数量多」；共享数据库导致必须同步发布时，边界并没有真正划开</td></tr>
+          <tr><td><em>Service</em></td><td>服务</td><td>6.4 · 6.5</td><td>注意两种用法：微服务里的服务是部署单元，ITSM 里的服务是交付给客户的价值（见 <a href="../ch04-frameworks/4.4-itsm-itil.html">4.4</a>）</td></tr>
+          <tr><td><em>Open source</em></td><td>开源</td><td>6.5</td><td>工具链选型里的一类来源，与商业产品可以混用；判断标准仍是接得上不接得上，不是免费不免费</td></tr>
+          <tr><td><em>Collaboration and communication</em></td><td>协作与沟通</td><td>6.5</td><td>工具链需要一个人人都在的接入面：把链上的事件推进团队频道、并允许在频道里触发操作（<a href="6.5-toolchain-architecture.html">6.5</a> 的集成设计原则；<em>ChatOps</em> 正式讲解见 <a href="../ch03-key-practices/3.6-chatops.html">3.6</a>）</td></tr>
+          <tr><td><em>Waste</em></td><td>浪费</td><td>6.1<br><small class="muted">正式讲解见<a href="../ch04-frameworks/4.3-lean.html">4.3</a></small></td><td>自动化的目标是消除浪费，不是把浪费自动化 —— 等待与返工被固化进脚本后更难拆掉</td></tr>
+          <tr><td><em>Constraint</em></td><td>约束</td><td>6.1<br><small class="muted">正式讲解见<a href="../ch02-core-principles/2.3-theory-of-constraints.html">2.3</a></small></td><td>自动化投在约束之外的环节，端到端时间不会变短 —— 先找约束，再决定自动化投在哪</td></tr>
+          <tr><td><em>Flow</em></td><td>流动</td><td>6.1 · 6.6</td><td>自动化与 VSM 平台共同服务的对象：一个让它更快，一个让它可见</td></tr>
+          <tr><td><em>Cycle time</em></td><td>周期时间</td><td>6.6<br><small class="muted">正式讲解见<a href="../ch07-metrics/index.html">第 7 章</a></small></td><td>VSM 平台连续度量的对象之一；工具链断链时，这个数算不出来，因为没有贯穿全链的同一个 ID</td></tr>
+          <tr><td><em>Value stream mapping</em></td><td>价值流映射</td><td>6.6<br><small class="muted">正式讲解见<a href="../ch04-frameworks/4.6-value-stream-mapping.html">4.6</a></small></td><td>VSM 平台的对照物：一次性的分析活动，产出的是一张当前状态图，不是持续刷新的数据流</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      表中<strong>英文术语名称</strong>逐字取自 DOFD v3.4 官方考纲术语表（Concept and Terminology List），
+      <strong>「一句话定位」一列为本站教学整理</strong>，官方未给出这些定位式说明。
+    </div>
+
+    <div class="callout callout--warn">
+      <div class="callout__title">⚠️ 主题词 / 准确的说法 —— 这些词不在 66 条官方术语表内</div>
+      <p>
+        下表列出本章 <strong>7 个高风险主题词</strong>的准确出处。<strong>七个词全部不在 66 条术语表内</strong>，
+        误标成「⭐ 考纲核心」是本章最典型的失分点；但<strong>不在术语表内不等于不是官方内容</strong> ——
+        它们分别是 v3.4 M6 的官方子项名、Blueprint 正文点名的内容，或 PeopleCert 现行产品页公布的官方学习目标，
+        因此本章一律按 <span class="badge badge--plain">📘 官方模块子项</span> 处理，
+        v3.6 那几个再叠加 <span class="badge badge--new">🆕 v3.6 新增</span>。
+        左列是常用的主题词，右列是<strong>准确的官方措辞与出处</strong>。
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:32%">主题词</th><th style="width:14%">小节</th><th>准确的说法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><em>Infrastructure as Code</em> 基础设施即代码 IaC</td><td>6.3</td>
+              <td><strong>不在 66 条术语表内，也不是 v3.4 M6 的具名子项</strong>，因此<strong>不标「⭐ 考纲核心」</strong>；
+                但 <em>infrastructure-as-code</em> <strong>逐字写在 PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句里</strong>
+                （<em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>），
+                属官方文件正文点名的内容，M6 中与之最接近的官方子项是 <em>Automation</em>。全站判
+                <span class="badge badge--plain">📘 官方模块子项</span>，<strong>不判「🧭 延伸 · 非考纲」</strong>；
+                Terraform / Ansible / Pulumi 等具体工具名才是 <span class="badge badge--ext">🧭 延伸 · 非考纲</span></td>
+            </tr>
+            <tr>
+              <td><em>Cloud</em> 云</td><td>6.4</td>
+              <td>「Cloud」单独一词不在术语表内。官方子项名是 <em>Cloud, Containers, and Microservices</em>（整条）
+                <span class="badge badge--plain">📘 官方模块子项</span>，
+                <strong>表内单独收录的只有 <em>Containers</em> 与 <em>Microservices</em></strong>。整条子项名才是官方措辞</td>
+            </tr>
+            <tr>
+              <td><em>Automation</em> 自动化</td><td>6.1</td>
+              <td>不在 66 条术语表内，但<strong>逐字是 v3.4 课程大纲 M6 的官方子项</strong>
+                <span class="badge badge--plain">📘 官方模块子项</span>，也是 Blueprint 的 CALMS 里 <em>A</em> 那一格的名字 ——
+                该格的官方描述句逐字为 <em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>。
+                本章讲的自动化落地方式（IaC、流水线、工具链集成）不在官方子项名之列</td>
+            </tr>
+            <tr>
+              <td><em>AI and Machine Learning</em> 人工智能与机器学习</td><td>6.6</td>
+              <td><em>AI and Machine Learning</em> 是 v3.4 M6 官方子项 <span class="badge badge--plain">📘 官方模块子项</span>；
+                v3.6 学习目标另行列出生成式 AI 用例与 AIOps（出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。
+                两者的先后关系为本站教学理解 <span class="badge badge--note">📝 教学整理</span></td>
+            </tr>
+            <tr>
+              <td><em>VSM Platform</em> VSM 平台</td><td>6.6</td>
+              <td>出自 <strong>PeopleCert 现行 DevOps Foundation 产品页公布的官方学习目标</strong>（v3.6 新增），
+                是官方内容，只是晚于 v3.4 的术语表与模块大纲，<strong>不在 v3.4 的 66 条术语表内</strong>。
+                <strong>表内的是 <em>Value stream mapping</em>（价值流映射），两者不能互换</strong>：
+                一个是软件产品，一个是分析活动
+                <span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            </tr>
+            <tr>
+              <td><em>Generative AI Use Cases</em> 生成式 AI 用例</td><td>6.6</td>
+              <td>同上，出自 PeopleCert 现行产品页公布的官方学习目标（v3.6 新增），不在术语表内。
+                66 条里与 AI 相关的条目<strong>一条也没有</strong> —— 所以任何把「AI」写成<strong>考纲核心</strong>术语的说法都站不住；
+                但它是官方学习目标，也不能当成延伸内容
+                <span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            </tr>
+            <tr>
+              <td><em>AIOps</em></td><td>6.6<br><small class="muted">正式讲解见<a href="../ch07-metrics/index.html">第 7 章</a></small></td>
+              <td>同上，出自 PeopleCert 现行产品页公布的官方学习目标（v3.6 新增），不在术语表内；
+                本章只作为生成式 AI 用例的对照概念出现，
+                正式讲解落在度量与报告那一章 —— 因为它处理的是运行期遥测，不是交付过程的产出物
+                <span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-0 muted"><small>判定依据：DOFD v3.4 官方考纲术语表（Concept and Terminology List）逐字比对
+        + DOFD v3.4 课程大纲 M6 子项 + PeopleCert 现行 DevOps Foundation 产品页公布的学习目标。
+        这些主题词在本站页头<strong>不标「⭐ 考纲核心」</strong>。</small></p>
+    </div>
+
+    <!-- ============ 本章在考试中的位置 ============ -->
+    <div class="divider-label">本章在考试中的位置</div>
+
+    <p class="muted"><small>以下四项均出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；v3.6 未公开重新发布权重表。</small></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__v">5</div><div class="stat__k">本章最多题数（v3.4）</div></div>
+      <div class="stat"><div class="stat__v">12.5%</div><div class="stat__k">按上限估算的全卷占比</div></div>
+      <div class="stat"><div class="stat__v">并列第 4</div><div class="stat__k">与第 1 章题数相同</div></div>
+      <div class="stat"><div class="stat__v">1</div><div class="stat__k">答案键确认结论（本章落点）</div></div>
+    </div>
+
+    <p>
+      全卷及格线是 <strong>26 / 40</strong>。本章按上限出到 5 题，占全卷 <strong>12.5%</strong>，处于中游。
+      但本章的名词密度高于权重：容器、微服务、API、工具链、流水线都是可以被单独设问的术语，
+      而其中<strong>最像考点的三个主题词恰恰不在术语表内</strong> —— 这是本章投入产出比最高的复习点。
+    </p>
+    <p>
+      还有一层要注意：<strong>本章与第 3 章的边界在考试里不是切开的</strong>。
+      持续集成、持续交付、持续部署的正式讲解在第 3 章，本章只把它们挂回流水线这条链上；
+      一道题落在哪一章的配额里，读者是看不出来的，复习时不必按章切分这几个词。
+      本章真正只属于自己的部分是<strong>「链子由什么工具拼成、跑在什么之上」</strong> ——
+      工具链的构成与边界（6.5）、IaC 与云容器微服务这两层底座（6.3 / 6.4），
+      以及 v3.6 才加进来的 VSM 平台与生成式 AI 用例（6.6）。
+    </p>
+    <p>
+      考试形式也影响本章的复习方式：现行考试为<strong>开卷，但只允许带官方 Learner Workbook 与 Quick Reference Guide</strong>
+      （DOFD v3.6，2025-02-03 修订为开卷），本站页面不能带进考场。
+      因此本页的价值在<strong>考前</strong>，不在考中：把八类环节、九对分界线、以及「哪些词其实不在术语表内」
+      这三件事在进考场前变成条件反射，考场里翻官方资料的时间才用得到刀刃上。
+      全卷 <strong>40 题 / 60 分钟</strong>，平均每题 90 秒，本章那 5 道题不值得花掉查资料的额度。
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:34%">模块</th><th style="width:14%">最多题数</th><th>与本章的关系</th></tr></thead>
+        <tbody>
+          <tr><td>3　Key DevOps Practices</td><td class="num">7</td><td>并列最高。CI/CD 四件套、持续交付与持续部署的正式讲解在那一章</td></tr>
+          <tr><td>4　Business &amp; Technology Frameworks</td><td class="num">7</td><td>并列最高。价值流映射与 ITSM 的正式讲解在那一章，是 6.6 与 6.5 的对照物</td></tr>
+          <tr><td>5　Culture, Behaviors &amp; Operating Models</td><td class="num">6</td><td>工具链买齐仍失败时，原因通常在那一章</td></tr>
+          <tr><td>1　Exploring DevOps</td><td class="num">5</td><td>与本章并列。官方定义句里没有任何工具名，是「工具链 ≠ DevOps」的依据</td></tr>
+          <tr><td><strong>6　Automation &amp; Architecting DevOps Toolchains</strong></td><td class="num"><strong>5</strong></td><td>本章</td></tr>
+          <tr><td>2　Core DevOps Principles</td><td class="num">4</td><td>约束理论解释「自动化该先投在哪」，第一步 · 流动是自动化服务的对象</td></tr>
+          <tr><td>8　Sharing, Shadowing and Evolving</td><td class="num">4</td><td>工具链选型的组织考量与起步方式在<a href="../ch08-sharing/index.html">第 8 章</a></td></tr>
+          <tr><td>7　Measurement, Metrics, and Reporting</td><td class="num">2</td><td>VSM 平台度量的那些指标、以及 AIOps 的正式讲解在<a href="../ch07-metrics/index.html">第 7 章</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="src-note">
+      题数分布出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；考试形式（40 题 / 60 分钟 / 及格 65% 即 26 题）同源。
+      <strong>v3.6 未公开重新发布权重表</strong>，因此本页仍以 v3.4 的分布作为唯一可引用依据。
+      12.5% 由题数上限 5 ÷ 40 计算得到，是<strong>占比上限</strong>而非实测比重；「并列第 4」为本站按上表题数排序所得。
+      「开卷，仅限官方 Learner Workbook 与 Quick Reference Guide」属现行 <strong>DOFD v3.6</strong> 考试形式
+      （2024-10 更新，2025-02-03 修订为开卷）；「考前而非考中」的复习建议为本站教学整理。
+    </div>
+
+    <!-- ============ 练习 ============ -->
+    <div class="divider-label">本章练习</div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 练习题将在 P2 阶段交付</div>
+      <p>
+        本章练习题尚未上线，上线后全部标注<strong>仿真题，非官方真题</strong>。
+        在此之前，用上面的<strong>易混淆汇总表</strong>做自测更有效，按三步走：
+      </p>
+      <ul>
+        <li><strong>第一步</strong>：遮住「分界线」一列，逐对说出分界线。说不出来的那一对，直接回去重读对应小节。</li>
+        <li><strong>第二步</strong>：对着「主题词 / 准确的说法」表，逐个判断徽章 ——
+          这个词是<strong>在 66 条术语表内</strong>、<strong>只是 M6 官方子项</strong>、还是<strong>两者都不是</strong>。
+          本章最典型的失分点就在这一层，判错徽章通常意味着会把非考纲词当成考点去背。</li>
+        <li><strong>第三步</strong>：只留图 6-7-2 的左卡，把右边八类环节盖住，自己复述出来。
+          八类能默写，反向设问就没有别的选项能骗到你。</li>
+      </ul>
+      <p>
+        遮盖法之外，还有一个更快的自检：<strong>随手挑本章任一名词，说出它在部署流水线这条链上的位置</strong>。
+        说得出位置，它的痛点与易混对象基本也就跟着出来了；说不出位置，说明这个词还没有被挂进结构，只是被单独背下来了。
+      </p>
+      <p class="mb-0">
+        <strong>说明</strong>：本站所有练习题均为<strong>仿真题，非官方真题</strong>。
+        仿真题仅按考纲范围与 Bloom 1–2 层级自行命制，用于自检掌握程度，不代表真实考题。
+      </p>
+    </div>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>本章<strong>最多 5 题</strong>，按上限算占全卷 40 题的 <strong>12.5%</strong>（来源：DOFD v3.4 Examination Requirements，2022-05；官方给的是每模块题数上限，不是固定配额）</li>
+        <li>官方答案键确认、落点在本章的一条：<strong>服务台事件管理系统不属于典型 DevOps 工具链要素</strong>（图 6-7-2）</li>
+        <li>六节的归位：<strong>6.1 是「该不该自动化」，6.2 是那条链，6.5 是拼出这条链的工具，6.3 与 6.4 是链跑在其上的底座，6.6 横跨全链</strong>（本站教学整理）</li>
+        <li>自动化的边界：<strong>先简化再自动化，且优先投在约束上</strong>；把混乱流程原样自动化只会更快产生返工</li>
+        <li><strong>容器共享宿主机内核，虚拟机各带一套操作系统</strong>；微服务的判据是<strong>能否独立部署</strong>，不是服务拆得多不多</li>
+        <li>部署流水线是<strong>机制</strong>，持续交付是<strong>能力状态</strong>，持续集成是<strong>实践</strong>且只占流水线前段；
+          工具链是手段的集合，<strong>买齐工具不等于做了 DevOps</strong></li>
+        <li>工具链的<strong>八类环节</strong>：计划 · 编码 · 构建 · 测试 · 发布 · 部署 · 运维 · 监控；
+          流水线只覆盖「提交 → 部署」那一段，计划、运维、监控在流水线之外（划分为本站教学整理）</li>
+        <li><strong>Infrastructure as Code · VSM Platform · Generative AI 三个词不在 66 条官方术语表内</strong>（表内的是 Containers、Microservices、Deployment pipeline、DevOps toolchain、Value stream mapping），
+          <strong>但三个都是官方内容，一律标「📘 官方模块子项」</strong>：IaC 逐字写在 Blueprint 的 CALMS-A 描述句里，
+          VSM 平台与生成式 AI 用例是 PeopleCert 现行产品页公布的官方学习目标（再叠加「🆕 v3.6 新增」）。
+          <strong>不在术语表 ≠ 延伸内容</strong>，别标成「🧭 延伸 · 非考纲」</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：本章题数与考试形式出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>，
+      并同时说明 <strong>v3.6 未公开重新发布权重表</strong>；
+      <em>Deployment pipeline</em>、<em>Code commit</em>、<em>Continuous integration</em>、<em>Continuous testing</em>、
+      <em>Continuous delivery</em>、<em>Continuous deployment</em>、<em>DevOps toolchain</em>、
+      <em>Application Programming Interface (API)</em>、<em>Containers</em>、<em>Microservices</em>、<em>Service</em>、
+      <em>Open source</em>、<em>Collaboration and communication</em>、<em>Waste</em>、<em>Constraint</em>、<em>Flow</em>、
+      <em>Cycle time</em>、<em>Value stream mapping</em> 均列于 DOFD v3.4 官方考纲术语表（Concept and Terminology List）
+      —— 该表只列词条、不附定义，本页给出的所有中文释义与定位均为本站措辞。<br>
+      v3.4 课程大纲 M6 模块子项为 <em>CI/CD</em>、<em>Cloud, Containers, and Microservices</em>、
+      <em>AI and Machine Learning</em>、<em>Automation</em>、<em>DevOps Toolchains</em>。<br>
+      <em>VSM Platforms</em>、<em>Generative AI Use Cases</em>、<em>AIOps</em> 出自
+      <strong>PeopleCert 现行 DevOps Foundation 产品页公布的官方学习目标</strong>（v3.6 新增），
+      <strong>均不在 v3.4 的 66 条术语表内</strong>，因此标
+      <span class="badge badge--plain">📘 官方模块子项</span> 与 <span class="badge badge--new">🆕 v3.6 新增</span> 两个徽章，
+      不标「⭐ 考纲核心」，也不作延伸内容处理。
+      <em>Infrastructure as Code</em> 不在术语表内、也不是 M6 的具名子项，但 <em>infrastructure-as-code</em>
+      <strong>逐字出现在 PeopleCert DevOps Foundation Blueprint 的 CALMS-A 描述句</strong>
+      （<em>“CI/CD toolchains, and infrastructure-as-code enable automation, consistency, velocity and fast recovery.”</em>，官方原文）中，
+      同样按 <span class="badge badge--plain">📘 官方模块子项</span> 处理；
+      本页已在「主题词 / 准确的说法」区块逐条说明。<br>
+      本页高亮的<strong>一条结论由 DOFD v3.4 官方样题答案键确认</strong>（对应 6.5，见图 6-7-2）；
+      易混淆表「部署流水线 vs 持续交付」一行引用的是归属第 3 章的另一条答案键结论。
+      <strong>本站只陈述这些结论，不复制官方样题的题干与选项原文</strong>，本页不含任何官方样题原文，
+      练习题上线后将标注「仿真题，非官方真题」。<br>
+      <strong>官方未公布命题规律、题型分布与逐题 Bloom 分级</strong>，因此本页所有关于「会怎么考」「干扰项长什么样」
+      「排除技巧」的说法，以及以下内容，<strong>均为本站教学整理或推断</strong>：图 6-7-1 的「六节 → 部署流水线」归位、
+      图 6-7-2 右卡与工具链的八类环节划分（计划 · 编码 · 构建 · 测试 · 发布 · 部署 · 运维 · 监控，与 6.5 同口径）、
+      一页纸复习表的「记忆锚点」与「最易错点」两列、易混淆汇总表的「分界线」与「诱导你选错的地方」两列、
+      术语速查表的「一句话定位」列，以及声明式 / 命令式 IaC、容器与虚拟机、松耦合等对照物 ——
+      官方未以此形式给出，重点处已在各自下方就地标注。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.6 AIOps · DevOps Foundation 学习站</title>
+<meta name="description" content="AIOps 用机器学习与数据分析处理运维数据，做异常检测、告警降噪与关联、根因辅助定位与预测。本节讲清它解决的核心痛点「告警疲劳」、它与可观测性的分工，以及它的边界与风险。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../../"; window.PAGE={ch:"ch07", sec:"7.6-aiops"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">第 7 章 · 度量、指标与报告</div>
+      <h1 class="page-head__title">7.6 AIOps</h1>
+      <div class="page-head__en">AIOps</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--plain">📘 官方模块子项</span>
+        <span class="badge badge--new">🆕 v3.6 新增</span>
+        <span class="badge badge--warn">⚠️ 易混淆</span>
+      </div>
+      <p class="page-head__lede">
+        度量的前五节都在解决「有没有数据」。AIOps 处理的是下一个问题：
+        <strong>数据已经多到没人看得完了</strong>。
+        它用机器学习与数据分析在运维数据上做异常检测、告警关联与降噪、根因辅助定位与预测，
+        把值班人要看的东西从几百条压到几条。它不产生数据，也不替人负责 ——
+        <strong>它是过滤器，不是传感器。</strong>
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>AIOps 具体在运维数据上做哪几件事，输入是什么、输出是什么</li>
+        <li>为什么说<strong>告警疲劳</strong>是它要解决的核心痛点，而不是「让运维更智能」</li>
+        <li>它和可观测性谁在前谁在后，以及它在什么情况下不起作用甚至帮倒忙</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 7-6-1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 960 470" role="img" aria-label="可观测性、AIOps 与人的决策三层关系，以及每一层缺席时会发生什么">
+          <defs>
+            <marker id="ah-76-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+          </defs>
+
+          <text x="40" y="20" class="s-muted" font-size="13">自下而上：数据 → 筛选 → 判断</text>
+          <text x="606" y="20" class="s-muted" font-size="13">这一层缺席时会发生什么</text>
+
+          <!-- 第三层：人的决策 -->
+          <rect x="40" y="40" width="520" height="90" rx="12" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="62" y="78" class="f-1" font-size="16" font-weight="700">人的决策与责任</text>
+          <text x="62" y="106" class="s-ink" font-size="13">判断要不要动手 · 动手做什么 · 为结果负责</text>
+
+          <rect x="590" y="40" width="330" height="90" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="608" y="76" class="f-5" font-size="13" font-weight="700">结论没人敢用</text>
+          <text x="608" y="102" class="s-ink" font-size="13">黑盒判断在事故复盘中无法举证</text>
+
+          <!-- 第三层 ← 第二层 -->
+          <line x1="300" y1="170" x2="300" y2="134" class="s-1" stroke-width="2.5" marker-end="url(#ah-76-1)"/>
+          <text x="318" y="158" class="s-muted" font-size="12.5">候选结论 + 可回溯的证据链</text>
+
+          <!-- 第二层：AIOps -->
+          <rect x="40" y="170" width="520" height="90" rx="12" class="s-3" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="62" y="208" class="f-3" font-size="16" font-weight="700">AIOps　<tspan class="s-ink" font-size="13" font-weight="400">机器学习与数据分析</tspan></text>
+          <text x="62" y="236" class="s-ink" font-size="13">异常检测 · 告警关联与降噪 · 根因辅助定位 · 容量与故障预测</text>
+
+          <rect x="590" y="170" width="330" height="90" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="608" y="206" class="f-5" font-size="13" font-weight="700">数据够多，但看不完</text>
+          <text x="608" y="232" class="s-ink" font-size="13">值班人被告警淹没，真信号被埋掉</text>
+
+          <!-- 第二层 ← 第一层 -->
+          <line x1="300" y1="300" x2="300" y2="264" class="s-1" stroke-width="2.5" marker-end="url(#ah-76-1)"/>
+          <text x="318" y="288" class="s-muted" font-size="12.5">原始遥测：指标 · 日志 · 事件 · 追踪</text>
+
+          <!-- 第一层：可观测性 -->
+          <rect x="40" y="300" width="520" height="90" rx="12" class="s-4" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+          <text x="62" y="338" class="f-4" font-size="16" font-weight="700">可观测性 Observability</text>
+          <text x="62" y="366" class="s-ink" font-size="13">产生高质量数据：指标 metrics · 日志 logs · 事件 events · 追踪 traces</text>
+
+          <rect x="590" y="300" width="330" height="90" rx="10" class="s-5" stroke-width="2" fill="var(--dia-fill)"/>
+          <text x="608" y="336" class="f-5" font-size="13" font-weight="700">AIOps 只是在噪音上做统计</text>
+          <text x="608" y="362" class="s-ink" font-size="13">没被采集的数据，模型也推不出来</text>
+
+          <!-- 底部读法 -->
+          <rect x="40" y="412" width="880" height="42" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+          <text x="62" y="439" class="s-ink" font-size="13.5">每一层只能<tspan font-weight="700">压缩</tspan>上一层的输入量，<tspan font-weight="700">不能补上上一层没有的东西</tspan> —— 顺序不能颠倒。</text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 7-6-1　三层关系：谁产生数据、谁筛数据、谁做决定。</strong>
+        要看懂的是<strong>这三层有严格顺序，而且每一层都替代不了相邻的那一层</strong>。
+        右侧三个方框是每一层缺席时的典型症状 —— 先上 AIOps 再补可观测性，得到的就是右下角那一条。
+        <br><small class="muted">本三层分工图为本站教学整理，官方未以此形式给出层次结构；
+        <em>Monitoring and Observability</em> 与 <em>AIOps</em> 均属 v3.6 新增学习目标（来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。</small>
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-7-6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-6-1</div>
+        <h3 class="kp__title">AIOps 是什么<span class="en">AIOps</span></h3>
+        <div class="badge-row"><span class="badge badge--plain">📘 官方模块子项</span> <span class="badge badge--new">🆕 v3.6 新增</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>AIOps</strong>
+            是把<strong>机器学习与数据分析用在运维数据上</strong>的做法：
+            输入是可观测性产生的<strong>指标、日志、事件、追踪</strong>，
+            输出是<strong>运维判断的初稿</strong> —— 哪里不正常、哪些告警是同一件事、根因大概在哪、接下来容量够不够。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">四类典型能力</th><th>它在做的事</th></tr></thead>
+              <tbody>
+                <tr><td><strong>异常检测</strong></td><td>从历史数据学出「正常长什么样」，偏离时报出来。<strong>不需要人事先枚举阈值</strong></td></tr>
+                <tr><td><strong>告警关联与降噪</strong></td><td>把指向同一件事的成百上千条告警，聚合成一条带影响面清单的通知</td></tr>
+                <tr><td><strong>根因辅助定位</strong></td><td>按时间顺序、服务依赖与变更记录，给出<strong>可能的</strong>起点与证据。是候选，不是结论</td></tr>
+                <tr><td><strong>容量与故障预测</strong></td><td>按趋势外推磁盘、连接数、队列深度，在耗尽之前给出提前量</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small><strong>AIOps 是官方内容，不是延伸补充</strong>：它
+            <strong>出自 PeopleCert 现行产品页公布的学习目标</strong>，只是晚于 v3.4，
+            因此 <strong>v3.4 术语表（Concept and Terminology List）的 66 条内未收录</strong> ——
+            所以标 <strong>📘 官方模块子项</strong> 与 <strong>🆕 v3.6 新增</strong>，而不标「考纲核心」。
+            上表的「四类典型能力」分类为本站教学整理，官方未给出此类能力清单。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            它出现之前的痛点很具体：<strong>运维数据的增长速度，早已超过人的阅读速度</strong>。
+          </p>
+          <ul>
+            <li>某电商平台拆成 40 个服务后，指标从每分钟几千个数据点涨到 <strong>200 万个</strong>，
+              日志一天 <strong>8 亿行</strong>。监控面板从 6 张变成 <strong>63 张</strong>，
+              其中 41 张<strong>三个月内没有人打开过</strong>。</li>
+            <li>更根本的问题是<strong>阈值告警要求人事先枚举「什么算不正常」</strong>。
+              服务只有 6 个时枚举得完；40 个服务、上千条指标之后，
+              <strong>枚举本身成了做不完的工作</strong> —— 这正是
+              <a href="../ch03-key-practices/3.8-observability.html">第 3 章 监控与可观测性（3.8）</a>指出的「预先枚举失效」。</li>
+            <li>于是形成一个循环：<strong>枚举不完 → 宁可多配告警 → 告警变吵 → 人开始忽略 → 出事时没人看 → 再加更多告警</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            AIOps 切入的位置就在这个循环上：<strong>不再要求人事先说清什么算不正常，而是从数据里学出来</strong>；
+            不再把每条异常都推给人，而是<strong>先聚合再通知</strong>。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">AIOps</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>可观测性 <span class="en">Observability</span></strong></td>
+                  <td><strong>消费</strong>运维数据，输出「值得看的那几条」</td>
+                  <td><strong>产生</strong>运维数据，输出「能问得出任意问题的原始素材」</td>
+                </tr>
+                <tr>
+                  <td><strong>阈值监控 <span class="en">threshold-based monitoring</span></strong></td>
+                  <td>正常范围<strong>从数据里学</strong>，随负载与季节变化</td>
+                  <td>正常范围<strong>由人事先写死</strong>，改一次要人动手一次</td>
+                </tr>
+                <tr>
+                  <td><strong>自动化 <span class="en">Automation</span></strong></td>
+                  <td>产出的是<strong>判断</strong>：这可能是什么问题</td>
+                  <td>产出的是<strong>动作</strong>：扩容、回滚、重启。两者可以串起来，但不是一回事</td>
+                </tr>
+                <tr>
+                  <td><strong>生成式 AI 的开发侧用例</strong></td>
+                  <td>面向<strong>运行中的系统</strong>：数据是遥测，用户是值班人</td>
+                  <td>面向<strong>做软件的过程</strong>：写代码、写测试、写文档。展开见
+                    <a href="../ch06-automation/6.6-vsm-platform-genai.html">第 6 章 VSM 平台与生成式 AI 用例（6.6）</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>AIOps 不生产数据</strong>。
+            它是接在可观测性后面的一层，输入必须已经存在。
+            「上了 AIOps 就不用建可观测性」这句话方向反了 —— 没有数据的 AIOps 什么都学不到。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这些概念的区分；
+            <em>Automation</em> 属 v3.4 课程大纲 M6 模块子项，<em>Monitoring and Observability</em>、<em>AIOps</em>、生成式 AI 用例均属 v3.6 新增学习目标。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>引入顺序上有一条经验：<strong>先做关联与降噪，再做预测</strong>。前者立刻见效且可验证，后者依赖长期历史。</p>
+          <ul>
+            <li><strong>从最吵的那条告警规则入手</strong>：统计过去 30 天每条告警规则触发了多少次、
+              其中多少次真的有人处理。触发上千次、处理零次的规则，是第一批要么删掉要么交给关联的对象。</li>
+            <li><strong>输出必须能回溯</strong>：任何一条聚合告警都要能点开看到它由哪些原始事件构成。
+              点不开的结论在事故中<strong>没人会采信</strong>。</li>
+            <li><strong>拿事故复盘反哺</strong>：每次事故结束后标注「真正的根因是哪一条」，
+              这是模型少数可靠的监督信号来源。不做标注，模型只能一直靠统计巧合。</li>
+            <li><strong>先辅助，后自动</strong>：让它先只做建议、由人执行，跑一段时间看准确率；
+              准确率没被验证就直接接自动化动作，等于把误判放大成故障。</li>
+          </ul>
+          <p class="mb-0 muted"><small>以上四条引入建议为本站教学整理，官方文件将 AIOps 列为学习目标，未规定实施步骤。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度</strong>：AIOps 属 v3.6 新增学习目标，按 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>规定的 Bloom 1–2 范围，
+              考的是<strong>认名词、辨归属</strong> —— 给一段描述，问它讲的是哪个概念；
+              或者问 AIOps 属于 DevOps 的哪一类工作。<strong>不会考算法原理</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：最常见的三个是
+              <strong>可观测性</strong>（它产生数据，AIOps 消费数据）、
+              <strong>自动化</strong>（它执行动作，AIOps 输出判断）、
+              <strong>生成式 AI 在开发侧的用例</strong>（那是写代码写文档，不碰运行时遥测）。</li>
+            <li><strong>排除技巧</strong>：看这句话的<strong>动词宾语</strong>。
+              宾语是「数据 / 遥测的采集与暴露」→ 可观测性；
+              宾语是「告警、异常、根因这类<strong>判断</strong>」→ AIOps；
+              宾语是「扩容、部署、回滚这类<strong>动作</strong>」→ 自动化。</li>
+            <li><strong>陷阱写法</strong>：把 AIOps 描述成「用 AI 替代运维人员做决策」。
+              <strong>「替代」是错误方向</strong>，正确表述是辅助判断、缩短定位时间。</li>
+            <li><strong>时间分配提示</strong>：本章 v3.4 最多 <strong>2 题</strong>，全书最低
+              （DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。
+              记住它是什么、和谁不是一回事即可，不必深挖。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项分析与排除技巧均为本站教学推断；
+            仅描述命题角度，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">数据是可观测性给的，判断的初稿是 AIOps 给的，最终决定还是人下的。</p>
+          <p class="mb-0 muted"><small>四类能力的口诀：<strong>检测异常、合并告警、指向根因、预测耗尽</strong> ——
+            前两个立刻见效，后两个依赖历史（本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-7-6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-6-2</div>
+        <h3 class="kp__title">告警疲劳与告警关联降噪<span class="en">Alert Fatigue &amp; Alert Correlation</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--note">📝 教学整理</span>
+          <span class="badge badge--warn">⚠️ 易混淆</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            <strong>告警疲劳</strong>指的是：告警量超过人能处理的上限之后，
+            接收者<strong>开始整体性地忽略这个通道</strong> —— 真信号和假信号被一起丢掉。
+          </p>
+          <p>
+            <strong>告警关联与降噪</strong>是 AIOps 对它的回应：
+            在告警进入通知通道<strong>之前</strong>，按时间窗、服务依赖关系与告警指纹把同一根因的多条合并成一条。
+            <strong>监控覆盖一条不减，人要读的条数大幅下降。</strong>
+          </p>
+          <p class="mb-0 muted"><small>「告警疲劳 <em>alert fatigue</em>」「告警关联」为本站教学线索，非官方术语。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            分布式系统的特点是：<strong>一个根因会在很多地方各报一次</strong>。
+            报警数量不反映问题数量，只反映受影响的组件数量。
+          </p>
+          <ul>
+            <li>某支付系统的一次故障：订单库连接池耗尽。
+              连接池只有一个，但依赖它的 <strong>12 个下游服务</strong>各自触发了自己的超时告警、
+              错误率告警与 SLA 告警，<strong>8 分钟内 340 条</strong>涌进同一个值班频道。</li>
+            <li>值班人翻到第 60 条时，把整个频道静音了 —— 这是理性的：
+              手动读完 340 条要 25 分钟，而故障还在扩散。
+              <strong>而那条真正指向连接池的告警，排在第 217 位。</strong></li>
+            <li>后果直接落在指标上：本可以 6 分钟定位的问题拖到 40 分钟，
+              <span class="term">平均恢复时间 <span class="en">MTTR</span></span>被整体拉长。
+              下一次事故时，因为频道已经被静音过一次，<strong>响应更慢</strong>。</li>
+          </ul>
+          <p class="mb-0">
+            这正是<a href="../ch02-core-principles/2.4-second-way-feedback.html">第 2 章 第二步：反馈（2.4）</a>要缩短的那段距离：
+            <strong>从故障发生到故障被理解</strong>。
+            告警疲劳不是让反馈变慢，而是<strong>让反馈根本没被接收</strong> —— 一条没人读的反馈等于不存在。
+          </p>
+          <p class="mb-0 muted"><small>本案例为本站构造的教学示例，数字用于说明机制，非真实调研数据。
+            <em>Mean Time to Repair/Recover (MTTR)</em> 列于 DOFD v3.4 官方考纲术语表。</small></p>
+        </div>
+
+        <!-- ============ 图 7-6-2 ============ -->
+        <figure class="dia">
+          <div class="dia__frame">
+            <svg viewBox="0 0 960 470" role="img" aria-label="同一次故障在无 AIOps 与有 AIOps 两种情况下的告警量对比，关联与去重发生在告警进入通知通道之前">
+              <defs>
+                <marker id="ah-76-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+                </marker>
+                <marker id="ah-76-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+                </marker>
+              </defs>
+
+              <!-- 共同起点 -->
+              <rect x="30" y="16" width="900" height="46" rx="10" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+              <text x="480" y="45" class="s-ink" font-size="15" font-weight="650" text-anchor="middle">同一次故障：订单库连接池耗尽　·　12 个下游服务受影响（本站构造的教学示例）</text>
+
+              <!-- 列标题 -->
+              <text x="30" y="94" class="f-5" font-size="15" font-weight="700">无 AIOps · 告警直接进通知通道</text>
+              <text x="500" y="94" class="f-3" font-size="15" font-weight="700">有 AIOps · 通知之前先过一层</text>
+
+              <!-- 左列 步骤 1 -->
+              <rect x="30" y="108" width="430" height="58" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="48" y="134" class="s-ink" font-size="13.5">12 个服务各自触发超时、错误率、SLA 告警</text>
+              <text x="48" y="155" class="s-muted" font-size="12.5">根因只有一个，报警点有十几个</text>
+              <line x1="245" y1="166" x2="245" y2="184" class="s-5" stroke-width="2" marker-end="url(#ah-76-2)"/>
+
+              <!-- 左列 步骤 2 -->
+              <rect x="30" y="188" width="430" height="58" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="48" y="214" class="s-ink" font-size="13.5">8 分钟内 340 条告警涌入同一个频道</text>
+              <text x="48" y="235" class="s-muted" font-size="12.5">条数反映受影响组件数，不反映问题数</text>
+              <line x1="245" y1="246" x2="245" y2="264" class="s-5" stroke-width="2" marker-end="url(#ah-76-2)"/>
+
+              <!-- 左列 步骤 3 -->
+              <rect x="30" y="268" width="430" height="58" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="48" y="294" class="s-ink" font-size="13.5">值班人读到第 60 条，静音了整个频道</text>
+              <text x="48" y="315" class="s-muted" font-size="12.5">告警疲劳：真信号与噪音被一起丢弃</text>
+              <line x1="245" y1="326" x2="245" y2="344" class="s-5" stroke-width="2" marker-end="url(#ah-76-2)"/>
+
+              <!-- 左列 步骤 4 -->
+              <rect x="30" y="348" width="430" height="58" rx="10" class="s-5" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="48" y="374" class="f-5" font-size="13.5" font-weight="700">指向连接池的那一条，排在第 217 位</text>
+              <text x="48" y="395" class="s-muted" font-size="12.5">定位从 6 分钟拖到 40 分钟，MTTR 被拉长</text>
+
+              <!-- 右列 步骤 1 -->
+              <rect x="500" y="108" width="430" height="58" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="518" y="134" class="s-ink" font-size="13.5">同样的 340 条原始事件，先进 AIOps</text>
+              <text x="518" y="155" class="s-muted" font-size="12.5">监控覆盖一条没减，只是不直接推给人</text>
+              <line x1="715" y1="166" x2="715" y2="184" class="s-3" stroke-width="2" marker-end="url(#ah-76-3)"/>
+
+              <!-- 右列 步骤 2 · 关键步骤 -->
+              <rect x="500" y="188" width="430" height="58" rx="10" class="s-3" stroke-width="3" fill="var(--dia-fill-2)"/>
+              <text x="518" y="214" class="f-3" font-size="13.5" font-weight="700">★ 关联与去重就发生在这一步</text>
+              <text x="518" y="235" class="s-ink" font-size="12.5">按时间窗 · 服务依赖 · 告警指纹聚合，在通知之前</text>
+              <line x1="715" y1="246" x2="715" y2="264" class="s-3" stroke-width="2" marker-end="url(#ah-76-3)"/>
+
+              <!-- 右列 步骤 3 -->
+              <rect x="500" y="268" width="430" height="58" rx="10" class="s-stroke" stroke-width="1.8" fill="var(--dia-fill)"/>
+              <text x="518" y="294" class="s-ink" font-size="13.5">3 条聚合告警，每条附影响面清单</text>
+              <text x="518" y="315" class="s-muted" font-size="12.5">人要读的条数从 340 降到 3</text>
+              <line x1="715" y1="326" x2="715" y2="344" class="s-3" stroke-width="2" marker-end="url(#ah-76-3)"/>
+
+              <!-- 右列 步骤 4 -->
+              <rect x="500" y="348" width="430" height="58" rx="10" class="s-1" stroke-width="2.5" fill="var(--dia-fill-2)"/>
+              <text x="518" y="374" class="f-1" font-size="13.5" font-weight="700">1 条候选根因：连接池耗尽（附证据链）</text>
+              <text x="518" y="395" class="s-muted" font-size="12.5">是候选不是判决 —— 采不采信由值班人决定</text>
+
+              <!-- 底部读法 -->
+              <text x="480" y="440" class="s-ink" font-size="13.5" text-anchor="middle">两侧的采集量完全相同，差别只在于<tspan font-weight="700">「关联与去重」放在了通知通道的哪一侧</tspan>。</text>
+              <text x="480" y="460" class="s-muted" font-size="12.5" text-anchor="middle">如果告警规则本身设计得差，这一步只是把垃圾的音量调低，垃圾还在。</text>
+            </svg>
+          </div>
+          <figcaption>
+            <strong>图 7-6-2　同一次故障，两条通知路径。</strong>
+            要看懂的是<strong>那一步的位置</strong>：关联与去重必须发生在<strong>告警进入通知通道之前</strong>，
+            放在人读完之后再做聚合毫无意义 —— 人已经被淹没了。
+            <br><small class="muted">图中场景与全部数字为本站构造的教学示例，非真实调研数据；「关联与去重的位置」这一读法为本站教学整理。</small>
+          </figcaption>
+        </figure>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">告警关联与降噪</th><th>它</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>关闭告警 / 调高阈值</strong></td>
+                  <td><strong>监控覆盖不变</strong>，减少的是推给人的<strong>条数</strong></td>
+                  <td><strong>监控覆盖变小</strong>，减少的是被<strong>看见的问题</strong>。安静了，但也瞎了</td>
+                </tr>
+                <tr>
+                  <td><strong>根因辅助定位</strong></td>
+                  <td>回答<strong>「这些是不是同一件事」</strong>，输出一个分组</td>
+                  <td>回答<strong>「这件事从哪儿开始的」</strong>，输出一个候选起点。分组在前，定位在后</td>
+                </tr>
+                <tr>
+                  <td><strong>异常检测</strong></td>
+                  <td>处理的是<strong>已经产生的告警</strong>，做减法</td>
+                  <td>处理的是<strong>原始指标</strong>，做的是「要不要产生告警」这个判断</td>
+                </tr>
+                <tr>
+                  <td><strong>值班轮换 / 升级策略</strong></td>
+                  <td>解决<strong>告警太多</strong>：把 340 条压到 3 条</td>
+                  <td>解决<strong>告警找错人</strong>：把这 3 条送到对的人手上。两者互补，不能互相替代</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>降噪不等于少监控</strong>。
+            调高阈值、关掉规则同样能让频道安静下来，但代价是问题不再被发现；
+            关联降噪的前提恰恰是<strong>把所有事件都采进来</strong>，只是不逐条推送。
+            考场上遇到「减少告警数量」的描述，要先分清减的是<strong>采集</strong>还是<strong>通知</strong>。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出这些区分。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>先量，再降。没有基线数字，降噪做完了也说不清有没有效果。</p>
+          <ul>
+            <li><strong>量两个数</strong>：一次事故<strong>产生多少条告警</strong>，其中<strong>多少条被人真正打开过</strong>。
+              后者除以前者，就是这个通道的信噪比。低于一成，说明通道已经废了。</li>
+            <li><strong>先做时间窗聚合，再做拓扑聚合</strong>：同一分钟内的同类告警先合并（最容易做、见效最快），
+              再引入服务依赖关系，把下游的连锁告警折叠到上游那一条上。</li>
+            <li><strong>定期清理僵尸规则</strong>：连续 90 天触发过、但从没有人处理过的规则，
+              要么删掉，要么降级成看板上的一条线。留着只会继续消耗注意力。</li>
+            <li><strong>聚合后的通知要带影响面</strong>：一条通知里要写清它代表了多少条原始事件、涉及哪些服务。
+              只给一句结论、不给范围，值班人还是得回去翻原始告警。</li>
+            <li><strong>不要指望它救烂告警</strong>：如果规则本身就是「CPU 超过 70% 就报」这种没有业务含义的告警，
+              AIOps 只是把一堆无意义的通知合并成一条无意义的通知。<strong>先修规则，再上降噪。</strong></li>
+          </ul>
+          <p class="mb-0 muted"><small>以上五条实施建议为本站教学整理，官方文件未规定告警治理的具体做法。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度</strong>：给一段场景 —— 一次故障产生大量告警、值班人无法分辨、响应变慢 ——
+              问应当引入什么，或问这段描述体现了什么问题。方向是 <strong>AIOps 的告警关联与降噪</strong>。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「关闭部分告警 / 调高阈值」</strong>（这是减少监控覆盖，不是降噪，是典型错误选项）、
+              <strong>「增加值班人手」</strong>（把问题当成人力不足，没有触及告警量本身）、
+              <strong>「加更多监控」</strong>（方向完全相反，是在加剧痛点）。</li>
+            <li><strong>排除技巧</strong>：凡是靠<strong>看得更少</strong>来换安静的选项，先划掉；
+              正确方向一定是<strong>采集不变、通知变少</strong>。
+              再看选项有没有触及「同一根因重复报警」这个机制 —— 没触及机制的都是绕开问题。</li>
+            <li><strong>陷阱写法</strong>：把 AIOps 的效果说成「减少了故障数量」。
+              <strong>它不减少故障，只减少定位故障所需的时间</strong>；
+              作用点落在<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈（2.4）</a>，不是在预防。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布，以上命题角度、干扰项分析与排除技巧均为本站教学推断；
+            仅描述命题角度，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">告警疲劳不是告警太吵，是人已经不听了。</p>
+          <p class="mb-0 muted"><small>配套一句：<strong>降噪减的是通知，不是监控</strong> ——
+            采集一条不少，只是同一件事只说一遍（本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-7-6-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-7-6-3</div>
+        <h3 class="kp__title">与可观测性的分工，以及 AIOps 的边界与风险<span class="en">Observability Feeds It · Where AIOps Stops Working</span></h3>
+        <div class="badge-row">
+          <span class="badge badge--plain">📘 官方模块子项</span>
+          <span class="badge badge--new">🆕 v3.6 新增</span>
+          <span class="badge badge--note">📝 教学整理</span>
+        </div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            分工只有一句话：<strong>可观测性负责产生高质量的数据，AIOps 负责在数据太多时筛出值得看的部分。</strong>
+          </p>
+          <p class="mb-0">
+            顺序不可颠倒。<strong>没有可观测性，AIOps 只是在噪音上做统计</strong> ——
+            模型学不到没被采集的东西，也无法从缺失字段里推出因果。
+            见 <a href="../ch03-key-practices/3.8-observability.html">第 3 章 监控与可观测性（3.8）</a>。
+          </p>
+          <div class="src-note">
+            <em>Monitoring and Observability</em> 与 <em>AIOps</em> 均属 <strong>v3.6 新增学习目标</strong>
+            （来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标）。
+            <strong>把两者表述为「数据层 → 筛选层 → 决策层」的分工，是本站的教学整理</strong>，官方未以此形式给出层次关系。
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>这一层要单独讲，是因为<strong>两个方向的失败都真实发生过</strong>，而且长得完全不一样。</p>
+          <ul>
+            <li><strong>只有可观测性、没有筛选层</strong>：某团队接入了完整的指标、日志与追踪，
+              建了 <strong>28 张面板</strong>。事故发生时，三个人分头翻面板，
+              <strong>25 分钟</strong>后才对上号 —— 数据一直都在，只是没人来得及看。</li>
+            <li><strong>先上 AIOps、后补可观测性</strong>：另一个团队采购了异常检测，
+              但只接入了主机层面的 CPU 与内存。模型稳定报出「主机正常」，
+              而故障发生在<strong>下游第三方支付接口的 P99 延迟</strong>上 —— 那个指标压根没被采集。
+              <strong>模型没有说错，它只是不知道。</strong></li>
+          </ul>
+          <p class="mb-0">
+            两个案例指向同一条：<strong>这两层是串联关系，缺哪一层都会在事故里现形</strong>，
+            但症状不同 —— 前者是「有数据看不完」，后者是「模型很自信但看错了地方」。
+          </p>
+          <p class="mb-0 muted"><small>两个案例均为本站构造的教学示例，非真实调研数据。</small></p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:20%">维度</th><th style="width:40%">可观测性 Observability</th><th>AIOps</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>回答的问题</strong></td>
+                  <td>「这个系统现在到底在发生什么，我能不能问出来」</td>
+                  <td>「这么多东西里，<strong>哪几条值得现在看</strong>」</td>
+                </tr>
+                <tr>
+                  <td><strong>输入</strong></td>
+                  <td>运行中的系统本身（埋点、探针、追踪上下文）</td>
+                  <td>可观测性已经产出的数据 —— <strong>它的输入是上一层的输出</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>输出</strong></td>
+                  <td>可以任意提问的原始素材</td>
+                  <td>压缩过的结论候选 + 证据链</td>
+                </tr>
+                <tr>
+                  <td><strong>缺席时的症状</strong></td>
+                  <td>问不出来 —— 想查的那个维度当初没埋</td>
+                  <td>看不过来 —— 数据都在，但人被淹没</td>
+                </tr>
+                <tr>
+                  <td><strong>能不能补对方的缺</strong></td>
+                  <td>不能替人做筛选，面板再多也要人去看</td>
+                  <td><strong>绝对不能补上没被采集的数据</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted"><small>最容易混的一点：<strong>AIOps 不能补上可观测性的缺口</strong>。
+            很多人默认「模型会自己发现异常」，于是把埋点欠账留着不还。
+            但模型的视野等于数据的视野 —— <strong>没采的字段，对模型来说不存在</strong>，
+            它只会在剩下的字段里给出一个看起来很自信的错误答案。</small></p>
+          <p class="mb-0 muted"><small>本对照表为本站教学整理，官方未以此形式给出两者的分工对照。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>把边界当成引入前的检查清单，而不是用过之后的抱怨清单：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:26%">边界 / 风险</th><th>具体表现与应对</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>冷启动</strong></td>
+                  <td>模型需要历史数据。<strong>新系统、新服务上线初期效果最差</strong> ——
+                    正常基线还没形成，正常波动会被报成异常。应对：新服务先跑显式规则，攒够历史再切</td>
+                </tr>
+                <tr>
+                  <td><strong>模型漂移</strong></td>
+                  <td>架构改造、流量结构变化、大促之后，历史分布不再成立，误报率会突然上升。
+                    应对：把重大变更登记进去，变更后主动重训而不是等着被误报教育</td>
+                </tr>
+                <tr>
+                  <td><strong>黑盒不可取信</strong></td>
+                  <td>事故当中，一个说不出理由的结论没人敢照着做。
+                    应对：<strong>任何输出都必须能展开到原始事件</strong>，不能回溯的结论视同没有</td>
+                </tr>
+                <tr>
+                  <td><strong>辅助而非替代</strong></td>
+                  <td>它给的是候选根因，不是判决。<strong>决定动手、承担后果的仍然是人</strong>。
+                    把它接成全自动处置之前，先看几个月的准确率</td>
+                </tr>
+                <tr>
+                  <td><strong>垃圾进，垃圾出</strong></td>
+                  <td>告警规则本身没有业务含义时，<strong>AIOps 只是在降低垃圾的音量</strong>。
+                    应对：先治理告警规则，再谈降噪比例</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">
+            落到判断动作上只有一句：<strong>引入之前，先确认要靠它发现的那类问题，对应的数据已经被采集了。</strong>
+            答不上来，先回去做可观测性。
+          </p>
+          <p class="mb-0 muted"><small>本边界与风险清单为本站教学整理，官方将 AIOps 列为学习目标，未规定其局限性与应对方式。</small></p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul>
+            <li><strong>命题角度</strong>：考两者的<strong>先后与依赖关系</strong> ——
+              问 AIOps 的输入来自哪里，或问在没有可观测性的情况下引入 AIOps 会怎样。
+              方向是「可观测性在前，AIOps 依赖它产出的数据」。</li>
+            <li><strong>干扰项长什么样</strong>：
+              <strong>「AIOps 可以取代可观测性建设」</strong>（顺序反了）、
+              <strong>「AIOps 能自动修复故障」</strong>（那是自动化的执行层，不是判断层）、
+              <strong>「AIOps 让人不必再做判断」</strong>（辅助不是替代，这是最典型的错误方向）。</li>
+            <li><strong>排除技巧</strong>：凡是把 AIOps 描述成<strong>「替代」「取代」「不再需要人」</strong>的选项，
+              一律先划掉 —— Foundation 层面对新技术的表述一贯是<strong>支持与增强</strong>，不是替代。
+              这条技巧对 v3.6 的几个新增主题普遍适用。</li>
+            <li><strong>与第二步反馈的连线</strong>：AIOps 服务的是
+              <strong>「缩短从故障发生到被理解的时间」</strong>，
+              作用点在<a href="../ch02-core-principles/2.4-second-way-feedback.html">第二步 · 反馈（2.4）</a>，
+              不在第一步流动，也不在第三步持续改进。这条归属关系是最可能被拿来出辨析题的角度。</li>
+          </ul>
+          <p class="mb-0 muted"><small>官方未公布命题规律与题型分布；以上命题角度、干扰项分析、排除技巧，
+            以及「AIOps 归属第二步反馈」这条归属判断，均为本站教学推断，
+            官方样题答案键未涉及 AIOps。仅描述命题角度，不复制任何官方样题的题干与选项原文。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">AIOps 是过滤器，不是传感器；它减少要看的东西，不减少要负的责。</p>
+          <p class="mb-0 muted"><small>一句话推论：<strong>可观测性决定模型的视野上限，模型只能在采到的数据里聪明</strong> ——
+            所以先补埋点，再谈算法（本站教学整理）。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li><strong>考试权重提示</strong>：本章 v3.4 最多 <strong>2 题</strong>，全书最低（DOFD v3.4 Examination Requirements，2022-05；v3.6 未公开重新发布权重表）。AIOps 属 v3.6 新增内容，<strong>按理解学，不要在这一节堆应试时间</strong></li>
+        <li><strong>一句话定义</strong>：用机器学习与数据分析处理运维数据（指标 · 日志 · 事件 · 追踪），产出运维判断</li>
+        <li><strong>四类能力</strong>：异常检测 · 告警关联与降噪 · 根因辅助定位 · 容量与故障预测（分类为本站教学整理）</li>
+        <li><strong>核心痛点是告警疲劳</strong>：一个根因在十几个服务上各报一次，值班人被淹没后整体忽略通道，真信号一起丢掉</li>
+        <li><strong>降噪减的是通知，不是监控</strong>：关联与去重发生在<strong>告警进入通知通道之前</strong>，采集一条不少</li>
+        <li><strong>分工与顺序</strong>：可观测性<strong>产生</strong>数据，AIOps <strong>筛选</strong>数据。没有可观测性，AIOps 只是在噪音上做统计</li>
+        <li><strong>五条边界</strong>：冷启动差 · 模型会漂移 · 黑盒结论难取信 · 辅助不替代判断 · 告警规则烂则只是调低垃圾音量</li>
+        <li><strong>归属</strong>：服务于「缩短从故障发生到被理解的时间」，落在<strong>第二步 · 反馈</strong>（归属判断为本站教学推断）</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：<strong>AIOps</strong> 属 <strong>v3.6 新增学习目标</strong>，
+      出自 PeopleCert 现行 DevOps Foundation 产品页公布的学习目标；
+      <em>Monitoring and Observability</em>、生成式 AI 用例同属 v3.6 新增学习目标。
+      <strong>AIOps 不在 DOFD v3.4 官方考纲术语表（Concept and Terminology List）的 66 条内</strong>，
+      因此本节不标「⭐ 考纲核心」；但它是<strong>官方公布的学习目标，属官方内容</strong>，
+      所以标 <strong>📘 官方模块子项</strong> 与 <strong>🆕 v3.6 新增</strong>，而<strong>不标「🧭 延伸 · 非考纲」</strong>。
+      本节引用的术语表条目为
+      <em>Mean Time to Repair/Recover (MTTR)</em>；<em>Automation</em> 为 v3.4 课程大纲 M6 模块子项。
+      <em>AI and Machine Learning</em> 亦为 v3.4 课程大纲 M6 模块子项，
+      与本节主题<strong>相关但并非同一条目</strong>；AIOps 作为独立学习目标出现在 v3.6
+      （来源：PeopleCert 现行 DevOps Foundation 产品页公布的学习目标），
+      v3.6 新增的是 <em>AIOps</em> 这一具体命名与运维侧定位，AI/ML 主题本身在 v3.4 已经存在。
+      Bloom 1–2 的认知层级范围出自 <strong>DOFD v3.4 Examination Requirements（2022-05）</strong>；
+      v3.6 未公开重新发布题数权重表。本章在 v3.4 题数分布中最多 2 题，为全书最低。
+      <strong>教学整理部分</strong>：三层分工图（图 7-6-1）、告警路径对比图（图 7-6-2）、
+      四类能力分类、AIOps 与可观测性 / 阈值监控 / 自动化 / 生成式 AI 用例的对照表、
+      告警治理与引入建议、五条边界与风险清单、各面的命题角度与干扰项分析，
+      以及「AIOps 归属第二步反馈」这条判断，官方均未以此形式给出，已分别在对应位置就地标注。
+      文中全部数字化案例为本站构造的教学示例，非真实调研数据。本节不涉及具体 AIOps 产品。
+      相关小节：<a href="../ch03-key-practices/3.8-observability.html">3.8 监控与可观测性</a>、
+      <a href="../ch02-core-principles/2.4-second-way-feedback.html">2.4 第二步：反馈</a>、
+      <a href="../ch06-automation/6.6-vsm-platform-genai.html">第 6 章 VSM 平台与生成式 AI 用例（6.6）</a>。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+</body>
+</html>
