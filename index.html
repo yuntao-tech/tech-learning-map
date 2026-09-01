@@ -33,6 +33,11 @@ header{border-bottom:1px solid var(--border);background:var(--surface);position:
 .brand{display:flex;align-items:center;gap:.6rem;height:56px;font-weight:600;color:var(--text-strong);
   text-decoration:none;font-size:.9375rem}
 .brand svg{width:26px;height:26px;flex:none}
+.topnav{display:flex;align-items:center;justify-content:space-between;height:56px}
+.topnav a.nav__link{font-size:.875rem;color:var(--accent);text-decoration:none;font-weight:500;
+  padding:.35rem .75rem;border:1px solid var(--accent-line);border-radius:999px;white-space:nowrap}
+.topnav a.nav__link:hover{background:var(--accent-soft)}
+.brand{height:auto}
 .hero{padding:4rem 0 2.5rem}
 h1{font-size:2.75rem;line-height:1.25;margin:0 0 1rem;color:var(--text-strong);letter-spacing:-.01em}
 .hero p{margin:0;font-size:1.1875rem;color:var(--text-muted);max-width:46ch}
@@ -50,7 +55,17 @@ h2{font-size:1.375rem;margin:3rem 0 1.25rem;color:var(--text-strong)}
 .card__meta{display:flex;gap:1.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--border)}
 .m__v{font-weight:600;color:var(--accent);font-size:1.0625rem}
 .m__k{font-size:.75rem;color:var(--text-faint)}
-.card__go{margin-top:1rem;font-size:.9375rem;font-weight:500;color:var(--accent)}
+.card__go{margin-top:1.25rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:var(--accent-contrast);
+  font-size:.9375rem;font-weight:600;padding:.6rem 1.25rem;border-radius:999px;
+  box-shadow:var(--shadow-sm);transition:background .15s}
+.card:hover .btn{background:var(--accent-hover)}
+.hero__cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);
+  color:var(--accent-contrast);font-size:1rem;font-weight:600;padding:.75rem 1.5rem;
+  border-radius:999px;text-decoration:none;margin-top:1.75rem;box-shadow:var(--shadow-md);
+  transition:background .15s,transform .15s}
+.hero__cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.hero__hint{margin:.75rem 0 0;font-size:.8125rem;color:var(--text-faint)}
 .soon{background:var(--surface-2);border-style:dashed;box-shadow:none;cursor:default}
 .soon:hover{transform:none;box-shadow:none;border-color:var(--border-strong)}
 .soon .card__title{color:var(--text-muted)}
@@ -66,7 +81,7 @@ footer a:hover{text-decoration:underline}
 <body>
 
 <header>
-  <div class="wrap">
+  <div class="wrap topnav">
     <a class="brand" href="./">
       <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
         <circle cx="16" cy="16" r="14" stroke="var(--accent)" stroke-width="2"/>
@@ -75,6 +90,7 @@ footer a:hover{text-decoration:underline}
       </svg>
       <span>技术学习地图</span>
     </a>
+    <a class="nav__link" href="devops/">DevOps Foundation →</a>
   </div>
 </header>
 
@@ -84,6 +100,8 @@ footer a:hover{text-decoration:underline}
     <h1>把知识学成一张地图，<br>而不是一堆名词</h1>
     <p>每个技术体系一套零依赖、可离线打开的中文学习站。不追求覆盖所有考点，
        而是把每个概念的来龙去脉讲清楚：它为什么存在、解决什么问题、和相邻概念差在哪。</p>
+    <a class="hero__cta" href="devops/">开始学习 DevOps Foundation →</a>
+    <p class="hero__hint">目前收录 1 个体系，更多筹备中</p>
   </section>
 
   <h2>课程体系</h2>
@@ -105,7 +123,7 @@ footer a:hover{text-decoration:underline}
         <div><div class="m__v">65%</div><div class="m__k">及格线</div></div>
         <div><div class="m__v">开卷</div><div class="m__k">仅限官方教材</div></div>
       </div>
-      <div class="card__go">进入学习站 →</div>
+      <div class="card__go"><span class="btn">进入学习站 →</span></div>
     </a>
 
     <div class="card soon">
