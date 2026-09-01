@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>技术学习地图 · tech-learning-map</title>
+<meta name="description" content="一张持续生长的技术学习地图。每个技术体系一套零依赖、可离线的中文学习站：讲透因果关系，而不是罗列考点。">
+<style>
+:root{
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  --bg:#faf8f5; --surface:#fff; --surface-2:#f4f1eb; --border:#e3ddd2; --border-strong:#cfc6b7;
+  --text:#23201c; --text-strong:#100e0c; --text-muted:#6b645b; --text-faint:#948c81;
+  --accent:#0f6f6c; --accent-hover:#0b5a57; --accent-contrast:#fff; --accent-soft:#e2f0ef; --accent-line:#9ccecb;
+  --core-fg:#9a5b06; --core-bg:#fcf0da; --core-line:#e8c98c;
+  --shadow-sm:0 1px 2px rgba(23,20,16,.06); --shadow-md:0 2px 10px rgba(23,20,16,.07);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#131619; --surface:#1a1e22; --surface-2:#21262b; --border:#2e353b; --border-strong:#454e56;
+    --text:#dfdcd6; --text-strong:#f4f2ee; --text-muted:#9aa1a8; --text-faint:#767d84;
+    --accent:#4ec9c0; --accent-hover:#6fdad2; --accent-contrast:#10201f; --accent-soft:#14312f; --accent-line:#2f6d68;
+    --core-fg:#e0aa5c; --core-bg:#352915; --core-line:#6b5325;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow-md:0 2px 10px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);
+  font-size:1.0625rem;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.5rem}
+header{border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:.6rem;height:56px;font-weight:600;color:var(--text-strong);
+  text-decoration:none;font-size:.9375rem}
+.brand svg{width:26px;height:26px;flex:none}
+.hero{padding:4rem 0 2.5rem}
+h1{font-size:2.75rem;line-height:1.25;margin:0 0 1rem;color:var(--text-strong);letter-spacing:-.01em}
+.hero p{margin:0;font-size:1.1875rem;color:var(--text-muted);max-width:46ch}
+h2{font-size:1.375rem;margin:3rem 0 1.25rem;color:var(--text-strong)}
+.cards{display:grid;gap:1rem}
+.card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:1.5rem;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);
+  transition:border-color .15s,box-shadow .15s,transform .15s}
+.card:hover{border-color:var(--accent-line);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.card__top{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.5rem}
+.card__title{font-size:1.375rem;font-weight:600;color:var(--text-strong)}
+.badge{font-size:.75rem;padding:.15rem .5rem;border-radius:999px;font-weight:500;
+  background:var(--core-bg);color:var(--core-fg);border:1px solid var(--core-line);white-space:nowrap}
+.card__desc{color:var(--text-muted);font-size:.9375rem;line-height:1.7;margin:0 0 1rem}
+.card__meta{display:flex;gap:1.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--border)}
+.m__v{font-weight:600;color:var(--accent);font-size:1.0625rem}
+.m__k{font-size:.75rem;color:var(--text-faint)}
+.card__go{margin-top:1rem;font-size:.9375rem;font-weight:500;color:var(--accent)}
+.soon{background:var(--surface-2);border-style:dashed;box-shadow:none;cursor:default}
+.soon:hover{transform:none;box-shadow:none;border-color:var(--border-strong)}
+.soon .card__title{color:var(--text-muted)}
+.note{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:8px;
+  padding:1rem 1.25rem;font-size:.9375rem;line-height:1.7;color:var(--text)}
+footer{margin-top:4rem;padding:2rem 0;border-top:1px solid var(--border);
+  font-size:.8125rem;color:var(--text-faint)}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media (max-width:600px){h1{font-size:2.125rem}.hero{padding:2.5rem 0 1.5rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
+        <circle cx="16" cy="16" r="14" stroke="var(--accent)" stroke-width="2"/>
+        <path d="M16 4a12 12 0 0 1 0 24" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="4.5" fill="var(--accent)"/>
+      </svg>
+      <span>技术学习地图</span>
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <h1>把知识学成一张地图，<br>而不是一堆名词</h1>
+    <p>每个技术体系一套零依赖、可离线打开的中文学习站。不追求覆盖所有考点，
+       而是把每个概念的来龙去脉讲清楚：它为什么存在、解决什么问题、和相邻概念差在哪。</p>
+  </section>
+
+  <h2>课程体系</h2>
+  <div class="cards">
+
+    <a class="card" href="devops/">
+      <div class="card__top">
+        <span class="card__title">DevOps Foundation</span>
+        <span class="badge">DOFD v3.6</span>
+      </div>
+      <p class="card__desc">
+        面向 DevOps Institute / PeopleCert 的 DevOps Foundation® 认证。
+        覆盖考纲八大知识域，外加导论与附录：术语表、缩略语速查、考纲对照、官方来源清单。
+        每个知识点回答六个问题，易混淆概念单独辨析。
+      </p>
+      <div class="card__meta">
+        <div><div class="m__v">8</div><div class="m__k">知识域</div></div>
+        <div><div class="m__v">40</div><div class="m__k">道单选题</div></div>
+        <div><div class="m__v">65%</div><div class="m__k">及格线</div></div>
+        <div><div class="m__v">开卷</div><div class="m__k">仅限官方教材</div></div>
+      </div>
+      <div class="card__go">进入学习站 →</div>
+    </a>
+
+    <div class="card soon">
+      <div class="card__top"><span class="card__title">更多体系筹备中</span></div>
+      <p class="card__desc" style="margin:0">
+        Kubernetes、SRE、ITIL 4、云厂商认证等方向都可以按同一套结构展开。
+        每个体系独占一个顶层目录，互不共享资源，可以独立演进。
+      </p>
+    </div>
+
+  </div>
+
+  <h2>关于来源</h2>
+  <div class="note">
+    所有内容以<strong>发证机构官方现行文件</strong>为准，不采信培训机构宣传与旧版课程资料。
+    凡是版本存疑或官方未公开的部分，都在正文中标注了来源与推断依据 —— 
+    你可以不同意某个结论，但应该能顺着标注查到它是怎么来的。
+  </div>
+
+  <footer>
+    <a href="https://github.com/yuntao-tech/tech-learning-map">GitHub 仓库</a> ·
+    纯静态站点，零依赖、零构建、无 CDN，可完整离线使用
+  </footer>
+
+</div>
+</body>
+</html>

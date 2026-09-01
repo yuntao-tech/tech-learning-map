@@ -3,6 +3,13 @@
 面向 **DevOps Institute / PeopleCert 的 DevOps Foundation® (DOFD) v3.6** 认证的中文学习资料。
 目标不是背题，而是建立一张能自我解释的 DevOps 知识地图。
 
+## 在线访问
+
+**<https://yuntao-tech.github.io/tech-learning-map/devops/>**
+
+打开即用，无需下载。本仓库还收录了其他技术体系，总索引见
+<https://yuntao-tech.github.io/tech-learning-map/>。
+
 ## 快速开始
 
 ```bash
