@@ -253,3 +253,95 @@ svg text { font-family: var(--font-sans); }
 .hero__title { font-size: var(--fs-3xl); letter-spacing: -0.02em; }
 .hero__sub { font-size: var(--fs-md); color: var(--text-muted); margin-top: var(--sp-3); max-width: 62ch; line-height: 1.7; }
 .hero__meta { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-5); }
+
+/* ── 术语弹层 ─────────────────────────────────────────────
+   正文里的 <span class="en"> 命中术语表后变为可点，弹出「是什么 + 去哪学」。
+   本站是学知识体系，所以日常义 / 词源这类英语层折进「更多」，默认收起。 */
+
+.en--term {
+  cursor: pointer;
+  border-bottom: 1px dashed var(--border-strong);
+  transition: color .12s, border-color .12s;
+}
+.en--term:hover,
+.en--term[aria-expanded="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.en--term:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+.gloss {
+  position: absolute;
+  z-index: 60;
+  width: min(30rem, calc(100vw - 2rem));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-lg);
+  padding: var(--sp-5);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+.gloss[hidden] { display: none; }
+
+.gloss__head { display: flex; align-items: baseline; gap: var(--sp-1); flex-wrap: wrap; }
+.gloss__zh   { font-size: var(--fs-lg); font-weight: 600; color: var(--text-strong); }
+.gloss__en   { color: var(--text-muted); font-size: var(--fs-sm); }
+.gloss__abbr {
+  font-family: var(--font-mono); font-size: var(--fs-xs);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px; color: var(--text-muted);
+}
+.gloss__badges { margin-top: var(--sp-1); }
+.gloss__def    { margin: var(--sp-1) 0 0; }
+.gloss__def:empty { display: none; }
+
+.gloss__more-btn {
+  margin-top: var(--sp-1);
+  background: none; border: none; padding: 0;
+  color: var(--text-muted); font: inherit; font-size: var(--fs-xs);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+}
+.gloss__more-btn:hover { color: var(--accent); }
+.gloss__more-btn::before { content: "▸"; transition: transform .12s; display: inline-block; }
+.gloss__more-btn[aria-expanded="true"]::before { transform: rotate(90deg); }
+
+.gloss__more {
+  margin-top: var(--sp-1);
+  padding-top: var(--sp-1);
+  border-top: 1px dashed var(--border);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.gloss__more[hidden] { display: none; }
+.gloss__row { margin-top: 6px; display: flex; gap: 6px; }
+.gloss__row:first-child { margin-top: 0; }
+.gloss__k {
+  flex: 0 0 3.4em; color: var(--text-faint);
+  font-size: var(--fs-xs); white-space: nowrap;
+}
+.gloss__v { flex: 1; min-width: 0; }
+.gloss__ex { font-style: italic; color: var(--text-faint); }
+
+.gloss__go {
+  display: inline-block; margin-top: var(--sp-1);
+  font-size: var(--fs-xs); color: var(--accent); text-decoration: none;
+}
+.gloss__go:hover { text-decoration: underline; }
+
+.gloss__close {
+  position: absolute; top: 6px; right: 8px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-faint); font-size: 1rem; line-height: 1; padding: 4px;
+}
+.gloss__close:hover { color: var(--text); }
+
+/* 窄屏改成贴底抽屉，避免弹层被挤出视口 */
+@media (max-width: 640px) {
+  .gloss {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto;
+    width: auto; max-height: 70vh; overflow-y: auto;
+    border-radius: var(--r-sm) var(--r-sm) 0 0;
+    border-bottom: none;
+  }
+}
+
+@media print { .gloss { display: none !important; } .en--term { border-bottom: none; } }
