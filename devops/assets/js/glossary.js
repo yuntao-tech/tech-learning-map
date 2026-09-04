@@ -149,75 +149,158 @@
     /* 英文母语者写的释义。中文说「是什么」，英文让你看见母语者怎么描述它 */
     if (entry.defEn) pop.appendChild(el("p", "gloss__defen", entry.defEn));
 
-    /* 组合词逐词拆解：每个成分词的读音 + 中文义 + 英文释义。
-       这是组合词最该给的东西——读者认得每个词，却不知道它们各自在这儿是什么意思。 */
-    var ps = entry.parts || [];
-    if (ps.length >= 2) {
-      var pbtn = el("button", "gloss__more-btn", "逐词看（" + ps.length + "）");
-      pbtn.type = "button";
-      pbtn.setAttribute("aria-expanded", "false");
-      var pbox = el("div", "gloss__parts");
-      pbox.hidden = true;
-
-      ps.forEach(function (key) {
-        var w = GW[key];
-        if (!w) return;
-        var item = el("div", "gloss__part");
-        var h = el("div", "gloss__part-head");
-        h.appendChild(el("span", "gloss__part-w", key));
-        if (w.lemma) h.appendChild(el("span", "gloss__part-lemma", "→ " + w.lemma));
-        if (w.ipa) h.appendChild(el("span", "gloss__ipa", w.ipa));
-        if (TTS) {
-          var b = el("button", "gloss__say gloss__say--sm", "🔊");
-          b.type = "button";
-          b.title = "朗读 " + key;
-          b.setAttribute("aria-label", "朗读 " + key);
-          b.addEventListener("click", function (ev) { ev.stopPropagation(); speak(key, b); });
-          h.appendChild(b);
-        }
-        item.appendChild(h);
-        if (w.zh) item.appendChild(el("div", "gloss__part-zh", w.zh));
-        if (w.en) item.appendChild(el("div", "gloss__part-en", w.en));
-        pbox.appendChild(item);
-      });
-
-      if (pbox.childNodes.length) {
-        pbtn.addEventListener("click", function (ev) {
-          ev.stopPropagation();
-          var isOpen = pbox.hidden;
-          pbox.hidden = !isOpen;
-          pbtn.setAttribute("aria-expanded", String(isOpen));
-          place(trigger);
-        });
-        pop.appendChild(pbtn);
-        pop.appendChild(pbox);
-      }
-    }
-
-    /* 英语层：日常义 / 字面 / 词源 / 易错点。次要内容，默认收起 */
-    var m = entry.more;
-    if (m && (m.dailyZh || m.literal || m.etymology || m.pitfall)) {
-      var btn = el("button", "gloss__more-btn", "日常英语里的它");
-      btn.type = "button";
-      btn.setAttribute("aria-expanded", "false");
-      var box = el("div", "gloss__more");
+    /* ── 折叠区：参照 WordMaster 单词/术语详情页的分区与命名 ────────── */
+    function fold(label, fill) {
+      var b = el("button", "gloss__more-btn", label);
+      b.type = "button";
+      b.setAttribute("aria-expanded", "false");
+      var box = el("div", "gloss__fold");
       box.hidden = true;
-
-      if (m.dailyZh) box.appendChild(row("日常义", m.dailyZh));
-      if (m.dailyEx) box.appendChild(row("例", m.dailyEx + (m.dailyExZh ? "　" + m.dailyExZh : ""), true));
-      if (m.literal) box.appendChild(row("字面", m.literal.replace(/^字面：|^本义：/, "")));
-      if (m.etymology) box.appendChild(row("词源", m.etymology));
-      if (m.pitfall) box.appendChild(row("易错", m.pitfall));
-
-      btn.addEventListener("click", function (ev) {
+      fill(box);
+      if (!box.childNodes.length) return;
+      b.addEventListener("click", function (ev) {
         ev.stopPropagation();
         var isOpen = box.hidden;
         box.hidden = !isOpen;
-        btn.setAttribute("aria-expanded", String(isOpen));
+        b.setAttribute("aria-expanded", String(isOpen));
         place(trigger);
       });
-      pop.appendChild(btn);
+      pop.appendChild(b);
       pop.appendChild(box);
+    }
+
+    function sec(box, title, fill) {
+      var wrap = el("div", "gloss__sec");
+      wrap.appendChild(el("div", "gloss__sec-t", title));
+      var body = el("div", "gloss__sec-b");
+      fill(body);
+      if (!body.childNodes.length) return;
+      wrap.appendChild(body);
+      box.appendChild(wrap);
+    }
+
+    function sayBtn(text, small) {
+      if (!TTS || !text) return null;
+      var b = el("button", "gloss__say" + (small ? " gloss__say--sm" : ""), "🔊");
+      b.type = "button";
+      b.title = "朗读 " + text;
+      b.setAttribute("aria-label", "朗读 " + text);
+      b.addEventListener("click", function (ev) { ev.stopPropagation(); speak(text, b); });
+      return b;
+    }
+
+    /* 逐词看：组合词的每个成分词，按 WordMaster 单词详情页的分区排 */
+    var ps = entry.parts || [];
+    if (ps.length >= 2) {
+      fold("逐词看（" + ps.length + "）", function (box) {
+        ps.forEach(function (key) {
+          var w = GW[key];
+          if (!w) return;
+          var item = el("div", "gloss__word");
+
+          var h = el("div", "gloss__part-head");
+          h.appendChild(el("span", "gloss__part-w", key));
+          if (w.lemma) h.appendChild(el("span", "gloss__part-lemma", "→ " + w.lemma));
+          if (w.pos) h.appendChild(el("span", "gloss__pos", w.pos));
+          if (w.ipa) h.appendChild(el("span", "gloss__ipa", w.ipa));
+          var sb = sayBtn(key, true);
+          if (sb) h.appendChild(sb);
+          item.appendChild(h);
+
+          sec(item, "日常含义（先记这个）", function (b) {
+            if (w.zh) b.appendChild(el("div", "gloss__part-zh", w.zh));
+            if (w.en) b.appendChild(el("div", "gloss__part-en", w.en));
+            if (w.example) {
+              var ex = el("div", "gloss__eg");
+              ex.appendChild(el("div", "gloss__eg-en", w.example));
+              if (w.exampleZh) ex.appendChild(el("div", "gloss__eg-zh", w.exampleZh));
+              b.appendChild(ex);
+            }
+          });
+          sec(item, "词源", function (b) {
+            if (w.etymology) b.appendChild(el("div", null, w.etymology));
+            if (w.literal) b.appendChild(el("div", "gloss__lit", w.literal));
+          });
+          sec(item, "到了计算机里", function (b) {
+            if (w.techShift) b.appendChild(el("div", null, w.techShift));
+          });
+          sec(item, "常见误读", function (b) {
+            if (w.pitfall) b.appendChild(el("div", null, w.pitfall));
+          });
+          sec(item, "同源词", function (b) {
+            if (w.cognates && w.cognates.length) {
+              var row2 = el("div", "gloss__cog");
+              w.cognates.forEach(function (c) { row2.appendChild(el("span", "gloss__cog-i", c)); });
+              b.appendChild(row2);
+            }
+          });
+          box.appendChild(item);
+        });
+      });
+    }
+
+    /* WordMaster 术语层：字面拆解 / 词素拆解 / 词源 / 推导链 / 别搞反了 */
+    var wm = entry.wm;
+    if (wm) {
+      fold("词源与推导", function (box) {
+        sec(box, "日常义", function (b) {
+          if (!wm.daily) return;
+          if (wm.daily.zh) b.appendChild(el("div", null, wm.daily.zh));
+          if (wm.daily.en) b.appendChild(el("div", "gloss__part-en", wm.daily.en));
+          if (wm.daily.example) {
+            var ex = el("div", "gloss__eg");
+            ex.appendChild(el("div", "gloss__eg-en", wm.daily.example));
+            if (wm.daily.exampleZh) ex.appendChild(el("div", "gloss__eg-zh", wm.daily.exampleZh));
+            b.appendChild(ex);
+          }
+        });
+        sec(box, "字面拆解", function (b) {
+          (wm.parts || []).forEach(function (p2) {
+            var r2 = el("div", "gloss__part");
+            var hh = el("div", "gloss__part-head");
+            hh.appendChild(el("span", "gloss__part-w", p2.word));
+            if (p2.senseHint) hh.appendChild(el("span", "gloss__part-hint", p2.senseHint));
+            r2.appendChild(hh);
+            if (p2.role) r2.appendChild(el("div", "gloss__part-role", p2.role));
+            b.appendChild(r2);
+          });
+          if (wm.literal) b.appendChild(el("div", "gloss__lit", wm.literal));
+        });
+        sec(box, "词素拆解", function (b) {
+          (wm.morphemes || []).forEach(function (m2) {
+            var r2 = el("div", "gloss__part");
+            var hh = el("div", "gloss__part-head");
+            hh.appendChild(el("span", "gloss__part-w", m2.piece));
+            if (m2.meaning) hh.appendChild(el("span", "gloss__part-hint", m2.meaning));
+            r2.appendChild(hh);
+            if (m2.from) r2.appendChild(el("div", "gloss__part-role", m2.from));
+            b.appendChild(r2);
+          });
+        });
+        sec(box, "词源", function (b) {
+          if (wm.etymology) b.appendChild(el("div", null, wm.etymology));
+        });
+        sec(box, "本义怎么走到计算机义", function (b) {
+          if (wm.derivationSummary) b.appendChild(el("div", "gloss__dsum", wm.derivationSummary));
+          (wm.derivation || []).forEach(function (st, n2) {
+            var r2 = el("div", "gloss__step");
+            r2.appendChild(el("span", "gloss__step-n", String(n2 + 1)));
+            var c2 = el("div", "gloss__step-b");
+            if (st.stepLabel) c2.appendChild(el("div", "gloss__step-l", st.stepLabel));
+            if (st.text) c2.appendChild(el("div", null, st.text));
+            r2.appendChild(c2);
+            b.appendChild(r2);
+          });
+        });
+        sec(box, "别搞反了", function (b) {
+          (wm.pitfalls || []).forEach(function (pf) {
+            var r2 = el("div", "gloss__pit");
+            if (pf.wrong) r2.appendChild(el("div", "gloss__pit-w", "✗ " + pf.wrong));
+            if (pf.right) r2.appendChild(el("div", "gloss__pit-r", "✓ " + pf.right));
+            b.appendChild(r2);
+          });
+        });
+      });
     }
 
     /* 去哪一节学。指向本页自己就不显示——原地打转没意义 */

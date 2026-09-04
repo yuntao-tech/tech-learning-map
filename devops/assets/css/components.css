@@ -424,8 +424,56 @@ svg text { font-family: var(--font-sans); }
   padding-left: 8px; border-left: 2px solid var(--border);
 }
 
-.gloss__parts { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
-.gloss__parts[hidden] { display: none; }
+.gloss__fold { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
+.gloss__fold[hidden] { display: none; }
+
+/* 分区标题，命名与 WordMaster 单词/术语详情页一致 */
+.gloss__sec { margin-top: 8px; }
+.gloss__sec:first-child { margin-top: 0; }
+.gloss__sec-t {
+  font-size: var(--fs-xs); font-weight: 600; color: var(--accent);
+  letter-spacing: .02em; margin-bottom: 2px;
+}
+.gloss__sec-b { font-size: var(--fs-xs); color: var(--text-muted); line-height: var(--lh-body); }
+
+.gloss__word {
+  margin-top: 10px; padding: 8px 10px;
+  background: var(--surface-2); border-radius: var(--r-sm);
+}
+.gloss__word:first-child { margin-top: 0; }
+
+.gloss__pos {
+  font-size: var(--fs-xs); color: var(--accent);
+  background: var(--accent-soft); border-radius: 3px; padding: 0 5px;
+}
+.gloss__part-hint { font-size: var(--fs-xs); color: var(--text); }
+.gloss__part-role { font-size: var(--fs-xs); color: var(--text-faint); margin-top: 1px; }
+
+.gloss__eg { margin-top: 4px; padding-left: 8px; border-left: 2px solid var(--accent-line); }
+.gloss__eg-en { color: var(--text); font-style: italic; }
+.gloss__eg-zh { color: var(--text-faint); }
+.gloss__lit { color: var(--accent); margin-top: 2px; }
+
+.gloss__cog { display: flex; flex-wrap: wrap; gap: 4px; }
+.gloss__cog-i {
+  font-size: var(--fs-xs); font-family: var(--font-mono);
+  background: var(--surface-3); border: 1px solid var(--border);
+  border-radius: 3px; padding: 0 5px; color: var(--text-muted);
+}
+
+.gloss__dsum { color: var(--text); font-weight: 500; margin-bottom: 6px; }
+.gloss__step { display: flex; gap: 8px; margin-top: 6px; }
+.gloss__step-n {
+  flex: 0 0 16px; height: 16px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-contrast);
+  font-size: 10px; line-height: 16px; text-align: center; font-weight: 700;
+}
+.gloss__step-b { flex: 1; min-width: 0; }
+.gloss__step-l { color: var(--accent); font-weight: 600; margin-bottom: 1px; }
+
+.gloss__pit { margin-top: 6px; }
+.gloss__pit-w { color: var(--warn-fg); }
+.gloss__pit-r { color: var(--text-muted); margin-top: 1px; }
 
 .gloss__part { margin-top: 8px; }
 .gloss__part:first-child { margin-top: 0; }

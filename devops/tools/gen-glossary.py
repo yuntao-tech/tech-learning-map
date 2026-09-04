@@ -314,15 +314,24 @@ if os.path.isdir(WMREV):
     # 只在「整个术语」层面精确匹配。绝不把词组拆成单词去碰运气——
     # 那会让「1st Way: Continuous Flow」挂上 continuous 的日常义，
     # 而本站是学知识体系，不是学英语。
+    # WordMaster 术语层完整数据。只带本站真的会显示的那些——
+    # 它那 402 条里有 375 条是 daemon / shard / flush 这类本站不出现的工程词，
+    # 全量带过来会让每页多加载 1.9 MB。
+    WM_KEEP = ('oneLiner', 'daily', 'tech', 'parts', 'morphemes', 'literal',
+               'etymology', 'derivationSummary', 'derivation', 'pitfalls')
     for key, e in G.items():
         cands = [key] + [norm(p) for p in re.split(r'\s*/\s*|\s*·\s*', e.get('en', ''))]
         for c in cands:
             if c in lookup:
                 kind, obj = lookup[c]
-                m = more_from_term(obj) if kind == 't' else more_from_word(obj)
                 composite = bool(re.search(r'·|/|\(', e.get('en', '')))
-                if m and not composite:
-                    e['more'] = m; n_more += 1
+                if not composite:
+                    full = {}
+                    for f in WM_KEEP:
+                        v = obj.get(f)
+                        if v: full[f] = v
+                    if full:
+                        e['wm'] = full; n_more += 1
                 break
 
 # ── 收尾 ───────────────────────────────────────────────────
@@ -380,6 +389,16 @@ for e in G.values():
             if zh: entry['zh'] = zh
             if en: entry['en'] = en
             if lem != key: entry['lemma'] = lem      # 释义取自基础词形，如实标出
+            # WordMaster 收了这个词就用它的完整字段——它是经过词源审阅的，
+            # 比 ECDICT 的词典 dump 好得多（有例句、词源、计算机义转折、易错点、同源词）
+            wmw = wm_words_full.get(key) or wm_words_full.get(lem)
+            if wmw:
+                for f in ('pos', 'example', 'exampleZh', 'etymology',
+                          'literal', 'techShift', 'pitfall', 'cognates'):
+                    v = wmw.get(f)
+                    if v: entry[f] = v
+                if wmw.get('dailyZh'): entry['zh'] = wmw['dailyZh']
+                if wmw.get('dailyEn'): entry['en'] = wmw['dailyEn']
             WORDS[key] = entry
         if key not in keep: keep.append(key)
     if len(keep) >= 2:
@@ -397,5 +416,5 @@ open('data/glossary.js', 'w', encoding='utf-8').write(out)
 print(f"A1 {n_a1} 行 · A2 {n_a2} 行 · 知识点 {n_kp} 个 → 词条 {len(G)} 条")
 print(f"锚点校验：丢弃 {dropped} 个跨页错配的锚点")
 print(f"音标 {n_ipa}/{len(G)} 条（{100*n_ipa//len(G)}%），其余交给朗读")
-print(f"带「更多」英语层的 {n_more} 条" + ("（已应用审阅修订）" if WMREV and os.path.isdir(WMREV) else ""))
+print(f"带 WordMaster 完整术语数据的 {n_more} 条 · 成分词里带完整数据的 {sum(1 for v in WORDS.values() if v.get('techShift') or v.get('pitfall'))} 个" + ("（已应用审阅修订）" if WMREV and os.path.isdir(WMREV) else ""))
 print(f"→ data/glossary.js  {os.path.getsize('data/glossary.js')/1024:.0f} KB")
