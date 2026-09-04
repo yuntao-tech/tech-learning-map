@@ -414,3 +414,29 @@ svg text { font-family: var(--font-sans); }
 }
 
 @media print { .gloss-fab, .gloss-search { display: none !important; } }
+
+/* ── 卡片：英文释义与逐词拆解 ───────────────────────────────── */
+.gloss { max-height: min(78vh, 40rem); overflow-y: auto; }
+
+.gloss__defen {
+  margin: 6px 0 0; font-size: var(--fs-xs); line-height: var(--lh-body);
+  color: var(--text-muted); font-style: italic;
+  padding-left: 8px; border-left: 2px solid var(--border);
+}
+
+.gloss__parts { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
+.gloss__parts[hidden] { display: none; }
+
+.gloss__part { margin-top: 8px; }
+.gloss__part:first-child { margin-top: 0; }
+.gloss__part-head { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.gloss__part-w {
+  font-weight: 600; color: var(--text-strong); font-size: var(--fs-sm);
+  font-family: var(--font-sans);
+}
+.gloss__part-lemma { font-size: var(--fs-xs); color: var(--text-faint); }
+.gloss__part-zh { font-size: var(--fs-xs); color: var(--text); margin-top: 1px; }
+.gloss__part-en {
+  font-size: var(--fs-xs); color: var(--text-muted); font-style: italic; margin-top: 1px;
+}
+.gloss__say--sm { width: 19px; height: 19px; font-size: 10px; }

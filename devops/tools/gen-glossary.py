@@ -121,6 +121,79 @@ def term_ipa(en, wm_terms, wm_words):
     return " ".join(parts) if all(parts) else None
 
 
+
+# ── 释义层：英文母语者释义 + 组合词逐词拆解 ──────────────────
+# 弹层空间够大，中文定义之外再给：①术语本身的英文释义 ②组合词每个成分词的义。
+# 成分词单独存一张表，词条只存词形数组——同一个 continuous 出现十几次，
+# 存十几份释义会把文件撑爆。
+def _clean_zh(t):
+    """ECDICT 的 translation 是词典 dump：多行、带 [医][计] 学科标签、词性行可能被截断。
+    库里既有真换行，也有字面的反斜杠 n 两个字符。直接摆进卡片会出现
+    「n. 水流, 小河, 流出, 趋势, 人潮\\n vt.」这种东西。
+    只取第一段、去掉学科标签、最多留四个义项。"""
+    if not t:
+        return ""
+    t = t.replace("\\n", "\n").replace("\\r", "\n")
+    line = ""
+    for ln in re.split(r"[\r\n]+", t):
+        ln = re.sub(r"\[[^\]]{1,6}\]", "", ln).strip()
+        if not ln:
+            continue
+        if re.fullmatch(r"[a-z]{1,4}\.?", ln):
+            continue
+        line = ln
+        break
+    if not line:
+        return ""
+    m = re.match(r"^([a-z]{1,4}\.)\s*(.*)$", line)
+    pos, body = (m.group(1), m.group(2)) if m else ("", line)
+    senses = [x.strip() for x in re.split(r"[,，;；]", body) if x.strip()][:4]
+    return (pos + " " if pos else "") + "、".join(senses)
+
+_ED, _SE, _BE = {}, {}, {}
+_ECT = {}
+try:
+    _ED = json.load(open(f"{WM}/WordMaster/Resources/english_defs.json"))["defs"]
+    _SE = json.load(open(f"{WM}/WordMaster/Resources/senses.json"))["entries"]
+    _BE = {w["word"].lower(): w for w in json.load(open(f"{WM}/WordMaster/Resources/basic_english.json"))}
+    _ECT = {w.lower(): _clean_zh(t) for w, t in
+            _db.execute("SELECT word,translation FROM dict WHERE translation IS NOT NULL AND translation!=''")}
+except Exception as _e:
+    print(f"  \u26a0\ufe0f  \u91ca\u4e49\u6e90\u8bfb\u53d6\u5931\u8d25\uff08{_e}\uff09", file=sys.stderr)
+
+# 虚词与序数残片，拆出来没有教学价值
+_PART_STOP = set(("a an the and or of to in on at for is are was were be with without "
+                  "vs versus how what why when where not it its their this that these those "
+                  "st nd rd th as by from into more less than").split())
+
+def _lemma_candidates(w):
+    """释义可以退到基础词形（operations → operation），因为义项是同一个。
+    注意这条规则不能用在音标上——Goals 读成 /gəul/ 就是教错读音。"""
+    w = w.lower(); out = [w]
+    for suf, rep in (("ies", "y"), ("ves", "f"), ("es", ""), ("s", ""),
+                     ("ing", ""), ("ed", ""), ("ly", ""), ("ally", "al")):
+        if w.endswith(suf) and len(w) - len(suf) >= 3:
+            b = w[:-len(suf)] + rep
+            out.append(b)
+            if suf in ("ing", "ed"):
+                out.append(b + "e")
+                if len(b) > 3 and b[-1] == b[-2]: out.append(b[:-1])
+    return out
+
+def word_gloss(w, wm_words):
+    """返回 (词形, 中文义, 英文母语释义)；查不到返回 None"""
+    for c in _lemma_candidates(w):
+        wmw = wm_words_full.get(c, {})
+        zh = wmw.get("dailyZh") or _ECT.get(c) or (_BE.get(c, {}) or {}).get("meaning")
+        en = (wmw.get("dailyEn") or (_ED.get(c, {}) or {}).get("en")
+              or ((_SE.get(c, {}) or {}).get("senses") or [{}])[0].get("en")
+              or (_BE.get(c, {}) or {}).get("englishDef"))
+        if zh or en:
+            return c, (zh or "").strip(), (en or "").strip()
+    return None
+
+
+wm_words_full = {}
 G = {}                      # normkey -> entry
 def put(key, **kw):
     e = G.setdefault(key, {})
@@ -220,6 +293,14 @@ if os.path.isdir(WMREV):
              'etymology': w.get('etymology'), 'pitfall': w.get('pitfall')}
         return {k: v for k, v in m.items() if v}
 
+    globals()['wm_words_full'] = {w['word'].lower(): w for w in WD.values()}
+    globals()['TECH_EN'] = {}
+    for t in T.values():
+        te = (t.get('tech') or {}).get('en')
+        if not te: continue
+        TECH_EN.setdefault(norm(t['term']), te)
+        for a in (t.get('aliases') or []): TECH_EN.setdefault(norm(a), te)
+        if t.get('abbr'): TECH_EN.setdefault(norm(t['abbr']), te)
     globals()['WM_TERMS'] = {norm(t['term']): t['phonetic'] for t in T.values() if t.get('phonetic')}
     globals()['WM_WORDS'] = {w['word'].lower(): w['phonetic'] for w in WD.values() if w.get('phonetic')}
 
@@ -270,9 +351,47 @@ for e in G.values():
     if not e.get('definition') and e.get('expansion'):
         e['definition'] = e['expansion']
 
+# 术语本身的英文母语释义
+_tech_en = globals().get('TECH_EN', {})
+n_defen = 0
+for e in G.values():
+    k = norm(e.get('en', ''))
+    d = (_tech_en.get(k) or (_ED.get(k, {}) or {}).get('en')
+         or ((_SE.get(k, {}) or {}).get('senses') or [{}])[0].get('en'))
+    if d: e['defEn'] = d.strip(); n_defen += 1
+
+# 组合词逐词拆解：词条只存词形，释义进共享词表
+WORDS, n_parts = {}, 0
+for e in G.values():
+    raw = [w for w in re.split(r'[^A-Za-z]+', e.get('en', '')) if w]
+    ws = [w for w in raw if len(w) > 1 and w.lower() not in _PART_STOP]
+    if len(ws) < 2: continue
+    keep = []
+    for w in ws:
+        g = word_gloss(w, wm_words_full)
+        if not g: continue
+        lem, zh, en = g
+        if not (zh or en): continue
+        key = w.lower()
+        if key not in WORDS:
+            entry = {}
+            ip = word_ipa(w, globals().get('WM_WORDS', {}))
+            if ip: entry['ipa'] = '/' + ip + '/'
+            if zh: entry['zh'] = zh
+            if en: entry['en'] = en
+            if lem != key: entry['lemma'] = lem      # 释义取自基础词形，如实标出
+            WORDS[key] = entry
+        if key not in keep: keep.append(key)
+    if len(keep) >= 2:
+        e['parts'] = keep
+        n_parts += 1
+
+print(f"英文母语释义 {n_defen} 条 · 逐词拆解 {n_parts} 条组合词，共 {len(WORDS)} 个成分词")
+
 out = ('// 本文件由 tools/gen-glossary.py 生成，请勿手工编辑。\n'
        '// 数据源：附录 A1 术语表 / A2 缩略语 / 各章知识点标题 / WordMaster DevOps 术语库（英语层）\n'
-       'window.GLOSSARY = ' + json.dumps(G, ensure_ascii=False, indent=1, sort_keys=True) + ';\n')
+       'window.GLOSSARY = ' + json.dumps(G, ensure_ascii=False, indent=1, sort_keys=True) + ';\n'
+       'window.GLOSSARY_WORDS = ' + json.dumps(WORDS, ensure_ascii=False, indent=1, sort_keys=True) + ';\n')
 open('data/glossary.js', 'w', encoding='utf-8').write(out)
 
 print(f"A1 {n_a1} 行 · A2 {n_a2} 行 · 知识点 {n_kp} 个 → 词条 {len(G)} 条")

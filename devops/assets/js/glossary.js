@@ -7,6 +7,7 @@
 (function () {
   "use strict";
   var G = window.GLOSSARY;
+  var GW = window.GLOSSARY_WORDS || {};
   if (!G) return;
 
   var BASE = window.SITE_BASE || "";
@@ -145,6 +146,54 @@
     if (entry.definition) pop.appendChild(el("p", "gloss__def", entry.definition));
     else if (entry.expansion) pop.appendChild(el("p", "gloss__def", entry.expansion));
 
+    /* 英文母语者写的释义。中文说「是什么」，英文让你看见母语者怎么描述它 */
+    if (entry.defEn) pop.appendChild(el("p", "gloss__defen", entry.defEn));
+
+    /* 组合词逐词拆解：每个成分词的读音 + 中文义 + 英文释义。
+       这是组合词最该给的东西——读者认得每个词，却不知道它们各自在这儿是什么意思。 */
+    var ps = entry.parts || [];
+    if (ps.length >= 2) {
+      var pbtn = el("button", "gloss__more-btn", "逐词看（" + ps.length + "）");
+      pbtn.type = "button";
+      pbtn.setAttribute("aria-expanded", "false");
+      var pbox = el("div", "gloss__parts");
+      pbox.hidden = true;
+
+      ps.forEach(function (key) {
+        var w = GW[key];
+        if (!w) return;
+        var item = el("div", "gloss__part");
+        var h = el("div", "gloss__part-head");
+        h.appendChild(el("span", "gloss__part-w", key));
+        if (w.lemma) h.appendChild(el("span", "gloss__part-lemma", "→ " + w.lemma));
+        if (w.ipa) h.appendChild(el("span", "gloss__ipa", w.ipa));
+        if (TTS) {
+          var b = el("button", "gloss__say gloss__say--sm", "🔊");
+          b.type = "button";
+          b.title = "朗读 " + key;
+          b.setAttribute("aria-label", "朗读 " + key);
+          b.addEventListener("click", function (ev) { ev.stopPropagation(); speak(key, b); });
+          h.appendChild(b);
+        }
+        item.appendChild(h);
+        if (w.zh) item.appendChild(el("div", "gloss__part-zh", w.zh));
+        if (w.en) item.appendChild(el("div", "gloss__part-en", w.en));
+        pbox.appendChild(item);
+      });
+
+      if (pbox.childNodes.length) {
+        pbtn.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          var isOpen = pbox.hidden;
+          pbox.hidden = !isOpen;
+          pbtn.setAttribute("aria-expanded", String(isOpen));
+          place(trigger);
+        });
+        pop.appendChild(pbtn);
+        pop.appendChild(pbox);
+      }
+    }
+
     /* 英语层：日常义 / 字面 / 词源 / 易错点。次要内容，默认收起 */
     var m = entry.more;
     if (m && (m.dailyZh || m.literal || m.etymology || m.pitfall)) {
@@ -205,8 +254,17 @@
     var max = sx + document.documentElement.clientWidth - w - 12;
     if (left > max) left = max;
     if (left < sx + 12) left = sx + 12;
-    var top = (r.bottom + h + 16 > document.documentElement.clientHeight && r.top > h + 16)
-      ? r.top + sy - h - 8 : r.bottom + sy + 8;
+    /* 优先放下方；下方放不下且上方放得下就翻上去；两边都放不下（展开「逐词看」
+       和「更多」之后卡片可能有 600 多像素高）就贴着视口夹住，别让它跑出屏幕。 */
+    var vh = document.documentElement.clientHeight;
+    var top;
+    if (r.bottom + h + 16 <= vh) top = r.bottom + sy + 8;
+    else if (r.top - h - 16 >= 0) top = r.top + sy - h - 8;
+    else top = sy + Math.max(8, (vh - h) / 2);
+    var minTop = sy + 8, maxTop = sy + vh - h - 8;
+    if (maxTop < minTop) maxTop = minTop;
+    if (top < minTop) top = minTop;
+    if (top > maxTop) top = maxTop;
     pop.style.left = left + "px";
     pop.style.top = top + "px";
   }
