@@ -36,12 +36,14 @@ window.GLOSSARY = {
   "definition": "作为框架整体被点名的 Agile；术语表收录的是 Agile Manifesto / software development / service management 三条，没有单独的 Agile。",
   "en": "Agile",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/ˈædʒəl/",
   "zh": "敏捷"
  },
  "agile manifesto": {
   "definition": "2001 年发布的四条价值观与十二条原则，把重心从流程与文档转向个体互动、可工作的软件、客户协作与响应变化。",
   "en": "Agile Manifesto",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/ˈædʒəl ˌmæniˈfestəu/",
   "zh": "敏捷宣言"
  },
  "agile manifesto agile software development": {
@@ -64,6 +66,7 @@ window.GLOSSARY = {
   "definition": "把敏捷的迭代节奏与协作方式带进 IT 服务管理流程，让变更、事件等流程跟得上频繁交付。",
   "en": "Agile service management",
   "href": "content/ch04-frameworks/4.4-itsm-itil.html",
+  "ipa": "/ˈædʒəl ˈsɜːrvɪs ˈmænidʒmənt/",
   "kp": "kp-4-4-3",
   "zh": "敏捷服务管理"
  },
@@ -71,6 +74,7 @@ window.GLOSSARY = {
   "definition": "以短迭代、持续反馈、可工作软件为核心的一类开发方法总称，Scrum 是其中最常见的一种。",
   "en": "Agile software development",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/ˈædʒəl ˈsɔːftwer dɪˈveləpmənt/",
   "zh": "敏捷软件开发"
  },
  "agile vs devops scope agile service management": {
@@ -101,6 +105,7 @@ window.GLOSSARY = {
   "en": "AIOps",
   "expansion": "Artificial Intelligence for IT Operations",
   "href": "content/ch07-metrics/7.6-aiops.html",
+  "ipa": "/ˈeɪaɪˌɑps/",
   "kp": "kp-7-6-1",
   "zh": "AIOps"
  },
@@ -135,6 +140,7 @@ window.GLOSSARY = {
   "definition": "应用程序编程接口",
   "en": "Application Programming Interface",
   "href": "content/ch06-automation/6.5-toolchain-architecture.html",
+  "ipa": "/ˌæplɪˈkeɪʃn ˈproʊɡræmɪŋ ˈɪntərfeɪs/",
   "more": {
    "dailyEx": "The interface between the kitchen and the dining room is a small serving window.",
    "dailyExZh": "厨房和餐厅之间的交接处是一个小小的传菜窗口。",
@@ -172,6 +178,7 @@ window.GLOSSARY = {
   "definition": "把重复且规则明确的动作交给机器执行，换取一致性与速度；不是「什么都自动化」。",
   "en": "Automation",
   "href": "content/ch06-automation/6.1-why-automate.html",
+  "ipa": "/ˌɒ:təˈmeiʃən/",
   "zh": "自动化"
  },
  "batch size": {
@@ -181,6 +188,7 @@ window.GLOSSARY = {
   ],
   "en": "Batch Size",
   "href": "content/ch02-core-principles/2.2-first-way-flow.html",
+  "ipa": "/bætʃ saiz/",
   "kp": "kp-2-2-3",
   "zh": "批量大小：为什么大批量是万恶之源"
  },
@@ -194,6 +202,7 @@ window.GLOSSARY = {
   "definition": "安全文化最具体的落地动作，但它本身不是术语表条目。",
   "en": "Blameless postmortem",
   "href": "content/ch02-core-principles/2.5-third-way-learning.html",
+  "ipa": "/ˈbleimlis poʊstˈmɔrtəm/",
   "zh": "无指责事后复盘"
  },
  "build once deploy many fail fast": {
@@ -316,17 +325,8 @@ window.GLOSSARY = {
   "definition": "投入生产的变更中导致服务降级或需要补救的比例，DORA 四指标的稳定性侧之一。",
   "en": "Change failure rate",
   "href": "content/ch07-metrics/7.2-dora-metrics.html",
+  "ipa": "/tʃeɪndʒ ˈfeɪljər reɪt/",
   "zh": "变更失败率"
- },
- "change failure rate mean time to repair": {
-  "badges": [
-   "core",
-   "warn"
-  ],
-  "en": "Change failure rate & Mean Time to Repair",
-  "href": "content/ch07-metrics/7.2-dora-metrics.html",
-  "kp": "kp-7-2-2",
-  "zh": "稳定性侧两指标：变更失败率与平均恢复时间"
  },
  "change failure rate mean time to repair recover mttr": {
   "badges": [
@@ -346,6 +346,7 @@ window.GLOSSARY = {
   "definition": "变革推得太多太快又看不到结果，导致人对新一轮变革不再有反应的状态。",
   "en": "Change fatigue",
   "href": "content/ch05-culture/5.2-cultural-debt.html",
+  "ipa": "/tʃeɪndʒ fəˈtiːɡ/",
   "kp": "kp-5-2-3",
   "zh": "变革疲劳"
  },
@@ -357,6 +358,7 @@ window.GLOSSARY = {
   "definition": "从代码提交到该变更在生产环境运行所经过的时间（DORA 口径；价值流口径从需求被接受算起）。",
   "en": "Change lead time",
   "href": "content/ch07-metrics/7.4-lead-vs-cycle-time.html",
+  "ipa": "/tʃeɪndʒ li:d taɪm/",
   "kp": "kp-7-4-1",
   "zh": "变更前置时间"
  },
@@ -364,6 +366,7 @@ window.GLOSSARY = {
   "definition": "在受控条件下主动注入故障、验证系统韧性假设的实践 —— 术语表只收录工具侧的 Simian Army/Chaos Monkey。",
   "en": "Chaos Engineering",
   "href": "content/ch02-core-principles/2.6-chaos-engineering.html",
+  "ipa": "/ˈkeɪɑːs ˌendʒɪˈnɪrɪŋ/",
   "more": {
    "etymology": "chaos ← 希腊语 khaos（裂隙、虚空、原始混乱）；engineering ← engineer + -ing；engineer ← 古法语 engigneor（攻城器械的建造者）← 拉丁语 ingenium（天生的才智、巧思）← in- + gignere（生出）——同源词还有 engine、ingenious",
    "literal": "字面：用工程手段「制造并研究混乱」",
@@ -407,6 +410,7 @@ window.GLOSSARY = {
   ],
   "en": "Chaos Monkey",
   "href": "content/ch02-core-principles/2.6-chaos-engineering.html",
+  "ipa": "/ˈkeɪɒs ˈmʌŋki/",
   "kp": "kp-2-6-1",
   "zh": "混沌工程是什么"
  },
@@ -414,6 +418,7 @@ window.GLOSSARY = {
   "definition": "把运维操作与工具输出放进团队聊天频道执行，使操作过程与上下文对所有人可见。",
   "en": "ChatOps",
   "href": "content/ch03-key-practices/3.6-chatops.html",
+  "ipa": "/ˈtʃætɑps/",
   "zh": "ChatOps"
  },
  "choosing the first pilot": {
@@ -497,6 +502,7 @@ window.GLOSSARY = {
   "definition": "开发者把一段改动提交进版本库的动作，是持续集成的触发点，也是 DORA 口径变更前置时间的计时起点（精益价值流口径自需求被接受起算，见 7.4）。",
   "en": "Code commit",
   "href": "content/ch07-metrics/7.4-lead-vs-cycle-time.html",
+  "ipa": "/koʊd kəˈmɪt/",
   "zh": "代码提交"
  },
  "cognitive load the rise of platform teams": {
@@ -547,6 +553,7 @@ window.GLOSSARY = {
   "definition": "决定整条价值流最大产出的那一个环节；改善它以外的环节不会提升全局产出。",
   "en": "Constraint",
   "href": "content/ch02-core-principles/2.3-theory-of-constraints.html",
+  "ipa": "/kənˈstreint/",
   "zh": "约束"
  },
  "constraint theory of constraints": {
@@ -570,6 +577,7 @@ window.GLOSSARY = {
   "definition": "持续专业发展学分。证书 3 年有效，续证需 60 CPD 分",
   "en": "Continuing Professional Development",
   "href": "content/ch00-overview/index.html",
+  "ipa": "/kənˈtinjuiŋ prəˈfeʃənl dɪˈveləpmənt/",
   "zh": "持续专业发展学分"
  },
  "continuous delivery": {
@@ -581,6 +589,7 @@ window.GLOSSARY = {
   "definition": "每个通过流水线的版本都随时具备可发布状态，发不发布由人决定。",
   "en": "Continuous delivery",
   "href": "content/ch03-key-practices/3.3-delivery-vs-deployment.html",
+  "ipa": "/kənˈtɪnjuəs dɪˈlɪvəri/",
   "kp": "kp-3-3-1",
   "more": {
    "dailyEx": "We offer free delivery on orders over $50.",
@@ -601,6 +610,7 @@ window.GLOSSARY = {
   "definition": "通过全部自动化测试的版本自动进入生产，没有人工放行环节。",
   "en": "Continuous deployment",
   "href": "content/ch03-key-practices/3.3-delivery-vs-deployment.html",
+  "ipa": "/kənˈtɪnjuəs dɪˈplɔɪmənt/",
   "kp": "kp-3-3-2",
   "more": {
    "dailyEx": "The deployment of peacekeepers took three weeks.",
@@ -619,6 +629,7 @@ window.GLOSSARY = {
   "definition": "按产品与价值流长期投入，取代按项目一次性批预算的出资方式。",
   "en": "Continuous Funding",
   "href": "content/ch04-frameworks/4.7-continuous-funding.html",
+  "ipa": "/kənˈtɪnjuəs ˈfʌndiŋ/",
   "kp": "kp-4-7-1",
   "zh": "持续资金"
  },
@@ -640,6 +651,7 @@ window.GLOSSARY = {
   "definition": "开发者频繁把代码合入主干，每次合入都自动构建并测试，尽早暴露集成冲突。",
   "en": "Continuous integration",
   "href": "content/ch03-key-practices/3.2-continuous-integration.html",
+  "ipa": "/kənˈtɪnjuəs ˌɪntɪˈɡreɪʃn/",
   "kp": "kp-3-2-1",
   "more": {
    "dailyEx": "The integration of the two teams took six months.",
@@ -666,6 +678,7 @@ window.GLOSSARY = {
   "definition": "测试贯穿流水线全程而不是堆在末尾，让质量反馈随每次变更即时返回。",
   "en": "Continuous testing",
   "href": "content/ch03-key-practices/3.1-continuous-testing.html",
+  "ipa": "/kənˈtɪnjuəs ˈtɛstɪŋ/",
   "kp": "kp-3-1-1",
   "zh": "持续测试"
  },
@@ -711,6 +724,7 @@ window.GLOSSARY = {
   "definition": "长期回避的行为与协作问题积累出的欠账，会像技术债一样持续加收利息。",
   "en": "Cultural debt",
   "href": "content/ch05-culture/5.2-cultural-debt.html",
+  "ipa": "/ˈkʌltʃərəl det/",
   "kp": "kp-5-2-1",
   "zh": "文化债"
  },
@@ -742,6 +756,7 @@ window.GLOSSARY = {
   ],
   "en": "Current State",
   "href": "content/ch04-frameworks/4.6-value-stream-mapping.html",
+  "ipa": "/ˈkʌrənt steit/",
   "kp": "kp-4-6-3",
   "zh": "它的产出：当前状态图 → 最大等待段 → 未来状态图 → 改进计划"
  },
@@ -762,6 +777,7 @@ window.GLOSSARY = {
   "definition": "一件工作从真正开始处理到完成所经过的时间，不含开始之前的排队等待。",
   "en": "Cycle time",
   "href": "content/ch07-metrics/7.4-lead-vs-cycle-time.html",
+  "ipa": "/ˈsaikl taɪm/",
   "kp": "kp-7-4-2",
   "zh": "周期时间"
  },
@@ -819,6 +835,7 @@ window.GLOSSARY = {
   "definition": "完成的定义。术语表收录的是 Scrum roles, artifacts and events，未单列 DoD",
   "en": "Definition of Done",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/ˌdɛfɪˈnɪʃən əv dʌn/",
   "more": {
    "etymology": "definition ← 拉丁语 dēfīnīre（划清界限）；done ← do 的过去分词",
    "literal": "字面：对「done 是什么意思」的界定",
@@ -830,6 +847,7 @@ window.GLOSSARY = {
   "definition": "单位时间内把变更成功投入生产的次数，DORA 四指标的速度侧之一。",
   "en": "Deployment frequency",
   "href": "content/ch07-metrics/7.2-dora-metrics.html",
+  "ipa": "/dɪˈplɔɪmənt ˈfri:kwənsi/",
   "zh": "部署频率"
  },
  "deployment frequency change lead time": {
@@ -850,6 +868,7 @@ window.GLOSSARY = {
   "definition": "把构建、测试、部署串成的自动化通道，一次提交沿着它一路走到生产。",
   "en": "Deployment pipeline",
   "href": "content/ch06-automation/6.2-deployment-pipeline.html",
+  "ipa": "/dɪˈplɔɪmənt ˈpaɪplaɪn/",
   "kp": "kp-6-2-1",
   "zh": "部署流水线"
  },
@@ -857,6 +876,7 @@ window.GLOSSARY = {
   "definition": "IT 组织中的各方协同工作，使计划中的工作快速流动、获得反馈并持续改进直至进入生产，同时达成质量、稳定性、可靠性、可用性、安全与团队满意度。",
   "en": "DevOps",
   "href": "content/ch01-exploring-devops/1.1-defining-devops.html",
+  "ipa": "/ˈdevɑps/",
   "zh": "DevOps"
  },
  "devops and related frameworks": {
@@ -886,6 +906,7 @@ window.GLOSSARY = {
   "definition": "本站基准认证的官方代码，现行版本 v3.6",
   "en": "DevOps Foundation",
   "href": "content/ch00-overview/index.html",
+  "ipa": "/ˈdevɑps faunˈdeiʃən/",
   "zh": "DevOps Foundation"
  },
  "devops in the enterprise": {
@@ -903,6 +924,7 @@ window.GLOSSARY = {
   "definition": "领导者创造条件、承诺文化变革并移除障碍；用指标控制和评价员工不属于它的目标。",
   "en": "DevOps Leadership",
   "href": "content/ch08-sharing/8.3-leadership.html",
+  "ipa": "/ˈdevɑps ˈli:dəʃip/",
   "zh": "DevOps 领导力"
  },
  "devops metrics": {
@@ -912,6 +934,7 @@ window.GLOSSARY = {
   "definition": "覆盖速度、质量、稳定性、文化四类的度量集合，目的是驱动改进而不是考核个人。",
   "en": "DevOps metrics",
   "href": "content/ch07-metrics/7.3-four-metric-families.html",
+  "ipa": "/ˈdevɑps ˈmetriks/",
   "zh": "DevOps 指标"
  },
  "devops research and assessment": {
@@ -1016,6 +1039,7 @@ window.GLOSSARY = {
   "definition": "覆盖从计划到运行各环节、通过集成串起来的一组工具；重点在衔接，不在单个工具选型。",
   "en": "DevOps toolchain",
   "href": "content/ch06-automation/6.5-toolchain-architecture.html",
+  "ipa": "/ˈdevɑps ˈtuːltʃeɪn/",
   "kp": "kp-6-5-1",
   "zh": "DevOps 工具链"
  },
@@ -1023,6 +1047,7 @@ window.GLOSSARY = {
   "definition": "把安全内建进交付流水线并左移到早期，取代发布前的一次性集中安全评审。",
   "en": "DevSecOps",
   "href": "content/ch03-key-practices/3.5-devsecops.html",
+  "ipa": "/ˌdevsekˈɑps/",
   "zh": "DevSecOps"
  },
  "diagnostic tool vs performance scorecard": {
@@ -1061,6 +1086,7 @@ window.GLOSSARY = {
   "definition": "团队带着真实工作离开日常岗位、在教练指导下集中练习新工作方式的场所。",
   "en": "Dojo",
   "href": "content/ch02-core-principles/2.5-third-way-learning.html",
+  "ipa": "/ˈdəudʒəu/",
   "zh": "Dojo（沉浸式实战训练场）"
  },
  "dora": {
@@ -1077,6 +1103,7 @@ window.GLOSSARY = {
   "en": "DOWNTIME",
   "expansion": "Defects · Overproduction · Waiting · Non-utilized talent · Transportation · Inventory · Motion · Extra-processing",
   "href": "content/ch04-frameworks/4.3-lean.html",
+  "ipa": "/ˈdaʊntaɪm/",
   "more": {
    "dailyEx": "The factory had six hours of downtime after the power cut.",
    "dailyExZh": "停电后，工厂停了六个小时。",
@@ -1128,6 +1155,7 @@ window.GLOSSARY = {
   "definition": "工作从需求一路向右走到生产、不回头也不积压的顺畅程度，三步工作法第一步的目标。",
   "en": "Flow",
   "href": "content/ch02-core-principles/2.2-first-way-flow.html",
+  "ipa": "/fləu/",
   "zh": "流动"
  },
  "flow data processing time wait time flow efficiency": {
@@ -1145,6 +1173,7 @@ window.GLOSSARY = {
   ],
   "en": "Future State",
   "href": "content/ch04-frameworks/4.6-value-stream-mapping.html",
+  "ipa": "/ˈfju:tʃə steit/",
   "kp": "kp-4-6-3",
   "zh": "它的产出：当前状态图 → 最大等待段 → 未来状态图 → 改进计划"
  },
@@ -1188,6 +1217,7 @@ window.GLOSSARY = {
  "gitops": {
   "definition": "以 Git 仓库为唯一事实源驱动部署的做法，常被误当成 IaC 的官方术语。",
   "en": "GitOps",
+  "ipa": "/ˈɡɪtɒps/",
   "more": {
    "etymology": "GitOps 为 2017 年前后由 Weaveworks 推广的合成词：Git（Linus Torvalds 命名的版本控制系统，意为「蠢货」的自嘲昵称）+ operations（运作、运营）",
    "literal": "字面：用 Git 来做的 Operations（运维）",
@@ -1226,6 +1256,7 @@ window.GLOSSARY = {
   "definition": "why / how / what 三层模型，主张先说清目的与信念，再谈做法与产出。",
   "en": "Golden Circle",
   "href": "content/ch01-exploring-devops/1.2-why-it-matters.html",
+  "ipa": "/ˈɡoʊldən ˈsɜrkəl/",
   "kp": "kp-1-2-2",
   "zh": "Golden Circle 黄金圈"
  },
@@ -1340,12 +1371,14 @@ window.GLOSSARY = {
   "definition": "通过长时间投入真实场景来习得新工作方式的学习方式；Dojo 是场所，Immersion 是方式。",
   "en": "Immersion",
   "href": "content/ch08-sharing/8.1-devops-in-enterprise.html",
+  "ipa": "/iˈmə:ʃən/",
   "zh": "沉浸式学习"
  },
  "improvement kata": {
   "definition": "设定目标状态、看清当前状态、以小步实验逼近目标的固定改进套路。",
   "en": "Improvement kata",
   "href": "content/ch02-core-principles/2.5-third-way-learning.html",
+  "ipa": "/imˈpru:vmənt ˈkɑ:tɑ:/",
   "zh": "改进型 Kata"
  },
  "improvement plan": {
@@ -1354,6 +1387,7 @@ window.GLOSSARY = {
   ],
   "en": "Improvement Plan",
   "href": "content/ch04-frameworks/4.6-value-stream-mapping.html",
+  "ipa": "/imˈpru:vmənt plæn/",
   "kp": "kp-4-6-3",
   "zh": "它的产出：当前状态图 → 最大等待段 → 未来状态图 → 改进计划"
  },
@@ -1376,6 +1410,7 @@ window.GLOSSARY = {
   "definition": "用可版本化的代码描述并创建基础设施；它逐字出现在 Blueprint 的 CALMS-A 描述句里，属官方正文点名的内容。",
   "en": "infrastructure-as-code",
   "href": "content/ch06-automation/6.3-iac.html",
+  "ipa": "/ˈɪnfrəˌstrʌktʃər æz koʊd/",
   "kp": "kp-6-3-1",
   "more": {
    "etymology": "infrastructure ← 拉丁语 infra（在下）+ structūra（结构）；code ← 拉丁语 codex（书、法典）",
@@ -1399,6 +1434,7 @@ window.GLOSSARY = {
   "definition": "内部开发者平台。平台工程的产物；平台工程本身是 v3.6 学习目标，IDP 这个缩写不是",
   "en": "Internal Developer Platform",
   "href": "content/ch03-key-practices/3.10-platform-engineering.html",
+  "ipa": "/inˈtə:nəl diˈveləpə ˈplætfɔːrm/",
   "zh": "内部开发者平台"
  },
  "it service management": {
@@ -1461,6 +1497,7 @@ window.GLOSSARY = {
   "definition": "通过可视化工作流与限制在制品来暴露瓶颈、以拉动方式推进工作的方法。",
   "en": "Kanban",
   "href": "content/ch03-key-practices/3.7-kanban.html",
+  "ipa": "/ˈkɑːnbɑːn/",
   "kp": "kp-3-7-1",
   "more": {
    "etymology": "日语 看板（かんばん，signboard）；由丰田生产体系引入英语",
@@ -1484,6 +1521,7 @@ window.GLOSSARY = {
   "definition": "关键绩效指标。通用管理词汇，DOFD 强调的是价值驱动指标而非泛指的 KPI",
   "en": "Key Performance Indicator",
   "href": "content/ch07-metrics/7.1-why-measure.html",
+  "ipa": "/kiː pərˈfɔːrməns ˈɪndɪkeɪtər/",
   "more": {
    "dailyEx": "Store managers track KPIs like sales per square foot and customer return rate.",
    "dailyExZh": "店长会追踪每平方英尺销售额、顾客回头率这类关键指标。",
@@ -1514,6 +1552,7 @@ window.GLOSSARY = {
   "definition": "容器编排的事实标准；官方术语表只有 Containers，不点名任何编排产品。",
   "en": "Kubernetes",
   "href": "content/ch06-automation/6.4-cloud-containers-microservices.html",
+  "ipa": "/ˌkuːbərˈneɪtiːz/",
   "more": {
    "etymology": "kubernetes ← 希腊语 κυβερνήτης（helmsman, pilot, governor）；Google 2014 年开源，名字呼应「在集群中导航、调度众多容器」的隐喻",
    "literal": "字面：舵手、领航员（希腊语 κυβερνήτης 为单数名词，词尾 -τής 表「做…的人」，不是复数）",
@@ -1546,18 +1585,21 @@ window.GLOSSARY = {
   "definition": "作为框架整体被点名的 Lean；术语表收录的是 Lean production / thinking / tools / types of Waste 四条。",
   "en": "Lean",
   "href": "content/ch04-frameworks/4.3-lean.html",
+  "ipa": "/li:n/",
   "zh": "精益"
  },
  "lean production": {
   "definition": "源自丰田生产方式的制造管理体系，核心是消除浪费、拉动生产与持续改进。",
   "en": "Lean production",
   "href": "content/ch04-frameworks/4.3-lean.html",
+  "ipa": "/li:n prəˈdʌkʃən/",
   "zh": "精益生产"
  },
  "lean thinking": {
   "definition": "把精益从车间提炼成通用思维：定义价值、识别价值流、让价值流动、由需求拉动、追求尽善尽美。",
   "en": "Lean thinking",
   "href": "content/ch04-frameworks/4.3-lean.html",
+  "ipa": "/li:n ˈθiŋkiŋ/",
   "zh": "精益思想"
  },
  "lean tools": {
@@ -1598,6 +1640,7 @@ window.GLOSSARY = {
   "definition": "机器学习。v3.4 课程大纲 M6 子项逐字写作 AI and Machine Learning",
   "en": "Machine Learning",
   "href": "content/ch06-automation/6.6-vsm-platform-genai.html",
+  "ipa": "/məˈʃiːn ˈlə:niŋ/",
   "zh": "机器学习"
  },
  "mapping practices and metrics to the three ways": {
@@ -1615,6 +1658,7 @@ window.GLOSSARY = {
   "definition": "平均无故障时间。「假设故障可预防」年代的指标，常作 MTTR 的干扰项",
   "en": "Mean Time Between Failures",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/miːn taɪm bɪˈtwiːn ˈfeɪljərz/",
   "more": {
    "etymology": "mean（平均）← 古法语 meien ← 晚期拉丁语 medianus（居中的）← 拉丁语 medius（中间的）——与表「意指」的 mean（← 古英语 mænan）、表「刻薄」的 mean（← 古英语 gemæne）是三个同形异源词；failure ← 拉丁语 fallere（欺骗、使落空）→ 古法语 falir → fail",
    "literal": "字面：两次故障之间那段时长的平均值",
@@ -1626,6 +1670,7 @@ window.GLOSSARY = {
   "abbr": "MTTD",
   "definition": "平均检测时间。从故障发生到被发现，属反馈速度。本站补充，DOFD 未收录",
   "en": "Mean Time to Detect",
+  "ipa": "/miːn taɪm tuː dɪˈtekt/",
   "more": {
    "dailyEx": "Security cameras cut the store's mean time to detect shoplifting to under two minutes.",
    "dailyExZh": "监控摄像头把店里发现行窃的平均时间缩短到了两分钟以内。",
@@ -1653,6 +1698,7 @@ window.GLOSSARY = {
   "definition": "把系统拆成可独立部署的小服务，让团队不必等待彼此就能各自发布。",
   "en": "Microservices",
   "href": "content/ch06-automation/6.4-cloud-containers-microservices.html",
+  "ipa": "/ˈmaɪkroʊˌsɜrvɪsɪz/",
   "zh": "微服务"
  },
  "microservices api": {
@@ -1769,6 +1815,7 @@ window.GLOSSARY = {
   "definition": "源码公开、允许自由使用与修改的软件模式；DevOps 工具链大量构建在其上。",
   "en": "Open source",
   "href": "content/ch06-automation/6.5-toolchain-architecture.html",
+  "ipa": "/ˈəupən sɔːrs/",
   "zh": "开源"
  },
  "opentelemetry": {
@@ -1795,6 +1842,7 @@ window.GLOSSARY = {
   "definition": "组织中被默认接受、真正支配行为的共同假设与规范 —— 看行为，不看墙上的标语。",
   "en": "Organizational culture",
   "href": "content/ch05-culture/5.1-defining-culture.html",
+  "ipa": "/ˌɒ:gənaiˈzeiʃənəl ˈkʌltʃə/",
   "kp": "kp-5-1-1",
   "zh": "组织文化"
  },
@@ -1824,6 +1872,7 @@ window.GLOSSARY = {
   "definition": "由专门团队把通用能力做成自助式内部平台，降低产品团队的认知负荷。",
   "en": "Platform Engineering",
   "href": "content/ch03-key-practices/3.10-platform-engineering.html",
+  "ipa": "/ˈplætfɔːrm ˌendʒɪˈnɪrɪŋ/",
   "zh": "平台工程"
  },
  "platform engineering internal developer platform": {
@@ -1891,6 +1940,7 @@ window.GLOSSARY = {
   "definition": "官方速查手册。与 Learner Workbook 一同构成开卷考试唯一允许携带的资料",
   "en": "Quick Reference Guide",
   "href": "content/ch00-overview/index.html",
+  "ipa": "/kwik ˈrefərəns gaid/",
   "zh": "官方速查手册"
  },
  "reading the four families together": {
@@ -1904,16 +1954,6 @@ window.GLOSSARY = {
   "kp": "kp-7-3-3",
   "zh": "四类必须一起看 · 文化是先行指标"
  },
- "recover mttr": {
-  "badges": [
-   "core",
-   "hot"
-  ],
-  "en": "Recover (MTTR)",
-  "href": "content/ch03-key-practices/3.4-sre-resilience.html",
-  "kp": "kp-3-4-3",
-  "zh": "单点故障与平均恢复时间"
- },
  "resilience engineering": {
   "badges": [
    "core",
@@ -1922,6 +1962,7 @@ window.GLOSSARY = {
   "definition": "承认故障必然发生，把工程重点放在吸收冲击与快速恢复上，而不是追求不出故障。",
   "en": "Resilience engineering",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/riˈziliəns ˌendʒɪˈnɪrɪŋ/",
   "kp": "kp-3-4-2",
   "zh": "韧性工程"
  },
@@ -1952,6 +1993,7 @@ window.GLOSSARY = {
   "en": "SAFe",
   "expansion": "Scaled Agile Framework",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/seif/",
   "zh": "规模化敏捷框架"
  },
  "safety culture": {
@@ -1963,6 +2005,7 @@ window.GLOSSARY = {
   "definition": "能安全地说出坏消息、不必担心被追责的文化状态 —— 不是信息安全，也不在术语表内。",
   "en": "Safety Culture",
   "href": "content/ch04-frameworks/4.5-safety-culture.html",
+  "ipa": "/ˈseifti ˈkʌltʃə/",
   "kp": "kp-4-5-1",
   "zh": "安全文化"
  },
@@ -1981,6 +2024,7 @@ window.GLOSSARY = {
   "definition": "规模化敏捷框架。注意官方拼写是 SAFe，末位小写",
   "en": "Scaled Agile Framework",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/skeild ˈædʒəl ˈfreimwə:k/",
   "zh": "规模化敏捷框架"
  },
  "scaled agile framework safe": {
@@ -1993,6 +2037,7 @@ window.GLOSSARY = {
   "definition": "以固定长度 Sprint 组织交付的敏捷框架，有明确规定的角色、事件与工件。",
   "en": "Scrum",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/skrʌm/",
   "more": {
    "dailyEx": "The scrum collapsed and the referee blew the whistle.",
    "dailyExZh": "争球阵型塌了，裁判吹哨了。",
@@ -2039,6 +2084,7 @@ window.GLOSSARY = {
   "definition": "以结果交付给客户的能力单元：客户享用结果，底层成本与风险由服务提供方承担；ITSM 的管理基本单位就是它。",
   "en": "Service",
   "href": "content/ch04-frameworks/4.4-itsm-itil.html",
+  "ipa": "/ˈsɜːrvɪs/",
   "more": {
    "dailyEx": "The hotel offers room service until midnight.",
    "dailyExZh": "这家酒店提供客房服务，直到午夜。",
@@ -2064,6 +2110,7 @@ window.GLOSSARY = {
   "definition": "服务级别协议。对外的承诺，违约有后果",
   "en": "Service Level Agreement",
   "href": "content/ch07-metrics/7.1-why-measure.html",
+  "ipa": "/ˈsɜːrvɪs ˈlevəl əˈɡriːmənt/",
   "more": {
    "dailyEx": "Our internet provider offers a 99.9% uptime SLA in the contract.",
    "dailyExZh": "我们的网络服务商在合同里承诺 99.9% 的在线率。",
@@ -2079,6 +2126,7 @@ window.GLOSSARY = {
   "definition": "服务级别指标。实际测出来的那个数",
   "en": "Service Level Indicator",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/ˈsɜːrvɪs ˈlevəl ˈɪndɪkeɪtər/",
   "more": {
    "etymology": "indicator ← 拉丁语 indicāre（指出、显示）；level、service 同上",
    "literal": "字面：指示「服务处于何种水平」的测量读数",
@@ -2091,6 +2139,7 @@ window.GLOSSARY = {
   "definition": "服务级别目标。对内设定的目标值，错误预算由它推出",
   "en": "Service Level Objective",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/ˈsɜːrvɪs ˈlevəl əbˈdʒɛktɪv/",
   "more": {
    "etymology": "service ← 拉丁语 servitium（奴役、效劳）；level ← 古法语 livel ← 拉丁语 libella（小天平、水准器）← lībra（天平）；objective ← 拉丁语 obiectum（被投向眼前之物）← obicere（ob- + iacere，投）",
    "literal": "字面：关于「服务水准」的一个「目标」",
@@ -2107,6 +2156,7 @@ window.GLOSSARY = {
   "definition": "把测试与安全等活动提前到开发早期并持续进行，把质量内建进开发过程。",
   "en": "Shift left",
   "href": "content/ch03-key-practices/3.1-continuous-testing.html",
+  "ipa": "/ʃɪft lɛft/",
   "kp": "kp-3-1-2",
   "more": {
    "etymology": "shift ← 古英语 sciftan（安排、分派、挪动位置）；left ← 古英语 lyft（虚弱的、无用的），因多数人左手较弱而转指方位「左」——古英语原本用 winstre（字面「较友善的」）避讳称左",
@@ -2142,6 +2192,7 @@ window.GLOSSARY = {
   "definition": "单点故障。既指技术上的单点，也指「只有一个人会做这件事」的人员单点",
   "en": "Single Point of Failure",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/ˈsɪŋɡl pɔɪnt əv ˈfeɪljər/",
   "more": {
    "dailyEx": "Relying on one supplier is a single point of failure for our production line.",
    "dailyExZh": "只依赖一家供应商是我们生产线的单点故障。",
@@ -2162,16 +2213,6 @@ window.GLOSSARY = {
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
   "zh": "单点故障 SPOF"
  },
- "single point of failure spof mean time to repair": {
-  "badges": [
-   "core",
-   "hot"
-  ],
-  "en": "Single Point of Failure (SPOF) & Mean Time to Repair",
-  "href": "content/ch03-key-practices/3.4-sre-resilience.html",
-  "kp": "kp-3-4-3",
-  "zh": "单点故障与平均恢复时间"
- },
  "single point of failure spof mean time to repair recover mttr": {
   "badges": [
    "core",
@@ -2190,6 +2231,7 @@ window.GLOSSARY = {
   "definition": "用软件工程的方法解决运维问题、以可靠性为工程目标的实践体系。",
   "en": "Site Reliability Engineering",
   "href": "content/ch03-key-practices/3.4-sre-resilience.html",
+  "ipa": "/saɪt rɪˌlaɪəˈbɪlɪti ˌendʒɪˈnɪərɪŋ/",
   "kp": "kp-3-4-1",
   "more": {
    "etymology": "site ← 拉丁语 situs（位置）；reliability ← rely（← 古法语 relier ← 拉丁语 religāre「捆紧、系牢」）+ -ability；engineering ← engineer（← 古法语 engigneor ← 晚期拉丁语 ingeniāre ← 拉丁语 ingenium「天赋、巧思」，晚期拉丁语转指攻城器械）+ -ing；SRE 为 Google 约 2003 年提出的职位名称",
@@ -2259,6 +2301,7 @@ window.GLOSSARY = {
  "space framework": {
   "definition": "开发者生产力的五维度模型，是 DORA 四指标之外的补充视角。",
   "en": "SPACE framework",
+  "ipa": "/speis ˈfreimwə:k/",
   "zh": "SPACE 框架"
  },
  "speed and stability move together": {
@@ -2373,6 +2416,7 @@ window.GLOSSARY = {
   "definition": "先写一条会失败的测试、再写让它通过的实现代码的开发方式。",
   "en": "Test driven development",
   "href": "content/ch03-key-practices/3.1-continuous-testing.html",
+  "ipa": "/ˈtest ˈdrɪvən dɪˈveləpmənt/",
   "more": {
    "etymology": "test ← 古法语 test（陶罐，用于化验）→ 试金石义；drive ← 古英语 drīfan（驱赶、推动）；development ← 法语 développement ← dé- + envelopper（展开包裹）",
    "literal": "字面：由测试来牵引的整个开发过程",
@@ -2543,6 +2587,7 @@ window.GLOSSARY = {
   ],
   "en": "Top-down",
   "href": "content/ch08-sharing/8.1-devops-in-enterprise.html",
+  "ipa": "/tɒp daun/",
   "kp": "kp-8-1-2",
   "zh": "规模化的三种路径"
  },
@@ -2571,6 +2616,7 @@ window.GLOSSARY = {
   "definition": "用户验收测试。术语表以 Testing (unit, acceptance, integration) 一条收录验收测试，未单列 UAT 这个缩写",
   "en": "User Acceptance Testing",
   "href": "content/ch03-key-practices/3.1-continuous-testing.html",
+  "ipa": "/ˈjuːzər əkˈseptəns ˈtestɪŋ/",
   "more": {
    "etymology": "user ← use + -er；acceptance ← 拉丁语 acceptāre（take to oneself）← ad + capere（take）；testing ← test",
    "literal": "字面：由用户来做的「是否接受」之检验",
@@ -2586,6 +2632,7 @@ window.GLOSSARY = {
   "definition": "面向业务结果而不是活动量的指标；Blueprint 的 M 格逐字点名了 value-driven metrics。",
   "en": "Value Driven Metrics",
   "href": "content/ch07-metrics/7.5-value-driven-metrics.html",
+  "ipa": "/ˈvælju: ˈdrɪvn ˈmetriks/",
   "kp": "kp-7-5-1",
   "zh": "价值驱动指标"
  },
@@ -2599,6 +2646,7 @@ window.GLOSSARY = {
   "definition": "把价值流从一次性的绘图升级为持续度量与治理的常态管理活动。",
   "en": "Value Stream Management",
   "href": "content/ch03-key-practices/3.9-vsm.html",
+  "ipa": "/ˈvælju: stri:m ˈmænidʒmənt/",
   "kp": "kp-3-9-1",
   "zh": "价值流管理 VSM"
  },
@@ -2622,6 +2670,7 @@ window.GLOSSARY = {
   "definition": "画出一件工作从需求到交付的全部步骤与等待时间，让浪费与瓶颈显形。",
   "en": "Value stream mapping",
   "href": "content/ch04-frameworks/4.6-value-stream-mapping.html",
+  "ipa": "/ˈvælju: stri:m ˈmæpɪŋ/",
   "kp": "kp-4-6-1",
   "zh": "价值流映射"
  },
@@ -2642,6 +2691,7 @@ window.GLOSSARY = {
   "definition": "一个 Sprint 内团队完成的故事点数，用于本团队的容量预测 —— 不能跨团队比较，也不是绩效。",
   "en": "Velocity",
   "href": "content/ch04-frameworks/4.2-agile-scrum.html",
+  "ipa": "/vəˈlɒsəti/",
   "more": {
    "dailyEx": "The rumour gained velocity as soon as the video was shared.",
    "dailyExZh": "视频一被转发，那个传言就迅速扩散开来。",
@@ -2691,6 +2741,7 @@ window.GLOSSARY = {
   "definition": "消耗资源却不为客户创造价值的一切活动。",
   "en": "Waste",
   "href": "content/ch04-frameworks/4.3-lean.html",
+  "ipa": "/weist/",
   "zh": "浪费"
  },
  "waste lean types of waste downtime": {
@@ -2712,6 +2763,7 @@ window.GLOSSARY = {
   "definition": "需求、设计、开发、测试、发布依次串行的交付方式，是上述各框架共同的对照系。",
   "en": "Waterfall",
   "href": "content/ch04-frameworks/4.1-framework-landscape.html",
+  "ipa": "/ˈwɒtəfɒ:l/",
   "kp": "kp-4-1-3",
   "zh": "瀑布"
  },
@@ -2844,6 +2896,7 @@ window.GLOSSARY = {
   "definition": "在制品。看板的核心动作是限制在制品；术语表收录的是 Kanban 与 Flow，未单列 WIP",
   "en": "Work in progress",
   "href": "content/ch03-key-practices/3.7-kanban.html",
+  "ipa": "/wɜːrk ɪn ˈprɑːɡres/",
   "more": {
    "dailyEx": "Sorry for the mess—the kitchen renovation is still a work in progress.",
    "dailyExZh": "抱歉这么乱——厨房装修还在进行中。",

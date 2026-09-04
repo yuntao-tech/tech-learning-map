@@ -12,7 +12,7 @@
 用法：python3 tools/gen-glossary.py
 不联网、不调模型，纯解析本仓库 + WordMaster 的审阅成果。
 """
-import re, json, glob, os, sys, collections, html as _html
+import re, json, glob, os, sys, collections, sqlite3, html as _html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -41,6 +41,85 @@ def to_root(href, from_dir):
     if not href or href.startswith(('http', '#')): return None
     p = os.path.normpath(os.path.join(from_dir, href.split('#')[0]))
     return p.replace(os.sep, '/') if os.path.exists(p) else None
+
+
+# ── 音标 ───────────────────────────────────────────────────
+# 三个来源，按可信度排序：
+#   1. 本表       —— DevOps 造词与专名，通用词典查不到，人工确认后写入（美音）
+#   2. WordMaster —— 已经过词源审阅的美音标注
+#   3. ECDICT     —— 42k 词通用词典兜底（英音体例，符号需归一）
+# 查不到就不给音标，交给朗读按钮。绝不猜。
+IPA_MANUAL = {
+    "devops": "\u02c8dev\u0251ps", "gitops": "\u02c8\u0261\u026at\u0251ps",
+    "chatops": "\u02c8t\u0283\u00e6t\u0251ps", "aiops": "\u02c8e\u026a\u0061\u026a\u02cc\u0251ps",
+    "devsecops": "\u02ccdevsek\u02c8\u0251ps",
+    "kubernetes": "\u02ccku\u02d0b\u0259r\u02c8neti\u02d0z",
+    "microservices": "\u02c8ma\u026akro\u028a\u02ccs\u025crv\u026as\u026az",
+    "microservice": "\u02c8ma\u026akro\u028a\u02ccs\u025crv\u026as",
+    "kanban": "\u02c8k\u0251nb\u0251n", "scrum": "skr\u028cm",
+    "agile": "\u02c8\u00e6d\u0292\u0259l", "postmortem": "po\u028ast\u02c8m\u0254rt\u0259m",
+    "conway": "\u02c8k\u0251nwe\u026a", "toolchain": "\u02c8tu\u02d0lt\u0283e\u026an",
+    "runbook": "\u02c8r\u028cnb\u028ak", "playbook": "\u02c8ple\u026ab\u028ak",
+    "observability": "\u0259b\u02ccz\u025crv\u0259\u02c8b\u026al\u0259ti",
+    "telemetry": "t\u0259\u02c8lem\u0259tri", "cadence": "\u02c8ke\u026adns",
+    "backlog": "\u02c8b\u00e6kl\u0254\u0261", "workflow": "\u02c8w\u025crkflo\u028a",
+}
+
+def _clean_ipa(p):
+    """ECDICT 的体例要归一：
+    - 西里尔字母 ә（U+04D9）当 schwa 用，出现 6700 多次 → 换回 IPA ə
+    - 一词多读写成 "li:d. led"（lead 的名/动两读）→ 只取第一个，
+      否则会拼出 /tʃeɪndʒ li:d. led taɪm/ 这种没法念的东西
+    - 重音记号用 . 和 ' → 换成 IPA 的 ˌ 和 ˈ"""
+    p = p.strip().strip("/[]").replace("\u04d9", "\u0259").replace("\u04dd", "\u025c")
+    p = re.split(r"[.,;]\s+", p)[0].strip().rstrip(".,;")
+    p = re.sub(r"\.(?=[a-z\u0250-\u02af])", "\u02cc", p)
+    return p.replace("'", "\u02c8").strip()
+
+_EC = {}
+try:
+    _db = sqlite3.connect(f"{WM}/WordMaster/Resources/dictionary.db")
+    _EC = {w.lower(): p for w, p in
+           _db.execute("SELECT word,phonetic FROM dict WHERE phonetic IS NOT NULL AND phonetic!=''")}
+except Exception as _e:
+    print(f"  \u26a0\ufe0f  \u672a\u80fd\u8bfb\u53d6 ECDICT \u8bcd\u5178\uff08{_e}\uff09", file=sys.stderr)
+
+def word_ipa(w, wm_words):
+    """只认词形本身。不做词形还原——把 Goals 还原成 goal 会读出单数 /gəul/，
+    把 families 还原成 family 会读出 /'fæməli/，都是错的读音。查不到就查不到。"""
+    lw = w.lower()
+    if lw in IPA_MANUAL: return IPA_MANUAL[lw]
+    if lw in wm_words:   return _clean_ipa(wm_words[lw])
+    if lw in _EC:        return _clean_ipa(_EC[lw])
+    return None
+
+# 复合标题（一行列了几个术语）没有单一读音；纯缩写逐字母读，也不给音标
+_NO_IPA = re.compile(r"[\u00b7:()]|\bvs\b|&|\u2192|,")
+_ACRONYM = re.compile(r"^[A-Z][A-Za-z]{0,5}$")
+
+# 虚词：出现这些说明标题是个句子，不是术语，拼出来的音标必然是错的
+_FUNC = set("a an the and or of to in on for with is are was were be not no how what "
+            "why when where which that this these those vs versus each other together "
+            "from as at by into it its their there here you your we our".split())
+_NO_IPA = re.compile(r"[\u00b7:()]|&|\u2192|,|/")
+_ACRONYM = re.compile(r"^[A-Z][A-Za-z]{0,5}$")
+
+def term_ipa(en, wm_terms, wm_words):
+    """整词命中最可靠；退而求其次只拼「不超过 3 个实词」的短术语。
+    句子式标题、含虚词的、复合并列的一律不给音标——宁可空着让朗读按钮兜底，
+    也不能给一个看起来像模像样的错读音。"""
+    k = norm(en)
+    if k in wm_terms: return _clean_ipa(wm_terms[k])
+    if _NO_IPA.search(en): return None
+    ws = [w for w in re.split(r"[^A-Za-z]+", en) if w]
+    if not ws or len(ws) > 3: return None
+    if any(w.lower() in _FUNC for w in ws): return None
+    if len(ws) == 1 and _ACRONYM.match(ws[0]) and ws[0].lower() not in wm_words \
+       and ws[0].lower() not in _EC and ws[0].lower() not in IPA_MANUAL:
+        return None
+    parts = [word_ipa(w, wm_words) for w in ws]
+    return " ".join(parts) if all(parts) else None
+
 
 G = {}                      # normkey -> entry
 def put(key, **kw):
@@ -95,7 +174,10 @@ for f in sorted(glob.glob('content/**/*.html', recursive=True)):
         en_txt = strip(en.group(1))
         zh_txt = strip(re.sub(r'<span class="en">.*?</span>', '', inner, flags=re.S))
         badges = [BADGE[c] for c in re.findall(r'badge--\w+', head) if c in BADGE]
-        for part in [en_txt] + re.split(r'\s*/\s*|\s*→\s*', en_txt):
+        # 只在有空格的分隔符上拆。「Continuous Integration / Continuous Delivery」
+        # 是两个术语并列，该拆；「Mean Time to Repair/Recover」是同一个词的两种写法，
+        # 拆了会产出「Recover (MTTR)」这种碎片当标题。
+        for part in [en_txt] + re.split(r'\s+/\s+|\s*→\s*', en_txt):
             k = norm(part)
             if not k: continue
             put(k, en=part.strip(), zh=zh_txt, href=f.replace(os.sep, '/'),
@@ -138,6 +220,9 @@ if os.path.isdir(WMREV):
              'etymology': w.get('etymology'), 'pitfall': w.get('pitfall')}
         return {k: v for k, v in m.items() if v}
 
+    globals()['WM_TERMS'] = {norm(t['term']): t['phonetic'] for t in T.values() if t.get('phonetic')}
+    globals()['WM_WORDS'] = {w['word'].lower(): w['phonetic'] for w in WD.values() if w.get('phonetic')}
+
     lookup = {}
     for t in T.values():
         lookup.setdefault(norm(t['term']), ('t', t))
@@ -175,6 +260,12 @@ for e in G.values():
     if ('id="%s"' % e['kp']) not in _cache[h]:
         e.pop('kp'); dropped += 1
 
+n_ipa = 0
+_wt, _ww = globals().get('WM_TERMS', {}), globals().get('WM_WORDS', {})
+for e in G.values():
+    ph = term_ipa(e.get('en', ''), _wt, _ww)
+    if ph: e['ipa'] = '/' + ph + '/'; n_ipa += 1
+
 for e in G.values():
     if not e.get('definition') and e.get('expansion'):
         e['definition'] = e['expansion']
@@ -186,5 +277,6 @@ open('data/glossary.js', 'w', encoding='utf-8').write(out)
 
 print(f"A1 {n_a1} 行 · A2 {n_a2} 行 · 知识点 {n_kp} 个 → 词条 {len(G)} 条")
 print(f"锚点校验：丢弃 {dropped} 个跨页错配的锚点")
+print(f"音标 {n_ipa}/{len(G)} 条（{100*n_ipa//len(G)}%），其余交给朗读")
 print(f"带「更多」英语层的 {n_more} 条" + ("（已应用审阅修订）" if WMREV and os.path.isdir(WMREV) else ""))
 print(f"→ data/glossary.js  {os.path.getsize('data/glossary.js')/1024:.0f} KB")
