@@ -71,3 +71,17 @@ tech-learning-map/
 根目录的 `.nojekyll` 让 Pages 跳过 Jekyll 构建，直接按原样提供静态文件 ——
 站点是手写 HTML，不需要 Jekyll，跳过它也避免了正文里出现 `{{` `{%` 等
 模板语法时被误解析导致构建失败。
+
+## 参与贡献
+
+欢迎勘误、补写延伸章节、出练习题，或者新增一个技术体系。流程和写作规范见
+[CONTRIBUTING.md](CONTRIBUTING.md)：小改动直接提 PR，大改动请先开 issue 商量。
+
+## 许可
+
+- **内容**（正文、自制配图、题目与数据）：© 2026 yuntao-tech，以 [CC BY 4.0](LICENSE) 发布。
+  可以自由转载、改编、商用，按许可要求署名即可。
+- **代码**（各体系目录下 `assets/` 中的 JS 与 CSS、`tools/` 中的脚本）：[MIT](LICENSE-CODE)。
+- **第三方数据**：术语弹层的部分音标与中文释义取自 ECDICT（MIT），见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+- **官方材料**：站内引用的官方原文、术语与考纲条目，版权归 DevOps Institute / PeopleCert 所有，
+  不在上述许可范围内。DevOps Foundation® 是 DevOps Institute / PeopleCert 的注册商标。
