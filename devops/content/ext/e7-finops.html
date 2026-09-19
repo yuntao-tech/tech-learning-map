@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E7 FinOps 与平台经济性 · DevOps Foundation 学习站</title>
+<meta name="description" content="FinOps 是在云按量付费时代，把分散到每个工程师手里的花钱决定变得可见、可控、可分摊的实践体系。平台工程本身是官方内容，这一节只写 FinOps 以及平台的成本与价值。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../..//"; window.PAGE={ch:"ext", sec:"e7-finops"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">延伸工程实践 · 非考纲</div>
+      <h1 class="page-head__title">E7 FinOps 与平台经济性</h1>
+      <div class="page-head__en">FinOps and Platform Economics</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+      </div>
+      <p class="page-head__lede">
+        云按量付费把花钱的权力分给了每个工程师——没有人再能从一张总账单看出谁在烧钱、为什么烧、值不值。
+        FinOps 回答的就是这三个问题。本节不属于 DOFD 考纲，平台工程本身是 v3.6 官方内容（见 3.10），
+        这一节只写 FinOps 以及平台的成本与价值。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>FinOps 到底要解决什么问题，为什么云账单难以管理</li>
+        <li>FinOps Foundation 的三个阶段是什么，递进关系在哪里</li>
+        <li>成本怎么变得可见、怎么分摊给使用者，showback 和 chargeback 的区别</li>
+        <li>单位经济性怎么算，怎么判断一个内部平台值不值</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 420" role="img" aria-label="FinOps 三个阶段示意图">
+          <defs>
+            <marker id="finop-ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="finop-ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="finop-ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="finop-ah-back" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--dia-3)"/>
+            </marker>
+          </defs>
+
+          <!-- Inform -->
+          <rect x="40" y="60" width="260" height="120" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="56" y="96" class="f-1" font-size="18" font-weight="700">① Inform（可见）</text>
+          <text x="56" y="120" class="s-ink" font-size="14">FinOps Foundation</text>
+          <text x="56" y="142" class="s-muted" font-size="12" opacity="0.85">把账单变成每个人都能看懂的东西</text>
+          <text x="56" y="162" class="s-muted" font-size="12" opacity="0.85">标签 · 分配 · 仪表盘</text>
+
+          <!-- Optimize -->
+          <rect x="320" y="60" width="260" height="120" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="336" y="96" class="f-2" font-size="18" font-weight="700">② Optimize（优化）</text>
+          <text x="336" y="120" class="s-ink" font-size="14">FinOps Foundation</text>
+          <text x="336" y="142" class="s-muted" font-size="12" opacity="0.85">在可见的基础上找浪费并删掉</text>
+          <text x="336" y="162" class="s-muted" font-size="12" opacity="0.85">右尺寸 · 预留实例 · 空闲资源回收</text>
+
+          <!-- Operate -->
+          <rect x="600" y="60" width="260" height="120" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="616" y="96" class="f-3" font-size="18" font-weight="700">③ Operate（运作）</text>
+          <text x="616" y="120" class="s-ink" font-size="14">FinOps Foundation</text>
+          <text x="616" y="142" class="s-muted" font-size="12" opacity="0.85">把成本管理变成日常节奏</text>
+          <text x="616" y="162" class="s-muted" font-size="12" opacity="0.85">预测 · 预算 · 持续评估 · 文化</text>
+
+          <!-- 箭头递进 -->
+          <path d="M302 120 L318 120" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#finop-ah-back)"/>
+          <path d="M582 120 L598 120" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#finop-ah-back)"/>
+
+          <!-- 循环返回 -->
+          <path d="M730 182 C 730 260 450 300 270 260 C 140 230 80 200 80 182"
+                stroke="var(--dia-3)" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#finop-ah3)"/>
+          <text x="340" y="300" class="f-3" font-size="13" font-weight="650" text-anchor="middle">三个阶段环环相扣，Operate 再把 Inform 带归来</text>
+
+          <text x="450" y="370" class="s-muted" font-size="13" text-anchor="middle" opacity="0.85">
+            云按量付费 → 花钱决定分散到每个工程师手里 → 需要 FinOps 把成本拉回到团队视野中
+          </text>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 E7-1　FinOps 三个阶段。</strong>
+        从「看见账单」到「删掉浪费」再到「把成本管理变成日常」，是一个递进关系，不是三个独立选项。
+        跳过 Inform 直接做 Optimize，优化的对象是猜出来的，不是算出来的。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-e7-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-e7-1</div>
+        <h3 class="kp__title">FinOps 要解决的问题<span class="en">Why FinOps exists</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            FinOps（Financial Operations）是一个<strong>跨职能的实践体系</strong>，
+            目的是让使用云资源的团队能够看见自己的成本、理解成本的构成、并对成本的变化负责。
+            FinOps Foundation 是推动这一体系的社区组织，其核心理念是
+            「<strong>团队需要在拥有云资源的同时，能够对成本做出明智的决策</strong>」。
+          </p>
+        </div>
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            在传统数据中心时代，机房、服务器、网络带宽是<strong>前置采购</strong>的：
+            基础设施成本是集中可见的，花钱的决定集中在少数人手里。
+          </p>
+          <p>
+            云按量付费改变了这个结构：每个工程师都能在几秒钟内启动一台实例、开一个有特定规格的服务、
+            启用一个附加服务。结果是<strong>花钱的决定分散到了每个工程师手里</strong>——
+            没有人再能从一张月底总账单看出是谁在烧钱、为什么烧。
+          </p>
+          <p>
+            FinOps 要解决的，正是这个<strong>可见性丢失</strong>和<strong>决策权分散</strong>带来的问题：
+          </p>
+          <ul class="mb-0">
+            <li>月末才看到账单，早就该关的资源已经烧了 30 天</li>
+            <li>团队 A 以为自己在用免费额度，实际上是团队 B 的预算在为它买单</li>
+            <li>优化措施做了但没人知道省了多少，下次还是老样子</li>
+          </ul>
+        </div>
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:24%">对比对象</th><th style="width:38%">FinOps</th><th>它不是</th></tr></thead>
+              <tbody>
+                <tr><td><strong>IT 财务 / 预算管理</strong></td><td><strong>操作层</strong>：工程师和财务一起看账单、定标签、做优化</td><td>只在月末把账单转给财务的<strong>事后记账</strong></td></tr>
+                <tr><td><strong>云成本管理工具</strong></td><td><strong>方法论 + 工具</strong>：标签策略、分摊规则、评估节奏</td><td>单纯买一个展示账单的仪表盘而不改变决策方式</td></tr>
+                <tr><td><strong>削减成本（cost cutting）</strong></td><td><strong>可持续的成本管理</strong>：在不影响价值的前提下优化</td><td>一刀切地关资源、导致服务降级的<strong>临时性紧缩</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：FinOps 不是「让云更便宜」，而是「让花钱决定更明智」。便宜是结果，明智是过程。</small></p>
+        </div>
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>一个团队开始接触 FinOps，通常从三件事入手：</p>
+          <ul class="mb-0">
+            <li><strong>标签策略</strong>：给每一笔云支出打上能追溯到团队、项目、环境的标签（label / tag）</li>
+            <li><strong>可见性仪表盘</strong>：把按团队、按项目聚合后的成本数据，放在大家每天能看到的地方</li>
+            <li><strong>成本评估节奏</strong>：定期（例如每周或每两周）看一眼成本变化，问「这周多出来的钱是什么」</li>
+          </ul>
+          <p>这些都不涉及具体云厂商的配置细节——它们是 FinOps 的入门操作，不是终点。</p>
+        </div>
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <p>本节不在 DOFD 考纲内，考试不会直接考 FinOps。但<strong>单位经济性、成本可见性、分摊</strong>这些概念如果出现在场景题里，判别方式是：</p>
+          <ul class="mb-0">
+            <li>看到「云账单谁来看」类问题时，FinOps 的立场是<strong>使用者自己看</strong>，而不是等财务月末转交</li>
+            <li>看到「成本分摊」类问题时，区分 showback（告诉你用了多少、但不扣钱）和 chargeback（真的从你预算扣）</li>
+          </ul>
+          <p class="mb-0 muted"><small>本节为延伸内容，考试中的任何 FinOps 相关题目都以官方材料为准，本站不预测考题。</small></p>
+        </div>
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">云按量付费把花钱权分给了每个工程师——FinOps 把成本拉回到团队视野里。</p>
+          <p class="mb-0 muted"><small>FinOps 三步走：先看见（Inform），再优化（Optimize），最后日常化（Operate）。</small></p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-e7-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-e7-2</div>
+        <h3 class="kp__title">FinOps 的三个阶段<span class="en">Inform · Optimize · Operate</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>FinOps Foundation 将 FinOps 的成熟过程划分为三个阶段，每个阶段解决的问题域不同，后一个阶段以前一个阶段的产出为前提：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">阶段</th><th style="width:20%">官方名称</th><th>本阶段解决的核心问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>第一阶段</strong></td><td><span class="term">Inform</span></td><td>成本<strong>不可见</strong>：账单是黑盒，谁花了多少钱不清楚</td></tr>
+                <tr><td><strong>第二阶段</strong></td><td><span class="term">Optimize</span></td><td>成本<strong>可见但没人管</strong>：看得见浪费，但没有机制去优化</td></tr>
+                <tr><td><strong>第三阶段</strong></td><td><span class="term">Operate</span></td><td>成本<strong>偶尔被关注</strong>：优化是临时活动，不是日常节奏</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>很多团队一上来就想「优化云成本」，结果发现自己连<strong>这笔钱是谁的</strong>都不知道。</p>
+          <p>Inform 阶段解决的，就是这个前提问题——在你能优化之前，你必须能看见；在你能分摊之前，你必须能标记。这就是为什么 FinOps 强调<strong>标签先于优化</strong>。</p>
+          <p>Optimize 阶段解决的是：看见之后，怎么找到浪费、怎么避免未来的浪费。Operate 阶段解决的是：怎么让这件事不靠某一个人的自觉，变成团队的常规节奏。</p>
+        </div>
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>三个阶段是三个工具</td><td>「我们买了 FinOps 工具，就到了 Operate 阶段」</td><td>阶段是<strong>成熟度</strong>，不是采购清单。工具只是实现手段之一</td></tr>
+                <tr><td>阶段是线性不可回</td><td>「进入 Operate 就再也不用看 Inform 了」</td><td>Operate 中仍需要持续 Inform——新服务、新标签、新成本项不断出现</td></tr>
+                <tr><td>Optimize = 降成本</td><td>「Optimize 阶段的目标是把月账单压下来」</td><td>Optimize 的目标是<strong>消除无效支出</strong>，不是机械地压数字；有时为了更好的架构，成本可能先升后降</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>判断团队处在哪个阶段，可以用这几个问题：</p>
+          <ul class="mb-0">
+            <li><strong>Inform 检验</strong>：如果现在让团队里的一个工程师说出「上个月我们的云成本是多少」，他能回答吗？</li>
+            <li><strong>Optimize 检验</strong>：如果发现了一笔明显的浪费（例如空闲实例），有没有人会去关它？是谁关的？有没有记录？</li>
+            <li><strong>Operate 检验</strong>：成本评估是某个具体人的临时工作，还是已经进入团队的常规节奏？新服务上线时，成本影响是自动被考虑的，还是事后才补？</li>
+          </ul>
+        </div>
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0"><li>本节不在考纲内，考试不会直接考三个阶段的名称。</li><li>如果出现与云成本相关的场景，思考方式是：「题目里团队处在成本管理的哪个成熟度水平？」</li></ul>
+        </div>
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">Inform（看见）→ Optimize（优化）→ Operate（日常化），顺序不能颠倒。</p>
+          <p class="mb-0 muted"><small>标签是 Inform 的入口；没有标签，成本就是一团乱麻，优化无从下手。</small></p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-e7-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-e7-3</div>
+        <h3 class="kp__title">成本可见与分摊：标签、showback、chargeback<span class="en">Cost visibility and allocation</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>成本分摊（cost allocation）是把一笔总账单拆解到最小可追溯单位的过程。它的基础设施是<strong>标签（标签 / tag）</strong>——给每一个云资源打上能回答「这是谁的、为了什么、在哪个环境」的问题的标记。</p>
+          <p>分摊的结果有两种呈现方式：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:16%">方式</th><th style="width:20%">英文原词</th><th>本质</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Showback</strong></td><td>Showback</td><td>告诉团队「你用了多少、花了多少」，但<strong>不从预算实际扣钱</strong>——是一种提醒和可见性机制</td></tr>
+                <tr><td><strong>Chargeback</strong></td><td>Chargeback</td><td>把成本<strong>真的分摊到团队预算</strong>中，团队的预算会因为使用而减少</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0">两者的共同点是都<strong>让成本可见</strong>；差别在于是否真的产生预算上的后果。</p>
+        </div>
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>没有分摊，账单就是一张总数字——总 CTO 看得见，但研发团队看不见自己的成本，结果是<strong>「我的决策和我的预算无关」</strong>的心态。</p>
+          <p>Showback 和 chargeback 的存在，是为了在「集中付钱」（云账户通常由一个央IT或财务团队持有）和「分散决策」（每个工程师都能点几下鼠标启用资源）之间建立一座桥。</p>
+          <ul class="mb-0">
+            <li>Showback 适合还没有成熟成本意识的团队——先让他们看见，再慢慢开始负责</li>
+            <li>Chargeback 适合已经建立了成本意识、并且希望用预算机制约束使用行为的团队</li>
+          </ul>
+        </div>
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>showback = 没用</td><td>「既然不扣钱，那就是空头支票」</td><td>showback 是建立成本意识的起点——先看见，才能后来负责。很多团队就是从 showback 开始的</td></tr>
+                <tr><td>label = 给资源起名字</td><td>「我给实例起个名字就行」</td><td>标签是<strong>结构化的元数据</strong>，用于自动聚合和分摊——名字供人看，标签供系统算</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>一个最小可用的成本分摊实践，通常包含：</p>
+          <ul class="mb-0">
+            <li><strong>强制标签策略</strong>：要求每一个可标签的资源必须带上 team、project、env 三个标签，否则无法部署或报警</li>
+            <li><strong>未标签资源的监控</strong>：任何没打标签的资源都会被标红——它们是分摊的漏网之鱼</li>
+            <li><strong>聚合视图</strong>：按团队、按项目聚合后的成本仪表盘，按周或按月更新</li>
+            <li><strong>showback 起步</strong>：先告诉团队他们的使用和成本，再逐步过渡到 chargeback</li>
+          </ul>
+        </div>
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0"><li>考试可能涉及成本分摊的概念，但 FinOps 的具体标签策略、showback/chargeback 的选择属于延伸内容，不是考纲重点。</li></ul>
+        </div>
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">标签是分摊的入口——没标签，成本就是无法拆解的总数字。</p>
+          <p class="mb-0 muted"><small>showback 先看见，chargeback 再负责——多数团队从 showback 开始，逐渐过渡到 chargeback。</small></p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 知识点 4 ============ -->
+    <article class="kp" id="kp-e7-4">
+      <div class="kp__head">
+        <div class="kp__id">kp-e7-4</div>
+        <h3 class="kp__title">单位经济性<span class="en">Unit Economics</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>单位经济性是把总成本折算到<strong>每个用户、每个交易、每个订单</strong>的做法。它回答的问题是：「每个客户给我们带来了多少钱，我们为他花了多少成本，净赚了多少」。</p>
+          <p>它不是账单层面的概念——账单告诉你「这个月花了 5 万美元」；单位经济性告诉你「每个新用户的云成本是 0.3 美元，每个订单的基础设施成本是 0.02 美元」。</p>
+        </div>
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>当工程团队只看总账单时，他们的决策基准是「省钱」——但省钱不等于省对了。</p>
+          <p>单位经济性给工程决策提供了一个<strong>业务锚点</strong>：一个看起来很贵的资源，可能实际上每个用户只占 0.01 美元，根本不值得花工程时间去优化；反过来，一个看起来便宜的服务，可能每个新用户带来 2 美元的边际成本，业务上完全扛不住。</p>
+          <p>没有单位经济性，团队只能凭直觉判断「这项优化值不值」，而直觉在云成本这种复杂账单面前经常错。</p>
+        </div>
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>单位经济性 = 成本会计</td><td>「单位经济性就是把成本分摊到每个月」</td><td>成本分摊回答的是「谁花了钱」；单位经济性回答的是「花这钱值不值」——是两个不同层次的问题</td></tr>
+                <tr><td>单位经济性需要完美数据</td><td>「必须把每个资源的成本精确到用户才算单位经济性」</td><td>单位经济性是<strong>决策用的近似</strong>，不是审计用的精确。足够好的估算就能驱动正确的优先级判断</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>做单位经济性分析时，通常把成本按以下维度拆解：</p>
+          <ul class="mb-0">
+            <li><strong>按用户</strong>：每个新用户/活跃用户的基础设施成本是多少</li>
+            <li><strong>按交易/订单</strong>：每处理一次交易，背后的云资源消耗是多少</li>
+            <li><strong>按功能</strong>：某个具体功能（例如实时推荐、短视频处理）消耗了多少成本，每个调用带来了多少收益</li>
+          </ul>
+          <p>关键不是精确到分，而是得到一个<strong>数量级正确的锚点</strong>——比如「每个新用户大约 0.35 美元」，足以指导「要不要优先优化这个路径」的决定。</p>
+        </div>
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0"><li>本节不在考纲内，考试不会直接考单位经济性。但相关概念如果在场景题中出现，思路是：「题目里有没有把成本和业务指标联系起来」。</li></ul>
+        </div>
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">单位经济性把总账单折算到「每个用户 / 每个交易」的成本，给优化优先级一个业务锚点。</p>
+          <p class="mb-0 muted"><small>不是为了精确，是为了别在「省了 100 美元，但每个新用户多花 2 美元」这种优化上掉坑里。</small></p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 知识点 5 ============ -->
+    <article class="kp" id="kp-e7-5">
+      <div class="kp__head">
+        <div class="kp__id">kp-e7-5</div>
+        <h3 class="kp__title">内部平台的投入与回报<span class="en">Internal platform ROI</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>内部平台（internal platform）是组织为内部团队提供的、自服务式的基础设施与工具集合。平台工程（3.10）是它的官方内容，这一节只讨论<strong>平台的成本与价值怎么衡量</strong>。</p>
+          <p>衡量平台投入与回报，要回答两个问题：平台本身花了多少钱？它给组织带来了多少可量化的收益？</p>
+        </div>
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>内部平台是有成本的：建设成本（工程师的时间、基础设施、工具许可）、运营成本（维护、支持、演进）。如果不去衡量，容易陷入两个极端：</p>
+          <ul class="mb-0">
+            <li><strong>平台是免费的幻觉</strong>：只算建设成本，不算使用团队的时间成本——结果平台建了一堆，团队还是嫌用起来麻烦</li>
+            <li><strong>平台是万能药幻觉</strong>：投入越多平台，就越认为组织在改善——但如果没有度量，只能靠口感判断</li>
+          </ul>
+          <p>衡量平台的投入与回报，就是为了避开这两个幻觉。</p>
+        </div>
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>平台 ROI = 省了多少云钱</td><td>「平台把云成本省下 20%，就是好的平台」</td><td>平台的回报不仅是直接成本节省，还有<strong>开发速度提升、认知负荷下降、合规内化</strong>——这些不一定在云账单上</td></tr>
+                <tr><td>平台价值靠平台团队说了算</td><td>「平台团队觉得有用，就是有用」</td><td>平台的价值是由<strong>使用团队的体验和产出</strong>来定义的，不是平台团队自己的感觉</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>衡量一个内部平台，通常从这几个维度入手：</p>
+          <ul class="mb-0">
+            <li><strong>直接成本</strong>：建设与运营平台本身花了多少工程时间、基础设施、工具</li>
+            <li><strong>使用团队的成本</strong>：使用平台的团队，相比自建，省了多少时间、少碰了多少底层复杂度</li>
+            <li><strong>速度指标</strong>：新服务上线时间、从想法到生产的时间、团队独立发布的能力</li>
+            <li><strong>认知负荷</strong>：使用团队需要了解多少底层细节——平台的价值之一就是把这部分负荷接走</li>
+            <li><strong>合规与安全</strong>：平台是否让安全合规成为默认而不是事后补——这是难以用美元直接算，但很真实的回报</li>
+          </ul>
+          <p>没有单一的 ROI 公式。好的平台评估，是同时看成本和收益，并承认其中有部分是定性而非定量的。</p>
+        </div>
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0"><li>本节不在考纲内，考试不会直接考平台的 ROI。但平台工程（3.10）是官方模块——如果题目涉及平台工程，注意区分「平台是什么」（官方内容）和「怎么衡量平台价值」（本节延伸）。</li></ul>
+        </div>
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">平台的回报不止是省云钱——还有速度、认知负荷下降、合规内化。衡量时别忘了这些看不见的收益。</p>
+          <p class="mb-0 muted"><small>平台团队自己说有用不算数——使用团队的体验和产出才是平台价值的最终衡量。</small></p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>FinOps 解决的问题：云按量付费后，花钱决定分散到每个工程师手里——没人再能从总账单看出谁在烧钱</li>
+        <li>FinOps 三个阶段：Inform（看见）→ Optimize（优化）→ Operate（日常化），顺序不能颠倒</li>
+        <li>标签是成本分摊的入口——没标签，成本就是无法拆解的总数字</li>
+        <li>Showback = 告诉团队用了多少但不扣钱；Chargeback = 真的从预算扣——多数团队从 showback 起步</li>
+        <li>单位经济性把总成本折算到每个用户/每个交易的成本，给优化优先级一个业务锚点</li>
+        <li>平台的回报不仅是省云钱，还有速度、认知负荷下降、合规内化——衡量时别忘了看不见的收益</li>
+        <li>本节为延伸 · 非考纲，不在 DOFD 考试范围内</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：FinOps 三个阶段（Inform / Optimize / Operate）与 FinOps Foundation 的核心理念，出自 FinOps Foundation 公开的 FinOps 框架与术语（FinOps Foundation Framework and Terminology）。标签策略、showback/chargeback、单位经济性、平台价值衡量为本站教学整理，官方未以此形式给出。平台工程本身是 DOFD v3.6 官方内容（见 3.10 平台工程），本节仅就其成本与价值维度做延伸。<br>术语首次出现附英文原词：FinOps（Financial Operations）、Inform / Optimize / Operate、showback、chargeback、unit economics（单位经济性）、internal platform（内部平台）、platform engineering（平台工程）。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../data/glossary.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script src="../../assets/js/glossary.js"></script>
+</body>
+</html>

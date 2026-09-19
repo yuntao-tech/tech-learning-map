@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E6 Team Topologies · DevOps Foundation 学习站</title>
+<meta name="description" content="Team Topologies 是 Matthew Skelton 与 Manuel Pais 在 2019 年提出的团队设计方法：用认知负荷划定团队边界，通过四种团队类型与三种交互模式，让组织的结构匹配它要交付的价值流。">
+<script>try{var t=localStorage.getItem('dofd:theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/print.css">
+<script>window.SITE_BASE="../..//"; window.PAGE={ch:"ext", sec:"e6-team-topologies"};</script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="topbar__btn menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+  <a class="topbar__brand" href="../../index.html">
+    <svg class="topbar__mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" class="s-1" stroke-width="2" fill="none"/>
+      <path d="M16 4a12 12 0 0 1 0 24" class="s-2" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="4.5" class="f-1"/>
+    </svg>
+    <span>DevOps Foundation 学习站</span>
+    <span class="topbar__ver">DOFD v3.6</span>
+  </a>
+  <span class="topbar__spacer"></span>
+  <button class="topbar__btn" id="markDone">标记为学完</button>
+  <button class="topbar__btn" id="themeToggle" aria-label="切换主题">◑</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="目录"></nav>
+  <main class="main">
+  <div class="page">
+
+    <div class="crumbs" id="crumbs"></div>
+
+    <div class="page-head">
+      <div class="page-head__kicker">延伸工程实践 · 非考纲</div>
+      <h1 class="page-head__title">E6 Team Topologies</h1>
+      <div class="page-head__en">Team Topologies</div>
+      <div class="badge-row" style="margin-top:var(--sp-4)">
+        <span class="badge badge--ext">🧭 延伸 · 非考纲</span>
+      </div>
+      <p class="page-head__lede">
+        Team Topologies 是 Matthew Skelton 与 Manuel Pais 在 2019 年提出的团队设计方法。
+        它的核心命题很简单：<strong>团队边界怎么画，决定了组织能不能快速交付</strong>。
+        本节不属于 DOFD 考纲——它是对知识地图中「团队结构」「组织模型」主题的延伸补充。
+      </p>
+    </div>
+
+    <div class="callout callout--info">
+      <div class="callout__title">🎯 本节要回答</div>
+      <ul class="mb-0">
+        <li>Team Topologies 的四种团队类型分别是什么，各自的本质角色是什么</li>
+        <li>三种交互模式是什么，在什么情况下该用哪一种</li>
+        <li>为什么用认知负荷来划定团队边界，而不是别的依据</li>
+        <li>康威定律说了什么，「逆康威操作」又是什么</li>
+      </ul>
+    </div>
+
+    <!-- ============ 图 1 ============ -->
+    <figure class="dia">
+      <div class="dia__frame">
+        <svg viewBox="0 0 900 480" role="img" aria-label="Team Topologies 四种团队类型示意图">
+          <defs>
+            <marker id="tt-ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-1"/>
+            </marker>
+            <marker id="tt-ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-2"/>
+            </marker>
+            <marker id="tt-ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-3"/>
+            </marker>
+            <marker id="tt-ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-4"/>
+            </marker>
+            <marker id="tt-ah-plat" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="f-5"/>
+            </marker>
+          </defs>
+
+          <!-- 流对齐团队 -->
+          <rect x="40" y="80" width="200" height="140" rx="12" class="s-1" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="56" y="116" class="f-1" font-size="17" font-weight="700">流对齐团队</text>
+          <text x="56" y="138" class="s-ink" font-size="13">Stream-aligned team</text>
+          <text x="56" y="160" class="s-muted" font-size="12" opacity="0.85">对齐一个价值流</text>
+          <text x="56" y="180" class="s-muted" font-size="12" opacity="0.85">从需求到客户的完整流</text>
+
+          <!-- 赋能团队 -->
+          <rect x="280" y="80" width="200" height="140" rx="12" class="s-2" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="296" y="116" class="f-2" font-size="17" font-weight="700">赋能团队</text>
+          <text x="296" y="138" class="s-ink" font-size="13">Enabling team</text>
+          <text x="296" y="160" class="s-muted" font-size="12" opacity="0.85">帮助流对齐团队成长</text>
+          <text x="296" y="180" class="s-muted" font-size="12" opacity="0.85">短期介入、技能带入</text>
+
+          <!-- 复杂子系统团队 -->
+          <rect x="520" y="80" width="200" height="140" rx="12" class="s-3" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="536" y="116" class="f-3" font-size="17" font-weight="700">复杂子系统团队</text>
+          <text x="536" y="138" class="s-ink" font-size="13">Complicated-subsystem team</text>
+          <text x="536" y="160" class="s-muted" font-size="12" opacity="0.85">负责高认知负荷子系统</text>
+          <text x="536" y="180" class="s-muted" font-size="12" opacity="0.85">让其他人不必懂那些复杂性</text>
+
+          <!-- 平台团队 -->
+          <rect x="760" y="80" width="110" height="140" rx="12" class="s-4" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="776" y="116" class="f-4" font-size="15" font-weight="700">平台团队</text>
+          <text x="776" y="138" class="s-ink" font-size="13">Platform team</text>
+          <text x="776" y="160" class="s-muted" font-size="12" opacity="0.85">对齐开发者体验</text>
+          <text x="776" y="180" class="s-muted" font-size="12" opacity="0.85">像产品一样运作</text>
+
+          <!-- 交互箭头 -->
+          <path d="M242 150 L278 150" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#tt-ah-back)"/>
+          <text x="260" y="142" class="s-muted" font-size="11" text-anchor="middle">协作</text>
+
+          <path d="M482 150 L518 150" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#tt-ah-back)"/>
+          <text x="500" y="142" class="s-muted" font-size="11" text-anchor="middle">协作</text>
+
+          <!-- 平台箭头向下 -->
+          <path d="M815 222 L815 350" stroke="var(--dia-5)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#tt-ah-plat)"/>
+          <text x="822" y="290" class="f-5" font-size="12" font-weight="650">X 即服务</text>
+
+          <!-- 平台对齐示意 -->
+          <rect x="300" y="350" width="300" height="80" rx="12" class="s-5" stroke-width="2" fill="var(--dia-fill-2)"/>
+          <text x="320" y="382" class="f-5" font-size="15" font-weight="700">平台团队对齐「内部客户」</text>
+          <text x="320" y="406" class="s-muted" font-size="12" opacity="0.85">流对齐团队是它的用户</text>
+          <text x="320" y="424" class="s-muted" font-size="12" opacity="0.85">像对待外部客户一样对待内部用户</text>
+
+          <!-- 标题 -->
+          <text x="450" y="50" class="f-1" font-size="14" font-weight="650" text-anchor="middle">四种团队类型与它们的关系</text>
+          <text x="450" y="468" class="s-muted" font-size="12" text-anchor="middle" opacity="0.85">流对齐团队是「主力」，赋能团队是「教练」，复杂子系统团队是「专家」，平台团队是「内部服务商」</text>
+
+        </svg>
+      </div>
+      <figcaption>
+        <strong>图 E6-1　Team Topologies 四种团队类型。</strong>
+        四种类型不是等级，而是<strong>功能差异</strong>——每个团队在组织里承担的角色不同。
+        流对齐团队和平台团队都可以有多个，它们的区别在于对齐的对象：流对齐团队对齐价值流，平台团队对齐开发者体验。
+      </figcaption>
+    </figure>
+
+    <!-- ============ 知识点 1 ============ -->
+    <article class="kp" id="kp-e6-1">
+      <div class="kp__head">
+        <div class="kp__id">kp-e6-1</div>
+        <h3 class="kp__title">四种团队类型<span class="en">Four team types</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            Team Topologies 把组织中的团队分为四种类型，每种类型有明确的边界与责任：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:22%">团队类型</th><th style="width:22%">英文原词</th><th>本质角色</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>流对齐团队</strong></td>
+                  <td><span class="term">Stream-aligned team</span></td>
+                  <td>对齐一个<strong>价值流</strong>，负责从需求到客户交付的完整流程。是组织里交付价值的主力</td>
+                </tr>
+                <tr>
+                  <td><strong>赋能团队</strong></td>
+                  <td><span class="term">Enabling team</span></td>
+                  <td>帮助流对齐团队<strong>成长与掌握新能力</strong>。像教练，不长期接管工作</td>
+                </tr>
+                <tr>
+                  <td><strong>复杂子系统团队</strong></td>
+                  <td><span class="term">Complicated-subsystem team</span></td>
+                  <td>负责一个<strong>需要深度专家知识的子系统</strong>，降低其他团队使用它的认知负荷</td>
+                </tr>
+                <tr>
+                  <td><strong>平台团队</strong></td>
+                  <td><span class="term">Platform team</span></td>
+                  <td>为其他团队提供<strong>自服务式能力</strong>，像产品一样运作，用户是组织内的其他团队</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            传统的组织设计常常按<strong>技术层级</strong>画团队边界：前端组、后端组、DBA 组、运维组。
+            结果是每个需求要跨好几个团队协作，沟通成本高、责任模糊、交接慢。
+          </p>
+          <p>
+            Team Topologies 的出发点是：<strong>团队是为交付价值服务的，不是为技术分类服务的</strong>。
+            四种类型是为了匹配不同的组织需求而设计的——不是每个组织都需要四种，但需要时不能混淆。
+          </p>
+          <ul class="mb-0">
+            <li>流对齐团队解决的是<strong>端到端责任模糊</strong>的问题</li>
+            <li>赋能团队解决的是<strong>流对齐团队能力不足却无法长期增加人手</strong>的问题</li>
+            <li>复杂子系统团队解决的是<strong>高认知负荷子系统拖慢整个组织</strong>的问题</li>
+            <li>平台团队解决的是<strong>重复建设与开发者体验不一致</strong>的问题</li>
+          </ul>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>四种类型是角色等级</td>
+                  <td>「平台团队是最高级的团队」</td>
+                  <td>四种类型是<strong>功能差异</strong>，不是地位高低。没有哪种是「最先进」的</td>
+                </tr>
+                <tr>
+                  <td>一个组织四种都要有</td>
+                  <td>「成熟的组织必须四种团队都建全」</td>
+                  <td>Team Topologies 本身不强制四种都要有——它提供了一套识别与设计的语言</td>
+                </tr>
+                <tr>
+                  <td>流对齐团队 = 项目团队</td>
+                  <td>「流对齐团队就是按项目成立的临时团队」</td>
+                  <td>流对齐团队是<strong>长期对齐一个价值流</strong>的团队，不是临时项目组。价值流可以是长期存在的</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-0 muted"><small>最容易混的一点：赋能团队容易被误解为「帮团队做事的团队」。实际上它是「帮团队变得能自己做事的团队」——教练，不是替班。</small></p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            在具体组织里识别团队类型时，可以用这几个问题：
+          </p>
+          <ul class="mb-0">
+            <li><strong>这个团队对齐的是价值流还是技术分类？</strong>如果是按技术栈分的（所有前端在一起），它可能不是流对齐团队</li>
+            <li><strong>这个团队的介入是短期还是长期？</strong>短期带技能进来的是赋能团队，长期负责某子系统的是复杂子系统团队</li>
+            <li><strong>这个团队的用户是谁？</strong>如果是组织内的其他团队，它可能是平台团队</li>
+          </ul>
+          <p>
+            四种类型的组合没有唯一正确答案——组织的规模、成熟度、要解决的问题决定了需要哪些类型。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <p>
+            本节不在 DOFD 考纲内，考试不会直接考 Team Topologies。
+            但<strong>团队结构、组织模型</strong>相关的概念如果出现在场景题里，Team Topologies 提供了一个有用的理解框架：
+          </p>
+          <ul class="mb-0">
+            <li>看到「团队边界怎么划」类问题时，可以想到认知负荷和价值流对齐</li>
+            <li>看到「团队之间怎么协作」类问题时，可以想到三种交互模式</li>
+          </ul>
+          <p class="mb-0 muted"><small>本节为延伸内容，考试中的任何团队结构相关题目都以官方材料为准，本站不预测考题。</small></p>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">四种团队：流对齐（对齐价值流）、赋能（教练）、复杂子系统（专家）、平台（内部服务商）。</p>
+          <p class="mb-0 muted"><small>区分关键：流对齐对齐的是「流」，平台对齐的是「人（其他团队）」。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 2 ============ -->
+    <article class="kp" id="kp-e6-2">
+      <div class="kp__head">
+        <div class="kp__id">kp-e6-2</div>
+        <h3 class="kp__title">三种交互模式<span class="en">Three team interaction modes</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            Team Topologies 定义了三种团队之间的<strong>交互模式</strong>——
+            两种团队如何合作，取决于它们的类型与当前的目标：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:18%">模式</th><th style="width:22%">英文原词</th><th>本质</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>协作</strong></td>
+                  <td><span class="term">Collaboration</span></td>
+                  <td>两个团队<strong>一起工作</strong>，边界短暂模糊。用于探索不确定的领域，或技能需要快速传递</td>
+                </tr>
+                <tr>
+                  <td><strong>X 即服务</strong></td>
+                  <td><span class="term">X-as-a-Service</span></td>
+                  <td>一个团队为另一个团队提供<strong>稳定的、自服务式的能力</strong>。接口清晰，依赖可预测</td>
+                </tr>
+                <tr>
+                  <td><strong>促进</strong></td>
+                  <td><span class="term">Facilitating</span></td>
+                  <td>一个团队<strong>帮助另一个团队找到方向、带方法</strong>，不长期参与执行。赋能团队的典型模式</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            团队之间的交互如果没有模式可循，容易陷入两种极端：
+          </p>
+          <ul class="mb-0">
+            <li><strong>过度协作</strong>：每个事情都要开会磋商，团队边界变成了沟通成本的来源</li>
+            <li><strong>过度隔离</strong>：团队各自为政，交接处出现丢件、推诿、质量断层</li>
+          </ul>
+          <p>
+            三种交互模式提供了一个<strong>基于情境的选择框架</strong>：什么时候该一起做，什么时候该对接服务，什么时候该Facilitating。
+          </p>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr><td>协作 = 每天开会</td><td>「协作模式就是两个团队天天开会商量」</td><td>协作是<strong>为了达成共同目标而暂时模糊边界</strong>，不是无限度的会议文化。目的是尽快把能力或决定传递过去</td></tr>
+                <tr><td>X 即服务 = 写好文档就行</td><td>「X 即服务就是写个 API 文档然后各自干」</td><td>X 即服务是<strong>像产品一样运作</strong>：版本、路标、使用体验、反馈循环都有。文档只是其中一部分</td></tr>
+                <tr><td>促进 = 项目经理</td><td>「促进就是项目经理协调资源」</td><td>促进侧重<strong>方法与方向</strong>的带入，不是资源协调或任务分派</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            选择交互模式时，可以用这几个线索：
+          </p>
+          <ul class="mb-0">
+            <li><strong>领域是否成熟、是否清晰？</strong>清晰的领域倾向于 X 即服务；不确定的领域倾向于协作</li>
+            <li><strong>对接的是能力还是方向？</strong>能力传递倾向于 X 即服务或协作；方向与方法带入倾向于促进</li>
+            <li><strong>介入是短期还是长期？</strong>短期的是赋能（促进）；长期责任的是 X 即服务或复杂子系统团队的接口</li>
+          </ul>
+          <p>
+            交互模式不是一成不变的——同两个团队，在不同的阶段可能用不同的模式。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0">
+            <li>本节不在考纲内，考试不会直接考三种交互模式的名称。</li>
+            <li>如果出现团队协作相关的场景题，Team Topologies 的视角提供了一种分类方式，但考试以官方材料为准。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">三种交互模式：一起探索用协作，对接稳定能力用 X 即服务，带方法与方向用促进。</p>
+          <p class="mb-0 muted"><small>选模式的关键是问：领域清不清楚？介入是短期还是长期？传递的是能力还是方向？</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 3 ============ -->
+    <article class="kp" id="kp-e6-3">
+      <div class="kp__head">
+        <div class="kp__id">kp-e6-3</div>
+        <h3 class="kp__title">认知负荷与团队边界<span class="en">Cognitive load and team boundaries</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            认知负荷（cognitive load）在 Team Topologies 里是一个核心概念——
+            它指的是一个团队为了完成它的工作，必须掌握的<strong>概念、技能、背景知识的总量</strong>。
+          </p>
+          <p>
+            Team Topologies 的基本判断是：<strong>团队边界应该划在认知负荷高的地方</strong>。
+            一个高认知负荷的子系统，应该由专门的团队负责，这样其他团队使用它时就不需要自己理解那些复杂性。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            如果团队边界画在认知负荷低的地方，高认知负荷的复杂性就会散布到多个团队里——
+            每个团队都要花精力去理解那些复杂性，结果是整个组织的认知负荷更高、交付更慢。
+          </p>
+          <p>
+            用认知负荷来划分团队边界，解决的是<strong>复杂性的集中与隔离</strong>问题：
+          </p>
+          <ul class="mb-0">
+            <li>复杂子系统团队负责高认知负荷的子系统，其他团队只需通过清晰接口使用它</li>
+            <li>平台团队把常见能力封装成自服务式的平台，减少流对齐团队的认知负荷</li>
+            <li>流对齐团队尽可能专注于业务领域的认知负荷，而不是基础设施的认知负荷</li>
+          </ul>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>认知负荷 = 工作量</td>
+                  <td>「认知负荷高的团队就是工作最多的团队」</td>
+                  <td>认知负荷是<strong>理解与掌握的难度</strong>，不是工作量的大小。两者相关但不同</td>
+                </tr>
+                <tr>
+                  <td>认知负荷只能靠削减</td>
+                  <td>「降低认知负荷就是删功能、简化系统」</td>
+                  <td>降低认知负荷也可以靠<strong>封装与抽象</strong>——把复杂性藏在接口后面，而不是把功能删了</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            识别高认知负荷的子系统，可以用这几个信号：
+          </p>
+          <ul class="mb-0">
+            <li><strong>新人上手慢</strong>：加入团队后，要花很长时间才能独立处理这个子系统的任务</li>
+            <li><strong>同一问题反复被不同团队重复理解</strong>：多个团队都在花精力搞懂同一个复杂点</li>
+            <li><strong>出问题时，很多团队都可能缺乏足够的诊断能力</strong></li>
+          </ul>
+          <p>
+            识别出来后，典型的应对是：要么专门成立一个复杂子系统团队，要么通过平台团队封装它，
+            要么用赋能团队帮助其他团队掌握它——取决于组织的情况与诉求。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0">
+            <li>本节不在考纲内，考试不会直接考认知负荷与团队边界的关系。</li>
+            <li>如果出现团队设计相关的场景题，认知负荷是一个有用的思考角度，但考试以官方材料为准。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">认知负荷高的地方，就是团队边界应该划的地方——把复杂性集中到专门的团队里。</p>
+          <p class="mb-0 muted"><small>降低认知负荷不等于删功能——封装与抽象也是降低认知负荷的有效手段。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 知识点 4 ============ -->
+    <article class="kp" id="kp-e6-4">
+      <div class="kp__head">
+        <div class="kp__id">kp-e6-4</div>
+        <h3 class="kp__title">康威定律与逆康威操作<span class="en">Conway's Law and Inverse Conway Maneuver</span></h3>
+        <div class="badge-row"><span class="badge badge--ext">🧭 延伸 · 非考纲</span></div>
+      </div>
+      <div class="kp__body">
+
+        <div class="face">
+          <div class="face__label">① 是什么</div>
+          <p>
+            康威定律（Conway's Law）是 Melvin Conway 在 1967 年提出的观察：
+            <strong>组织的系统设计，往往会复刻该组织的沟通结构</strong>。
+            换句话说，团队怎么画边界、怎么通信，最后会体现在产品的架构里。
+          </p>
+          <p>
+            「逆康威操作」（Inverse Conway Maneuver）是 Team Topologies 等现代组织设计方法中使用的一个概念：
+            <strong>先设计团队结构，然后让系统架构自然地从新的团队结构中生长出来</strong>，
+            以此来塑造期望的系统架构。
+          </p>
+        </div>
+
+        <div class="face">
+          <div class="face__label">② 为什么存在 · 解决什么问题</div>
+          <p>
+            康威定律解释了为什么组织结构与系统架构经常「长得一样」：
+            如果两个团队之间沟通成本高，它们之间的接口就会倾向于简单、粗粒度、耦合度低——
+            因为复杂的接口需要频繁沟通。
+          </p>
+          <p>
+            逆康威操作的思路是：<strong>如果你想改变系统架构，先改变团队结构</strong>。
+            例如，你想让某个能力更易于复用、更模块化，就把负责它的团队从按技术分类的结构里解放出来，
+            让它对齐价值流或成为平台团队——新的沟通结构会自然地促成新的架构风格。
+          </p>
+          <ul class="mb-0">
+            <li>康威定律告诉你：<strong>架构会复刻沟通结构</strong>——这是个观察，不是建议</li>
+            <li>逆康威操作告诉你：<strong>可以反过来用</strong>——先设计沟通结构，再让架构跟着走</li>
+          </ul>
+        </div>
+
+        <div class="face face--vs">
+          <div class="face__label">③ 与相邻概念的区别</div>
+          <div class="table-wrap">
+            <table class="vs-table">
+              <thead><tr><th style="width:26%">常见误解</th><th style="width:37%">误解的说法</th><th>实际</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>康威定律 = 架构决定团队</td>
+                  <td>「系统架构应该先确定，然后按架构分团队」</td>
+                  <td>康威定律说的是反方向——<strong>团队结构塑造架构</strong>，不是架构塑造团队结构</td>
+                </tr>
+                <tr>
+                  <td>逆康威操作 =  reorganization 疗法</td>
+                  <td>「只要把团队重组一遍，架构就自动好了」</td>
+                  <td>逆康威操作是<strong>提示一个杠杆</strong>，不是魔法。团队结构变了，架构变化是倾向性，不是必然</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="face">
+          <div class="face__label">④ 工程中怎么用</div>
+          <p>
+            逆康威操作在实践中通常是<strong>组织转型的一部分</strong>，而不是一次性的重组：
+          </p>
+          <ul class="mb-0">
+            <li>先明确想达成的系统架构特征（例如松耦合、易复用、易独立发布）</li>
+            <li>把负责这些能力的团队从按技术分类的结构里解放出来，对齐价值流或成为平台团队</li>
+            <li>让新的沟通结构自然地塑造架构——不要在重组之后立刻强求架构改变</li>
+          </ul>
+          <p>
+            逆康威操作的危险在于：如果团队结构改了，但沟通习惯、激励方式、工具链没跟上，
+            架构还是会复刻旧的沟通模式。团队结构只是影响架构的因素之一。
+          </p>
+        </div>
+
+        <div class="face face--exam">
+          <div class="face__label">⑤ 考试怎么考</div>
+          <ul class="mb-0">
+            <li>本节不在考纲内，考试不会直接考康威定律或逆康威操作。</li>
+            <li>康威定律本身是一个广为人知的观察，考试中如果出现团队结构与架构关系的题目，可参考这一视角，但以官方材料为准。</li>
+          </ul>
+        </div>
+
+        <div class="face face--recall">
+          <div class="face__label">⑥ 记忆要点</div>
+          <p class="anchor-line">康威定律：系统架构复刻沟通结构。逆康威操作：先改团队结构，让架构跟着走。</p>
+          <p class="mb-0 muted"><small>逆康威操作是杠杆，不是魔法——团队结构只是影响架构的因素之一，习惯与工具链也要跟上。</small></p>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- ============ 本节速查 ============ -->
+    <div class="divider-label">本节速查</div>
+    <div class="callout callout--exam">
+      <div class="callout__title">⭐ 一分钟回忆清单</div>
+      <ul class="mb-0">
+        <li>四种团队类型：流对齐（对齐价值流）、赋能（教练）、复杂子系统（专家）、平台（内部服务商）</li>
+        <li>流对齐团队是交付价值的主力，平台团队是对齐开发者体验的内部服务商</li>
+        <li>三种交互模式：协作（一起探索）、X 即服务（对接稳定能力）、促进（带方法与方向）</li>
+        <li>认知负荷高的地方，就是团队边界应该划的地方——把复杂性集中到专门的团队里</li>
+        <li>康威定律：系统架构复刻沟通结构；逆康威操作：先改团队结构，让架构跟着走</li>
+        <li>本节为延伸 · 非考纲，不在 DOFD 考试范围内</li>
+      </ul>
+    </div>
+
+    <div class="src-note">
+      <strong>来源</strong>：四种团队类型（流对齐团队 / 赋能团队 / 复杂子系统团队 / 平台团队）与三种交互模式（协作 / X 即服务 / 促进）出自 Skelton, M. & Pais, M. (2019) 《Team Topologies: Organizing Business and Technology Teams for Fast Flow》。认知负荷与团队边界的关系、康威定律（Conway's Law, 1967）与逆康威操作（Inverse Conway Maneuver）为本站教学整理，官方未以此形式给出。平台工程本身是 DOFD v3.6 官方内容（见 3.10 平台工程），本节仅就团队设计方法做延伸。<br>术语首次出现附英文原词：Team Topologies、Stream-aligned team、Enabling team、Complicated-subsystem team、Platform team、Collaboration、X-as-a-Service、Facilitating、Cognitive load（认知负荷）、Conway's Law（康威定律）、Inverse Conway Maneuver（逆康威操作）。
+    </div>
+
+    <div id="pager" class="pager"></div>
+  </div>
+  </main>
+</div>
+
+<script src="../../data/syllabus.js"></script>
+<script src="../../data/glossary.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/progress.js"></script>
+<script src="../../assets/js/glossary.js"></script>
+</body>
+</html>
