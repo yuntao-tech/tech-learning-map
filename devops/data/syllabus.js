@@ -174,8 +174,8 @@ window.SYLLABUS = {
         { n: "E3", slug: "e3-iac-tools", title: "IaC 工具生态", status: "todo" },
         { n: "E4", slug: "e4-observability-stack", title: "可观测性技术栈", status: "todo" },
         { n: "E5", slug: "e5-supply-chain-security", title: "软件供应链安全", status: "todo" },
-        { n: "E6", slug: "e6-team-topologies", title: "Team Topologies", status: "todo" },
-        { n: "E7", slug: "e7-finops", title: "FinOps 与平台经济性", status: "todo" }
+        { n: "E6", slug: "e6-team-topologies", title: "Team Topologies", status: "done" },
+        { n: "E7", slug: "e7-finops", title: "FinOps 与平台经济性", status: "done" }
       ]
     },
     {
